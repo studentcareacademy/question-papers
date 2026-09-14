@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Care Academy - Bengali A Semester I MCQ</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#f3f5f7;font-family:"Noto Sans Bengali","Nirmala UI",Arial,sans-serif;color:#202124}
+  .sheet{max-width:900px;margin:18px auto;background:#fff;padding:28px 30px 40px;box-shadow:0 2px 12px #0002}
+  h1{text-align:center;margin:0;font-size:25px}
+  h2{text-align:center;margin:4px 0;font-size:18px}
+  .sub{text-align:center;line-height:1.7;margin:8px 0 18px}
+  .student{border:1px solid #bbb;padding:12px;margin-bottom:18px;background:#fafafa}
+  .student label{font-weight:700}
+  .student input{width:100%;margin-top:7px;padding:10px;border:1px solid #aaa;border-radius:4px;font-size:16px}
+  .instructions{border:1px solid #ddd;padding:12px 16px;margin-bottom:18px;line-height:1.8}
+  .section{margin-top:25px}
+  .section-title{background:#e9eef5;border-left:5px solid #3f51b5;padding:9px 12px;font-weight:700}
+  .question{margin:16px 0;padding:13px 14px;border:1px solid #e1e1e1;border-radius:5px}
+  .qtext{font-weight:600;line-height:1.7;margin-bottom:9px}
+  .options label{display:block;padding:8px 9px;margin:5px 0;border-radius:4px;cursor:pointer}
+  .options label:hover{background:#f1f3f4}
+  .options input{margin-right:9px;transform:scale(1.15);vertical-align:middle}
+  .submit-wrap{text-align:center;margin:30px 0 10px}
+  button{background:#1a73e8;color:white;border:0;padding:13px 30px;border-radius:5px;font-size:17px;font-weight:700;cursor:pointer}
+  button:disabled{opacity:.6;cursor:not-allowed}
+  #status{margin:14px 0;text-align:center;font-weight:700}
+  #result{display:none;margin-top:20px;border:2px solid #1a73e8;padding:18px;border-radius:6px}
+  .score{font-size:22px;font-weight:800;text-align:center;margin-bottom:15px}
+  .answer{padding:9px 0;border-bottom:1px solid #eee;line-height:1.65}
+  .correct{font-weight:700}
+  .wrong{font-weight:700}
+  .small{font-size:13px;color:#666}
+  @media(max-width:600px){.sheet{margin:0;padding:18px 12px 30px}h1{font-size:21px}.question{padding:11px}}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>STUDENT CARE ACADEMY</h1>
+  <h2>(Burigumti, TentulMuri)</h2>
+  <div class="sub">
+    <b>Teacher: Tapan Mandal</b><br>
+    <b>নমুনা প্রশ্নপত্র</b><br>
+    ক্লাস: XI | সেমিস্টার: I | বিষয়: বাংলা (ক) — Bengali-A (BNGA)<br>
+    সিলেবাস: WBCHSE Semester-I Full Syllabus<br>
+    সময়: ১ ঘণ্টা | পূর্ণমান: ৪০
+  </div>
+
+  <div class="student">
+    <label for="studentName">ছাত্র/ছাত্রীর নাম লিখুন *</label>
+    <input id="studentName" type="text" placeholder="আপনার পূর্ণ নাম লিখুন" required>
+  </div>
+
+  <div class="instructions">
+    <b>নির্দেশাবলি</b><br>
+    ১. সব প্রশ্ন মনোযোগ দিয়ে পড়ে উত্তর দাও।<br>
+    ২. মোট ৪০টি প্রশ্নের প্রতিটির মান ১।<br>
+    ৩. প্রতিটি প্রশ্নের চারটি বিকল্পের মধ্যে একটি সঠিক উত্তর নির্বাচন করো।<br>
+    ৪. সব প্রশ্নের উত্তর নির্বাচন করার পর Submit Answer-এ ক্লিক করো।<br>
+    ৫. ফলাফল ও সঠিক উত্তর দেখতে WhatsApp-এ ফলাফল পাঠানোর প্রক্রিয়া সম্পূর্ণ করতে হবে।
+  </div>
+
+  <form id="quizForm">
+    <div id="questions"></div>
+  </form>
+
+  <div class="submit-wrap">
+    <button id="submitBtn" type="button">✓ Submit Answer</button>
+    <div id="status"></div>
+  </div>
+
+  <div id="result">
+    <div class="score" id="score"></div>
+    <div id="answers"></div>
+  </div>
+</div>
+
+<script>
+const questions = [
+["বিভাগ–A : গল্প | পুঁইমাচা — বিভূতিভূষণ বন্দ্যোপাধ্যায়",[
+["‘পুঁইমাচা’ গল্পের রচয়িতা কে?",["তারাশঙ্কর বন্দ্যোপাধ্যায়","বিভূতিভূষণ বন্দ্যোপাধ্যায়","মানিক বন্দ্যোপাধ্যায়","শরৎচন্দ্র চট্টোপাধ্যায়"],1],
+["‘পুঁইমাচা’ গল্পে পুঁইগাছটি কোন বিষয়ের সঙ্গে বিশেষভাবে যুক্ত হয়ে উঠেছে?",["নগরজীবনের বিলাসিতা","গ্রামীণ সংসারের স্মৃতি ও জীবনযাপন","রাজনৈতিক আন্দোলন","শিক্ষাজীবনের অভিজ্ঞতা"],1],
+["গল্পটির পরিবেশের সঙ্গে কোনটি সবচেয়ে ঘনিষ্ঠভাবে সম্পর্কিত?",["গ্রামীণ প্রকৃতি ও পারিবারিক জীবন","শিল্পাঞ্চলের শ্রমিকজীবন","রাজদরবারের জীবন","সমুদ্রযাত্রা"],0],
+["‘পুঁইমাচা’ গল্পে প্রকৃতির উপস্থিতি মূলত কীভাবে কাজ করেছে?",["কেবল পটভূমি হিসেবে","চরিত্র ও জীবনযাপনের সঙ্গে আন্তঃসম্পর্কিত উপাদান হিসেবে","কাহিনির বিরোধী শক্তি হিসেবে","হাস্যরস সৃষ্টির উপায় হিসেবে"],1],
+["নিচের কোনটি ‘পুঁইমাচা’ গল্পের ভাবজগতের সঙ্গে সবচেয়ে সামঞ্জস্যপূর্ণ?",["গ্রামীণ জীবনের আন্তরিকতা","যান্ত্রিক সভ্যতার বিস্তার","যুদ্ধের ভয়াবহতা","রাজনীতির ক্ষমতার দ্বন্দ্ব"],0],
+["বিবৃতি (S): ‘পুঁইমাচা’ গল্পে প্রকৃতি ও মানুষের জীবনকে বিচ্ছিন্নভাবে দেখা হয়নি। কারণ (R): গ্রামীণ মানুষের দৈনন্দিন জীবন প্রকৃতির পরিবেশের সঙ্গে নিবিড়ভাবে যুক্ত।",["S ও R উভয়ই সত্য এবং R, S-এর সঠিক ব্যাখ্যা","S ও R উভয়ই সত্য, কিন্তু R, S-এর সঠিক ব্যাখ্যা নয়","S সত্য, R মিথ্যা","S মিথ্যা, R সত্য"],0],
+["গল্পটির নাম ‘পুঁইমাচা’ হওয়ার তাৎপর্য সবচেয়ে ভালোভাবে কোন বিকল্পে প্রকাশ পায়?",["নামটি কেবল একটি উদ্ভিদের পরিচয় দেয়","নামটি গল্পের গ্রামীণ জীবন ও আবেগের একটি গুরুত্বপূর্ণ প্রতীকী কেন্দ্র","নামটি গল্পের লেখকের পরিচয় নির্দেশ করে","নামটি গল্পের সময়কাল নির্দেশ করে"],1],
+["Case Study: একজন পাঠক লক্ষ্য করল, একটি সাধারণ গাছকে কেন্দ্র করে গল্পে মানুষের সংসার, স্মৃতি, প্রকৃতি ও আবেগ পরস্পরের সঙ্গে যুক্ত হয়েছে। এই পর্যবেক্ষণটি ‘পুঁইমাচা’-র কোন বৈশিষ্ট্যকে সবচেয়ে ভালো নির্দেশ করে?",["প্রকৃতি ও মানবজীবনের আন্তঃসম্পর্ক","কেবল রোমাঞ্চকর কাহিনি","রাজনৈতিক ব্যঙ্গ","ঐতিহাসিক তথ্যনির্ভরতা"],0]
+]],
+["বিভাগ–B : প্রবন্ধ | বিড়াল — বঙ্কিমচন্দ্র চট্টোপাধ্যায়",[
+["‘বিড়াল’ প্রবন্ধের রচয়িতা কে?",["রবীন্দ্রনাথ ঠাকুর","বঙ্কিমচন্দ্র চট্টোপাধ্যায়","প্রমথ চৌধুরী","ঈশ্বরচন্দ্র বিদ্যাসাগর"],1],
+["‘বিড়াল’ প্রবন্ধে প্রাণীকে কেন্দ্র করে লেখকের বক্তব্যের একটি গুরুত্বপূর্ণ বৈশিষ্ট্য কী?",["নিছক বৈজ্ঞানিক বিশ্লেষণ","রসিকতা ও ব্যঙ্গের মাধ্যমে সামাজিক চিন্তার প্রকাশ","কেবল প্রাণীবিদ্যার তথ্য","ঐতিহাসিক ঘটনার বর্ণনা"],1],
+["‘বিড়াল’ প্রবন্ধের ভাষাভঙ্গির সঙ্গে কোনটি সবচেয়ে বেশি সামঞ্জস্যপূর্ণ?",["শুষ্ক বৈজ্ঞানিক ভাষা","রসাত্মক ও ব্যঙ্গাত্মক ভঙ্গি","কেবল কাব্যিক ভাষা","সরকারি প্রতিবেদনধর্মী ভাষা"],1],
+["বিবৃতি (S): ‘বিড়াল’ প্রবন্ধে হাস্যরসের আড়ালে সামাজিক বক্তব্যও প্রকাশিত হয়েছে। কারণ (R): বঙ্কিমচন্দ্র সাধারণ বিষয়কে অবলম্বন করে বৃহত্তর মানবিক ও সামাজিক প্রসঙ্গ উত্থাপন করেছেন।",["S ও R উভয়ই সত্য এবং R, S-এর সঠিক ব্যাখ্যা","S ও R উভয়ই সত্য, কিন্তু R, S-এর সঠিক ব্যাখ্যা নয়","S সত্য, R মিথ্যা","S মিথ্যা, R সত্য"],0],
+["‘বিড়াল’ প্রবন্ধের রচনাশৈলী বোঝার জন্য কোন জোড়াটি সবচেয়ে উপযুক্ত?",["ব্যঙ্গ + রসিকতা","মহাকাব্য + বীররস","করুণরস + বিলাপ","রহস্য + গোয়েন্দা কাহিনি"],0]
+]],
+["বিভাগ–C : কবিতা | ঈশ্বরচন্দ্র বিদ্যাসাগর — মাইকেল মধুসূদন দত্ত; সাম্যবাদী — কাজী নজরুল ইসলাম",[
+["‘ঈশ্বরচন্দ্র বিদ্যাসাগর’ কবিতার কবি কে?",["রবীন্দ্রনাথ ঠাকুর","মাইকেল মধুসূদন দত্ত","কাজী নজরুল ইসলাম","সত্যেন্দ্রনাথ দত্ত"],1],
+["‘ঈশ্বরচন্দ্র বিদ্যাসাগর’ কবিতায় বিদ্যাসাগরের কোন গুণটি বিশেষভাবে প্রশংসিত?",["সামরিক দক্ষতা","মানবিকতা ও পরোপকারিতা","ব্যবসায়িক সাফল্য","রাজনৈতিক ক্ষমতা"],1],
+["‘ঈশ্বরচন্দ্র বিদ্যাসাগর’ কবিতায় বিদ্যাসাগরকে স্মরণ করার প্রধান কারণ কী?",["তাঁর রাজকীয় জীবন","তাঁর মানবসেবা ও মহত্ত্ব","তাঁর বিদেশভ্রমণ","তাঁর যুদ্ধজয়"],1],
+["‘সাম্যবাদী’ কবিতার মূল চেতনার সঙ্গে কোন ধারণাটি সবচেয়ে ঘনিষ্ঠ?",["সামাজিক বৈষম্য বৃদ্ধি","মানবসমতা","ব্যক্তিগত সম্পদের আধিপত্য","জাতিগত বিভাজন"],1],
+["‘সাম্যবাদী’ কবিতায় কবির মানবতাবাদী দৃষ্টিভঙ্গির প্রধান বৈশিষ্ট্য কোনটি?",["মানুষের মধ্যে বিভেদ সৃষ্টি","ধর্ম-বর্ণের ঊর্ধ্বে মানুষের মর্যাদা প্রতিষ্ঠা","কেবল একটি সম্প্রদায়কে শ্রেষ্ঠ বলা","রাজশক্তির প্রশংসা"],1],
+["নিচের কোন জোড়াটি সঠিক?",["‘সাম্যবাদী’ — মানবসমতার চেতনা","‘সাম্যবাদী’ — রাজদরবারের বর্ণনা","‘ঈশ্বরচন্দ্র বিদ্যাসাগর’ — যুদ্ধবিজয়ের কাহিনি","‘ঈশ্বরচন্দ্র বিদ্যাসাগর’ — প্রকৃতির সৌন্দর্যবর্ণনা"],0],
+["বিবৃতি (S): ‘সাম্যবাদী’ কবিতায় মানুষের পরিচয়কে ধর্মীয় বা সামাজিক বিভাজনের ঊর্ধ্বে স্থান দেওয়া হয়েছে। কারণ (R): কবির কাছে মানবমর্যাদা ও সাম্যই প্রধান মূল্যবোধ।",["S ও R উভয়ই সত্য এবং R, S-এর সঠিক ব্যাখ্যা","S ও R উভয়ই সত্য, কিন্তু R, S-এর সঠিক ব্যাখ্যা নয়","S সত্য, R মিথ্যা","S মিথ্যা, R সত্য"],0]
+]],
+["বিভাগ–D : আন্তর্জাতিক গল্প ও ভারতীয় কবিতা | বিশাল ডানাওয়ালা এক থুরথুরে বুড়ো; চারণকবি",[
+["‘বিশাল ডানাওয়ালা এক থুরথুরে বুড়ো’ গল্পটির রচয়িতা কে?",["পাবলো নেরুদা","গ্যাব্রিয়েল গার্সিয়া মার্কেজ","আন্তন চেখভ","লিও টলস্টয়"],1],
+["গল্পটির বাংলা অনুবাদক কে?",["শঙ্খ ঘোষ","মানবেন্দ্র বন্দ্যোপাধ্যায়","উৎপল দত্ত","অরুণ মিত্র"],1],
+["‘চারণকবি’ কবিতার কবি কে?",["ভারভারা রাও","শঙ্খ ঘোষ","কাজী নজরুল ইসলাম","জীবনানন্দ দাশ"],0],
+["‘চারণকবি’ কবিতার অনুবাদক কে?",["মানবেন্দ্র বন্দ্যোপাধ্যায়","শঙ্খ ঘোষ","মাইকেল মধুসূদন দত্ত","বুদ্ধদেব বসু"],1],
+["Case Study: একটি সাহিত্যকর্মে একটি অস্বাভাবিক ঘটনাকে কেন্দ্র করে মানুষের বিশ্বাস, কৌতূহল, লোভ ও আচরণের বৈপরীত্য প্রকাশিত হয়েছে। এই বৈশিষ্ট্যটি কোন পাঠের সঙ্গে সম্পর্কিত?",["পুঁইমাচা","বিড়াল","বিশাল ডানাওয়ালা এক থুরথুরে বুড়ো","ঈশ্বরচন্দ্র বিদ্যাসাগর"],2]
+]],
+["বিভাগ–E : ভাষা",[
+["ভাষাবৈজ্ঞানিক দৃষ্টিতে ভাষা কী?",["মানুষের ভাবপ্রকাশের একটি সামাজিক মাধ্যম","কেবল লিখিত চিহ্নের সমষ্টি","শুধু সাহিত্য রচনার উপকরণ","কেবল মুখস্থ করার বিষয়"],0],
+["ভাষা পরিবারের ধারণা মূলত কী নির্দেশ করে?",["একই অঞ্চলের সব ভাষাকে","ঐতিহাসিকভাবে সম্পর্কযুক্ত ভাষাগোষ্ঠীকে","একই লিপিতে লেখা ভাষাকে","একই দেশের ভাষাগুলিকে"],1],
+["বাংলা ভাষা কোন ভাষাপরিবারের অন্তর্গত?",["দ্রাবিড়","ইন্দো-ইউরোপীয়","অস্ট্রো-এশীয়","চীনা-তিব্বতি"],1],
+["ইন্দো-ইউরোপীয় ভাষাপরিবারের কোন শাখার অন্তর্ভুক্ত বাংলা?",["ইন্দো-আর্য","জার্মানিক","রোমান্স","স্লাভিক"],0],
+["বাংলা ভাষার উদ্ভব ও ক্রমবিকাশের ক্ষেত্রে কোন প্রাকৃতের সঙ্গে বাংলার সম্পর্ক বিশেষভাবে আলোচিত?",["শৌরসেনী প্রাকৃত","মাগধী প্রাকৃত","মহারাষ্ট্রী প্রাকৃত","পৈশাচী প্রাকৃত"],1],
+["নিচের কোন ভাষাটি দ্রাবিড় ভাষাপরিবারের অন্তর্গত?",["বাংলা","অসমীয়া","তামিল","হিন্দি"],2],
+["নিচের ঘটনাগুলির সঠিক ক্রম কোনটি? ১. ইন্দো-ইউরোপীয় ২. ইন্দো-ইরানীয় ৩. ইন্দো-আর্য ৪. বাংলা",["১ → ২ → ৩ → ৪","৪ → ৩ → ২ → ১","২ → ১ → ৪ → ৩","৩ → ৪ → ১ → ২"],0],
+["সাধু ও চলিত—এই দুই রূপ মূলত কোন বিষয়ের সঙ্গে সম্পর্কিত?",["বাংলা ভাষার বৈচিত্র্য","বাংলা লিপির উদ্ভব","ভারতের ভাষাপরিবার","ধ্বনিবিজ্ঞানের ইতিহাস"],0],
+["বিবৃতি (S): একটি ভাষার বিভিন্ন অঞ্চলে উচ্চারণ, শব্দভাণ্ডার বা ব্যবহারে পার্থক্য দেখা যেতে পারে। কারণ (R): ভাষা একটি জীবন্ত সামাজিক ব্যবস্থা এবং স্থান, সমাজ ও ব্যবহারভেদে তার রূপের পরিবর্তন ঘটে।",["S ও R উভয়ই সত্য এবং R, S-এর সঠিক ব্যাখ্যা","S ও R উভয়ই সত্য, কিন্তু R, S-এর সঠিক ব্যাখ্যা নয়","S সত্য, R মিথ্যা","S মিথ্যা, R সত্য"],0],
+["Case Study: একই ভাষার একজন বক্তা বাড়িতে এক ধরনের ভাষারীতি ব্যবহার করেন, বন্ধুমহলে অন্য রীতি এবং আনুষ্ঠানিক লেখায় অপেক্ষাকৃত পরিশীলিত রীতি ব্যবহার করেন। এই পরিস্থিতি কোন ধারণাকে সবচেয়ে ভালোভাবে প্রকাশ করে?",["ভাষার বৈচিত্র্য ও ব্যবহারভেদ","ভাষার সম্পূর্ণ বিলুপ্তি","ভাষাপরিবারের পরিবর্তন","লিপির উদ্ভব"],0]
+]],
+["বিভাগ–F : বাংলা শিল্প-সাহিত্য ও সংস্কৃতির ইতিহাস | প্রাচীন বাংলা ও মধ্যযুগের বাংলা",[
+["বাংলা সাহিত্যের প্রাচীনতম যুগের গুরুত্বপূর্ণ নিদর্শন কোনটি?",["শ্রীকৃষ্ণকীর্তন","চর্যাপদ","অন্নদামঙ্গল","মেঘনাদবধ কাব্য"],1],
+["‘শ্রীকৃষ্ণকীর্তন’-এর রচয়িতা হিসেবে কাকে স্বীকৃতি দেওয়া হয়?",["বিদ্যাপতি","বড়ু চণ্ডীদাস","জ্ঞানদাস","গোবিন্দদাস"],1],
+["নিচের কোনটি মধ্যযুগীয় বাংলা সাহিত্যের প্রধান ধারার অন্তর্ভুক্ত?",["বৈষ্ণব পদাবলি","আধুনিক ছোটগল্প","আধুনিক প্রবন্ধ","আধুনিক নাট্যমঞ্চ"],0],
+["নিচের ঘটনাগুলির কোন ক্রমটি ঐতিহাসিকভাবে অধিক গ্রহণযোগ্য?",["প্রাচীন বাংলা → শ্রীকৃষ্ণকীর্তন → মধ্যযুগীয় বিভিন্ন সাহিত্যধারা","মঙ্গলকাব্য → চর্যাপদ → প্রাচীন বাংলা","বৈষ্ণব পদাবলি → চর্যাপদ → প্রাচীন বাংলা","আধুনিক সাহিত্য → চর্যাপদ → মধ্যযুগ"],0],
+["Match the Following: A. শ্রীকৃষ্ণকীর্তন | B. মঙ্গলকাব্য | C. বৈষ্ণব পদাবলি; 1. বৈষ্ণব সাহিত্যধারা | 2. বড়ু চণ্ডীদাস | 3. দেবদেবীর মাহাত্ম্যকেন্দ্রিক কাব্যধারা",["A–2, B–3, C–1","A–1, B–2, C–3","A–3, B–1, C–2","A–2, B–1, C–3"],0]
+]]
+];
+
+const letter = ["ক","খ","গ","ঘ"];
+let flat = [];
+let qNo = 1;
+const root = document.getElementById("questions");
+
+questions.forEach(sec=>{
+  const div=document.createElement("div"); div.className="section";
+  const title=document.createElement("div"); title.className="section-title"; title.textContent=sec[0]; div.appendChild(title);
+  sec[1].forEach(q=>{
+    flat.push(q);
+    const box=document.createElement("div"); box.className="question";
+    box.innerHTML=`<div class="qtext">${qNo}. ${q[0]}</div>`;
+    const opts=document.createElement("div"); opts.className="options";
+    q[1].forEach((op,i)=>{
+      opts.innerHTML += `<label><input type="radio" name="q${qNo}" value="${i}"> (${letter[i]}) ${op}</label>`;
+    });
+    box.appendChild(opts); div.appendChild(box); qNo++;
+  });
+  root.appendChild(div);
+});
+
+document.getElementById("submitBtn").addEventListener("click", async ()=>{
+  const name=document.getElementById("studentName").value.trim();
+  if(!name){alert("অনুগ্রহ করে ছাত্র/ছাত্রীর নাম লিখুন।");return;}
+  let unanswered=[];
+  flat.forEach((q,i)=>{
+    if(!document.querySelector(`input[name="q${i+1}"]:checked`)) unanswered.push(i+1);
+  });
+  if(unanswered.length){alert("সব প্রশ্নের উত্তর দিন। উত্তর দেওয়া হয়নি: "+unanswered.join(", "));return;}
+
+  let score=0;
+  flat.forEach((q,i)=>{
+    const ans=Number(document.querySelector(`input[name="q${i+1}"]:checked`).value);
+    if(ans===q[2]) score++;
+  });
+
+  const message = `Student Care Academy%0AStudent Name: ${encodeURIComponent(name)}%0ABengali-A | Class XI | Semester-I%0AScore: ${score}/40`;
+  const wa = `https://wa.me/919002111957?text=${message}`;
+  document.getElementById("status").innerHTML = `WhatsApp-এ ফলাফল পাঠানোর জন্য নিচের লিঙ্কটি খুলুন।<br><a id="waLink" href="${wa}" target="_blank" rel="noopener">📱 WhatsApp-এ ফলাফল পাঠান</a><br><span class="small">WhatsApp পাঠানো সম্পন্ন করার পর এই পেজে ফিরে এসে নিচের “I have sent” বাটনে চাপুন।</span>`;
+  document.getElementById("status").innerHTML += `<br><button type="button" id="sentBtn" style="margin-top:10px;background:#188038">✓ I have sent the result</button>`;
+  document.getElementById("sentBtn").onclick=()=>{
+    document.getElementById("score").textContent=`${name} — আপনার মোট নম্বর: ${score} / 40`;
+    const ansBox=document.getElementById("answers"); ansBox.innerHTML="";
+    flat.forEach((q,i)=>{
+      const selected=Number(document.querySelector(`input[name="q${i+1}"]:checked`).value);
+      const ok=selected===q[2];
+      ansBox.innerHTML += `<div class="answer"><b>${i+1}. ${q[0]}</b><br>
+      আপনার উত্তর: (${letter[selected]}) ${q[1][selected]} — <span class="${ok?'correct':'wrong'}">${ok?'সঠিক ✓':'ভুল ✗'}</span><br>
+      সঠিক উত্তর: <b>(${letter[q[2]]}) ${q[1][q[2]]}</b></div>`;
+    });
+    document.getElementById("result").style.display="block";
+    document.getElementById("sentBtn").disabled=true;
+    document.getElementById("waLink").textContent="✓ WhatsApp ফলাফল পাঠানোর লিঙ্ক";
+    window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
+  };
+});
+</script>
+</body>
+</html>   document.getElementById("score").textContent=`${name} — আপনার মোট নম্বর: ${score} / 40`;
+    const ansBox=document.getElementById("answers"); ansBox.innerHTML="";
+    flat.forEach((q,i)=>{
+      const selected=Number(document.querySelector(`input[name="q${i+1}"]:checked`).valu

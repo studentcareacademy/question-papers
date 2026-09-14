@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Care Academy — বাংলা নমুনা প্রশ্নপত্র ২০২৭</title>
+<style>
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:#f1f3f4;
+    color:#202124;
+    font-family:"Noto Sans Bengali","Nirmala UI","Vrinda",Arial,sans-serif;
+    line-height:1.65;
+  }
+  .topbar{
+    position:sticky;top:0;z-index:20;
+    background:#fff;border-bottom:1px solid #dadce0;
+    padding:12px 16px;box-shadow:0 1px 3px rgba(0,0,0,.08)
+  }
+  .topbar-inner{max-width:900px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .brand{font-weight:800;color:#1a73e8;font-size:18px}
+  .progress{font-size:14px;color:#5f6368}
+  .wrap{max-width:900px;margin:22px auto;padding:0 12px 50px}
+  .paper{
+    background:#fff;border:1px solid #dadce0;border-radius:10px;
+    overflow:hidden;box-shadow:0 1px 2px rgba(60,64,67,.12)
+  }
+  .header{padding:28px 28px 22px;border-bottom:1px solid #e0e0e0}
+  .academy{font-size:26px;font-weight:800;text-align:center}
+  .sample{text-align:center;font-size:21px;font-weight:700;margin-top:3px}
+  .teacher{text-align:center;color:#5f6368;margin:7px 0 18px}
+  .meta{
+    display:grid;grid-template-columns:1fr 1fr;gap:8px 18px;
+    background:#f8f9fa;border:1px solid #e0e0e0;border-radius:8px;padding:14px 16px;
+    font-size:15px
+  }
+  .instructions{padding:18px 28px;background:#fff}
+  .instructions h3{margin:0 0 8px;font-size:18px}
+  .instructions ol{margin:0;padding-left:25px}
+  .section{
+    border-top:8px solid #f1f3f4;padding:20px 28px 4px
+  }
+  .section-title{font-size:20px;font-weight:800;margin:0 0 2px;color:#202124}
+  .section-sub{color:#5f6368;font-size:14px;margin-bottom:16px}
+  .q{
+    padding:16px 0 17px;border-bottom:1px solid #e8eaed
+  }
+  .q:last-child{border-bottom:0}
+  .qtext{font-weight:700;margin-bottom:10px}
+  .options{display:grid;gap:7px}
+  label.option{
+    display:flex;align-items:flex-start;gap:10px;
+    padding:8px 10px;border-radius:8px;cursor:pointer;
+    transition:.15s;background:#fff
+  }
+  label.option:hover{background:#f8f9fa}
+  input[type=radio]{
+    appearance:none;-webkit-appearance:none;
+    width:20px;height:20px;min-width:20px;margin:2px 0 0;
+    border:2px solid #5f6368;border-radius:50%;background:#fff;position:relative;
+  }
+  input[type=radio]:checked{border-color:#1a73e8}
+  input[type=radio]:checked::after{
+    content:"";position:absolute;width:10px;height:10px;
+    left:3px;top:3px;border-radius:50%;background:#1a73e8
+  }
+  label.option.correct{background:#e6f4ea;border:1px solid #34a853}
+  label.option.wrong{background:#fce8e6;border:1px solid #ea4335}
+  .statement{font-weight:600;margin:8px 0}
+  .submit-area{
+    border-top:8px solid #f1f3f4;padding:24px 28px 30px;text-align:center
+  }
+  button{
+    border:0;border-radius:6px;background:#1a73e8;color:#fff;
+    padding:12px 28px;font-size:16px;font-weight:700;cursor:pointer;
+    box-shadow:0 1px 2px rgba(0,0,0,.2)
+  }
+  button:hover{background:#1769d1}
+  #result{
+    display:none;margin-top:18px;padding:18px;border-radius:10px;
+    background:#e8f0fe;border:1px solid #aecbfa;text-align:center
+  }
+  .score{font-size:28px;font-weight:800;color:#174ea6}
+  .result-note{color:#3c4043}
+  .footer{text-align:center;color:#70757a;font-size:13px;margin-top:14px}
+  @media(max-width:650px){
+    .header,.instructions,.section,.submit-area{padding-left:16px;padding-right:16px}
+    .meta{grid-template-columns:1fr}
+    .academy{font-size:22px}.sample{font-size:18px}
+    .wrap{margin-top:10px;padding-left:6px;padding-right:6px}
+  }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">STUDENT CARE ACADEMY</div>
+    <div class="progress" id="progress">উত্তর দেওয়া হয়েছে: 0 / 40</div>
+  </div>
+</div>
+
+<div class="wrap">
+<div class="paper">
+  <div class="header">
+    <div class="academy">STUDENT CARE ACADEMY</div>
+    <div class="sample">নমুনা প্রশ্নপত্র — ২০২৭</div>
+    <div class="teacher">Teacher: Tapan Mandal</div>
+    <div class="meta">
+      <div><b>ক্লাস:</b> দ্বাদশ</div>
+      <div><b>সেমিস্টার:</b> Semester–III</div>
+      <div><b>বিষয়:</b> বাংলা — ক (BNGA)</div>
+      <div><b>সিলেবাস:</b> Semester–III সম্পূর্ণ সিলেবাস</div>
+      <div><b>সময়:</b> ১ ঘণ্টা ১৫ মিনিট</div>
+      <div><b>পূর্ণমান:</b> ৪০</div>
+    </div>
+  </div>
+
+  <div class="instructions">
+    <h3>নির্দেশাবলি</h3>
+    <ol>
+      <li>সব প্রশ্ন মনোযোগ দিয়ে পড়ো।</li>
+      <li>প্রতিটি প্রশ্নের সঠিক উত্তরটি নির্বাচন করো।</li>
+      <li>প্রতিটি প্রশ্নের মান ১।</li>
+      <li>প্রতিটি প্রশ্নের চারটি বিকল্পের মধ্যে একটি সঠিক উত্তর রয়েছে।</li>
+      <li>উত্তর দেওয়ার পর একেবারে শেষে <b>Submit</b> বোতামে ক্লিক করো।</li>
+    </ol>
+  </div>
+
+  <div style="padding:18px 28px 4px;">
+    <label for="studentName" style="display:block;font-weight:700;margin-bottom:7px;">ছাত্র/ছাত্রীর নাম লিখুন *</label>
+    <input id="studentName" type="text" placeholder="আপনার সম্পূর্ণ নাম"
+      style="width:100%;padding:12px 13px;border:1px solid #dadce0;border-radius:6px;font-size:16px;outline:none;">
+  </div>
+  <form id="quiz">
+
+  <div class="section">
+    <h2 class="section-title">বিভাগ–A : গল্প</h2>
+    <div class="section-sub">আদরিণী — প্রভাতকুমার মুখোপাধ্যায় | প্রশ্ন ১–৮ | ৮ × ১ = ৮</div>
+
+    <div class="q"><div class="qtext">১. ‘আদরিণী’ গল্পের রচয়িতা কে?</div><div class="options">
+      <label class="option"><input type="radio" name="q1" value="a"> (ক) শরৎচন্দ্র চট্টোপাধ্যায়</label>
+      <label class="option"><input type="radio" name="q1" value="b"> (খ) প্রভাতকুমার মুখোপাধ্যায়</label>
+      <label class="option"><input type="radio" name="q1" value="c"> (গ) বিভূতিভূষণ বন্দ্যোপাধ্যায়</label>
+      <label class="option"><input type="radio" name="q1" value="d"> (ঘ) তারাশঙ্কর বন্দ্যোপাধ্যায়</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">২. ‘আদরিণী’ গল্পের কেন্দ্রীয় প্রাণীটি কী?</div><div class="options">
+      <label class="option"><input type="radio" name="q2" value="a"> (ক) ঘোড়া</label>
+      <label class="option"><input type="radio" name="q2" value="b"> (খ) কুকুর</label>
+      <label class="option"><input type="radio" name="q2" value="c"> (গ) হাতি</label>
+      <label class="option"><input type="radio" name="q2" value="d"> (ঘ) মহিষ</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">৩. ‘আদরিণী’ গল্পে মানুষ ও প্রাণীর সম্পর্কের কোন দিকটি বিশেষভাবে ফুটে ওঠে?</div><div class="options">
+      <label class="option"><input type="radio" name="q3" value="a"> (ক) প্রতিযোগিতা</label>
+      <label class="option"><input type="radio" name="q3" value="b"> (খ) স্নেহ ও মমতা</label>
+      <label class="option"><input type="radio" name="q3" value="c"> (গ) প্রতিহিংসা</label>
+      <label class="option"><input type="radio" name="q3" value="d"> (ঘ) রাজনৈতিক বিরোধ</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">৪. গল্পটির আবেগঘন পরিণতির প্রধান কারণ কোনটি?</div><div class="options">
+      <label class="option"><input type="radio" name="q4" value="a"> (ক) সম্পত্তি নিয়ে বিরোধ</label>
+      <label class="option"><input type="radio" name="q4" value="b"> (খ) প্রিয় প্রাণীটির সঙ্গে বিচ্ছেদ</label>
+      <label class="option"><input type="radio" name="q4" value="c"> (গ) গ্রামত্যাগ</label>
+      <label class="option"><input type="radio" name="q4" value="d"> (ঘ) যুদ্ধের সূচনা</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">৫. নিচের কোনটি ‘আদরিণী’ গল্পের ভাবের সঙ্গে সবচেয়ে সামঞ্জস্যপূর্ণ?</div><div class="options">
+      <label class="option"><input type="radio" name="q5" value="a"> (ক) অর্থই মানুষের একমাত্র সম্পদ</label>
+      <label class="option"><input type="radio" name="q5" value="b"> (খ) প্রাণীর প্রতি মানুষের মমত্ববোধ গভীর হতে পারে</label>
+      <label class="option"><input type="radio" name="q5" value="c"> (গ) সামাজিক মর্যাদাই জীবনের প্রধান লক্ষ্য</label>
+      <label class="option"><input type="radio" name="q5" value="d"> (ঘ) প্রকৃতির উপর মানুষের সম্পূর্ণ নিয়ন্ত্রণ রয়েছে</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">৬. বিবৃতি (A): ‘আদরিণী’ গল্পে প্রাণীটি কেবল গল্পের একটি উপাদান নয়।<br>কারণ (R): প্রাণীটির সঙ্গে মানুষের আবেগগত সম্পর্ক গল্পের মূল অনুভূতিকে গভীর করেছে।</div><div class="options">
+      <label class="option"><input type="radio" name="q6" value="a"> (ক) A ও R উভয়ই সত্য এবং R, A-এর সঠিক ব্যাখ্যা</label>
+      <label class="option"><input type="radio" name="q6" value="b"> (খ) A ও R উভয়ই সত্য, কিন্তু R, A-এর সঠিক ব্যাখ্যা নয়</label>
+      <label class="option"><input type="radio" name="q6" value="c"> (গ) A সত্য, R মিথ্যা</label>
+      <label class="option"><input type="radio" name="q6" value="d"> (ঘ) A মিথ্যা, R সত্য</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">৭. ‘আদরিণী’ গল্পের ক্ষেত্রে নিচের কোন সম্পর্কটি সবচেয়ে উপযুক্ত?</div><div class="options">
+      <label class="option"><input type="radio" name="q7" value="a"> (ক) মানুষ — প্রকৃতি — মমতা</label>
+      <label class="option"><input type="radio" name="q7" value="b"> (খ) রাজনীতি — যুদ্ধ — ক্ষমতা</label>
+      <label class="option"><input type="radio" name="q7" value="c"> (গ) বিজ্ঞান — প্রযুক্তি — আবিষ্কার</label>
+      <label class="option"><input type="radio" name="q7" value="d"> (ঘ) নগরজীবন — শিল্প — বাণিজ্য</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">৮. ‘আদরিণী’ গল্পের আবেগকে সবচেয়ে যথাযথভাবে কোন শব্দে প্রকাশ করা যায়?</div><div class="options">
+      <label class="option"><input type="radio" name="q8" value="a"> (ক) ব্যঙ্গ</label>
+      <label class="option"><input type="radio" name="q8" value="b"> (খ) করুণ</label>
+      <label class="option"><input type="radio" name="q8" value="c"> (গ) রোমাঞ্চকর</label>
+      <label class="option"><input type="radio" name="q8" value="d"> (ঘ) হাস্যরসাত্মক</label>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">বিভাগ–B : প্রবন্ধ</h2>
+    <div class="section-sub">বাঙ্গালা ভাষা — স্বামী বিবেকানন্দ | প্রশ্ন ৯–১৩ | ৫ × ১ = ৫</div>
+
+    <div class="q"><div class="qtext">৯. ‘বাঙ্গালা ভাষা’ প্রবন্ধের লেখক কে?</div><div class="options">
+      <label class="option"><input type="radio" name="q9" value="a"> (ক) রবীন্দ্রনাথ ঠাকুর</label>
+      <label class="option"><input type="radio" name="q9" value="b"> (খ) স্বামী বিবেকানন্দ</label>
+      <label class="option"><input type="radio" name="q9" value="c"> (গ) বঙ্কিমচন্দ্র চট্টোপাধ্যায়</label>
+      <label class="option"><input type="radio" name="q9" value="d"> (ঘ) প্রমথ চৌধুরী</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">১০. স্বামী বিবেকানন্দের ভাষাচিন্তায় কোন বিষয়টি বিশেষ গুরুত্ব পায়?</div><div class="options">
+      <label class="option"><input type="radio" name="q10" value="a"> (ক) কেবল বিদেশি শব্দের ব্যবহার</label>
+      <label class="option"><input type="radio" name="q10" value="b"> (খ) জীবন্ত ও সহজ ভাষার প্রয়োজনীয়তা</label>
+      <label class="option"><input type="radio" name="q10" value="c"> (গ) কেবল সংস্কৃতনির্ভর ভাষা</label>
+      <label class="option"><input type="radio" name="q10" value="d"> (ঘ) ভাষার পরিবর্তন সম্পূর্ণ বন্ধ রাখা</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">১১. একটি ভাষার স্বাভাবিক বিকাশের সঙ্গে কোন বিষয়টি ঘনিষ্ঠভাবে যুক্ত?</div><div class="options">
+      <label class="option"><input type="radio" name="q11" value="a"> (ক) মানুষের ব্যবহার</label>
+      <label class="option"><input type="radio" name="q11" value="b"> (খ) কেবল অভিধান</label>
+      <label class="option"><input type="radio" name="q11" value="c"> (গ) কেবল রাজশক্তি</label>
+      <label class="option"><input type="radio" name="q11" value="d"> (ঘ) কেবল মুদ্রণযন্ত্র</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">১২. ‘বাঙ্গালা ভাষা’ প্রবন্ধের আলোচনার মূল উদ্দেশ্যের সঙ্গে কোনটি বেশি সামঞ্জস্যপূর্ণ?</div><div class="options">
+      <label class="option"><input type="radio" name="q12" value="a"> (ক) ভাষাকে কৃত্রিমভাবে দুর্বোধ্য করা</label>
+      <label class="option"><input type="radio" name="q12" value="b"> (খ) বাংলা ভাষার স্বাভাবিক ও প্রাণবন্ত রূপকে গুরুত্ব দেওয়া</label>
+      <label class="option"><input type="radio" name="q12" value="c"> (গ) বাংলা ভাষাকে অন্য ভাষায় প্রতিস্থাপন করা</label>
+      <label class="option"><input type="radio" name="q12" value="d"> (ঘ) কথ্য ভাষাকে সম্পূর্ণ অস্বীকার করা</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">১৩. নিচের কোন বক্তব্যটি ভাষার জীবন্ত প্রকৃতির সঙ্গে সামঞ্জস্যপূর্ণ?</div><div class="options">
+      <label class="option"><input type="radio" name="q13" value="a"> (ক) ভাষা সমাজ থেকে বিচ্ছিন্ন</label>
+      <label class="option"><input type="radio" name="q13" value="b"> (খ) ভাষা মানুষের ব্যবহারের মাধ্যমে পরিবর্তিত ও বিকশিত হয়</label>
+      <label class="option"><input type="radio" name="q13" value="c"> (গ) ভাষার কোনো পরিবর্তন হয় না</label>
+      <label class="option"><input type="radio" name="q13" value="d"> (ঘ) ভাষার বিকাশ কেবল ব্যাকরণবিদের হাতে</label>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">বিভাগ–C : কবিতা</h2>
+    <div class="section-sub">অন্ধকার লেখাগুচ্ছ — শ্রীজাত | দ্বিগ্বিজয়ের রূপকথা — নবনীতা দেবসেন | প্রশ্ন ১৪–২০ | ৭ × ১ = ৭</div>
+
+    <div class="q"><div class="qtext">১৪. ‘অন্ধকার লেখাগুচ্ছ’-এর কবি কে?</div><div class="options">
+      <label class="option"><input type="radio" name="q14" value="a"> (ক) জীবনানন্দ দাশ</label>
+      <label class="option"><input type="radio" name="q14" value="b"> (খ) শ্রীজাত</label>
+      <label class="option"><input type="radio" name="q14" value="c"> (গ) সুভাষ মুখোপাধ্যায়</label>
+      <label class="option"><input type="radio" name="q14" value="d"> (ঘ) শক্তি চট্টোপাধ্যায়</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">১৫. ‘দ্বিগ্বিজয়ের রূপকথা’-র কবি কে?</div><div class="options">
+      <label class="option"><input type="radio" name="q15" value="a"> (ক) নবনীতা দেবসেন</label>
+      <label class="option"><input type="radio" name="q15" value="b"> (খ) মহাদেব সাহা</label>
+      <label class="option"><input type="radio" name="q15" value="c"> (গ) জয় গোস্বামী</label>
+      <label class="option"><input type="radio" name="q15" value="d"> (ঘ) শঙ্খ ঘোষ</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">১৬. ‘অন্ধকার লেখাগুচ্ছ’ নামটির মধ্যে ‘অন্ধকার’ শব্দটি প্রধানত কোন অনুভূতির ইঙ্গিত বহন করে?</div><div class="options">
+      <label class="option"><input type="radio" name="q16" value="a"> (ক) কেবল রাত্রির প্রাকৃতিক দৃশ্য</label>
+      <label class="option"><input type="radio" name="q16" value="b"> (খ) অন্তর্গত সংকট ও বিষণ্ণতার আবহ</label>
+      <label class="option"><input type="radio" name="q16" value="c"> (গ) উৎসবের আনন্দ</label>
+      <label class="option"><input type="radio" name="q16" value="d"> (ঘ) কৌতুকের পরিবেশ</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">১৭. ‘দ্বিগ্বিজয়ের রূপকথা’ শিরোনামে ‘রূপকথা’ শব্দটির ব্যবহার কবিতায় কোন ধরনের কাব্যিক আবহ সৃষ্টি করে?</div><div class="options">
+      <label class="option"><input type="radio" name="q17" value="a"> (ক) কেবল বৈজ্ঞানিক আবহ</label>
+      <label class="option"><input type="radio" name="q17" value="b"> (খ) কল্পনা ও বাস্তবতার মিশ্র আবহ</label>
+      <label class="option"><input type="radio" name="q17" value="c"> (গ) কেবল ঐতিহাসিক দলিলের আবহ</label>
+      <label class="option"><input type="radio" name="q17" value="d"> (ঘ) কেবল হাস্যরসের আবহ</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">১৮. নিচের কোন জোড়াটি সঠিক?</div><div class="options">
+      <label class="option"><input type="radio" name="q18" value="a"> (ক) শ্রীজাত — দ্বিগ্বিজয়ের রূপকথা</label>
+      <label class="option"><input type="radio" name="q18" value="b"> (খ) নবনীতা দেবসেন — অন্ধকার লেখাগুচ্ছ</label>
+      <label class="option"><input type="radio" name="q18" value="c"> (গ) শ্রীজাত — অন্ধকার লেখাগুচ্ছ</label>
+      <label class="option"><input type="radio" name="q18" value="d"> (ঘ) সুভাষ মুখোপাধ্যায় — দ্বিগ্বিজয়ের রূপকথা</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">১৯. দুটি কবিতার ক্ষেত্রে কবির পরিচয় ও কবিতার নাম মিলিয়ে সঠিক ক্রমটি কোনটি?</div><div class="options">
+      <label class="option"><input type="radio" name="q19" value="a"> (ক) শ্রীজাত → অন্ধকার লেখাগুচ্ছ; নবনীতা দেবসেন → দ্বিগ্বিজয়ের রূপকথা</label>
+      <label class="option"><input type="radio" name="q19" value="b"> (খ) শ্রীজাত → দ্বিগ্বিজয়ের রূপকথা; নবনীতা দেবসেন → অন্ধকার লেখাগুচ্ছ</label>
+      <label class="option"><input type="radio" name="q19" value="c"> (গ) নবনীতা দেবসেন → অন্ধকার লেখাগুচ্ছ; শ্রীজাত → দ্বিগ্বিজয়ের রূপকথা</label>
+      <label class="option"><input type="radio" name="q19" value="d"> (ঘ) সুভাষ মুখোপাধ্যায় → অন্ধকার লেখাগুচ্ছ; শ্রীজাত → দ্বিগ্বিজয়ের রূপকথা</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">২০. বিবৃতি (A): ‘দ্বিগ্বিজয়ের রূপকথা’ শিরোনামে ‘রূপকথা’ শব্দটি গুরুত্বপূর্ণ।<br>কারণ (R): শিরোনামটি কবিতার কল্পনাশ্রয়ী ও ব্যঞ্জনাময় আবহের দিকে পাঠককে ইঙ্গিত করে।</div><div class="options">
+      <label class="option"><input type="radio" name="q20" value="a"> (ক) A ও R উভয়ই সত্য এবং R, A-এর সঠিক ব্যাখ্যা</label>
+      <label class="option"><input type="radio" name="q20" value="b"> (খ) A ও R উভয়ই সত্য, কিন্তু R, A-এর সঠিক ব্যাখ্যা নয়</label>
+      <label class="option"><input type="radio" name="q20" value="c"> (গ) A সত্য, R মিথ্যা</label>
+      <label class="option"><input type="radio" name="q20" value="d"> (ঘ) A মিথ্যা, R সত্য</label>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">বিভাগ–D : ভারতীয় গল্প ও আন্তর্জাতিক কবিতা</h2>
+    <div class="section-sub">পোটরাজ — শঙ্কর রাও খারাট | তার সঙ্গে — পাবলো নেরুদা | প্রশ্ন ২১–২৫ | ৫ × ১ = ৫</div>
+
+    <div class="q"><div class="qtext">২১. ‘পোটরাজ’ গল্পের মূল লেখক কে?</div><div class="options">
+      <label class="option"><input type="radio" name="q21" value="a"> (ক) প্রেমচন্দ</label>
+      <label class="option"><input type="radio" name="q21" value="b"> (খ) শঙ্কর রাও খারাট</label>
+      <label class="option"><input type="radio" name="q21" value="c"> (গ) ফণীশ্বরনাথ রেণু</label>
+      <label class="option"><input type="radio" name="q21" value="d"> (ঘ) শরৎচন্দ্র চট্টোপাধ্যায়</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">২২. ‘পোটরাজ’ রচনাটির বাংলা অনুবাদ করেছেন কে?</div><div class="options">
+      <label class="option"><input type="radio" name="q22" value="a"> (ক) শক্তি চট্টোপাধ্যায়</label>
+      <label class="option"><input type="radio" name="q22" value="b"> (খ) সুনন্দন চক্রবর্তী</label>
+      <label class="option"><input type="radio" name="q22" value="c"> (গ) নবনীতা দেবসেন</label>
+      <label class="option"><input type="radio" name="q22" value="d"> (ঘ) শঙ্খ ঘোষ</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">২৩. ‘তার সঙ্গে’ কবিতার মূল কবি কে?</div><div class="options">
+      <label class="option"><input type="radio" name="q23" value="a"> (ক) পাবলো নেরুদা</label>
+      <label class="option"><input type="radio" name="q23" value="b"> (খ) গ্যাব্রিয়েল গার্সিয়া মার্কেস</label>
+      <label class="option"><input type="radio" name="q23" value="c"> (গ) ফেদেরিকো গার্সিয়া লোরকা</label>
+      <label class="option"><input type="radio" name="q23" value="d"> (ঘ) নাজিম হিকমত</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">২৪. ‘তার সঙ্গে’ কবিতাটির বাংলা অনুবাদের সঙ্গে কোন নামটি যুক্ত?</div><div class="options">
+      <label class="option"><input type="radio" name="q24" value="a"> (ক) সুনন্দন চক্রবর্তী</label>
+      <label class="option"><input type="radio" name="q24" value="b"> (খ) শক্তি চট্টোপাধ্যায়</label>
+      <label class="option"><input type="radio" name="q24" value="c"> (গ) শ্রীজাত</label>
+      <label class="option"><input type="radio" name="q24" value="d"> (ঘ) বিষ্ণু দে</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">২৫. নিচের কোন জোড়াটি সঠিকভাবে মিলেছে?</div><div class="options">
+      <label class="option"><input type="radio" name="q25" value="a"> (ক) পোটরাজ — পাবলো নেরুদা</label>
+      <label class="option"><input type="radio" name="q25" value="b"> (খ) তার সঙ্গে — শঙ্কর রাও খারাট</label>
+      <label class="option"><input type="radio" name="q25" value="c"> (গ) পোটরাজ — শঙ্কর রাও খারাট</label>
+      <label class="option"><input type="radio" name="q25" value="d"> (ঘ) তার সঙ্গে — সুনন্দন চক্রবর্তী</label>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">বিভাগ–E : ভাষা</h2>
+    <div class="section-sub">প্রশ্ন ২৬–৩৫ | ১০ × ১ = ১০</div>
+
+    <div class="q"><div class="qtext">২৬. ধ্বনি উৎপাদনে মানুষের কোন অঙ্গসমষ্টি বিশেষভাবে কার্যকর?</div><div class="options">
+      <label class="option"><input type="radio" name="q26" value="a"> (ক) বাগযন্ত্র</label>
+      <label class="option"><input type="radio" name="q26" value="b"> (খ) পরিপাকতন্ত্র</label>
+      <label class="option"><input type="radio" name="q26" value="c"> (গ) রেচনতন্ত্র</label>
+      <label class="option"><input type="radio" name="q26" value="d"> (ঘ) কঙ্কালতন্ত্র</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">২৭. স্বরধ্বনি উচ্চারণের ক্ষেত্রে কোনটি প্রধান বৈশিষ্ট্য?</div><div class="options">
+      <label class="option"><input type="radio" name="q27" value="a"> (ক) বায়ুপ্রবাহ সম্পূর্ণ বাধাপ্রাপ্ত হয়</label>
+      <label class="option"><input type="radio" name="q27" value="b"> (খ) বায়ুপ্রবাহে উল্লেখযোগ্য বাধা থাকে না</label>
+      <label class="option"><input type="radio" name="q27" value="c"> (গ) কেবল নাসারন্ধ্র ব্যবহৃত হয়</label>
+      <label class="option"><input type="radio" name="q27" value="d"> (ঘ) জিহ্বার কোনো ভূমিকা থাকে না</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">২৮. ব্যঞ্জনধ্বনি উচ্চারণের সময় সাধারণত কী ঘটে?</div><div class="options">
+      <label class="option"><input type="radio" name="q28" value="a"> (ক) বায়ুপ্রবাহে কোনো বাধাই থাকে না</label>
+      <label class="option"><input type="radio" name="q28" value="b"> (খ) বায়ুপ্রবাহে কোনো না কোনো ধরনের বাধা সৃষ্টি হয়</label>
+      <label class="option"><input type="radio" name="q28" value="c"> (গ) কেবল স্বরতন্ত্রী কাজ করে</label>
+      <label class="option"><input type="radio" name="q28" value="d"> (ঘ) কেবল ফুসফুস কাজ করে</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">২৯. ‘ক্ত’, ‘ন্দ্র’, ‘ষ্ট’ ইত্যাদি কোন ধরনের গঠন নির্দেশ করে?</div><div class="options">
+      <label class="option"><input type="radio" name="q29" value="a"> (ক) স্বরধ্বনি</label>
+      <label class="option"><input type="radio" name="q29" value="b"> (খ) যুক্ত ব্যঞ্জন</label>
+      <label class="option"><input type="radio" name="q29" value="c"> (গ) দ্বিস্বর</label>
+      <label class="option"><input type="radio" name="q29" value="d"> (ঘ) অনুসর্গ</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">৩০. নিচের কোনটি শব্দভাণ্ডারের সঙ্গে সরাসরি সম্পর্কিত?</div><div class="options">
+      <label class="option"><input type="radio" name="q30" value="a"> (ক) ভাষায় ব্যবহৃত শব্দসমষ্টি</label>
+      <label class="option"><input type="radio" name="q30" value="b"> (খ) বাক্যের যতিচিহ্ন</label>
+      <label class="option"><input type="radio" name="q30" value="c"> (গ) কেবল ধ্বনির উচ্চতা</label>
+      <label class="option"><input type="radio" name="q30" value="d"> (ঘ) কেবল বর্ণমালার সংখ্যা</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">৩১. শব্দার্থতত্ত্ব প্রধানত কী নিয়ে আলোচনা করে?</div><div class="options">
+      <label class="option"><input type="radio" name="q31" value="a"> (ক) শব্দের অর্থ ও অর্থের পরিবর্তন</label>
+      <label class="option"><input type="radio" name="q31" value="b"> (খ) কেবল অক্ষরের আকৃতি</label>
+      <label class="option"><input type="radio" name="q31" value="c"> (গ) কেবল উচ্চারণের গতি</label>
+      <label class="option"><input type="radio" name="q31" value="d"> (ঘ) কেবল বাক্যের দৈর্ঘ্য</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">৩২. ‘অর্থের প্রসারণ’ বলতে কী বোঝায়?</div><div class="options">
+      <label class="option"><input type="radio" name="q32" value="a"> (ক) কোনো শব্দের অর্থ সংকুচিত হওয়া</label>
+      <label class="option"><input type="radio" name="q32" value="b"> (খ) কোনো শব্দের অর্থের পরিসর বৃদ্ধি পাওয়া</label>
+      <label class="option"><input type="radio" name="q32" value="c"> (গ) শব্দের উচ্চারণ বন্ধ হওয়া</label>
+      <label class="option"><input type="radio" name="q32" value="d"> (ঘ) শব্দের বানান বিলুপ্ত হওয়া</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">৩৩. ‘শৈলী বিজ্ঞান’-এর আলোচনার সঙ্গে কোনটি সবচেয়ে ঘনিষ্ঠ?</div><div class="options">
+      <label class="option"><input type="radio" name="q33" value="a"> (ক) ভাষা ব্যবহারের স্বাতন্ত্র্য ও রীতির বিশ্লেষণ</label>
+      <label class="option"><input type="radio" name="q33" value="b"> (খ) কেবল ধ্বনির শারীরবৃত্তীয় উৎপত্তি</label>
+      <label class="option"><input type="radio" name="q33" value="c"> (গ) কেবল শব্দের উৎস সন্ধান</label>
+      <label class="option"><input type="radio" name="q33" value="d"> (ঘ) কেবল বর্ণমালার ইতিহাস</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">৩৪. বিবৃতি (A): একই ভাষায় বিভিন্ন লেখকের ভাষাশৈলীতে পার্থক্য দেখা যেতে পারে।<br>কারণ (R): ভাষা ব্যবহারে লেখকের নিজস্ব নির্বাচন, রীতি ও প্রকাশভঙ্গির প্রভাব থাকে।</div><div class="options">
+      <label class="option"><input type="radio" name="q34" value="a"> (ক) A ও R উভয়ই সত্য এবং R, A-এর সঠিক ব্যাখ্যা</label>
+      <label class="option"><input type="radio" name="q34" value="b"> (খ) A ও R উভয়ই সত্য, কিন্তু R, A-এর সঠিক ব্যাখ্যা নয়</label>
+      <label class="option"><input type="radio" name="q34" value="c"> (গ) A সত্য, R মিথ্যা</label>
+      <label class="option"><input type="radio" name="q34" value="d"> (ঘ) A মিথ্যা, R সত্য</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">৩৫. নিচের কোনটি ধ্বনি পরিবর্তনের সম্ভাব্য কারণের অন্তর্ভুক্ত?</div><div class="options">
+      <label class="option"><input type="radio" name="q35" value="a"> (ক) উচ্চারণের সুবিধা</label>
+      <label class="option"><input type="radio" name="q35" value="b"> (খ) কেবল মুদ্রণপ্রমাদ</label>
+      <label class="option"><input type="radio" name="q35" value="c"> (গ) কেবল লেখকের ইচ্ছা</label>
+      <label class="option"><input type="radio" name="q35" value="d"> (ঘ) কেবল অভিধানের নিয়ম</label>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">বিভাগ–F : বাংলা শিল্প, সাহিত্য ও সংস্কৃতির ইতিহাস</h2>
+    <div class="section-sub">প্রশ্ন ৩৬–৪০ | ৫ × ১ = ৫</div>
+
+    <div class="q"><div class="qtext">৩৬. বাংলা গানের ইতিহাসের বিকাশের ক্ষেত্রে কোন বিষয়টি গুরুত্বপূর্ণ ভূমিকা পালন করেছে?</div><div class="options">
+      <label class="option"><input type="radio" name="q36" value="a"> (ক) বিভিন্ন যুগের সামাজিক ও সাংস্কৃতিক পরিবেশ</label>
+      <label class="option"><input type="radio" name="q36" value="b"> (খ) কেবল বিদেশি ভাষা</label>
+      <label class="option"><input type="radio" name="q36" value="c"> (গ) কেবল মুদ্রণ প্রযুক্তি</label>
+      <label class="option"><input type="radio" name="q36" value="d"> (ঘ) কেবল রাজনৈতিক প্রশাসন</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">৩৭. বাঙালির বিজ্ঞানচর্চার ইতিহাসে জগদীশচন্দ্র বসুর প্রধান পরিচয় কোনটি?</div><div class="options">
+      <label class="option"><input type="radio" name="q37" value="a"> (ক) বিজ্ঞানী</label>
+      <label class="option"><input type="radio" name="q37" value="b"> (খ) নাট্যকার</label>
+      <label class="option"><input type="radio" name="q37" value="c"> (গ) চিত্রকর</label>
+      <label class="option"><input type="radio" name="q37" value="d"> (ঘ) চলচ্চিত্র পরিচালক</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">৩৮. প্রফুল্লচন্দ্র রায় প্রধানত কোন ক্ষেত্রের সঙ্গে যুক্ত ছিলেন?</div><div class="options">
+      <label class="option"><input type="radio" name="q38" value="a"> (ক) রসায়ন ও বিজ্ঞানচর্চা</label>
+      <label class="option"><input type="radio" name="q38" value="b"> (খ) সংগীত</label>
+      <label class="option"><input type="radio" name="q38" value="c"> (গ) চিত্রকলা</label>
+      <label class="option"><input type="radio" name="q38" value="d"> (ঘ) ক্রীড়া</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">৩৯. বাঙালির ক্রীড়া সংস্কৃতি বোঝার ক্ষেত্রে কোন বিষয়টি বিশেষভাবে বিবেচ্য?</div><div class="options">
+      <label class="option"><input type="radio" name="q39" value="a"> (ক) খেলাধুলার সামাজিক ও সাংস্কৃতিক প্রভাব</label>
+      <label class="option"><input type="radio" name="q39" value="b"> (খ) কেবল খেলোয়াড়ের ব্যক্তিগত জীবন</label>
+      <label class="option"><input type="radio" name="q39" value="c"> (গ) কেবল বিদেশি খেলার নিয়ম</label>
+      <label class="option"><input type="radio" name="q39" value="d"> (ঘ) কেবল মাঠের আয়তন</label>
+    </div></div>
+
+    <div class="q"><div class="qtext">৪০. নিচের কোন ক্রমটি সঠিকভাবে বিষয় ও ক্ষেত্রকে নির্দেশ করে?</div><div class="options">
+      <label class="option"><input type="radio" name="q40" value="a"> (ক) বাংলা গানের ইতিহাস — সংগীত; বাঙালির বিজ্ঞানচর্চা — বিজ্ঞান; ক্রীড়া সংস্কৃতি — খেলাধুলা</label>
+      <label class="option"><input type="radio" name="q40" value="b"> (খ) বাংলা গানের ইতিহাস — বিজ্ঞান; বাঙালির বিজ্ঞানচর্চা — সংগীত; ক্রীড়া সংস্কৃতি — সাহিত্য</label>
+      <label class="option"><input type="radio" name="q40" value="c"> (গ) বাংলা গানের ইতিহাস — ক্রীড়া; বাঙালির বিজ্ঞানচর্চা — চিত্রকলা; ক্রীড়া সংস্কৃতি — সংগীত</label>
+      <label class="option"><input type="radio" name="q40" value="d"> (ঘ) বাংলা গানের ইতিহাস — নাটক; বাঙালির বিজ্ঞানচর্চা — ক্রীড়া; ক্রীড়া সংস্কৃতি — ভাষাবিজ্ঞান</label>
+    </div></div>
+  </div>
+
+  <div class="submit-area">
+    <button type="button" id="submitBtn">✓ Submit & WhatsApp-এ পাঠান</button>
+    <div id="whatsappStep" style="display:none;margin-top:14px;padding:14px;border:1px solid #dadce0;border-radius:8px;background:#fff;">
+      <div style="font-weight:700;margin-bottom:8px;">WhatsApp-এ ফলাফল পাঠানোর জন্য নিচের বোতামে ক্লিক করুন।</div>
+      <button type="button" id="waBtn" style="background:#25D366;">WhatsApp-এ পাঠান</button>
+      <div style="font-size:13px;color:#5f6368;margin-top:8px;">WhatsApp খুলে Send চাপার পর এই পেজে ফিরে এসে নিচের বোতামটি চাপুন।</div>
+      <button type="button" id="confirmBtn" style="display:none;margin-top:10px;background:#5f6368;">✓ আমি WhatsApp-এ Send করেছি</button>
+    </div>
+    <div id="result">
+      <div>আপনার ফলাফল</div>
+      <div class="score" id="scoreText">0 / 40</div>
+      <div class="result-note" id="resultNote"></div>
+    </div>
+  </div>
+  </form>
+</div>
+<div class="footer">STUDENT CARE ACADEMY • Teacher: Tapan Mandal • বাংলা — ক (BNGA)</div>
+</div>
+
+<script>
+const answers = {
+  q1:'b', q2:'c', q3:'b', q4:'b', q5:'b', q6:'a', q7:'a', q8:'b',
+  q9:'b', q10:'b', q11:'a', q12:'b', q13:'b',
+  q14:'b', q15:'a', q16:'b', q17:'b', q18:'c', q19:'a', q20:'a',
+  q21:'b', q22:'b', q23:'a', q24:'a', q25:'c',
+  q26:'a', q27:'b', q28:'b', q29:'b', q30:'a', q31:'a', q32:'b',
+  q33:'a', q34:'a', q35:'a',
+  q36:'a', q37:'a', q38:'a', q39:'a', q40:'a'
+};
+
+const form = document.getElementById('quiz');
+const progress = document.getElementById('progress');
+
+function updateProgress(){
+  let answered=0;
+  for(let i=1;i<=40;i++){
+    if(form.querySelector(`input[name="q${i}"]:checked`)) answered++;
+  }
+  progress.textContent = `উত্তর দেওয়া হয়েছে: ${answered} / 40`;
+}
+form.addEventListener('change', updateProgress);
+
+document.getElementById('submitBtn').addEventListener('click', ()=>{
+  const name=document.getElementById('studentName').value.trim();
+  if(!name){
+    alert('অনুগ্রহ করে প্রথমে ছাত্র/ছাত্রীর নাম লিখুন।');
+    document.getElementById('studentName').focus();
+    return;
+  }
+
+  let score=0, unanswered=0;
+  const selectedAnswers=[];
+
+  for(let i=1;i<=40;i++){
+    const selected=form.querySelector(`input[name="q${i}"]:checked`);
+    const all=form.querySelectorAll(`input[name="q${i}"]`);
+    all.forEach(input=>input.parentElement.classList.remove('correct','wrong'));
+    if(!selected){
+      unanswered++;
+      selectedAnswers.push(`${i}. উত্তর দেওয়া হয়নি`);
+    }else{
+      selectedAnswers.push(`${i}. ${selected.value.toUpperCase()}`);
+      if(selected.value===answers[`q${i}`]) score++;
+    }
+  }
+
+  const waNumber='919002111957'; // India: +91 9002111957
+  const message =
+`STUDENT CARE ACADEMY
+নমুনা প্রশ্নপত্র — ২০২৭
+বাংলা — ক (BNGA), Semester–III
+
+ছাত্র/ছাত্রীর নাম: ${name}
+মোট নম্বর: ${score}/40
+উত্তর দেওয়া হয়নি: ${unanswered}টি
+
+নির্বাচিত উত্তর:
+${selectedAnswers.join('\\n')}`;
+
+  window._quizScore=score;
+  window._quizName=name;
+  window._quizMessage=message;
+  window._waUrl=`https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
+
+  document.getElementById('whatsappStep').style.display='block';
+  document.getElementById('waBtn').onclick=()=>{
+    window.open(window._waUrl,'_blank');
+    setTimeout(()=>document.getElementById('confirmBtn').style.display='inline-block',500);
+  };
+  document.getElementById('confirmBtn').onclick=()=>{
+    // Only after the student confirms that Send was pressed is the score revealed.
+    for(let i=1;i<=40;i++){
+      const all=form.querySelectorAll(`input[name="q${i}"]`);
+      all.forEach(input=>{
+        if(input.value===answers[`q${i}`]) input.parentElement.classList.add('correct');
+      });
+      const selected=form.querySelector(`input[name="q${i}"]:checked`);
+      if(selected && selected.value!==answers[`q${i}`]) selected.parentElement.classList.add('wrong');
+    }
+    const result=document.getElementById('result');
+    document.getElementById('scoreText').textContent=`${window._quizScore} / 40`;
+    let note=`${window._quizName}, আপনার প্রাপ্ত নম্বর: ${window._quizScore}। সঠিক উত্তর সবুজ এবং ভুল নির্বাচিত উত্তর লাল রঙে দেখানো হয়েছে।`;
+    if(unanswered>0) note += ` উত্তর দেওয়া হয়নি: ${unanswered}টি।`;
+    document.getElementById('resultNote').textContent=note;
+    result.style.display='block';
+    result.scrollIntoView({behavior:'smooth',block:'center'});
+    document.getElementById('confirmBtn').disabled=true;
+    document.getElementById('confirmBtn').textContent='✓ ফলাফল দেখা যাচ্ছে';
+  };
+});
+</script>
+</body>
+</html>(`input[name="q${i}"]:checked`);
+      if(selected && selected.value!==answers[`q${i}`]) selected.parentElement.classList.add('wrong');
+    }
+    const result=document.getElementById('result');
+    document.getElementById('scoreText').textContent=`${window._quizScore} / 40`;
+    let note=`${window._quizName}, আপনার প্রাপ্ত নম্বর: ${window._quizScore}। সঠিক উত্তর সবুজ এবং ভুল নির্বাচিত উত্তর লাল রঙে দেখানো হয়েছে।`;
+    if(unanswered>0) note += ` উত্তর দেওয়া হয়নি: ${unanswered}টি।`;
+    document.getElementById('

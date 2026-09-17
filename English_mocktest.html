@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Care Academy - KBC English Quiz</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700;800&display=swap');
+*{box-sizing:border-box}
+body{margin:0;font-family:'Noto Sans Bengali',Arial,sans-serif;background:linear-gradient(135deg,#07152e,#102f5e,#07152e);color:#fff;min-height:100vh}
+.wrap{max-width:850px;margin:auto;padding:16px}
+.header{text-align:center;padding:18px 10px 12px}
+.brand{font-size:clamp(24px,5vw,42px);font-weight:800;color:#ffd54a;text-shadow:0 0 8px #ff9800,0 0 22px #ff6f00;animation:glow 1.5s infinite alternate}
+.teacher{font-size:clamp(17px,3.5vw,25px);font-weight:700;color:#fff;margin-top:5px;animation:pulse 1.8s infinite}
+@keyframes glow{from{transform:scale(1);text-shadow:0 0 5px #ff9800}to{transform:scale(1.04);text-shadow:0 0 10px #ffd54a,0 0 28px #ff6f00}}
+@keyframes pulse{50%{opacity:.65}}
+.quiz{background:rgba(255,255,255,.09);border:2px solid #e6b72c;border-radius:22px;padding:22px;box-shadow:0 0 25px rgba(255,193,7,.18)}
+.topbar{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:18px;flex-wrap:wrap}
+.progress{font-weight:700;color:#ffd54a}
+.timer{width:78px;height:78px;border-radius:50%;border:6px solid #ffd54a;display:flex;align-items:center;justify-content:center;font-size:25px;font-weight:800;color:#fff;box-shadow:0 0 18px #ffb300;animation:timerpulse 1s infinite}
+@keyframes timerpulse{50%{transform:scale(1.06)}}
+.question{font-size:clamp(19px,4vw,27px);font-weight:700;line-height:1.5;margin:10px 0 20px}
+.options{display:grid;gap:12px}
+.option{background:linear-gradient(90deg,#123d76,#1a528f);border:2px solid rgba(255,213,74,.65);border-radius:13px;padding:14px 16px;font-size:17px;text-align:left;color:#fff;cursor:pointer;transition:.2s}
+.option:hover{transform:translateX(5px);background:#205f9e}
+.option.correct{background:#147a45;border-color:#65ffad}
+.option.wrong{background:#a52d3a;border-color:#ff8793}
+.option.disabled{cursor:default}
+.explanation{display:none;margin-top:18px;padding:14px;border-radius:12px;background:rgba(255,193,7,.12);border-left:5px solid #ffd54a;line-height:1.6}
+.next{display:none;margin:20px auto 0;padding:13px 30px;border:0;border-radius:30px;background:#ffd54a;color:#07152e;font-size:17px;font-weight:800;cursor:pointer}
+.result{display:none;text-align:center;padding:30px 15px}
+.score{font-size:52px;font-weight:800;color:#ffd54a;text-shadow:0 0 15px #ff9800}
+.restart{padding:14px 28px;border:0;border-radius:30px;background:#ffd54a;color:#07152e;font-weight:800;font-size:17px;cursor:pointer}
+.small{opacity:.8;font-size:13px;margin-top:15px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div class="brand">Student Care Academy</div>
+    <div class="teacher">Teacher:- Tapan Mandal</div>
+    <div style="color:#b9d7ff;margin-top:6px;font-weight:600">Class XII • Semester-III • English Model Question Paper</div>
+  </div>
+
+  <div class="quiz" id="quizBox">
+    <div class="topbar">
+      <div class="progress" id="progress">Question 1 / 43</div>
+      <div class="timer" id="timer">10</div>
+    </div>
+    <div class="question" id="question"></div>
+    <div class="options" id="options"></div>
+    <div class="explanation" id="explanation"></div>
+    <button class="next" id="next">পরের প্রশ্ন ➜</button>
+  </div>
+
+  <div class="quiz result" id="result">
+    <h2>🎉 Quiz Completed!</h2>
+    <div class="score" id="score"></div>
+    <p id="resultText"></p>
+    <button class="restart" onclick="restartQuiz()">আবার Quiz দিন</button>
+    <div class="small">Student Care Academy • Teacher:- Tapan Mandal</div>
+  </div>
+</div>
+
+<script>
+const questions = [
+["In “The Night Train at Deoli”, where did the narrator first meet the basket-selling girl?",["At Deoli railway station","At Saharanpur station","At Mussoorie","At Delhi station"],0,"কথক Deoli station-এ ঝুড়ি বিক্রি করা মেয়েটির সঙ্গে প্রথম দেখা করেন।"],
+["What did the girl sell at Deoli station?",["Flowers","Baskets","Fruits","Books"],1,"মেয়েটি বাঁশের তৈরি ঝুড়ি বিক্রি করত।"],
+["What was the main emotional effect of the girl’s absence on the narrator?",["Anger","Indifference","Longing and uncertainty","Joy"],2,"মেয়েটিকে আর দেখতে না পেয়ে কথকের মনে আকাঙ্ক্ষা ও অনিশ্চয়তা তৈরি হয়।"],
+["In “Strong Roots”, who was the narrator’s father?",["Jainulabdeen","Abdul Hamid","Abdul Kalam","Ashiamma"],0,"A.P.J. Abdul Kalam তাঁর পিতা Jainulabdeen-এর ধর্মনিষ্ঠ ও সরল জীবনযাপনের কথা স্মরণ করেছেন।"],
+["What did Jainulabdeen possess in abundance?",["Wealth","Wisdom and spiritual strength","Political power","Land"],1,"তাঁর অর্থসম্পদ বেশি ছিল না, কিন্তু আধ্যাত্মিক শক্তি ও প্রজ্ঞা ছিল গভীর।"],
+["What did the narrator’s mother, Ashiamma, represent in “Strong Roots”?",["Cruelty","Hospitality and compassion","Ambition","Pride"],1,"Ashiamma দরিদ্র ও অতিথিদের স্নেহভরে খাওয়াতেন; তিনি মানবিকতার প্রতীক।"],
+["According to Virginia Woolf, what does a woman need in order to write fiction?",["Fame and wealth","A room of her own and money","Political power","A large family"],1,"Woolf-এর মতে স্বাধীন সৃজনশীলতার জন্য একজন নারীর আর্থিক স্বাধীনতা ও নিজস্ব কক্ষ দরকার।"],
+["Who was Shakespeare’s imaginary sister?",["Judith","Anne","Mary","Elizabeth"],0,"Virginia Woolf কল্পিতভাবে Shakespeare-এর প্রতিভাবান বোনের নাম Judith দিয়েছেন।"],
+["Why could Shakespeare’s sister not become a successful playwright?",["She disliked literature","Women were denied education and freedom","She was physically weak","She had no imagination"],1,"সামাজিক নিয়ম, শিক্ষার অভাব ও নারীর স্বাধীনতার সীমাবদ্ধতা তাঁর প্রতিভার বিকাশে বাধা দিত।"],
+["What is the central idea of “A Room of One’s Own”?",["Superiority of men","Need for women’s intellectual and economic independence","Importance of war","Value of wealth alone"],1,"রচনাটির মূল বক্তব্য হলো নারীর সৃজনশীলতা বিকাশের জন্য স্বাধীনতা, শিক্ষা ও অর্থনৈতিক নিরাপত্তা জরুরি।"],
+["What does the Casuarina tree symbolise in Toru Dutt’s poem?",["War","Childhood memories and lost loved ones","Political power","Urban life"],1,"Casuarina tree কবির শৈশব, ভাই-বোন এবং অতীত স্মৃতির সঙ্গে যুক্ত।"],
+["What does the poet wish for the Casuarina tree?",["That it should be cut down","That it should be remembered through poetry","That it should bear fruit","That it should be moved elsewhere"],1,"কবি তাঁর কবিতার মাধ্যমে গাছটিকে অমর করে রাখতে চান।"],
+["What does the “giant creeper” do in “Our Casuarina Tree”?",["Covers the tree like a scarf","Destroys the tree","Produces flowers","Hides the moon"],0,"কবিতায় লতাটি গাছটিকে বিশাল সাপের মতো জড়িয়ে রয়েছে।"],
+["Who is the speaker in “Ulysses”?",["Telemachus","Ulysses","Achilles","Homer"],1,"কবিতায় বৃদ্ধ রাজা Ulysses নিজের জীবন, অভিজ্ঞতা ও ভবিষ্যৎ অভিযানের কথা বলেন।"],
+["What does Ulysses want to do after returning to Ithaca?",["Remain idle","Continue travelling and seeking new experiences","Become a farmer","Give up knowledge"],1,"Ulysses স্থির ও নিষ্ক্রিয় জীবনকে অপছন্দ করেন; তিনি নতুন অভিজ্ঞতার সন্ধান করতে চান।"],
+["What does the line “To strive, to seek, to find, and not to yield” express?",["Fear of failure","Spirit of perseverance","Desire for wealth","Hatred of nature"],1,"লাইনটি কখনও হাল না ছেড়ে চেষ্টা, অনুসন্ধান ও সংগ্রামের আদর্শ প্রকাশ করে।"],
+["What is Ulysses’ opinion about an idle life?",["It is noble","It is meaningless and wasteful","It is necessary","It is joyful"],1,"Ulysses মনে করেন নিষ্ক্রিয় জীবন মানুষের শক্তি ও সম্ভাবনাকে নষ্ট করে।"],
+["Where is Riders to the Sea set?",["London","An island off the west of Ireland","Dublin","Scotland"],1,"নাটকের পটভূমি পশ্চিম আয়ারল্যান্ডের একটি দ্বীপ।"],
+["Who is Maurya?",["A young sailor","An old mother","A priest","A fisherman"],1,"Maurya একজন বৃদ্ধা মা, যিনি সমুদ্রে একে একে তাঁর ছেলেদের হারিয়েছেন।"],
+["Who brings the bundle containing a shirt and a stocking?",["Bartley","Nora","Cathleen","The priest"],1,"Nora পুরোহিতের কাছ থেকে পাওয়া জামা ও মোজার bundle নিয়ে আসে।"],
+["What do Nora and Cathleen suspect about the clothes?",["They belonged to Bartley","They might belong to Michael","They belonged to the priest","They were new clothes"],1,"তারা পোশাকের সেলাই ও কাপড় মিলিয়ে অনুমান করে যে এগুলি Michael-এর।"],
+["Why does Bartley want to go to the Galway fair?",["To meet the priest","To sell or buy horses","To visit Michael","To attend a wedding"],1,"Bartley ঘোড়া নিয়ে Galway fair-এ যেতে চায়।"],
+["What does Maurya fear about Bartley?",["He will lose his money","He will drown in the sea","He will leave the island permanently","He will become ill"],1,"সমুদ্রের ভয়াবহতা ও পূর্বের মৃত্যুগুলির কারণে Maurya Bartley-এর মৃত্যুর আশঙ্কা করে।"],
+["What happens to Bartley according to the scene?",["He returns safely","He is knocked down by the grey pony and falls into the sea","He reaches Galway","He hides in the cottage"],1,"Bartley সমুদ্রের দিকে যাওয়ার সময় grey pony-এর ধাক্কায় পড়ে যায় এবং ঢেউয়ে ভেসে যায়।"],
+["Which is the dominant theme of Riders to the Sea?",["Comic misunderstanding","Human struggle against the power of nature","Political revolution","Romantic love"],1,"নাটকে সমুদ্র প্রকৃতির অপ্রতিরোধ্য শক্তির প্রতীক।"],
+["The narrator of “The Night Train at Deoli” was travelling from—",["Delhi to Deoli","Deoli to Delhi","Bombay to Delhi","Jaipur to Deoli"],0,"কথক Deoli station-এর মধ্য দিয়ে Mussoorie-র দিকে যাতায়াত করতেন।"],
+["What did the narrator promise the basket-selling girl?",["To buy all her baskets","To return and meet her","To take her to Delhi","To send her a letter"],1,"কথক তাকে আবার দেখা করার প্রতিশ্রুতি দেন, কিন্তু প্রতিশ্রুতি পূরণ করতে পারেননি।"],
+["Where was Abdul Kalam born?",["Chennai","Rameswaram","Madurai","Hyderabad"],1,"Strong Roots-এ Kalam তাঁর Rameswaram-এর শৈশবজীবনের কথা বলেছেন।"],
+["What kind of life did Kalam’s father lead?",["Luxurious","Simple and spiritually disciplined","Political","Military"],1,"Jainulabdeen সরল, সংযমী ও ধর্মনিষ্ঠ জীবনযাপন করতেন।"],
+["What does Virginia Woolf say about women’s literary history?",["Women always had equal opportunities","Women’s talents were suppressed by social conditions","Women disliked writing","Women were richer than men"],1,"Woolf দেখিয়েছেন যে সামাজিক ও অর্থনৈতিক বৈষম্য নারীর সাহিত্যিক প্রতিভাকে দমন করেছে।"],
+["“Our Casuarina Tree” is written by—",["Sarojini Naidu","Toru Dutt","Kamala Das","Emily Dickinson"],1,"কবিতাটির রচয়িতা ভারতীয় কবি Toru Dutt।"],
+["The Casuarina tree stands—",["Beside the sea","Beside a pond","Near the poet’s childhood home","In a desert"],2,"গাছটি কবির শৈশবের স্মৃতিবিজড়িত বাড়ির সঙ্গে যুক্ত।"],
+["Ulysses was the king of—",["Sparta","Ithaca","Troy","Athens"],1,"Ulysses ছিলেন Ithaca-র রাজা।"],
+["Who is Telemachus?",["Ulysses’ son","Ulysses’ brother","Ulysses’ servant","Ulysses’ enemy"],0,"Telemachus Ulysses-এর পুত্র এবং Ithaca-র ভবিষ্যৎ শাসক।"],
+["The sea in “Ulysses” symbolises—",["Limitation","Adventure and the unknown","Death alone","Wealth"],1,"সমুদ্র Ulysses-এর কাছে অজানা জগত ও নতুন অভিজ্ঞতার প্রতীক।"],
+["Who is Bartley?",["Maurya’s husband","Maurya’s son","Maurya’s brother","A priest"],1,"Bartley Maurya-র জীবিত পুত্র, যে শেষ পর্যন্ত সমুদ্রে মারা যায়।"],
+["Who is Cathleen?",["Maurya’s elder daughter","Bartley’s wife","A neighbour","A nun"],0,"Cathleen Maurya-র বড় মেয়ে এবং পরিবারের দায়িত্বশীল সদস্য।"],
+["What does the sea mainly represent in the play?",["Human control","Fate and destructive natural power","Happiness","Wealth"],1,"সমুদ্র মানুষের নিয়ন্ত্রণের বাইরে থাকা ভাগ্য ও ধ্বংসশক্তির প্রতীক।"],
+["Choose the correct transformation: “He is too weak to walk.”",["He is so weak that he cannot walk.","He is very weak and he walks.","He is weak but he can walk.","He is weak because he walks."],0,"“too…to” গঠনকে “so…that…cannot” দিয়ে প্রকাশ করা যায়।"],
+["Choose the correct indirect speech: He said, “I am tired.”",["He said that I am tired.","He said that he was tired.","He says that he was tired.","He said he is tired."],1,"Reporting verb অতীত হলে সাধারণত present tense পরিবর্তিত হয়ে past tense হয়।"],
+["Choose the correct sentence.",["The work completed by him.","The work was completed by him.","The work is complete by him.","The work has completed by him."],1,"এটি passive voice-এর সঠিক গঠন: subject + was + past participle + by।"],
+["Choose the correct sentence.",["Being ill, he could not attend school.","Been ill, he could not attend school.","Being illness, he could not attend school.","He being ill could not attend school."],0,"একই subject হলে কারণ বোঝাতে present participle “being” ব্যবহৃত হয়।"],
+["Choose the correct combination: “He worked hard. He failed.”",["He worked hard and failed.","Though he worked hard, he failed.","He worked hard because he failed.","He failed so he worked hard."],1,"দুটি বিপরীত ভাব যুক্ত করতে “though” ব্যবহার করা হয়েছে।"]
+];
+
+let current=0, score=0, answered=false, timeLeft=10, timerId=null;
+const qEl=document.getElementById('question'), oEl=document.getElementById('options'),
+expEl=document.getElementById('explanation'), nextEl=document.getElementById('next'),
+timerEl=document.getElementById('timer'), progressEl=document.getElementById('progress');
+
+function loadQuestion(){
+  answered=false; timeLeft=10; timerEl.textContent=timeLeft;
+  nextEl.style.display='none'; expEl.style.display='none'; expEl.innerHTML='';
+  progressEl.textContent=`Question ${current+1} / ${questions.length}`;
+  qEl.textContent=`${current+1}. ${questions[current][0]}`;
+  oEl.innerHTML='';
+  questions[current][1].forEach((txt,i)=>{
+    const b=document.createElement('button');
+    b.className='option';
+    b.innerHTML=`<b>(${String.fromCharCode(65+i)})</b> ${txt}`;
+    b.onclick=()=>selectAnswer(i,b);
+    oEl.appendChild(b);
+  });
+  clearInterval(timerId);
+  timerId=setInterval(()=>{
+    timeLeft--; timerEl.textContent=timeLeft;
+    if(timeLeft<=0){clearInterval(timerId); timeUp();}
+  },1000);
+}
+function selectAnswer(i,btn){
+  if(answered)return;
+  answered=true; clearInterval(timerId);
+  const correct=questions[current][2];
+  [...oEl.children].forEach((b,n)=>{
+    b.classList.add('disabled');
+    if(n===correct)b.classList.add('correct');
+  });
+  if(i===correct){score++; expEl.innerHTML='✅ <b>সঠিক উত্তর!</b><br>'+questions[current][3];}
+  else {btn.classList.add('wrong'); expEl.innerHTML=`❌ <b>ভুল উত্তর!</b><br>সঠিক উত্তর: <b>(${String.fromCharCode(65+correct)}) ${questions[current][1][correct]}</b><br>${questions[current][3]}`;}
+  expEl.style.display='block'; nextEl.style.display='block';
+}
+function timeUp(){
+  if(answered)return;
+  answered=true;
+  const correct=questions[current][2];
+  [...oEl.children].forEach((b,n)=>{
+    b.classList.add('disabled');
+    if(n===correct)b.classList.add('correct');
+  });
+  expEl.innerHTML=`⏰ <b>Time Up!</b><br>সঠিক উত্তর: <b>(${String.fromCharCode(65+correct)}) ${questions[current][1][correct]}</b><br>${questions[current][3]}`;
+  expEl.style.display='block'; nextEl.style.display='block';
+}
+nextEl.onclick=()=>{
+  current++;
+  if(current<questions.length) loadQuestion(); else showResult();
+};
+function showResult(){
+  document.getElementById('quizBox').style.display='none';
+  document.getElementById('result').style.display='block';
+  document.getElementById('score').textContent=`${score} / ${questions.length}`;
+  const pct=Math.round(score/questions.length*100);
+  document.getElementById('resultText').innerHTML=`আপনার স্কোর: <b>${pct}%</b><br>সব প্রশ্ন সম্পন্ন হয়েছে।`;
+}
+function restartQuiz(){
+  current=0;score=0;
+  document.getElementById('result').style.display='none';
+  document.getElementById('quizBox').style.display='block';
+  loadQuestion();
+}
+loadQuestion();
+</script>
+</body>
+</html>

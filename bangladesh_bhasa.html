@@ -1,0 +1,1737 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Student Care Academy - বাংলা Quiz</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:
+    "Noto Sans Bengali",
+    "Nirmala UI",
+    "SolaimanLipi",
+    Arial,
+    sans-serif;
+
+    background:
+    radial-gradient(circle at top,#18213b 0%,#080b16 45%,#03050b 100%);
+
+    min-height:100vh;
+    color:white;
+    padding:15px;
+}
+
+/* ================= HEADER ================= */
+
+.header{
+    max-width:900px;
+    margin:auto;
+    text-align:center;
+    padding:18px 10px 22px;
+}
+
+.academy{
+    font-size:27px;
+    font-weight:900;
+    letter-spacing:1px;
+
+    background:linear-gradient(
+        90deg,
+        #ffd700,
+        #ffffff,
+        #ffd700,
+        #ffae00,
+        #ffffff,
+        #ffd700
+    );
+
+    background-size:300% auto;
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+
+    animation:
+        shine 4s linear infinite,
+        floating 2.5s ease-in-out infinite;
+}
+
+.teacher{
+    margin-top:7px;
+    font-size:18px;
+    font-weight:bold;
+    color:#fff;
+
+    animation:pulseText 2s infinite;
+}
+
+@keyframes shine{
+    0%{background-position:0% center;}
+    100%{background-position:300% center;}
+}
+
+@keyframes floating{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-4px);}
+}
+
+@keyframes pulseText{
+    0%,100%{opacity:.75;}
+    50%{opacity:1;}
+}
+
+/* ================= TITLE ================= */
+
+.title{
+    max-width:900px;
+    margin:0 auto 15px;
+    text-align:center;
+}
+
+.title h1{
+    font-size:23px;
+    color:#ffd700;
+    margin-bottom:5px;
+}
+
+.title p{
+    color:#d8d8d8;
+    font-size:14px;
+}
+
+/* ================= QUIZ CARD ================= */
+
+.quiz-container{
+    max-width:900px;
+    margin:auto;
+}
+
+.quiz-card{
+    background:
+    linear-gradient(
+        145deg,
+        rgba(28,37,68,.98),
+        rgba(7,11,25,.98)
+    );
+
+    border:2px solid #8e7015;
+    border-radius:22px;
+
+    padding:22px;
+
+    box-shadow:
+    0 0 25px rgba(255,215,0,.12),
+    inset 0 0 25px rgba(255,255,255,.025);
+
+    min-height:450px;
+}
+
+/* ================= QUESTION ================= */
+
+.question{
+    text-align:center;
+    font-size:21px;
+    line-height:1.75;
+    font-weight:700;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,215,0,.08),
+        rgba(255,255,255,.03)
+    );
+
+    border:1px solid rgba(255,215,0,.35);
+
+    border-radius:15px;
+
+    padding:20px 16px;
+    margin-bottom:20px;
+}
+
+/* ================= OPTIONS ================= */
+
+.options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:13px;
+}
+
+.option{
+    position:relative;
+
+    min-height:62px;
+
+    border:1px solid #555f7d;
+    border-radius:13px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #161d34,
+        #0d1222
+    );
+
+    color:white;
+
+    padding:13px 16px;
+
+    font-size:17px;
+    text-align:left;
+
+    cursor:pointer;
+
+    transition:
+    transform .2s,
+    border .2s,
+    background .2s,
+    box-shadow .2s;
+}
+
+.option:hover{
+    transform:translateY(-2px);
+
+    border-color:#ffd700;
+
+    box-shadow:
+    0 0 15px rgba(255,215,0,.2);
+}
+
+.option.selected{
+    border-color:#ffd700;
+}
+
+.option.correct{
+    background:
+    linear-gradient(
+        135deg,
+        #08783c,
+        #064b29
+    );
+
+    border-color:#37ff93;
+
+    box-shadow:
+    0 0 18px rgba(55,255,147,.3);
+}
+
+.option.wrong{
+    background:
+    linear-gradient(
+        135deg,
+        #8d1720,
+        #500b11
+    );
+
+    border-color:#ff5964;
+
+    box-shadow:
+    0 0 18px rgba(255,70,80,.25);
+}
+
+.option.disabled{
+    cursor:default;
+}
+
+.option.disabled:hover{
+    transform:none;
+}
+
+/* ================= FEEDBACK ================= */
+
+.feedback{
+    margin-top:17px;
+
+    text-align:center;
+
+    font-size:18px;
+    font-weight:bold;
+
+    min-height:30px;
+}
+
+.feedback.correct-text{
+    color:#42ff98;
+}
+
+.feedback.wrong-text{
+    color:#ff6873;
+}
+
+/* ================= NEXT BUTTON ================= */
+
+.next-btn{
+    display:block;
+
+    margin:20px auto 0;
+
+    padding:13px 35px;
+
+    border:none;
+    border-radius:30px;
+
+    background:
+    linear-gradient(
+        90deg,
+        #b8860b,
+        #ffd700,
+        #b8860b
+    );
+
+    color:#111;
+
+    font-size:17px;
+    font-weight:900;
+
+    cursor:pointer;
+
+    box-shadow:
+    0 4px 15px rgba(255,215,0,.25);
+
+    transition:.2s;
+}
+
+.next-btn:hover{
+    transform:scale(1.05);
+}
+
+.next-btn:disabled{
+    opacity:.4;
+    cursor:not-allowed;
+}
+
+/* ================= MATCHING BOX ================= */
+
+.matching-box{
+
+    margin-bottom:18px;
+
+    border:2px solid #806714;
+
+    border-radius:15px;
+
+    overflow:hidden;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,215,0,.05),
+        rgba(255,255,255,.02)
+    );
+}
+
+.matching-title{
+    background:
+    linear-gradient(
+        90deg,
+        #4e3d0b,
+        #8b6d12,
+        #4e3d0b
+    );
+
+    padding:10px;
+
+    text-align:center;
+
+    color:#ffd700;
+
+    font-weight:bold;
+
+    font-size:17px;
+}
+
+.matching-table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.matching-table td{
+    padding:11px;
+    border:1px solid #404963;
+    font-size:16px;
+    vertical-align:top;
+}
+
+.matching-table td:first-child{
+    width:50%;
+    color:#fff;
+}
+
+.matching-table td:last-child{
+    color:#ffd700;
+}
+
+/* ================= SPECIAL BOX ================= */
+
+.special-box{
+
+    margin-bottom:17px;
+
+    padding:15px;
+
+    border-radius:14px;
+
+    border:1px solid #53617e;
+
+    background:rgba(255,255,255,.035);
+
+    line-height:1.8;
+
+    font-size:16px;
+}
+
+.assertion{
+    border-left:5px solid #ffd700;
+}
+
+.case-study{
+    border-left:5px solid #25d9ff;
+}
+
+.case-title{
+    color:#25d9ff;
+    font-size:18px;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+/* ================= PROGRESS ================= */
+
+.progress-area{
+    max-width:900px;
+    margin:14px auto;
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.progress-bar{
+    flex:1;
+    height:8px;
+
+    background:#222a40;
+
+    border-radius:10px;
+
+    overflow:hidden;
+}
+
+.progress-fill{
+    height:100%;
+    width:0%;
+
+    background:
+    linear-gradient(
+        90deg,
+        #b8860b,
+        #ffd700
+    );
+
+    transition:width .3s;
+}
+
+.progress-text{
+    font-size:13px;
+    color:#ddd;
+}
+
+/* ================= RESULT ================= */
+
+.result{
+    display:none;
+
+    max-width:700px;
+
+    margin:30px auto;
+
+    text-align:center;
+
+    padding:35px 20px;
+
+    background:
+    radial-gradient(
+        circle at top,
+        #252e50,
+        #080b17 70%
+    );
+
+    border:2px solid #ffd700;
+
+    border-radius:25px;
+
+    box-shadow:
+    0 0 35px rgba(255,215,0,.18);
+}
+
+.result h2{
+    color:#ffd700;
+    font-size:29px;
+    margin-bottom:20px;
+}
+
+.score-circle{
+
+    width:155px;
+    height:155px;
+
+    margin:0 auto 20px;
+
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-direction:column;
+
+    border:6px solid #ffd700;
+
+    box-shadow:
+    0 0 25px rgba(255,215,0,.25);
+}
+
+.score-number{
+    font-size:38px;
+    font-weight:900;
+    color:#ffd700;
+}
+
+.score-total{
+    color:#ddd;
+}
+
+.result-info{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+
+    margin-top:20px;
+}
+
+.result-box{
+    padding:13px;
+
+    border-radius:12px;
+
+    background:rgba(255,255,255,.06);
+
+    border:1px solid #414b69;
+}
+
+.result-box strong{
+    display:block;
+    color:#ffd700;
+    font-size:21px;
+}
+
+.restart{
+    margin-top:25px;
+
+    padding:13px 30px;
+
+    border:none;
+
+    border-radius:25px;
+
+    background:#ffd700;
+
+    color:#111;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+/* ================= FOOTER ================= */
+
+.footer{
+    text-align:center;
+    color:#777;
+    font-size:12px;
+    margin:25px 0 10px;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:650px){
+
+    body{
+        padding:9px;
+    }
+
+    .academy{
+        font-size:22px;
+    }
+
+    .teacher{
+        font-size:16px;
+    }
+
+    .title h1{
+        font-size:19px;
+    }
+
+    .quiz-card{
+        padding:13px;
+        border-radius:17px;
+    }
+
+    .question{
+        font-size:18px;
+        padding:15px 10px;
+    }
+
+    .options{
+        grid-template-columns:1fr;
+        gap:10px;
+    }
+
+    .option{
+        font-size:16px;
+        min-height:55px;
+    }
+
+    .matching-table td{
+        font-size:14px;
+        padding:8px;
+    }
+
+    .result-info{
+        grid-template-columns:1fr;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header class="header">
+
+    <div class="academy">
+        Student Care Academy
+    </div>
+
+    <div class="teacher">
+        Teacher:- Tapan Mandal
+    </div>
+
+</header>
+
+
+<div class="title">
+
+    <h1>বাংলা — ‘বাঙ্গালা ভাষা’ — স্বামী বিবেকানন্দ</h1>
+
+    <p>
+        Semester III • Interactive Practice Quiz
+    </p>
+
+</div>
+
+
+<!-- ================= PROGRESS ================= -->
+
+<div class="progress-area">
+
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div class="progress-text" id="progressText">
+        প্রশ্ন চলছে
+    </div>
+
+</div>
+
+
+<!-- ================= QUIZ ================= -->
+
+<div class="quiz-container">
+
+    <div class="quiz-card" id="quizCard">
+
+        <div id="questionArea"></div>
+
+        <div class="options" id="optionsArea"></div>
+
+        <div id="feedback" class="feedback"></div>
+
+        <button
+            class="next-btn"
+            id="nextBtn"
+            onclick="nextQuestion()"
+            disabled>
+            পরের প্রশ্ন
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- ================= RESULT ================= -->
+
+<div class="result" id="result">
+
+    <h2>🎉 Quiz সম্পূর্ণ হয়েছে!</h2>
+
+    <div class="score-circle">
+
+        <div class="score-number" id="finalScore">
+            0
+        </div>
+
+        <div class="score-total">
+            / 50
+        </div>
+
+    </div>
+
+
+    <div class="result-info">
+
+        <div class="result-box">
+
+            <strong id="correctCount">
+                0
+            </strong>
+
+            সঠিক
+
+        </div>
+
+
+        <div class="result-box">
+
+            <strong id="wrongCount">
+                0
+            </strong>
+
+            ভুল
+
+        </div>
+
+
+        <div class="result-box">
+
+            <strong id="percentage">
+                0%
+            </strong>
+
+            Percentage
+
+        </div>
+
+    </div>
+
+
+    <button
+        class="restart"
+        onclick="restartQuiz()">
+
+        আবার শুরু করুন
+
+    </button>
+
+</div>
+
+
+<div class="footer">
+    Student Care Academy • Academic Practice Quiz
+</div>
+
+
+<script>
+
+/* =====================================================
+   QUIZ DATA
+===================================================== */
+
+const questions = [
+
+/* ================= সাধারণ MCQ ================= */
+
+{
+q:"‘বাঙ্গালা ভাষা’ রচনার উৎসপত্রটি স্বামী বিবেকানন্দ কোন পত্রিকার সম্পাদককে লিখেছিলেন?",
+options:["ভারতী","উদ্বোধন","প্রবাসী","সাধনা"],
+answer:1
+},
+
+{
+q:"‘বাঙ্গালা ভাষা’ রচনার উৎসপত্র রচনার সময় স্বামী বিবেকানন্দ কোথায় অবস্থান করছিলেন?",
+options:["ইংল্যান্ডে","আমেরিকায়","ফ্রান্সে","জাপানে"],
+answer:1
+},
+
+{
+q:"প্রাবন্ধিকের মতে, সংস্কৃতে সমস্ত বিদ্যা থাকার ফলে মূলত কোন দুই শ্রেণির মধ্যে দূরত্ব তৈরি হয়েছিল?",
+options:["রাজা ও প্রজা","শিক্ষিত ও অশিক্ষিত","বিদ্বান ও সাধারণ","গ্রাম ও শহর"],
+answer:2
+},
+
+{
+q:"‘লোকহিতায়’ আগত মনীষীদের প্রসঙ্গে প্রাবন্ধিক কোন বৈশিষ্ট্যটি বিশেষভাবে উল্লেখ করেছেন?",
+options:[
+"তাঁরা কঠিন ভাষায় শিক্ষা দিয়েছেন",
+"তাঁরা সাধারণ মানুষের ভাষায় শিক্ষা দিয়েছেন",
+"তাঁরা কেবল পণ্ডিতদের শিক্ষা দিয়েছেন",
+"তাঁরা বিদেশি ভাষা ব্যবহার করেছেন"
+],
+answer:1
+},
+
+{
+q:"‘কটমট ভাষা’ বলতে প্রাবন্ধিক কী ধরনের ভাষাকে বোঝাতে চেয়েছেন?",
+options:[
+"আঞ্চলিক ও কথ্য ভাষা",
+"অপ্রাকৃতিক ও কল্পিত ভাষা",
+"সংক্ষিপ্ত ও সরল ভাষা",
+"সংগীতের ভাষা"
+],
+answer:1
+},
+
+{
+q:"স্বামী বিবেকানন্দের যুক্তি অনুযায়ী, যে ভাষায় মানুষ ঘরে স্বাভাবিকভাবে কথা বলে, সেই ভাষার সঙ্গে লেখার ভাষার সম্পর্ক কেমন হওয়া উচিত?",
+options:[
+"সম্পূর্ণ বিপরীত",
+"কোনো সম্পর্ক থাকা উচিত নয়",
+"স্বাভাবিক সামঞ্জস্য থাকা উচিত",
+"কেবল পণ্ডিতদের জন্য উপযোগী হওয়া উচিত"
+],
+answer:2
+},
+
+{
+q:"দর্শন ও বিজ্ঞান নিয়ে চিন্তা করার ক্ষেত্রে কোন ভাষাকে প্রাবন্ধিক স্বাভাবিক বলে মনে করেছেন?",
+options:[
+"কৃত্রিম ভাষা",
+"ঘরে ব্যবহৃত স্বাভাবিক ভাষা",
+"কেবল সংস্কৃত ভাষা",
+"বিদেশি ভাষা"
+],
+answer:1
+},
+
+{
+q:"স্বাভাবিক ভাষায় মানুষের কোন অনুভূতিগুলি প্রকাশের কথা প্রাবন্ধিক উল্লেখ করেছেন?",
+options:[
+"শুধু আনন্দ ও হাসি",
+"শুধু ক্রোধ ও দুঃখ",
+"ক্রোধ, দুঃখ ও ভালোবাসা প্রভৃতি",
+"শুধু ধর্মীয় অনুভূতি"
+],
+answer:2
+},
+
+{
+q:"স্বাভাবিক ভাষার একটি বিশেষ ক্ষমতা হিসেবে প্রাবন্ধিক কোন ধারণাটি তুলে ধরেছেন?",
+options:[
+"অল্পের মধ্যে অনেক প্রকাশের ক্ষমতা",
+"দীর্ঘ বাক্য নির্মাণের ক্ষমতা",
+"দুর্বোধ্যতা সৃষ্টি করার ক্ষমতা",
+"কেবল অলংকার ব্যবহারের ক্ষমতা"
+],
+answer:0
+},
+
+{
+q:"ভাষাকে ‘সাফ ইস্পাত’-এর সঙ্গে তুলনা করার মাধ্যমে কোন গুণটির প্রতি ইঙ্গিত করা হয়েছে?",
+options:[
+"কেবল কঠোরতা",
+"শক্তি ও নমনীয়তার সমন্বয়",
+"কেবল সৌন্দর্য",
+"প্রাচীনত্ব"
+],
+answer:1
+},
+
+{
+q:"বাংলা ভাষার অস্বাভাবিকতার একটি কারণ হিসেবে কোন ভাষার চাল নকল করার কথা বলা হয়েছে?",
+options:["ইংরেজি","আরবি","সংস্কৃত","ফারসি"],
+answer:2
+},
+
+{
+q:"প্রাবন্ধিকের মতে ভাষা কীসের ‘প্রধান উপায়’ ও ‘লক্ষণ’?",
+options:["বিনোদনের","উন্নতির","ধর্মপ্রচারের","রাজনীতির"],
+answer:1
+},
+
+{
+q:"বিভিন্ন আঞ্চলিক ভাষার মধ্যে কোন ভাষাকে গ্রহণ করার ক্ষেত্রে প্রাবন্ধিক কোন নীতির কথা বলেছেন?",
+options:[
+"যে ভাষা সবচেয়ে প্রাচীন",
+"যে ভাষা সংস্কৃতের সবচেয়ে কাছাকাছি",
+"যে ভাষা স্বাভাবিক নিয়মে বলবান ও বিস্তৃত হচ্ছে",
+"যে ভাষা সবচেয়ে কঠিন"
+],
+answer:2
+},
+
+{
+q:"প্রাবন্ধিকের আলোচনায় ভবিষ্যৎ বাংলা ভাষার ভিত্তি হিসেবে কোন ভাষার কথা উঠে এসেছে?",
+options:[
+"নদিয়ার ভাষা",
+"কলকেতার ভাষা",
+"চট্টগ্রামের ভাষা",
+"মেদিনীপুরের ভাষা"
+],
+answer:1
+},
+
+{
+q:"রেল ও যোগাযোগ ব্যবস্থার উন্নতির সঙ্গে কোন ভেদাভেদ কমে যাওয়ার কথা বলা হয়েছে?",
+options:[
+"উত্তর–দক্ষিণী",
+"পূর্ব–পশ্চিমী",
+"গ্রাম–শহর",
+"শিক্ষিত–অশিক্ষিত"
+],
+answer:1
+},
+
+{
+q:"প্রাবন্ধিকের বক্তব্য অনুযায়ী কলকেতার ভাষার বিস্তারের পরিসর কোনটি?",
+options:[
+"নদিয়া থেকে মেদিনীপুর",
+"ঢাকা থেকে কলকাতা",
+"চট্টগ্রাম থেকে বৈদ্যনাথ",
+"কলকাতা থেকে পুরী"
+],
+answer:2
+},
+
+{
+q:"পুস্তকের ভাষা ও ঘরে কথা বলার ভাষাকে এক করতে হলে কোন ভাষাকে ভিত্তি হিসেবে গ্রহণ করার কথা বলা হয়েছে?",
+options:[
+"সংস্কৃত ভাষা",
+"কলকেতার ভাষা",
+"প্রাচীন বাংলা",
+"আঞ্চলিক ভাষা"
+],
+answer:1
+},
+
+{
+q:"ভাষার ক্ষেত্রে ‘কোন ভাষা জিতছে’—এই প্রশ্নের মাধ্যমে প্রাবন্ধিক কোন বিষয়টিকে গুরুত্ব দিয়েছেন?",
+options:[
+"বাস্তব প্রচলন ও বিস্তার",
+"ভাষার প্রাচীনত্ব",
+"ভাষার কঠিনতা",
+"ভাষার অলংকার"
+],
+answer:0
+},
+
+{
+q:"সমস্ত দেশের কল্যাণের স্বার্থে কোন মানসিকতা ত্যাগ করার কথা বলা হয়েছে?",
+options:[
+"ব্যক্তিগত অহংকার",
+"গ্রাম্য/জেলাভিত্তিক প্রাধান্যের মানসিকতা",
+"শিক্ষার আকাঙ্ক্ষা",
+"শিল্পচর্চা"
+],
+answer:1
+},
+
+{
+q:"‘ভাষা ভাবের বাহক’—এই বক্তব্যে কোনটি প্রধান বলে প্রতিষ্ঠিত হয়েছে?",
+options:["ভাষা","অলংকার","ভাব","ব্যাকরণ"],
+answer:2
+},
+
+{
+q:"‘হীরেমতির সাজ-পরানো ঘোড়ার উপর বাঁদর’—এই উপমার মাধ্যমে কোন বিষয়টি বোঝানো হয়েছে?",
+options:[
+"বাহ্যিক চাকচিক্য ও ভাবের অসামঞ্জস্য",
+"প্রাণবন্ত ভাষার সৌন্দর্য",
+"ঘোড়ার শক্তি",
+"অলংকারের প্রয়োজনীয়তা"
+],
+answer:0
+},
+
+{
+q:"সংস্কৃত ভাষার বিবর্তন বোঝাতে প্রাবন্ধিক কোন কোন গ্রন্থ/রচনার উল্লেখ করেছেন?",
+options:[
+"কেবল বেদের",
+"মীমাংসাভাষ্য, মহাভাষ্য ও শঙ্করের ভাষ্যের",
+"কেবল রামায়ণের",
+"কেবল মহাভারতের"
+],
+answer:1
+},
+
+{
+q:"প্রাবন্ধিকের ভাষায় মানুষ বেঁচে থাকলে তার কথার সঙ্গে কোন বৈশিষ্ট্য যুক্ত থাকে?",
+options:["জড়তা","জ্যান্তভাব","কৃত্রিমতা","অতিরিক্ত অলংকার"],
+answer:1
+},
+
+{
+q:"‘মরা ভাষা’ ধারণাটি মূলত কী নির্দেশ করে?",
+options:[
+"ভাষার স্বাভাবিক প্রাণশক্তির ক্ষয়",
+"ভাষার দ্রুত বিস্তার",
+"ভাষার সরলতা",
+"ভাষার আঞ্চলিকতা"
+],
+answer:0
+},
+
+{
+q:"নতুন চিন্তাশক্তির ক্ষয়ের সঙ্গে কোন প্রবণতা বাড়ে বলে প্রাবন্ধিক মনে করেন?",
+options:[
+"সহজ ভাষার ব্যবহার",
+"পচা ভাবকে বাহ্যিক সাজে ঢাকার চেষ্টা",
+"সাধারণ মানুষের শিক্ষা",
+"ভাষার স্বাভাবিকতা"
+],
+answer:1
+},
+
+{
+q:"‘রাজা আসীৎ’-এর আগে দীর্ঘ বিশেষণ ব্যবহারের উদাহরণটি মূলত কী সমালোচনা করে?",
+options:[
+"সংক্ষিপ্ততার",
+"অপ্রয়োজনীয় শব্দ-আড়ম্বরের",
+"কথ্য ভাষার",
+"আঞ্চলিক ভাষার"
+],
+answer:1
+},
+
+{
+q:"‘প্যাঁচওয়া বিশেষণ’ বলতে কী বোঝায়?",
+options:[
+"সহজ বিশেষণ",
+"জটিল ও কৃত্রিম বিশেষণ",
+"আঞ্চলিক বিশেষণ",
+"বৈজ্ঞানিক বিশেষণ"
+],
+answer:1
+},
+
+{
+q:"ভাষা, শিল্প ও সংগীতের ক্ষেত্রে কোন অবস্থাকে প্রাবন্ধিক মূল্যহীন বলেছেন?",
+options:[
+"ভাবহীন ও প্রাণহীন অবস্থা",
+"সরল অবস্থা",
+"স্বাভাবিক অবস্থা",
+"পরিবর্তনশীল অবস্থা"
+],
+answer:0
+},
+
+{
+q:"জাতীয় জীবনে শক্তি বৃদ্ধি পেলে ভাষা, শিল্প ও সংগীতের মধ্যে কী ধরনের পরিবর্তন ঘটবে বলে প্রাবন্ধিক মনে করেন?",
+options:[
+"এগুলি আরও কৃত্রিম হবে",
+"এগুলি ভাবময় ও প্রাণপূর্ণ হয়ে উঠবে",
+"এগুলি বিলুপ্ত হবে",
+"এগুলি কেবল পণ্ডিতদের মধ্যে সীমাবদ্ধ থাকবে"
+],
+answer:1
+},
+
+{
+q:"অল্প কয়েকটি চলিত কথায় গভীর ভাব প্রকাশের উদাহরণটি প্রাবন্ধিক কোন বৃহত্তর নীতিকে প্রতিষ্ঠা করে?",
+options:[
+"শব্দের সংখ্যা বেশি হওয়াই ভাষার শক্তি",
+"ভাবপ্রকাশের শক্তি শব্দের আড়ম্বরের চেয়ে গুরুত্বপূর্ণ",
+"কঠিন ভাষাই শ্রেষ্ঠ",
+"অলংকারই ভাষার প্রধান সম্পদ"
+],
+answer:1
+},
+
+/* ================= ASSERTION ================= */
+
+{
+type:"assertion",
+q:"স্বাভাবিক ভাষা দর্শন ও বিজ্ঞানচর্চার ভাষা হতে পারে।",
+r:"মানুষ যে ভাষায় নিজের মনে চিন্তা ও তত্ত্ববিচার করে, সেই ভাষাতেই সেই চিন্তা অন্যের কাছে প্রকাশ করা সম্ভব।",
+options:[
+"A এবং R উভয়ই সত্য এবং R, A-এর সঠিক কারণ।",
+"A এবং R উভয়ই সত্য, কিন্তু R, A-এর সঠিক কারণ নয়।",
+"A সত্য, কিন্তু R মিথ্যা।",
+"A মিথ্যা, কিন্তু R সত্য।"
+],
+answer:0
+},
+
+{
+type:"assertion",
+q:"ভাষার বাহ্যিক সাজসজ্জার চেয়ে ভাবের গুরুত্ব বেশি।",
+r:"প্রাবন্ধিক স্পষ্টভাবে ভাবকে প্রধান এবং ভাষাকে পরবর্তী বলে চিহ্নিত করেছেন।",
+options:[
+"A এবং R উভয়ই সত্য এবং R, A-এর সঠিক কারণ।",
+"A এবং R উভয়ই সত্য, কিন্তু R, A-এর সঠিক কারণ নয়।",
+"A সত্য, কিন্তু R মিথ্যা।",
+"A মিথ্যা, কিন্তু R সত্য।"
+],
+answer:0
+},
+
+{
+type:"assertion",
+q:"যোগাযোগ ব্যবস্থার উন্নতি আঞ্চলিক ভাষাগত ব্যবধান কমাতে পারে।",
+r:"রেল ও গতাগতির সুবিধা বাড়লে পূর্ব-পশ্চিমের ভেদ কমে যাওয়ার কথা প্রাবন্ধিক বলেছেন।",
+options:[
+"A এবং R উভয়ই সত্য এবং R, A-এর সঠিক কারণ।",
+"A এবং R উভয়ই সত্য, কিন্তু R, A-এর সঠিক কারণ নয়।",
+"A সত্য, কিন্তু R মিথ্যা।",
+"A মিথ্যা, কিন্তু R সত্য।"
+],
+answer:0
+},
+
+{
+type:"assertion",
+q:"সমগ্র দেশের কল্যাণের জন্য আঞ্চলিক প্রাধান্যের মানসিকতা ত্যাগ করা প্রয়োজন।",
+r:"প্রাবন্ধিক ভাষার প্রশ্নে গ্রাম বা জেলার প্রাধান্যের চেয়ে সামগ্রিক কল্যাণকে গুরুত্ব দিয়েছেন।",
+options:[
+"A এবং R উভয়ই সত্য এবং R, A-এর সঠিক কারণ।",
+"A এবং R উভয়ই সত্য, কিন্তু R, A-এর সঠিক কারণ নয়।",
+"A সত্য, কিন্তু R মিথ্যা।",
+"A মিথ্যা, কিন্তু R সত্য।"
+],
+answer:0
+},
+
+{
+type:"assertion",
+q:"ভাবহীন ভাষা, শিল্প ও সংগীতকে প্রাবন্ধিক মূল্যহীন বলেছেন।",
+r:"জাতীয় জীবনে শক্তি বৃদ্ধি পেলে ভাষা, শিল্প ও সংগীত ভাবময় ও প্রাণপূর্ণ হয়ে ওঠে।",
+options:[
+"A এবং R উভয়ই সত্য এবং R, A-এর সঠিক কারণ।",
+"A এবং R উভয়ই সত্য, কিন্তু R, A-এর সঠিক কারণ নয়।",
+"A সত্য, কিন্তু R মিথ্যা।",
+"A মিথ্যা, কিন্তু R সত্য।"
+],
+answer:1
+},
+
+/* ================= MATCHING ================= */
+
+{
+type:"matching",
+
+q:"সঠিক মিলটি নির্বাচন করো।",
+
+box:`
+<table class="matching-table">
+<tr><td>(i) কটমট</td><td>(a) অপ্রাকৃতিক ও কল্পিত</td></tr>
+<tr><td>(ii) কিম্ভুতকিমাকার</td><td>(b) কুৎসিত/বিকট</td></tr>
+<tr><td>(iii) অর্বাচীন</td><td>(c) আধুনিক</td></tr>
+<tr><td>(iv) উৎসন্ন</td><td>(d) ধ্বংসের দিকে যাত্রা</td></tr>
+</table>
+`,
+options:[
+"(i)-(a), (ii)-(b), (iii)-(c), (iv)-(d)",
+"(i)-(b), (ii)-(c), (iii)-(d), (iv)-(a)",
+"(i)-(c), (ii)-(d), (iii)-(a), (iv)-(b)",
+"(i)-(d), (ii)-(a), (iii)-(b), (iv)-(c)"
+],
+answer:0
+},
+
+{
+type:"matching",
+
+q:"ব্যক্তি ও গ্রন্থের সঠিক মিল নির্বাচন করো।",
+
+box:`
+<table class="matching-table">
+<tr><td>(i) শবরস্বামী</td><td>(a) মহাভাষ্য</td></tr>
+<tr><td>(ii) পতঞ্জলি</td><td>(b) মীমাংসাভাষ্য</td></tr>
+<tr><td>(iii) আচার্য শঙ্কর</td><td>(c) ভাষ্য</td></tr>
+<tr><td>(iv) ভরত</td><td>(d) নাট্যশাস্ত্র</td></tr>
+</table>
+`,
+options:[
+"(i)-(b), (ii)-(a), (iii)-(c), (iv)-(d)",
+"(i)-(a), (ii)-(b), (iii)-(d), (iv)-(c)",
+"(i)-(c), (ii)-(d), (iii)-(a), (iv)-(b)",
+"(i)-(d), (ii)-(c), (iii)-(b), (iv)-(a)"
+],
+answer:0
+},
+
+{
+type:"matching",
+
+q:"ধারণা ও তার তাৎপর্যের সঠিক মিল নির্বাচন করো।",
+
+box:`
+<table class="matching-table">
+<tr><td>(i) ‘ভাষা ভাবের বাহক’</td><td>(a) ভাষায় প্রাণ ও ভাব থাকা</td></tr>
+<tr><td>(ii) ‘কলকেতার ভাষা’</td><td>(b) ভাবপ্রকাশের মাধ্যম</td></tr>
+<tr><td>(iii) ‘গ্রাম্য ঈর্ষা’</td><td>(c) ভিত্তিস্বরূপ গ্রহণের প্রস্তাব</td></tr>
+<tr><td>(iv) ‘ভাবহীন প্রাণহীন’</td><td>(d) ত্যাগযোগ্য আঞ্চলিক সংকীর্ণতা</td></tr>
+</table>
+`,
+options:[
+"(i)-(b), (ii)-(c), (iii)-(d), (iv)-(a)",
+"(i)-(c), (ii)-(d), (iii)-(a), (iv)-(b)",
+"(i)-(d), (ii)-(a), (iii)-(b), (iv)-(c)",
+"(i)-(a), (ii)-(b), (iii)-(c), (iv)-(d)"
+],
+answer:0
+},
+
+{
+type:"matching",
+
+q:"উদাহরণ ও প্রাবন্ধিকের বক্তব্যের সঠিক মিল নির্বাচন করো।",
+
+box:`
+<table class="matching-table">
+<tr><td>(i) ঘরে ব্যবহৃত ভাষা</td><td>(a) স্বাভাবিক চিন্তা ও প্রকাশ</td></tr>
+<tr><td>(ii) সাফ ইস্পাত</td><td>(b) শক্তি ও নমনীয়তা</td></tr>
+<tr><td>(iii) হীরেমতির সাজের ঘোড়ায় বাঁদর</td><td>(c) বাহ্যিক চাকচিক্য ও ভাবের অসামঞ্জস্য</td></tr>
+<tr><td>(iv) ভাবময় ভাষা-শিল্প-সংগীত</td><td>(d) জাতীয় জীবনের শক্তির প্রকাশ</td></tr>
+</table>
+`,
+options:[
+"(i)-(a), (ii)-(b), (iii)-(c), (iv)-(d)",
+"(i)-(b), (ii)-(c), (iii)-(d), (iv)-(a)",
+"(i)-(c), (ii)-(d), (iii)-(a), (iv)-(b)",
+"(i)-(d), (ii)-(a), (iii)-(b), (iv)-(c)"
+],
+answer:0
+},
+
+{
+type:"matching",
+
+q:"বক্তব্য ও তার উদ্দেশ্যের সঠিক মিল নির্বাচন করো।",
+
+box:`
+<table class="matching-table">
+<tr><td>(i) সংস্কৃতের এক-চাল নকল</td><td>(a) কৃত্রিমতার সমালোচনা</td></tr>
+<tr><td>(ii) পুস্তক ও ঘরের ভাষা</td><td>(b) ভাষার ব্যবধান কমানো</td></tr>
+<tr><td>(iii) ‘কোন ভাষা জিতছে’</td><td>(c) বাস্তব বিস্তারকে গুরুত্ব</td></tr>
+<tr><td>(iv) ‘ভাবই প্রধান’</td><td>(d) ভাবের অগ্রাধিকার</td></tr>
+</table>
+`,
+options:[
+"(i)-(a), (ii)-(b), (iii)-(c), (iv)-(d)",
+"(i)-(b), (ii)-(a), (iii)-(d), (iv)-(c)",
+"(i)-(c), (ii)-(d), (iii)-(a), (iv)-(b)",
+"(i)-(d), (ii)-(c), (iii)-(b), (iv)-(a)"
+],
+answer:0
+},
+
+/* ================= SEQUENCE ================= */
+
+{
+q:"প্রবন্ধের ভাবের স্বাভাবিক অগ্রগতি অনুযায়ী সঠিক ক্রম নির্বাচন করো।<br><br>(i) বিদ্বান ও সাধারণের মধ্যে ব্যবধানের প্রসঙ্গ<br>(ii) সাধারণ মানুষের ভাষায় শিক্ষাদানের উদাহরণ<br>(iii) স্বাভাবিক ভাষার পক্ষে যুক্তি<br>(iv) কলকেতার ভাষাকে গ্রহণের প্রসঙ্গ",
+options:[
+"(i) → (ii) → (iii) → (iv)",
+"(ii) → (i) → (iv) → (iii)",
+"(iii) → (iv) → (i) → (ii)",
+"(iv) → (iii) → (ii) → (i)"
+],
+answer:0
+},
+
+{
+q:"ভাষার বিস্তার সম্পর্কিত বক্তব্যের সঠিক ক্রম নির্বাচন করো।<br><br>(i) কলকেতার ভাষার বিস্তারের কথা বলা<br>(ii) রেল ও গতাগতির সুবিধার প্রসঙ্গ<br>(iii) পূর্ব-পশ্চিমী ভেদ কমার কথা<br>(iv) পুস্তক ও ঘরের ভাষার ঐক্যের জন্য ভিত্তি নির্বাচন",
+options:[
+"(i) → (ii) → (iii) → (iv)",
+"(ii) → (iii) → (i) → (iv)",
+"(iv) → (i) → (iii) → (ii)",
+"(iii) → (i) → (iv) → (ii)"
+],
+answer:0
+},
+
+{
+q:"ভাব ও ভাষার আলোচনা থেকে সংস্কৃত ভাষার সমালোচনার দিকে অগ্রসর হওয়ার সঠিক ক্রম কোনটি?<br><br>(i) ভাষাকে ভাবের বাহক বলা<br>(ii) ভাবকে প্রধান বলা<br>(iii) সংস্কৃতের বিভিন্ন পর্যায়ের উদাহরণ দেওয়া<br>(iv) জীবন্ত ও মৃত ভাষার ধারণা ব্যাখ্যা করা",
+options:[
+"(i) → (ii) → (iii) → (iv)",
+"(iii) → (iv) → (i) → (ii)",
+"(ii) → (i) → (iv) → (iii)",
+"(iv) → (iii) → (ii) → (i)"
+],
+answer:0
+},
+
+{
+q:"ভাষা থেকে শিল্প ও সংগীতের আলোচনায় সঠিক ক্রম নির্বাচন করো।<br><br>(i) দেশের অবনতির সঙ্গে কিছু লক্ষণের আবির্ভাব<br>(ii) ভাষায় অতিরিক্ত অলংকারের সমালোচনা<br>(iii) শিল্প ও সংগীতেও একই প্রবণতার বিস্তার<br>(iv) ভাবহীন ও প্রাণহীন সৃষ্টির সমালোচনা",
+options:[
+"(i) → (ii) → (iii) → (iv)",
+"(ii) → (i) → (iv) → (iii)",
+"(iii) → (ii) → (i) → (iv)",
+"(iv) → (iii) → (ii) → (i)"
+],
+answer:0
+},
+
+{
+q:"প্রবন্ধের শেষাংশের ভাবগত অগ্রগতির সঠিক ক্রম নির্বাচন করো।<br><br>(i) জাতীয় জীবনে শক্তি বৃদ্ধি<br>(ii) ভাষা, শিল্প ও সংগীতের প্রাণপূর্ণ হয়ে ওঠা<br>(iii) দেবতার মূর্তিতে ভক্তির অনুভব<br>(iv) বাড়িঘরে প্রাণস্পন্দনের প্রকাশ",
+options:[
+"(i) → (ii) → (iii) → (iv)",
+"(ii) → (i) → (iv) → (iii)",
+"(iii) → (iv) → (i) → (ii)",
+"(iv) → (iii) → (ii) → (i)"
+],
+answer:0
+},
+
+/* ================= CASE STUDY ================= */
+
+{
+type:"case",
+
+caseText:"একজন শিক্ষক দেখলেন, তাঁর ছাত্ররা দৈনন্দিন কথাবার্তায় একটি স্বাভাবিক ভাষা ব্যবহার করে। কিন্তু লেখার সময় তাদের বলা হয়েছে অত্যন্ত কঠিন ও কৃত্রিম ভাষা ব্যবহার করতে। ফলে তারা নিজেদের ভাব সহজে প্রকাশ করতে পারছে না।",
+
+q:"স্বামী বিবেকানন্দের প্রবন্ধের আলোকে এই পরিস্থিতির সবচেয়ে উপযুক্ত ব্যাখ্যা কোনটি?",
+options:[
+"লেখার ভাষা অবশ্যই কথার ভাষার সম্পূর্ণ বিপরীত হওয়া উচিত",
+"স্বাভাবিক ভাষাকে লেখার উপযোগী করা যায় না",
+"স্বাভাবিক ভাবপ্রকাশের ভাষাকেই লেখায় যথাযথভাবে ব্যবহার করা যেতে পারে",
+"কঠিন শব্দ ব্যবহার করলেই লেখার মান বাড়ে"
+],
+answer:2
+},
+
+{
+type:"case",
+
+caseText:"একটি ভাষা-গোষ্ঠী নিজেদের জেলার ভাষাকেই একমাত্র গ্রহণযোগ্য বলে মনে করে এবং অন্য অঞ্চলের প্রচলিত ভাষাকে অবজ্ঞা করে। অথচ বৃহত্তর অঞ্চলে অন্য একটি ভাষার ব্যবহার দ্রুত বাড়ছে।",
+
+q:"প্রাবন্ধিকের বক্তব্য অনুযায়ী কোন নীতিটি এই পরিস্থিতির সঙ্গে সবচেয়ে বেশি সামঞ্জস্যপূর্ণ?",
+options:[
+"জেলার ভাষার প্রাধান্য বজায় রাখা",
+"ভাষার প্রাচীনত্বকেই একমাত্র মানদণ্ড করা",
+"যে ভাষা স্বাভাবিকভাবে বলবান ও বিস্তৃত হচ্ছে, তার বাস্তব অবস্থাকে বিবেচনা করা",
+"সব আঞ্চলিক ভাষা নিষিদ্ধ করা"
+],
+answer:2
+},
+
+{
+type:"case",
+
+caseText:"একটি সাংস্কৃতিক অনুষ্ঠানে একটি গানে অত্যন্ত জটিল কারুকাজ ও কৌশল রয়েছে। কিন্তু শ্রোতারা গানটির মূল অনুভূতি বা উদ্দেশ্য বুঝতে পারছেন না।",
+
+q:"‘বাঙ্গালা ভাষা’ প্রবন্ধের আলোকে সমস্যাটির মূল কারণ কী হতে পারে?",
+options:[
+"শিল্পে অতিরিক্ত সরলতা",
+"ভাবের তুলনায় বাহ্যিক কৌশল ও জটিলতার প্রাধান্য",
+"সংগীতে কোনো অলংকার না থাকা",
+"সাধারণ ভাষার ব্যবহার"
+],
+answer:1
+},
+
+{
+type:"case",
+
+caseText:"একজন গবেষক বললেন— ‘দর্শন ও বিজ্ঞান নিয়ে গভীর আলোচনা কেবল অত্যন্ত কঠিন ভাষাতেই সম্ভব; সাধারণ মানুষের স্বাভাবিক ভাষায় তা লেখা সম্ভব নয়।’",
+
+q:"স্বামী বিবেকানন্দের বক্তব্যের সঙ্গে কোন মূল্যায়নটি সামঞ্জস্যপূর্ণ?",
+options:[
+"বক্তব্যটি প্রাবন্ধিকের মতের বিরোধী",
+"বক্তব্যটি সম্পূর্ণভাবে প্রাবন্ধিকের মতের সঙ্গে মেলে",
+"প্রাবন্ধিক দর্শন ও বিজ্ঞানচর্চাকে অপ্রয়োজনীয় বলেছেন",
+"প্রাবন্ধিক কেবল সংস্কৃত ভাষায় বিজ্ঞান লেখার কথা বলেছেন"
+],
+answer:0
+},
+
+{
+type:"case",
+
+caseText:"একটি অঞ্চলে রেল ও যোগাযোগব্যবস্থা দ্রুত উন্নত হল। বিভিন্ন অঞ্চলের মানুষের মধ্যে যোগাযোগ বাড়ল এবং একটি শহরকেন্দ্রিক ভাষার ব্যবহার ক্রমশ বিস্তৃত হতে লাগল।",
+
+q:"‘বাঙ্গালা ভাষা’ প্রবন্ধ অনুযায়ী এই পরিবর্তনের সম্ভাব্য ভাষাগত ফল কোনটি?",
+options:[
+"পূর্ব-পশ্চিমের ভাষাগত ব্যবধান আরও বাড়বে",
+"আঞ্চলিক ভেদ কিছুটা কমে একটি বিস্তৃত ভাষার ব্যবহার বাড়তে পারে",
+"সব ভাষা বিলুপ্ত হয়ে যাবে",
+"কেবল প্রাচীন ভাষাই পুনরায় চালু হবে"
+],
+answer:1
+}
+
+];
+
+
+/* =====================================================
+   QUIZ ENGINE
+===================================================== */
+
+let currentQuestion = 0;
+let score = 0;
+let correct = 0;
+let wrong = 0;
+let answered = false;
+
+
+/* ================= LOAD QUESTION ================= */
+
+function loadQuestion(){
+
+    answered = false;
+
+    const data = questions[currentQuestion];
+
+    const questionArea =
+        document.getElementById("questionArea");
+
+    const optionsArea =
+        document.getElementById("optionsArea");
+
+    const feedback =
+        document.getElementById("feedback");
+
+    const nextBtn =
+        document.getElementById("nextBtn");
+
+
+    questionArea.innerHTML = "";
+    optionsArea.innerHTML = "";
+    feedback.innerHTML = "";
+
+    feedback.className = "feedback";
+
+    nextBtn.disabled = true;
+
+
+    /* ---------- SPECIAL BOX ---------- */
+
+    if(data.type === "assertion"){
+
+        questionArea.innerHTML = `
+
+        <div class="special-box assertion">
+
+            <strong style="color:#ffd700;">
+                বিবৃতি
+            </strong>
+
+            <br>
+
+            ${data.q}
+
+            <br><br>
+
+            <strong style="color:#25d9ff;">
+                কারণ
+            </strong>
+
+            <br>
+
+            ${data.r}
+
+        </div>
+
+        `;
+
+    }
+
+    else if(data.type === "matching"){
+
+        questionArea.innerHTML = `
+
+        <div class="matching-box">
+
+            <div class="matching-title">
+                মিল খুঁজে সঠিক বিকল্প নির্বাচন করো
+            </div>
+
+            ${data.box}
+
+        </div>
+
+        <div class="question">
+            ${data.q}
+        </div>
+
+        `;
+
+    }
+
+    else if(data.type === "case"){
+
+        questionArea.innerHTML = `
+
+        <div class="special-box case-study">
+
+            <div class="case-title">
+                📘 কেস স্টাডি
+            </div>
+
+            ${data.caseText}
+
+        </div>
+
+        <div class="question">
+            ${data.q}
+        </div>
+
+        `;
+
+    }
+
+    else{
+
+        questionArea.innerHTML = `
+
+        <div class="question">
+            ${data.q}
+        </div>
+
+        `;
+
+    }
+
+
+    /* ---------- OPTIONS ---------- */
+
+    data.options.forEach((option,index)=>{
+
+        const button =
+            document.createElement("button");
+
+        button.className = "option";
+
+        button.innerHTML = option;
+
+        button.onclick =
+            ()=>selectAnswer(index);
+
+        optionsArea.appendChild(button);
+
+    });
+
+
+    /* ---------- PROGRESS ---------- */
+
+    const percentage =
+        ((currentQuestion) / questions.length) * 100;
+
+    document.getElementById(
+        "progressFill"
+    ).style.width = percentage + "%";
+
+    document.getElementById(
+        "progressText"
+    ).innerText =
+        "পরবর্তী প্রশ্ন";
+
+}
+
+
+/* ================= SELECT ANSWER ================= */
+
+function selectAnswer(selected){
+
+    if(answered) return;
+
+    answered = true;
+
+    const data = questions[currentQuestion];
+
+    const options =
+        document.querySelectorAll(".option");
+
+    options.forEach(
+        btn => btn.classList.add("disabled")
+    );
+
+
+    /* Correct */
+
+    options[data.answer]
+        .classList.add("correct");
+
+
+    if(selected === data.answer){
+
+        score++;
+
+        correct++;
+
+        options[selected]
+            .classList.add("selected");
+
+        showFeedback(
+            "✓ সঠিক উত্তর!",
+            true
+        );
+
+    }
+
+    else{
+
+        wrong++;
+
+        options[selected]
+            .classList.add("wrong");
+
+        showFeedback(
+            "✗ ভুল উত্তর!",
+            false
+        );
+
+    }
+
+
+    document.getElementById(
+        "nextBtn"
+    ).disabled = false;
+
+}
+
+
+/* ================= FEEDBACK ================= */
+
+function showFeedback(text,isCorrect){
+
+    const feedback =
+        document.getElementById("feedback");
+
+    feedback.innerHTML = text;
+
+    feedback.className =
+        "feedback " +
+        (isCorrect
+        ? "correct-text"
+        : "wrong-text");
+
+}
+
+
+/* ================= NEXT ================= */
+
+function nextQuestion(){
+
+    currentQuestion++;
+
+    if(currentQuestion >= questions.length){
+
+        showResult();
+
+        return;
+
+    }
+
+    loadQuestion();
+
+}
+
+
+/* ================= RESULT ================= */
+
+function showResult(){
+
+    document.querySelector(
+        ".quiz-container"
+    ).style.display = "none";
+
+    document.querySelector(
+        ".progress-area"
+    ).style.display = "none";
+
+
+    const result =
+        document.getElementById("result");
+
+    result.style.display = "block";
+
+
+    document.getElementById(
+        "finalScore"
+    ).innerText = score;
+
+
+    document.getElementById(
+        "correctCount"
+    ).innerText = correct;
+
+
+    document.getElementById(
+        "wrongCount"
+    ).innerText = wrong;
+
+
+    const percentage =
+        Math.round(
+            (score / questions.length) * 100
+        );
+
+
+    document.getElementById(
+        "percentage"
+    ).innerText =
+        percentage + "%";
+
+}
+
+
+/* ================= RESTART ================= */
+
+function restartQuiz(){
+
+    currentQuestion = 0;
+
+    score = 0;
+
+    correct = 0;
+
+    wrong = 0;
+
+    document.querySelector(
+        ".quiz-container"
+    ).style.display = "block";
+
+
+    document.querySelector(
+        ".progress-area"
+    ).style.display = "flex";
+
+
+    document.getElementById(
+        "result"
+    ).style.display = "none";
+
+
+    loadQuestion();
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+/* ================= START ================= */
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>

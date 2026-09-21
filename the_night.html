@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Student Care Academy - English Quiz</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;width:100%;min-height:100%;overflow-x:hidden}
+body{
+  font-family:Arial,"Noto Sans Bengali","Noto Sans",sans-serif;
+  background:linear-gradient(135deg,#06152d 0%,#0a2b55 50%,#03101f 100%);
+  color:#fff;
+}
+.app{width:100%;max-width:760px;margin:0 auto;padding:12px 10px 28px}
+.brand{text-align:center;padding:8px 4px 16px}
+.brand h1{
+  margin:0;font-size:clamp(25px,7vw,42px);line-height:1.15;font-weight:800;
+  color:#ffe16b;
+  animation:glow 2s ease-in-out infinite alternate;
+}
+.brand p{
+  margin:7px 0 0;font-size:clamp(17px,4.8vw,24px);font-weight:800;color:#fff;
+  animation:pulse 2.2s ease-in-out infinite;
+}
+@keyframes glow{from{text-shadow:0 0 5px #ffd84d}to{text-shadow:0 0 25px #ffd84d,0 0 45px #ffb300}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}
+
+.card{
+  width:100%;background:rgba(3,18,40,.96);border:1px solid #315b86;
+  border-radius:20px;padding:14px;box-shadow:0 12px 35px rgba(0,0,0,.4);
+}
+.topic{text-align:center;color:#bfe7ff;font-size:14px;line-height:1.55;margin:0 0 12px}
+.qbox{
+  width:100%;padding:17px 15px;margin-bottom:13px;border-radius:17px;
+  background:linear-gradient(135deg,#0b3a70,#09264b);
+  border:1px solid #3b79ae;
+}
+.q{font-size:clamp(19px,5.2vw,28px);line-height:1.55;font-weight:800;word-break:normal;overflow-wrap:anywhere}
+.options{display:flex;flex-direction:column;gap:10px;width:100%}
+.opt{
+  width:100%;display:block;text-align:left;padding:13px 14px;border-radius:14px;
+  border:1px solid #315c87;background:#0b315b;color:#fff;
+  font-size:clamp(16px,4.3vw,20px);line-height:1.45;font-family:inherit;
+  white-space:normal;overflow-wrap:anywhere;cursor:pointer;
+}
+.opt:active{transform:scale(.99)}
+.opt.correct{background:#096542;border-color:#54e4a7}
+.opt.wrong{background:#8a2731;border-color:#ff7b87}
+.opt.dim{opacity:.55}
+.feedback{
+  display:none;margin-top:13px;padding:13px;border-radius:13px;
+  font-size:16px;line-height:1.55
+}
+.feedback.show{display:block}
+.good{background:#093f2d;border:1px solid #42c990}
+.bad{background:#4b1720;border:1px solid #e66a78}
+.next,.restart{
+  display:none;width:100%;margin-top:13px;padding:13px;border:0;border-radius:13px;
+  background:#ffd24d;color:#13233a;font-weight:800;font-size:18px;font-family:inherit;
+}
+.next.show,.restart.show{display:block}
+.result{display:none;text-align:center;padding:22px 8px}
+.result.show{display:block}
+.result .cup{font-size:58px}
+.result h2{margin:8px 0;color:#ffe16b;font-size:30px}
+.result .score{font-size:clamp(48px,14vw,78px);font-weight:900;margin:5px 0}
+.result p{font-size:17px;line-height:1.65;color:#cce7ff}
+.note{text-align:center;color:#8fb4d5;font-size:13px;margin-top:11px}
+
+@media(max-width:420px){
+ .app{padding:8px 6px 22px}
+ .card{padding:10px;border-radius:17px}
+ .qbox{padding:15px 12px}
+ .opt{padding:12px 11px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="brand">
+    <h1>Student Care Academy</h1>
+    <p>Teacher:- Tapan Mandal</p>
+  </header>
+
+  <main class="card">
+    <div id="quiz">
+      <div class="topic">English • Class XII • Semester III • The Night Train at Deoli</div>
+      <div class="qbox"><div id="question" class="q"></div></div>
+      <div id="options" class="options"></div>
+      <div id="feedback" class="feedback"></div>
+      <button id="next" class="next" type="button">পরের প্রশ্ন ➜</button>
+    </div>
+
+    <section id="result" class="result">
+      <div class="cup">🏆</div>
+      <h2>Quiz সম্পূর্ণ!</h2>
+      <div id="score" class="score"></div>
+      <p id="resultText"></p>
+      <button id="restart" class="restart" type="button">আবার Quiz খেলুন</button>
+    </section>
+  </main>
+
+  <div class="note">সঠিক উত্তর নির্বাচন করুন • কোনো Timer নেই</div>
+</div>
+
+<script type="text/javascript">
+const questions = [
+{
+q:"How far was Deoli from Dehra according to the narrator?",
+o:["About twenty miles","About thirty miles","About forty miles","About fifty miles"],
+a:1,e:"Deoli was about thirty miles from Dehra."
+},
+{
+q:"What geographical region did Deoli mark the beginning of?",
+o:["The Himalayan foothills","The Bengal delta","The heavy jungles of the Indian Terai","The Thar Desert"],
+a:2,e:"Deoli marked the beginning of the heavy jungles of the Indian Terai."
+},
+{
+q:"At approximately what time did the train reach Deoli?",
+o:["Five in the morning","Six in the morning","Five in the evening","Midnight"],
+a:0,e:"The train reached Deoli at about five in the morning."
+},
+{
+q:"Which combination best describes the lighting at Deoli station?",
+o:["Candles and lanterns","Electric bulbs and oil-lamps","Gaslights and candles","Torches and streetlights"],
+a:1,e:"The station was dimly lit by electric bulbs and oil-lamps."
+},
+{
+q:"Which of the following was NOT mentioned as a feature of Deoli station?",
+o:["A waiting room","A stationmaster's office","A tea stall","A large railway restaurant"],
+a:3,e:"A large railway restaurant was not mentioned."
+},
+{
+q:"For approximately how long did the train halt at Deoli?",
+o:["Five minutes","Ten minutes","Fifteen minutes","Twenty minutes"],
+a:1,e:"The train halted there for about ten minutes."
+},
+{
+q:"Why did Deoli appear unusually lonely to the narrator?",
+o:["It had no railway connection.","Nobody ever travelled by train there.","Very little happened there and hardly anyone used the station.","The station was closed during the day."],
+a:2,e:"The station was lonely and very little happened there."
+},
+{
+q:"What sound signalled that the train was about to leave Deoli?",
+o:["A whistle from a guard followed by the movement of the train","A horn from the stationmaster","A bell rung by the passengers","A loud announcement from the platform"],
+a:0,e:"The bell and the guard's whistle preceded the train's departure."
+},
+{
+q:"The narrator's curiosity about Deoli mainly arose from his desire to know—",
+o:["who owned the railway station","what happened behind the station walls","why the trains were expensive","where the railway workers lived"],
+a:1,e:"The narrator wondered what happened behind the station walls."
+},
+{
+q:"What did the narrator initially decide to do someday at Deoli?",
+o:["Buy a house there","Work at the railway station","Get off the train and spend a day there","Meet the stationmaster"],
+a:2,e:"He planned to get off and spend a day at Deoli."
+},
+{
+q:"The narrator's age at the time of the first important encounter was—",
+o:["sixteen","seventeen","eighteen","nineteen"],
+a:2,e:"The narrator was eighteen."
+},
+{
+q:"What does the girl's manner of walking chiefly suggest?",
+o:["Fear and nervousness","Grace and dignity","Anger and impatience","Carelessness and indifference"],
+a:1,e:"Her graceful manner and dignity attract the narrator."
+},
+{
+q:"Which combination most accurately describes the girl's appearance as observed by the narrator?",
+o:["Fair skin, golden hair and blue eyes","Pale skin, shiny black hair and dark eyes","Dark skin, brown hair and grey eyes","Pale skin, short hair and bright blue eyes"],
+a:1,e:"The narrator notices her pale skin, shiny black hair and dark eyes."
+},
+{
+q:"Why is the girl's silence at the narrator's window significant?",
+o:["It creates a silent emotional connection between them.","It shows that she disliked him.","It proves that she was unable to speak.","It indicates that the station was deserted."],
+a:0,e:"Their silence becomes an important part of their first emotional connection."
+},
+{
+q:"After the girl moved away from his window, where did the narrator go?",
+o:["To the waiting room","To the stationmaster's office","To the tea stall","To the railway yard"],
+a:2,e:"He walked across to the tea stall."
+},
+{
+q:"What was happening at the tea stall when the narrator reached it?",
+o:["The owner was closing the stall.","A kettle was boiling over a small fire.","The girl was preparing tea.","The stationmaster was having tea."],
+a:1,e:"A kettle was boiling over a small fire."
+},
+{
+q:"Why did the narrator finally buy the basket?",
+o:["He needed it for his grandmother.","He wanted to resell it.","He changed his mind after the girl's repeated offer.","The stationmaster advised him to buy it."],
+a:2,e:"Her repeated offer eventually made him accept the basket."
+},
+{
+q:"What did the narrator give the girl for the basket?",
+o:["A two-rupee coin","A rupee","Five annas","A ten-rupee note"],
+a:1,e:"He gave her a rupee."
+},
+{
+q:"The narrator's hesitation to touch the girl's fingers mainly conveys—",
+o:["embarrassment and emotional sensitivity","anger towards the girl","fear of buying the basket","dislike of physical contact in general"],
+a:0,e:"His hesitation reflects emotional sensitivity and shyness."
+},
+{
+q:"What interrupted the conversation between the narrator and the girl during their first meeting?",
+o:["The arrival of another train","A quarrel at the tea stall","The guard's whistle, bell and departing train","The stationmaster's warning"],
+a:2,e:"The whistle, bell and engine interrupted them."
+},
+{
+q:"As the train moved away after the first meeting, the girl—",
+o:["ran towards the train","entered the waiting room","remained on the platform and smiled at him","disappeared into the station office"],
+a:2,e:"She remained alone on the platform, looking at him and smiling."
+},
+{
+q:"What finally obstructed the narrator's view of the girl?",
+o:["A bridge","The signal-box and then the jungle","Another train","The stationmaster's office"],
+a:1,e:"The signal-box and then the jungle blocked his view."
+},
+{
+q:"What remained strongly in the narrator's mind after the first meeting?",
+o:["The sound of the engine","The stationmaster's face","The girl's face and dark, smouldering eyes","The railway timetable"],
+a:2,e:"He could not forget her face and dark, smouldering eyes."
+},
+{
+q:"Why did the memory of the girl temporarily become less vivid after the narrator reached Dehra?",
+o:["He became ill.","Other things occupied his mind.","He forgot the station completely.","His grandmother asked him to leave."],
+a:1,e:"Other things occupied his mind after reaching Dehra."
+},
+{
+q:"How much later did the narrator remember the girl during his return journey?",
+o:["One week later","One month later","Two months later","Six months later"],
+a:2,e:"He remembered her during the return journey two months later."
+},
+{
+q:"What emotion did the narrator experience when he saw the girl again?",
+o:["Unexpected thrill","Disappointment","Anger","Fear of the stationmaster"],
+a:0,e:"Seeing her again gave him an unexpected thrill."
+},
+{
+q:"During the second meeting, the girl's reaction on seeing the narrator indicates that—",
+o:["she did not recognize him","she remembered him and was pleased","she wanted to leave the station","she was angry with him"],
+a:1,e:"Her reaction shows that she remembered him and was pleased."
+},
+{
+q:"During their second meeting, where did the girl come directly instead of going along the train selling baskets?",
+o:["The waiting room","The stationmaster's office","The tea stall","The railway yard"],
+a:2,e:"She came directly to the tea stall."
+},
+{
+q:"The phrase “almost like a meeting of old friends” mainly emphasizes—",
+o:["the long history of their relationship","the familiarity created by their brief previous encounter","their family relationship","their childhood friendship"],
+a:1,e:"Their brief earlier meeting created a sense of familiarity."
+},
+{
+q:"What did the narrator do with the baskets during the second meeting?",
+o:["He threw them into the train.","He bought all of them.","He took them from her hand and put them on the ground.","He gave them to the tea-stall owner."],
+a:2,e:"He took the baskets from her and put them on the ground."
+},
+{
+q:"Why did the narrator tell the girl, “I have to go to Delhi”?",
+o:["To explain why he could not remain at Deoli","To invite her to Delhi","To tell her where he lived","To ask her to sell baskets in Delhi"],
+a:0,e:"He explained that he had to leave for Delhi."
+},
+{
+q:"What does the girl's reply, “I do not have to go anywhere,” chiefly suggest?",
+o:["She was planning a journey.","Her life was rooted in that place, unlike the narrator's travelling life.","She wanted to board the train.","She was waiting for another passenger."],
+a:1,e:"Her life was rooted at Deoli, unlike the narrator's travelling life."
+},
+{
+q:"What promise did the narrator make before the train left?",
+o:["He would buy another basket.","He would write her a letter.","He would come again.","He would take her to Dehra."],
+a:2,e:"He promised that he would come again."
+},
+{
+q:"After the second meeting, how did the narrator's attitude towards the girl change?",
+o:["He quickly forgot her.","She remained in his thoughts for a long time.","He became angry with her.","He decided never to travel again."],
+a:1,e:"After the second meeting, she remained constantly in his thoughts."
+},
+{
+q:"Why was the narrator nervous and anxious on his next journey to Deoli?",
+o:["He feared missing his train.","He was uncertain about what he would say or do regarding his feelings for the girl.","He was afraid of the jungle.","He had lost his luggage."],
+a:1,e:"He was anxious about how to express and act upon his feelings."
+},
+{
+q:"When the narrator arrived at Deoli on that later journey, what disappointed him?",
+o:["The train was cancelled.","The tea stall was closed.","The girl was nowhere to be seen.","The station had been demolished."],
+a:2,e:"The girl was absent when the train arrived."
+},
+{
+q:"What did the narrator first do after failing to see the girl?",
+o:["He went directly back to his compartment.","He asked the stationmaster about her.","He searched the jungle.","He questioned a fruit vendor."],
+a:1,e:"He immediately approached the stationmaster."
+},
+{
+q:"What did the narrator see in the station yard while looking over the railings?",
+o:["A mango tree and a dusty road leading into the jungle","A large market and a temple","Several houses and a river","A railway bridge and a school"],
+a:0,e:"He saw a mango tree and a dusty road leading towards the jungle."
+},
+{
+q:"What feeling overcame the narrator when he could not find the girl?",
+o:["Pride","Amusement","Disappointment and a sense of foreboding","Relief"],
+a:2,e:"He experienced deep disappointment and foreboding."
+},
+{
+q:"The narrator's feeling of “tenderness and responsibility” towards the girl is striking because—",
+o:["he had known her for many years","they had only met briefly and he knew very little about her","she was a member of his family","she had asked him for help"],
+a:1,e:"His feelings are remarkable because he hardly knew her."
+},
+{
+q:"Assertion (A): The narrator repeatedly thinks about stopping at Deoli but never finally does so. Reason (R): He fears that discovering the truth about the girl might destroy the mystery and hope he has preserved.",
+o:["Both A and R are true, and R is the correct explanation of A.","Both A and R are true, but R is not the correct explanation of A.","A is true, but R is false.","A is false, but R is true."],
+a:0,e:"Both statements are true, and the reason explains his hesitation."
+},
+{
+q:"Consider the following statements: I. The narrator learns exactly what happened to the girl. II. The narrator prefers uncertainty to a possible disappointing reality. Choose the correct option.",
+o:["Both I and II are true.","I is true, but II is false.","I is false, but II is true.","Both I and II are false."],
+a:2,e:"He never discovers the truth, while he does prefer preserving hope."
+},
+{
+q:"Which of the following represents the correct order of events? I. The narrator asks the stationmaster about the girl. II. The narrator sees the girl for the first time. III. The narrator meets the girl again. IV. The narrator speaks to the tea-stall owner.",
+o:["II → III → I → IV","III → II → IV → I","II → I → III → IV","I → II → III → IV"],
+a:0,e:"The sequence is: first meeting → second meeting → stationmaster → tea-stall owner."
+},
+{
+q:"What does the narrator's decision not to “break” his journey at Deoli reveal most clearly about his attitude?",
+o:["He has completely lost interest in the girl.","He wishes to preserve his dream and uncertainty.","He dislikes travelling by train.","He believes the station is dangerous."],
+a:1,e:"He wants to preserve the mystery, hope and dream."
+},
+{
+q:"Which of the following best describes the narrative perspective of the story?",
+o:["First-person retrospective narration","Third-person omniscient narration","Second-person narration","Dramatic dialogue without narration"],
+a:0,e:"The narrator tells the story using first-person retrospective narration."
+},
+{
+q:"The recurring image of the train in the story most strongly functions as a symbol of—",
+o:["permanent settlement","movement, separation and passing opportunities","social success","family tradition"],
+a:1,e:"The train repeatedly represents movement, separation and fleeting opportunities."
+},
+{
+q:"Which contrast is central to the relationship between the narrator and the girl?",
+o:["Wealth versus education","Travel and movement versus rootedness","Youth versus old age","City life versus industrial life"],
+a:1,e:"The narrator is constantly travelling; the girl is rooted at Deoli."
+},
+{
+q:"Why does the ending remain deliberately unresolved?",
+o:["The author forgot to complete the story.","The narrator chooses to preserve hope rather than discover a potentially painful truth.","The station disappears from the railway map.","The girl sends the narrator away."],
+a:1,e:"He fears that discovering the truth might destroy his cherished hope."
+},
+{
+q:"Which statement best captures the significance of Deoli in the story?",
+o:["It is merely a place where the narrator changes trains.","It becomes a symbolic space associated with memory, longing and unanswered questions.","It represents the narrator's family home.","It is presented as a busy commercial centre."],
+a:1,e:"Deoli becomes associated with memory, longing and mystery."
+},
+{
+q:"Which interpretation best explains the title The Night Train at Deoli?",
+o:["The title focuses only on railway technology.","The title identifies the train journey that repeatedly brings the narrator into contact with his unresolved memory of Deoli.","The title refers to a train accident at Deoli.","The title describes the narrator's permanent stay at Deoli."],
+a:1,e:"The title connects the train journey with the narrator's unresolved memory of Deoli."
+}
+];
+
+var current = 0;
+var score = 0;
+var answered = false;
+
+var questionEl = document.getElementById("question");
+var optionsEl = document.getElementById("options");
+var feedbackEl = document.getElementById("feedback");
+var nextBtn = document.getElementById("next");
+var quizEl = document.getElementById("quiz");
+var resultEl = document.getElementById("result");
+var scoreEl = document.getElementById("score");
+var resultTextEl = document.getElementById("resultText");
+var restartBtn = document.getElementById("restart");
+
+function renderQuestion(){
+  answered = false;
+  var item = questions[current];
+  questionEl.textContent = item.q;
+  optionsEl.innerHTML = "";
+  feedbackEl.className = "feedback";
+  feedbackEl.innerHTML = "";
+  nextBtn.className = "next";
+  nextBtn.textContent = current === questions.length - 1 ? "ফলাফল দেখুন 🏆" : "পরের প্রশ্ন ➜";
+
+  for(var i=0;i<item.o.length;i++){
+    (function(index){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "opt";
+      b.textContent = item.o[index];
+      b.onclick = function(){ selectAnswer(index,b); };
+      optionsEl.appendChild(b);
+    })(i);
+  }
+}
+
+function selectAnswer(index,clicked){
+  if(answered) return;
+  answered = true;
+
+  var item = questions[current];
+  var buttons = optionsEl.getElementsByTagName("button");
+  for(var i=0;i<buttons.length;i++) buttons[i].disabled = true;
+
+  if(index === item.a){
+    score++;
+    clicked.className = "opt correct";
+    feedbackEl.className = "feedback good show";
+    feedbackEl.innerHTML = "✅ <b>সঠিক উত্তর!</b><br>" + item.e;
+  }else{
+    clicked.className = "opt wrong";
+    buttons[item.a].className = "opt correct";
+    for(var j=0;j<buttons.length;j++){
+      if(j !== index && j !== item.a) buttons[j].className = "opt dim";
+    }
+    feedbackEl.className = "feedback bad show";
+    feedbackEl.innerHTML = "❌ <b>ভুল উত্তর।</b><br>সঠিক উত্তর: <b>" + item.o[item.a] + "</b><br>" + item.e;
+  }
+  nextBtn.className = "next show";
+}
+
+nextBtn.onclick = function(){
+  current++;
+  if(current < questions.length){
+    renderQuestion();
+    window.scrollTo(0,0);
+  }else{
+    quizEl.style.display = "none";
+    resultEl.className = "result show";
+    scoreEl.textContent = score + " / " + questions.length;
+    var pct = score / questions.length * 100;
+    if(pct >= 90) resultTextEl.textContent = "অসাধারণ! The Night Train at Deoli সম্পর্কে আপনার প্রস্তুতি খুব ভালো।";
+    else if(pct >= 70) resultTextEl.textContent = "খুব ভালো! গুরুত্বপূর্ণ অংশগুলি আরেকবার revise করলে প্রস্তুতি আরও শক্ত হবে।";
+    else if(pct >= 50) resultTextEl.textContent = "ভালো চেষ্টা! গল্পটি আরেকবার পড়ে character, events এবং ending revise করুন।";
+    else resultTextEl.textContent = "আরও practice করুন। গল্পটি মনোযোগ দিয়ে পড়ে আবার quiz দিন।";
+    restartBtn.className = "restart show";
+    window.scrollTo(0,0);
+  }
+};
+
+restartBtn.onclick = function(){
+  current = 0;
+  score = 0;
+  resultEl.className = "result";
+  quizEl.style.display = "block";
+  restartBtn.className = "restart";
+  renderQuestion();
+  window.scrollTo(0,0);
+};
+
+renderQuestion();
+</script>
+</body>
+</html>

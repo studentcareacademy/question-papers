@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Care Academy - English Quiz</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap');
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:'Noto Sans Bengali','Poppins',sans-serif;
+  background:radial-gradient(circle at top,#243b72 0,#10162e 42%,#070b18 100%);
+  color:#fff;
+  display:flex;
+  justify-content:center;
+  padding:18px 10px 35px;
+}
+.container{width:100%;max-width:850px}
+.brand{
+  text-align:center;
+  font-family:'Poppins','Noto Sans Bengali',sans-serif;
+  font-size:clamp(20px,5vw,34px);
+  font-weight:800;
+  letter-spacing:.4px;
+  margin:5px 0 16px;
+  background:linear-gradient(90deg,#fff,#ffd76a,#fff,#8fe7ff,#fff);
+  background-size:300% auto;
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  animation:shine 4s linear infinite, float 2.8s ease-in-out infinite;
+  text-shadow:0 0 20px rgba(255,215,106,.18);
+}
+@keyframes shine{to{background-position:300% center}}
+@keyframes float{50%{transform:translateY(-3px)}}
+
+.quiz-card{
+  background:rgba(10,15,35,.90);
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:24px;
+  padding:22px;
+  box-shadow:0 18px 55px rgba(0,0,0,.42);
+  backdrop-filter:blur(12px);
+}
+.topline{
+  text-align:center;
+  color:#cbd5ff;
+  font-size:14px;
+  margin-bottom:16px;
+}
+.progress{
+  height:7px;
+  background:#252d4c;
+  border-radius:10px;
+  overflow:hidden;
+  margin-bottom:22px;
+}
+.progress-bar{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#ffd54a,#ff9f43,#ff5f6d);
+  transition:width .4s ease;
+}
+.question{
+  font-size:clamp(20px,4.8vw,28px);
+  line-height:1.55;
+  font-weight:700;
+  margin:10px 0 22px;
+}
+.options{display:grid;gap:12px}
+.option{
+  width:100%;
+  border:1px solid rgba(255,255,255,.18);
+  background:linear-gradient(100deg,rgba(31,43,82,.95),rgba(18,27,54,.95));
+  color:#fff;
+  border-radius:15px;
+  padding:14px 16px;
+  text-align:left;
+  font-family:inherit;
+  font-size:17px;
+  line-height:1.5;
+  cursor:pointer;
+  transition:.22s;
+}
+.option:hover:not(:disabled){transform:translateX(4px);border-color:#ffd45c;box-shadow:0 0 18px rgba(255,212,92,.14)}
+.option:disabled{cursor:default}
+.option.correct{background:linear-gradient(100deg,#11653e,#124d35);border-color:#35e59a}
+.option.wrong{background:linear-gradient(100deg,#762b38,#4e202b);border-color:#ff6678}
+.option.reveal{border-color:#35e59a}
+.feedback{
+  min-height:32px;
+  margin:16px 0 4px;
+  text-align:center;
+  font-size:18px;
+  font-weight:700;
+}
+.next{
+  display:none;
+  width:100%;
+  margin-top:12px;
+  border:0;
+  border-radius:14px;
+  padding:14px;
+  font-family:inherit;
+  font-size:17px;
+  font-weight:800;
+  color:#11182d;
+  background:linear-gradient(90deg,#ffd95b,#ffb347);
+  cursor:pointer;
+}
+.result{display:none;text-align:center;padding:20px 5px}
+.result h2{font-size:30px;margin:5px 0 12px}
+.score{
+  font-family:'Poppins',sans-serif;
+  font-size:58px;
+  font-weight:800;
+  color:#ffd65a;
+  margin:8px 0;
+}
+.result p{font-size:18px;color:#d9def6;line-height:1.7}
+.restart{
+  margin-top:15px;
+  border:0;
+  border-radius:14px;
+  padding:13px 28px;
+  font-family:inherit;
+  font-size:16px;
+  font-weight:800;
+  background:#fff;
+  color:#11182d;
+  cursor:pointer;
+}
+.small{font-size:13px;color:#9fa9cc;margin-top:15px}
+@media(max-width:520px){
+  body{padding:12px 8px 25px}
+  .quiz-card{padding:16px;border-radius:20px}
+  .option{font-size:15.5px;padding:13px 13px}
+  .question{font-size:19px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="brand">Student Care Academy; Teacher:-Tapan Mandal</div>
+
+  <div class="quiz-card">
+    <div id="quizArea">
+      <div class="topline">Class XII • Semester III • English • Our Casuarina Tree</div>
+      <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+      <div class="question" id="question"></div>
+      <div class="options" id="options"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next" id="nextBtn">পরের প্রশ্ন →</button>
+    </div>
+
+    <div class="result" id="result">
+      <h2>Quiz সম্পূর্ণ!</h2>
+      <div class="score" id="score"></div>
+      <p id="resultText"></p>
+      <button class="restart" onclick="restartQuiz()">আবার শুরু করুন</button>
+      <div class="small">Student Care Academy • Teacher:-Tapan Mandal</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const questions = [
+{q:"In the opening lines of the poem, the creeper is compared to a—",o:["serpent","Python","tiger","rope"],a:1},
+{q:"The trunk of the Casuarina tree is described as—",o:["smooth and slender","soft and delicate","rugged and deeply scarred","short and crooked"],a:2},
+{q:"The expression “the giant wears the scarf” suggests that the creeper—",o:["covers the tree like a scarf","cuts the tree like a knife","grows beneath the tree","surrounds the garden"],a:0},
+{q:"The flowers of the Casuarina tree are described as—",o:["white clusters","crimson clusters","golden clusters","yellow clusters"],a:1},
+{q:"During the day, the branches of the tree are frequented by—",o:["butterflies and bees","birds and bees","cows and birds","monkeys and butterflies"],a:1},
+{q:"At night, the garden seems to be filled with—",o:["the sound of rain","the cry of animals","one sweet song","the sound of human voices"],a:2},
+{q:"The poet's eyes first rest upon the tree when—",o:["the moon rises","the sun sets","the casement is opened at dawn","the garden becomes silent at night"],a:2},
+{q:"The word “casement” in the poem refers to a—",o:["garden gate","window","doorway","balcony"],a:1},
+{q:"The young ones of the baboon are described as—",o:["resting on the tree","singing among the branches","leaping about and playing","sleeping beside the tank"],a:2},
+{q:"The kokilas in the poem are associated with—",o:["welcoming the day","announcing the night","calling the cows home","guarding the tree"],a:0},
+{q:"The cows are described as—",o:["running towards the garden","wandering through the forest","moving sleepily towards their pastures","resting under the tree"],a:2},
+{q:"The water-lilies in the shadow of the tree are compared to—",o:["pearls","stars","snow","clouds"],a:2},
+{q:"According to the poet, the tree is dear to her primarily because—",o:["it is very old","it is extremely tall","it is magnificent","it is associated with her loved companions"],a:3},
+{q:"The poet's memories connected with the tree are mainly memories of—",o:["childhood","travel","school life","village festivals"],a:0},
+{q:"The phrase “For your sakes” refers to—",o:["the birds","the cows","the poet's beloved companions","the flowers"],a:2},
+{q:"The memories of the poet's companions are permanently associated with—",o:["the sea","the Casuarina tree","the pasture","the village road"],a:1},
+{q:"The phrase “hot tears” indicates the poet's—",o:["physical pain","emotional grief","anger","excitement"],a:1},
+{q:"The tree's murmur is compared to—",o:["thunder in the sky","waves breaking on a shingle-beach","birds singing at dawn","wind passing through grass"],a:1},
+{q:"The word “dirge-like” conveys a sense of—",o:["celebration","humour","mourning","excitement"],a:2},
+{q:"The “lament” of the tree is best understood as—",o:["a joyful song","a mournful sound","a warning to animals","a human conversation"],a:1},
+{q:"The “unknown land” mentioned near the end of the poem suggests—",o:["a foreign country visited by the poet","an imaginary garden","an unknown realm beyond ordinary human experience","a distant village"],a:2},
+{q:"Which quality of the Casuarina tree is least important to the poet's emotional attachment?",o:["Its magnificence","Its association with childhood","Its connection with loved companions","Its role in preserving memories"],a:0},
+{q:"The central emotional movement of the poem is from—",o:["anger to happiness","observation of nature to memories and grief","fear to courage","loneliness to celebration"],a:1},
+{q:"The poem combines the description of nature with—",o:["political criticism","historical narration","personal memory","scientific explanation"],a:2},
+{q:"The Casuarina tree becomes important to the poet because it acts as a—",o:["symbol of wealth","reminder of the past","sign of political power","source of material prosperity"],a:1},
+{q:"The poet's relationship with the tree can best be described as—",o:["purely scientific","purely decorative","deeply emotional","completely indifferent"],a:2},
+{q:"Which of the following best expresses the theme of the poem?",o:["The superiority of city life","The conflict between humans and animals","The power of nature to preserve memories","The importance of wealth"],a:2},
+{q:"The poem suggests that personal memories can make an ordinary natural object—",o:["meaningless","emotionally sacred","dangerous","temporary"],a:1},
+{q:"The Casuarina tree is presented not merely as an object of beauty but also as a—",o:["keeper of memories","source of food","place of worship","symbol of political freedom"],a:0},
+{q:"The poet's desire to preserve the tree is closely connected with her desire to preserve—",o:["her childhood memories","her wealth","her village","the garden's animals"],a:0},
+{q:"Statement 1: The poet appreciates the Casuarina tree only because of its physical beauty. Statement 2: The tree is emotionally connected with the poet's childhood memories.",o:["Both statements are true","Statement 1 is true, but Statement 2 is false","Statement 1 is false, but Statement 2 is true","Both statements are false"],a:2},
+{q:"Statement 1: The poem presents different sights and sounds of nature. Statement 2: These natural details contribute to the poet's emotional recollection.",o:["Both statements are true","Statement 1 is true, but Statement 2 is false","Statement 1 is false, but Statement 2 is true","Both statements are false"],a:0},
+{q:"Assertion (A): The Casuarina tree has a personal significance for the poet. Reason (R): The tree reminds her of her beloved companions and their childhood experiences.",o:["Both A and R are true, and R is the correct explanation of A","Both A and R are true, but R is not the correct explanation of A","A is true, but R is false","A is false, but R is true"],a:0},
+{q:"Assertion (A): The poem is completely detached from the poet's personal life. Reason (R): The poet connects the tree with memories of people she loved.",o:["Both A and R are true","Both A and R are false","A is true, but R is false","A is false, but R is true"],a:3},
+{q:"Which sequence best represents the progression of the poem?",o:["Tree's appearance → natural surroundings → childhood memories → lament","Childhood memories → political events → war → celebration","Animals → city life → travel → marriage","Tree's destruction → village life → childhood → celebration"],a:0},
+{q:"If the Casuarina tree were removed from the poet's memory, the greatest emotional loss would be the loss of its association with—",o:["its height","its flowers","her loved companions","its branches"],a:2},
+{q:"Which interpretation is most consistent with the ending of the poem?",o:["Nature can express human-like sorrow","Nature is always cheerful","The poet has lost interest in the tree","The tree has become a source of material wealth"],a:0},
+{q:"Which pair correctly represents two different kinds of imagery used in the poem?",o:["Visual imagery and auditory imagery","Political imagery and scientific imagery","Historical imagery and economic imagery","Mathematical imagery and geographical imagery"],a:0},
+{q:"The repeated emphasis on the tree's connection with memory suggests that the poet is concerned with—",o:["preserving the past through remembrance","describing agricultural techniques","explaining botanical science","comparing different countries"],a:0},
+{q:"Which of the following is the most appropriate inference from the poem?",o:["Natural beauty has no emotional value","Memory can transform a natural object into a deeply personal symbol","Childhood memories should always be forgotten","The poet prefers animals to human beings"],a:1},
+{q:"“Like a huge Python” is an example of—",o:["metaphor","simile","irony","hyperbole"],a:1},
+{q:"“The giant wears the scarf” primarily involves—",o:["personification","paradox","pun","irony"],a:0},
+{q:"“Statue-like” is used to suggest—",o:["complete stillness","great speed","loudness","fearfulness"],a:0},
+{q:"In “the water-lilies spring, like snow,” the comparison is between—",o:["water-lilies and clouds","water-lilies and stars","water-lilies and snow","water-lilies and flowers"],a:2},
+{q:"The expression “sweet song” appeals mainly to the sense of—",o:["sight","touch","smell","hearing"],a:3},
+{q:"The phrase “broad tank” contains an example of—",o:["alliteration","oxymoron","metaphor","personification"],a:0},
+{q:"The word “blent” in the poem means—",o:["separated","mixed or mingled","destroyed","forgotten"],a:1},
+{q:"The word “puny” most nearly means—",o:["enormous","powerful","small and weak","ancient"],a:2},
+{q:"The expression “hoar tree” suggests that the tree is—",o:["young and fragile","old and grey","newly planted","recently damaged"],a:1},
+{q:"The ending of the poem most strongly reinforces the idea that—",o:["poetry can preserve emotional memories","nature is completely separate from human life","childhood has no lasting significance","beauty disappears without leaving any trace"],a:0}
+];
+
+let current=0, score=0, answered=false;
+const letters=["ক","খ","গ","ঘ"];
+
+function render(){
+  answered=false;
+  const q=questions[current];
+  document.getElementById("question").textContent=q.q;
+  const box=document.getElementById("options");
+  box.innerHTML="";
+  q.o.forEach((text,i)=>{
+    const b=document.createElement("button");
+    b.className="option";
+    b.textContent=letters[i]+"  "+text;
+    b.onclick=()=>selectAnswer(i,b);
+    box.appendChild(b);
+  });
+  document.getElementById("feedback").textContent="";
+  document.getElementById("nextBtn").style.display="none";
+  document.getElementById("progressBar").style.width=((current)/questions.length*100)+"%";
+}
+function selectAnswer(i,button){
+  if(answered)return;
+  answered=true;
+  const q=questions[current];
+  const buttons=[...document.querySelectorAll(".option")];
+  buttons.forEach(b=>b.disabled=true);
+  if(i===q.a){
+    score++;
+    button.classList.add("correct");
+    document.getElementById("feedback").textContent="✓ সঠিক উত্তর!";
+    document.getElementById("feedback").style.color="#55efad";
+  }else{
+    button.classList.add("wrong");
+    buttons[q.a].classList.add("reveal");
+    document.getElementById("feedback").textContent="✗ ভুল উত্তর";
+    document.getElementById("feedback").style.color="#ff7182";
+  }
+  document.getElementById("nextBtn").style.display="block";
+}
+document.getElementById("nextBtn").onclick=()=>{
+  current++;
+  if(current<questions.length) render();
+  else finish();
+};
+function finish(){
+  document.getElementById("quizArea").style.display="none";
+  document.getElementById("result").style.display="block";
+  document.getElementById("progressBar").style.width="100%";
+  document.getElementById("score").textContent=score+" / "+questions.length;
+  let msg="";
+  const pct=score/questions.length*100;
+  if(pct>=80) msg="দারুণ! তোমার প্রস্তুতি খুব ভালো হয়েছে।";
+  else if(pct>=60) msg="ভালো হয়েছে। আরও একটু অনুশীলন করলে স্কোর আরও বাড়বে।";
+  else msg="আরও একবার অধ্যায়টি পড়ে quiz-টি চেষ্টা করো।";
+  document.getElementById("resultText").textContent=msg;
+}
+function restartQuiz(){
+  current=0; score=0;
+  document.getElementById("quizArea").style.display="block";
+  document.getElementById("result").style.display="none";
+  render();
+}
+render();
+</script>
+</body>
+</html>lse finish();
+};
+function finish(){
+  document.getElementById("quizArea").style.display="none

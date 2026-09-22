@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Student Care Academy - Ulysses Quiz</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#050b18;color:#fff;font-family:Arial,"Noto Sans Bengali",sans-serif}
+.wrap{width:100%;max-width:850px;margin:auto;padding:18px 12px 35px}
+.brand{text-align:center;font-size:clamp(20px,5vw,31px);font-weight:900;margin:3px 0 18px;animation:glow 1.6s infinite alternate}
+@keyframes glow{from{text-shadow:0 0 5px #fff,0 0 12px #39bfff}to{text-shadow:0 0 14px #fff,0 0 32px #008cff}}
+.box{background:linear-gradient(145deg,#142642,#070e1b);border:1px solid #41648f;border-radius:22px;padding:20px;box-shadow:0 14px 45px #0008}
+.qcard{display:none}
+.qcard.active{display:block}
+.question{font-size:clamp(20px,4vw,28px);font-weight:800;line-height:1.5;margin-bottom:20px}
+.options{display:grid;gap:11px}
+.opt{width:100%;border:1px solid #4a6d98;background:#101e35;color:#fff;border-radius:13px;padding:14px;text-align:left;font-size:16px;line-height:1.45;cursor:pointer}
+.opt:hover{background:#1b3152}
+.opt.selected{background:#263858;border-color:#ffd42e}
+.opt.correct{background:#12683f;border-color:#50ffad}
+.opt.wrong{background:#862a33;border-color:#ff7f89}
+.opt:disabled{cursor:default}
+.letter{display:inline-flex;width:31px;height:31px;align-items:center;justify-content:center;border-radius:50%;background:#263b5a;margin-right:10px;font-weight:900}
+.feedback{min-height:28px;margin-top:14px;font-weight:900;font-size:17px}
+.next{display:none;margin-top:12px;border:0;border-radius:12px;background:#2da8ff;color:#fff;padding:13px 20px;font-weight:900;font-size:16px;cursor:pointer}
+.result{display:none;text-align:center}
+.result h2{font-size:30px;margin:5px 0}
+.score{font-size:62px;color:#ffd42e;font-weight:900;margin:18px 0}
+.restart{border:0;border-radius:12px;background:#ffd42e;color:#111;padding:13px 24px;font-weight:900;cursor:pointer}
+.small{text-align:center;color:#91a9c6;font-size:13px;margin-top:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="brand">Student Care Academy; Teacher:-Tapan Mandal</div>
+<div class="box">
+<div id="quiz">
+
+    <section class="qcard" data-q="0">
+      <div class="question">Who is the speaker in Tennyson&#x27;s poem Ulysses?</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>Telemachus</button><button class="opt" data-index="1"><span class="letter">B</span>Ulysses</button><button class="opt" data-index="2"><span class="letter">C</span>Achilles</button><button class="opt" data-index="3"><span class="letter">D</span>Dante</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="1">
+      <div class="question">Ulysses describes himself as an “idle king” because he—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>has lost his kingdom</button><button class="opt" data-index="1"><span class="letter">B</span>dislikes his son</button><button class="opt" data-index="2"><span class="letter">C</span>finds his present life inactive and unfulfilling</button><button class="opt" data-index="3"><span class="letter">D</span>has forgotten his past</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="2">
+      <div class="question">Where does Ulysses live at the beginning of the poem?</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>Troy</button><button class="opt" data-index="1"><span class="letter">B</span>Ithaca</button><button class="opt" data-index="2"><span class="letter">C</span>Rome</button><button class="opt" data-index="3"><span class="letter">D</span>Athens</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="3">
+      <div class="question">Ulysses is matched with—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>a young queen</button><button class="opt" data-index="1"><span class="letter">B</span>an aged wife</button><button class="opt" data-index="2"><span class="letter">C</span>a faithful daughter</button><button class="opt" data-index="3"><span class="letter">D</span>a widowed sister</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="4">
+      <div class="question">The people ruled by Ulysses are described as—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>brave and adventurous</button><button class="opt" data-index="1"><span class="letter">B</span>savage and inactive</button><button class="opt" data-index="2"><span class="letter">C</span>learned and artistic</button><button class="opt" data-index="3"><span class="letter">D</span>wealthy and powerful</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="5">
+      <div class="question">The phrase “mete and dole / Unequal laws” refers to Ulysses&#x27; role as—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>a sailor</button><button class="opt" data-index="1"><span class="letter">B</span>a warrior</button><button class="opt" data-index="2"><span class="letter">C</span>a ruler administering laws</button><button class="opt" data-index="3"><span class="letter">D</span>a teacher</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="6">
+      <div class="question">What does Ulysses say he cannot do?</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>Rule his kingdom</button><button class="opt" data-index="1"><span class="letter">B</span>Rest from travel</button><button class="opt" data-index="2"><span class="letter">C</span>Love his family</button><button class="opt" data-index="3"><span class="letter">D</span>Remember Troy</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="7">
+      <div class="question">What does Ulysses wish to “drink … to the lees”?</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>Knowledge</button><button class="opt" data-index="1"><span class="letter">B</span>Wealth</button><button class="opt" data-index="2"><span class="letter">C</span>Life</button><button class="opt" data-index="3"><span class="letter">D</span>Fame</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="8">
+      <div class="question">The expression “drink life to the lees” suggests—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>living life to the fullest</button><button class="opt" data-index="1"><span class="letter">B</span>rejecting all adventures</button><button class="opt" data-index="2"><span class="letter">C</span>avoiding difficulties</button><button class="opt" data-index="3"><span class="letter">D</span>enjoying material wealth</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="9">
+      <div class="question">Ulysses says that he has—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>always remained at home</button><button class="opt" data-index="1"><span class="letter">B</span>greatly suffered and greatly enjoyed</button><button class="opt" data-index="2"><span class="letter">C</span>never experienced sorrow</button><button class="opt" data-index="3"><span class="letter">D</span>never travelled by sea</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="10">
+      <div class="question">The “rainy Hyades” are associated with—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>a group of stars</button><button class="opt" data-index="1"><span class="letter">B</span>a group of sailors</button><button class="opt" data-index="2"><span class="letter">C</span>a group of islands</button><button class="opt" data-index="3"><span class="letter">D</span>a group of warriors</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="11">
+      <div class="question">The phrase “I am become a name” mainly suggests Ulysses&#x27;—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>anonymity</button><button class="opt" data-index="1"><span class="letter">B</span>fame</button><button class="opt" data-index="2"><span class="letter">C</span>poverty</button><button class="opt" data-index="3"><span class="letter">D</span>loneliness</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="12">
+      <div class="question">Ulysses says that he has seen and known many—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>cities, manners, climates, councils and governments</button><button class="opt" data-index="1"><span class="letter">B</span>forests, rivers, mountains and deserts only</button><button class="opt" data-index="2"><span class="letter">C</span>kings and queens only</button><button class="opt" data-index="3"><span class="letter">D</span>poets and philosophers only</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="13">
+      <div class="question">Ulysses refers to the “ringing plains” of—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>Ithaca</button><button class="opt" data-index="1"><span class="letter">B</span>Troy</button><button class="opt" data-index="2"><span class="letter">C</span>Sparta</button><button class="opt" data-index="3"><span class="letter">D</span>Athens</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="14">
+      <div class="question">“I am a part of all that I have met” emphasizes the importance of—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>isolation</button><button class="opt" data-index="1"><span class="letter">B</span>experience</button><button class="opt" data-index="2"><span class="letter">C</span>wealth</button><button class="opt" data-index="3"><span class="letter">D</span>political power</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="15">
+      <div class="question">The “untravell’d world” in the poem represents—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>a world already completely explored</button><button class="opt" data-index="1"><span class="letter">B</span>the unknown possibilities still waiting to be discovered</button><button class="opt" data-index="2"><span class="letter">C</span>Ulysses&#x27; lost kingdom</button><button class="opt" data-index="3"><span class="letter">D</span>his childhood home</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="16">
+      <div class="question">The image of an “arch” through which an untravelled world gleams suggests that—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>experience opens a wider horizon of knowledge</button><button class="opt" data-index="1"><span class="letter">B</span>travel has no value</button><button class="opt" data-index="2"><span class="letter">C</span>Ulysses fears the unknown</button><button class="opt" data-index="3"><span class="letter">D</span>the world is permanently closed</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="17">
+      <div class="question">According to Ulysses, it is dull—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>to travel</button><button class="opt" data-index="1"><span class="letter">B</span>to fight</button><button class="opt" data-index="2"><span class="letter">C</span>to pause and make an end</button><button class="opt" data-index="3"><span class="letter">D</span>to seek knowledge</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="18">
+      <div class="question">“To rust unburnish&#x27;d” is used metaphorically to describe—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>physical weapons only</button><button class="opt" data-index="1"><span class="letter">B</span>unused human potential</button><button class="opt" data-index="2"><span class="letter">C</span>the condition of the sea</button><button class="opt" data-index="3"><span class="letter">D</span>the condition of Ithaca</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="19">
+      <div class="question">The phrase “not to shine in use” means that a person should—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>remain inactive</button><button class="opt" data-index="1"><span class="letter">B</span>make practical use of his abilities</button><button class="opt" data-index="2"><span class="letter">C</span>avoid experience</button><button class="opt" data-index="3"><span class="letter">D</span>reject knowledge</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="20">
+      <div class="question">Ulysses compares the pursuit of knowledge to—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>a rising sun</button><button class="opt" data-index="1"><span class="letter">B</span>a sinking star</button><button class="opt" data-index="2"><span class="letter">C</span>a burning fire</button><button class="opt" data-index="3"><span class="letter">D</span>a flowing river</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="21">
+      <div class="question">The phrase “beyond the utmost bound of human thought” indicates Ulysses&#x27; desire for—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>limited knowledge</button><button class="opt" data-index="1"><span class="letter">B</span>endless intellectual exploration</button><button class="opt" data-index="2"><span class="letter">C</span>political authority</button><button class="opt" data-index="3"><span class="letter">D</span>domestic comfort</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="22">
+      <div class="question">Who is Telemachus?</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>Ulysses&#x27; father</button><button class="opt" data-index="1"><span class="letter">B</span>Ulysses&#x27; son</button><button class="opt" data-index="2"><span class="letter">C</span>Ulysses&#x27; friend</button><button class="opt" data-index="3"><span class="letter">D</span>Ulysses&#x27; commander</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="23">
+      <div class="question">What does Ulysses leave to Telemachus?</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>His sword and armour</button><button class="opt" data-index="1"><span class="letter">B</span>His ship and sailors</button><button class="opt" data-index="2"><span class="letter">C</span>The sceptre and the isle</button><button class="opt" data-index="3"><span class="letter">D</span>His treasure and weapons</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="24">
+      <div class="question">Telemachus is characterized mainly by—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>impatience and rebellion</button><button class="opt" data-index="1"><span class="letter">B</span>prudence and devotion to duty</button><button class="opt" data-index="2"><span class="letter">C</span>cruelty and ambition</button><button class="opt" data-index="3"><span class="letter">D</span>fear and weakness</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="25">
+      <div class="question">Telemachus is expected to make the “rugged people”—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>rich and famous</button><button class="opt" data-index="1"><span class="letter">B</span>mild and useful</button><button class="opt" data-index="2"><span class="letter">C</span>adventurous and restless</button><button class="opt" data-index="3"><span class="letter">D</span>powerful warriors</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="26">
+      <div class="question">The phrase “slow prudence” suggests—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>careless action</button><button class="opt" data-index="1"><span class="letter">B</span>thoughtful and gradual action</button><button class="opt" data-index="2"><span class="letter">C</span>sudden violence</button><button class="opt" data-index="3"><span class="letter">D</span>complete inactivity</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="27">
+      <div class="question">Telemachus is “centred in the sphere of”—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>adventure</button><button class="opt" data-index="1"><span class="letter">B</span>common duties</button><button class="opt" data-index="2"><span class="letter">C</span>warfare</button><button class="opt" data-index="3"><span class="letter">D</span>exploration</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="28">
+      <div class="question">Which quality is most closely associated with Telemachus in the poem?</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>Domestic responsibility</button><button class="opt" data-index="1"><span class="letter">B</span>Reckless adventure</button><button class="opt" data-index="2"><span class="letter">C</span>Military aggression</button><button class="opt" data-index="3"><span class="letter">D</span>Desire for fame</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="29">
+      <div class="question">“He works his work, I mine” mainly establishes a contrast between—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>father and mother</button><button class="opt" data-index="1"><span class="letter">B</span>Ulysses and Telemachus</button><button class="opt" data-index="2"><span class="letter">C</span>Ulysses and Achilles</button><button class="opt" data-index="3"><span class="letter">D</span>sailors and warriors</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="30">
+      <div class="question">What is visible at the port when Ulysses turns towards his mariners?</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>A burning palace</button><button class="opt" data-index="1"><span class="letter">B</span>A vessel with its sail</button><button class="opt" data-index="2"><span class="letter">C</span>A battlefield</button><button class="opt" data-index="3"><span class="letter">D</span>A royal procession</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="31">
+      <div class="question">Ulysses&#x27; mariners are described as people who have—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>only fought</button><button class="opt" data-index="1"><span class="letter">B</span>only travelled</button><button class="opt" data-index="2"><span class="letter">C</span>toiled, wrought and thought with him</button><button class="opt" data-index="3"><span class="letter">D</span>remained at home</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="32">
+      <div class="question">The mariners welcomed both—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>peace and silence</button><button class="opt" data-index="1"><span class="letter">B</span>thunder and sunshine</button><button class="opt" data-index="2"><span class="letter">C</span>wealth and fame</button><button class="opt" data-index="3"><span class="letter">D</span>war and defeat</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="33">
+      <div class="question">The expression “free hearts, free foreheads” mainly conveys—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>fear and submission</button><button class="opt" data-index="1"><span class="letter">B</span>courage and freedom</button><button class="opt" data-index="2"><span class="letter">C</span>sadness and isolation</button><button class="opt" data-index="3"><span class="letter">D</span>anger and revenge</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="34">
+      <div class="question">Ulysses believes that old age still possesses—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>only weakness</button><button class="opt" data-index="1"><span class="letter">B</span>honour and toil</button><button class="opt" data-index="2"><span class="letter">C</span>wealth and power</button><button class="opt" data-index="3"><span class="letter">D</span>youth and beauty</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="35">
+      <div class="question">What does Ulysses acknowledge about death?</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>It can always be avoided</button><button class="opt" data-index="1"><span class="letter">B</span>It closes all</button><button class="opt" data-index="2"><span class="letter">C</span>It brings eternal adventure</button><button class="opt" data-index="3"><span class="letter">D</span>It makes people young</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="36">
+      <div class="question">Before death, Ulysses hopes that—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>some noble work may still be done</button><button class="opt" data-index="1"><span class="letter">B</span>he will return permanently to domestic life</button><button class="opt" data-index="2"><span class="letter">C</span>he will forget his past</button><button class="opt" data-index="3"><span class="letter">D</span>he will abandon his companions</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="37">
+      <div class="question">The phrase “men that strove with Gods” refers to the heroic—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>nature of Ulysses and his companions</button><button class="opt" data-index="1"><span class="letter">B</span>political power of Telemachus</button><button class="opt" data-index="2"><span class="letter">C</span>peaceful life of Ithaca</button><button class="opt" data-index="3"><span class="letter">D</span>ordinary duties of the people</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="38">
+      <div class="question">Which natural images mark the approaching evening?</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>Rising sun and bright clouds</button><button class="opt" data-index="1"><span class="letter">B</span>Twinkling lights, waning day and rising moon</button><button class="opt" data-index="2"><span class="letter">C</span>Rainbows and flowers</button><button class="opt" data-index="3"><span class="letter">D</span>Morning birds and sunrise</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="39">
+      <div class="question">The “deep” is personified as something that—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>sings sweetly</button><button class="opt" data-index="1"><span class="letter">B</span>moans with many voices</button><button class="opt" data-index="2"><span class="letter">C</span>sleeps silently</button><button class="opt" data-index="3"><span class="letter">D</span>laughs loudly</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="40">
+      <div class="question">“&#x27;Tis not too late to seek a newer world” expresses—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>resignation</button><button class="opt" data-index="1"><span class="letter">B</span>renewed aspiration</button><button class="opt" data-index="2"><span class="letter">C</span>fear of death</button><button class="opt" data-index="3"><span class="letter">D</span>rejection of adventure</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="41">
+      <div class="question">What does Ulysses ask his mariners to do?</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>Return to the palace</button><button class="opt" data-index="1"><span class="letter">B</span>Push off and sail</button><button class="opt" data-index="2"><span class="letter">C</span>Prepare a feast</button><button class="opt" data-index="3"><span class="letter">D</span>Build a new city</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="42">
+      <div class="question">The “sounding furrows” refer metaphorically to—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>fields on land</button><button class="opt" data-index="1"><span class="letter">B</span>waves made by the ship</button><button class="opt" data-index="2"><span class="letter">C</span>mountain valleys</button><button class="opt" data-index="3"><span class="letter">D</span>roads in Ithaca</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="43">
+      <div class="question">Ulysses&#x27; purpose is to sail—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>towards Troy only</button><button class="opt" data-index="1"><span class="letter">B</span>beyond the sunset</button><button class="opt" data-index="2"><span class="letter">C</span>towards Ithaca</button><button class="opt" data-index="3"><span class="letter">D</span>towards the nearest island</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="44">
+      <div class="question">The “baths / Of all the western stars” refers to the imagined place where—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>stars seem to plunge into the western sea</button><button class="opt" data-index="1"><span class="letter">B</span>sailors take physical baths</button><button class="opt" data-index="2"><span class="letter">C</span>Ulysses builds a palace</button><button class="opt" data-index="3"><span class="letter">D</span>warriors gather</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="45">
+      <div class="question">What does Ulysses accept as one possible result of the voyage?</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>The gulfs may wash them down</button><button class="opt" data-index="1"><span class="letter">B</span>They will certainly become kings</button><button class="opt" data-index="2"><span class="letter">C</span>They will certainly return home</button><button class="opt" data-index="3"><span class="letter">D</span>They will never face danger</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="46">
+      <div class="question">The “Happy Isles” are presented as a possible—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>destination associated with blessedness</button><button class="opt" data-index="1"><span class="letter">B</span>battlefield</button><button class="opt" data-index="2"><span class="letter">C</span>prison</button><button class="opt" data-index="3"><span class="letter">D</span>marketplace</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="47">
+      <div class="question">Whom does Ulysses hope to see in the Happy Isles?</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>Telemachus</button><button class="opt" data-index="1"><span class="letter">B</span>Achilles</button><button class="opt" data-index="2"><span class="letter">C</span>Penelope</button><button class="opt" data-index="3"><span class="letter">D</span>Dante</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="48">
+      <div class="question">The line “Tho&#x27; much is taken, much abides” suggests that—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>age destroys everything</button><button class="opt" data-index="1"><span class="letter">B</span>something valuable remains despite loss</button><button class="opt" data-index="2"><span class="letter">C</span>nothing changes with age</button><button class="opt" data-index="3"><span class="letter">D</span>physical strength increases with time</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="49">
+      <div class="question">According to the final stanza, Ulysses and his companions are no longer as strong as they were because of—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>wealth and power</button><button class="opt" data-index="1"><span class="letter">B</span>time and fate</button><button class="opt" data-index="2"><span class="letter">C</span>travel and knowledge</button><button class="opt" data-index="3"><span class="letter">D</span>family and duty</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="50">
+      <div class="question">What remains strong despite the weakening caused by time and fate?</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>Physical beauty</button><button class="opt" data-index="1"><span class="letter">B</span>Political authority</button><button class="opt" data-index="2"><span class="letter">C</span>Will</button><button class="opt" data-index="3"><span class="letter">D</span>Wealth</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="51">
+      <div class="question">“Made weak by time and fate, but strong in will” contains a contrast between—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>physical decline and mental determination</button><button class="opt" data-index="1"><span class="letter">B</span>youth and childhood</button><button class="opt" data-index="2"><span class="letter">C</span>wealth and poverty</button><button class="opt" data-index="3"><span class="letter">D</span>land and sea</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="52">
+      <div class="question">Which sequence correctly represents the final four verbs of the poem?</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>To find, to seek, to strive, to yield</button><button class="opt" data-index="1"><span class="letter">B</span>To strive, to seek, to find, and not to yield</button><button class="opt" data-index="2"><span class="letter">C</span>To seek, to yield, to find, to strive</button><button class="opt" data-index="3"><span class="letter">D</span>To yield, to find, to seek, to strive</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="53">
+      <div class="question">The phrase “not to yield” most nearly means—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>not to surrender</button><button class="opt" data-index="1"><span class="letter">B</span>not to travel</button><button class="opt" data-index="2"><span class="letter">C</span>not to think</button><button class="opt" data-index="3"><span class="letter">D</span>not to speak</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="54">
+      <div class="question">Which statement best reflects the central tension in the poem?</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>Domestic duty versus the desire for adventure</button><button class="opt" data-index="1"><span class="letter">B</span>Wealth versus poverty</button><button class="opt" data-index="2"><span class="letter">C</span>Youth versus childhood</button><button class="opt" data-index="3"><span class="letter">D</span>War versus agriculture</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="55">
+      <div class="question">Statement 1: Ulysses considers experience an important part of life. Statement 2: He believes that all experience enlarges the horizon of knowledge.</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>Both statements are true</button><button class="opt" data-index="1"><span class="letter">B</span>Statement 1 is true, Statement 2 is false</button><button class="opt" data-index="2"><span class="letter">C</span>Statement 1 is false, Statement 2 is true</button><button class="opt" data-index="3"><span class="letter">D</span>Both statements are false</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="56">
+      <div class="question">Statement 1: Telemachus and Ulysses have exactly the same idea of duty. Statement 2: Telemachus is suited to domestic governance, whereas Ulysses is drawn towards exploration.</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>Both statements are true</button><button class="opt" data-index="1"><span class="letter">B</span>Statement 1 is true, Statement 2 is false</button><button class="opt" data-index="2"><span class="letter">C</span>Statement 1 is false, Statement 2 is true</button><button class="opt" data-index="3"><span class="letter">D</span>Both statements are false</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="57">
+      <div class="question">Assertion (A): Ulysses refuses to accept old age as a reason for complete inactivity. Reason (R): He believes that meaningful work can still be accomplished before death.</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>Both A and R are true, and R is the correct explanation of A</button><button class="opt" data-index="1"><span class="letter">B</span>Both A and R are true, but R is not the correct explanation of A</button><button class="opt" data-index="2"><span class="letter">C</span>A is true, but R is false</button><button class="opt" data-index="3"><span class="letter">D</span>A is false, but R is true</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="58">
+      <div class="question">Which interpretation is most consistent with the closing idea of the poem?</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>Human beings should surrender before ageing</button><button class="opt" data-index="1"><span class="letter">B</span>Physical decline can coexist with courage and determination</button><button class="opt" data-index="2"><span class="letter">C</span>Adventure has no value after youth</button><button class="opt" data-index="3"><span class="letter">D</span>Knowledge should be limited to practical matters</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+    <section class="qcard" data-q="59">
+      <div class="question">The concluding spirit of Ulysses is best captured by the idea of—</div>
+      <div class="options"><button class="opt" data-index="0"><span class="letter">A</span>passive retirement</button><button class="opt" data-index="1"><span class="letter">B</span>persistent striving despite limitations</button><button class="opt" data-index="2"><span class="letter">C</span>rejection of knowledge</button><button class="opt" data-index="3"><span class="letter">D</span>complete dependence on others</button></div>
+      <div class="feedback"></div>
+      <button class="next" type="button">Next Question</button>
+    </section>
+</div>
+<div id="result" class="result">
+<h2>Quiz Completed!</h2>
+<div class="score"><span id="score">0</span> / 60</div>
+<p>আপনার মোট স্কোর।</p>
+<button class="restart" type="button" onclick="restartQuiz()">Play Again</button>
+</div>
+</div>
+<div class="small">No Timer • One Question at a Time</div>
+</div>
+
+<script>
+(function(){
+  const data=[["Who is the speaker in Tennyson's poem Ulysses?", ["Telemachus", "Ulysses", "Achilles", "Dante"], 1], ["Ulysses describes himself as an “idle king” because he—", ["has lost his kingdom", "dislikes his son", "finds his present life inactive and unfulfilling", "has forgotten his past"], 2], ["Where does Ulysses live at the beginning of the poem?", ["Troy", "Ithaca", "Rome", "Athens"], 1], ["Ulysses is matched with—", ["a young queen", "an aged wife", "a faithful daughter", "a widowed sister"], 1], ["The people ruled by Ulysses are described as—", ["brave and adventurous", "savage and inactive", "learned and artistic", "wealthy and powerful"], 1], ["The phrase “mete and dole / Unequal laws” refers to Ulysses' role as—", ["a sailor", "a warrior", "a ruler administering laws", "a teacher"], 2], ["What does Ulysses say he cannot do?", ["Rule his kingdom", "Rest from travel", "Love his family", "Remember Troy"], 1], ["What does Ulysses wish to “drink … to the lees”?", ["Knowledge", "Wealth", "Life", "Fame"], 2], ["The expression “drink life to the lees” suggests—", ["living life to the fullest", "rejecting all adventures", "avoiding difficulties", "enjoying material wealth"], 0], ["Ulysses says that he has—", ["always remained at home", "greatly suffered and greatly enjoyed", "never experienced sorrow", "never travelled by sea"], 1], ["The “rainy Hyades” are associated with—", ["a group of stars", "a group of sailors", "a group of islands", "a group of warriors"], 0], ["The phrase “I am become a name” mainly suggests Ulysses'—", ["anonymity", "fame", "poverty", "loneliness"], 1], ["Ulysses says that he has seen and known many—", ["cities, manners, climates, councils and governments", "forests, rivers, mountains and deserts only", "kings and queens only", "poets and philosophers only"], 0], ["Ulysses refers to the “ringing plains” of—", ["Ithaca", "Troy", "Sparta", "Athens"], 1], ["“I am a part of all that I have met” emphasizes the importance of—", ["isolation", "experience", "wealth", "political power"], 1], ["The “untravell’d world” in the poem represents—", ["a world already completely explored", "the unknown possibilities still waiting to be discovered", "Ulysses' lost kingdom", "his childhood home"], 1], ["The image of an “arch” through which an untravelled world gleams suggests that—", ["experience opens a wider horizon of knowledge", "travel has no value", "Ulysses fears the unknown", "the world is permanently closed"], 0], ["According to Ulysses, it is dull—", ["to travel", "to fight", "to pause and make an end", "to seek knowledge"], 2], ["“To rust unburnish'd” is used metaphorically to describe—", ["physical weapons only", "unused human potential", "the condition of the sea", "the condition of Ithaca"], 1], ["The phrase “not to shine in use” means that a person should—", ["remain inactive", "make practical use of his abilities", "avoid experience", "reject knowledge"], 1], ["Ulysses compares the pursuit of knowledge to—", ["a rising sun", "a sinking star", "a burning fire", "a flowing river"], 1], ["The phrase “beyond the utmost bound of human thought” indicates Ulysses' desire for—", ["limited knowledge", "endless intellectual exploration", "political authority", "domestic comfort"], 1], ["Who is Telemachus?", ["Ulysses' father", "Ulysses' son", "Ulysses' friend", "Ulysses' commander"], 1], ["What does Ulysses leave to Telemachus?", ["His sword and armour", "His ship and sailors", "The sceptre and the isle", "His treasure and weapons"], 2], ["Telemachus is characterized mainly by—", ["impatience and rebellion", "prudence and devotion to duty", "cruelty and ambition", "fear and weakness"], 1], ["Telemachus is expected to make the “rugged people”—", ["rich and famous", "mild and useful", "adventurous and restless", "powerful warriors"], 1], ["The phrase “slow prudence” suggests—", ["careless action", "thoughtful and gradual action", "sudden violence", "complete inactivity"], 1], ["Telemachus is “centred in the sphere of”—", ["adventure", "common duties", "warfare", "exploration"], 1], ["Which quality is most closely associated with Telemachus in the poem?", ["Domestic responsibility", "Reckless adventure", "Military aggression", "Desire for fame"], 0], ["“He works his work, I mine” mainly establishes a contrast between—", ["father and mother", "Ulysses and Telemachus", "Ulysses and Achilles", "sailors and warriors"], 1], ["What is visible at the port when Ulysses turns towards his mariners?", ["A burning palace", "A vessel with its sail", "A battlefield", "A royal procession"], 1], ["Ulysses' mariners are described as people who have—", ["only fought", "only travelled", "toiled, wrought and thought with him", "remained at home"], 2], ["The mariners welcomed both—", ["peace and silence", "thunder and sunshine", "wealth and fame", "war and defeat"], 1], ["The expression “free hearts, free foreheads” mainly conveys—", ["fear and submission", "courage and freedom", "sadness and isolation", "anger and revenge"], 1], ["Ulysses believes that old age still possesses—", ["only weakness", "honour and toil", "wealth and power", "youth and beauty"], 1], ["What does Ulysses acknowledge about death?", ["It can always be avoided", "It closes all", "It brings eternal adventure", "It makes people young"], 1], ["Before death, Ulysses hopes that—", ["some noble work may still be done", "he will return permanently to domestic life", "he will forget his past", "he will abandon his companions"], 0], ["The phrase “men that strove with Gods” refers to the heroic—", ["nature of Ulysses and his companions", "political power of Telemachus", "peaceful life of Ithaca", "ordinary duties of the people"], 0], ["Which natural images mark the approaching evening?", ["Rising sun and bright clouds", "Twinkling lights, waning day and rising moon", "Rainbows and flowers", "Morning birds and sunrise"], 1], ["The “deep” is personified as something that—", ["sings sweetly", "moans with many voices", "sleeps silently", "laughs loudly"], 1], ["“'Tis not too late to seek a newer world” expresses—", ["resignation", "renewed aspiration", "fear of death", "rejection of adventure"], 1], ["What does Ulysses ask his mariners to do?", ["Return to the palace", "Push off and sail", "Prepare a feast", "Build a new city"], 1], ["The “sounding furrows” refer metaphorically to—", ["fields on land", "waves made by the ship", "mountain valleys", "roads in Ithaca"], 1], ["Ulysses' purpose is to sail—", ["towards Troy only", "beyond the sunset", "towards Ithaca", "towards the nearest island"], 1], ["The “baths / Of all the western stars” refers to the imagined place where—", ["stars seem to plunge into the western sea", "sailors take physical baths", "Ulysses builds a palace", "warriors gather"], 0], ["What does Ulysses accept as one possible result of the voyage?", ["The gulfs may wash them down", "They will certainly become kings", "They will certainly return home", "They will never face danger"], 0], ["The “Happy Isles” are presented as a possible—", ["destination associated with blessedness", "battlefield", "prison", "marketplace"], 0], ["Whom does Ulysses hope to see in the Happy Isles?", ["Telemachus", "Achilles", "Penelope", "Dante"], 1], ["The line “Tho' much is taken, much abides” suggests that—", ["age destroys everything", "something valuable remains despite loss", "nothing changes with age", "physical strength increases with time"], 1], ["According to the final stanza, Ulysses and his companions are no longer as strong as they were because of—", ["wealth and power", "time and fate", "travel and knowledge", "family and duty"], 1], ["What remains strong despite the weakening caused by time and fate?", ["Physical beauty", "Political authority", "Will", "Wealth"], 2], ["“Made weak by time and fate, but strong in will” contains a contrast between—", ["physical decline and mental determination", "youth and childhood", "wealth and poverty", "land and sea"], 0], ["Which sequence correctly represents the final four verbs of the poem?", ["To find, to seek, to strive, to yield", "To strive, to seek, to find, and not to yield", "To seek, to yield, to find, to strive", "To yield, to find, to seek, to strive"], 1], ["The phrase “not to yield” most nearly means—", ["not to surrender", "not to travel", "not to think", "not to speak"], 0], ["Which statement best reflects the central tension in the poem?", ["Domestic duty versus the desire for adventure", "Wealth versus poverty", "Youth versus childhood", "War versus agriculture"], 0], ["Statement 1: Ulysses considers experience an important part of life. Statement 2: He believes that all experience enlarges the horizon of knowledge.", ["Both statements are true", "Statement 1 is true, Statement 2 is false", "Statement 1 is false, Statement 2 is true", "Both statements are false"], 0], ["Statement 1: Telemachus and Ulysses have exactly the same idea of duty. Statement 2: Telemachus is suited to domestic governance, whereas Ulysses is drawn towards exploration.", ["Both statements are true", "Statement 1 is true, Statement 2 is false", "Statement 1 is false, Statement 2 is true", "Both statements are false"], 2], ["Assertion (A): Ulysses refuses to accept old age as a reason for complete inactivity. Reason (R): He believes that meaningful work can still be accomplished before death.", ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"], 0], ["Which interpretation is most consistent with the closing idea of the poem?", ["Human beings should surrender before ageing", "Physical decline can coexist with courage and determination", "Adventure has no value after youth", "Knowledge should be limited to practical matters"], 1], ["The concluding spirit of Ulysses is best captured by the idea of—", ["passive retirement", "persistent striving despite limitations", "rejection of knowledge", "complete dependence on others"], 1]];
+  let current=0, score=0, answered=false;
+  const cards=document.querySelectorAll('.qcard');
+  const result=document.getElementById('result');
+
+  function show(){
+    cards.forEach((c,i)=>c.classList.toggle('active',i===current));
+    const card=cards[current];
+    card.querySelector('.feedback').textContent='';
+    card.querySelector('.feedback').style.color='';
+    card.querySelectorAll('.opt').forEach(b=>{
+      b.disabled=false;
+      b.className='opt';
+    });
+    const next=card.querySelector('.next');
+    next.style.display='none';
+    next.textContent=current===data.length-1?'Show Result':'Next Question';
+    answered=false;
+  }
+
+  cards.forEach((card,qi)=>{
+    card.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        if(answered)return;
+        answered=true;
+        const chosen=Number(btn.dataset.index);
+        const correct=data[qi][2];
+        card.querySelectorAll('.opt').forEach((b,j)=>{
+          b.disabled=true;
+          if(j===correct)b.classList.add('correct');
+        });
+        if(chosen===correct){
+          score++;
+          card.querySelector('.feedback').textContent='✓ Correct Answer';
+          card.querySelector('.feedback').style.color='#55ffae';
+        }else{
+          btn.classList.add('wrong');
+          card.querySelector('.feedback').textContent='✗ Incorrect Answer';
+          card.querySelector('.feedback').style.color='#ff7d86';
+        }
+        card.querySelector('.next').style.display='inline-block';
+      });
+    });
+    card.querySelector('.next').addEventListener('click',()=>{
+      if(!answered)return;
+      if(current===data.length-1){
+        document.getElementById('quiz').style.display='none';
+        result.style.display='block';
+        document.getElementById('score').textContent=score;
+      }else{
+        current++;
+        show();
+      }
+    });
+  });
+
+  window.restartQuiz=function(){
+    current=0; score=0; answered=false;
+    result.style.display='none';
+    document.getElementById('quiz').style.display='block';
+    show();
+  };
+
+  show();
+})();
+</script>
+</body>
+</html>    score++;
+          card.querySelector('.feedback').textContent='✓ Correct Answer';
+          card.querySelector('.feedback').style.color='#55ffae';
+        }else{
+          btn.classList.add('wrong');
+          card.querySelector('.feedback').textContent='✗ Incorrect Answer';
+          card.querySelector('.feedback').style.color='#ff7d86';
+        }
+        card.querySelector('.next').style.display='inline-block';
+      });
+    });
+    card.querySelector('.next').addEventListener('click',()=>{
+      if(!answered)return;
+      if(current===data.length-1){
+        document.getElementById('quiz').style.display='none';
+        result.style.display='block';
+        document.getElementById('score').textContent=score;
+      }else{
+        current++;
+        show();
+      }
+    });
+  });
+
+  window

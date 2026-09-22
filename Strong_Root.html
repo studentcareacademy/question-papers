@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Student Care Academy - Strong Roots Quiz</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:"Noto Sans",Arial,sans-serif;
+    background:
+        radial-gradient(circle at top,#173b73 0%,#07152d 45%,#020812 100%);
+    min-height:100vh;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:15px;
+}
+
+.quiz-container{
+    width:100%;
+    max-width:850px;
+    min-height:600px;
+    background:linear-gradient(145deg,#07152e,#0b2348,#061328);
+    border:2px solid rgba(255,215,80,.45);
+    border-radius:25px;
+    box-shadow:
+        0 0 25px rgba(255,190,30,.20),
+        inset 0 0 30px rgba(0,120,255,.08);
+    padding:20px;
+    position:relative;
+    overflow:hidden;
+}
+
+/* Animated Academy Header */
+
+.brand{
+    text-align:center;
+    font-size:25px;
+    font-weight:900;
+    margin-bottom:7px;
+
+    background:linear-gradient(
+        90deg,
+        #ffd700,
+        #ffffff,
+        #00eaff,
+        #ffd700
+    );
+
+    background-size:300% auto;
+    color:transparent;
+    -webkit-background-clip:text;
+    background-clip:text;
+
+    animation:
+        shine 4s linear infinite,
+        glow 2s ease-in-out infinite alternate;
+}
+
+.teacher{
+    text-align:center;
+    font-size:17px;
+    color:#ffe88a;
+    font-weight:bold;
+    animation:floatText 2s ease-in-out infinite alternate;
+}
+
+@keyframes shine{
+    0%{background-position:0% center;}
+    100%{background-position:300% center;}
+}
+
+@keyframes glow{
+    from{
+        text-shadow:0 0 5px #ffd700;
+    }
+    to{
+        text-shadow:
+            0 0 10px #ffd700,
+            0 0 25px #00d9ff;
+    }
+}
+
+@keyframes floatText{
+    from{transform:translateY(0);}
+    to{transform:translateY(-2px);}
+}
+
+.subject{
+    text-align:center;
+    margin:18px 0 12px;
+    color:#ffffff;
+    font-size:19px;
+    font-weight:bold;
+}
+
+.progress{
+    width:100%;
+    height:7px;
+    background:#142b4e;
+    border-radius:10px;
+    overflow:hidden;
+    margin-bottom:20px;
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#ffd700,#00eaff);
+    transition:.4s;
+}
+
+.question-card{
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,215,80,.25);
+    border-radius:20px;
+    padding:25px 20px;
+}
+
+.question{
+    font-size:21px;
+    line-height:1.55;
+    font-weight:800;
+    text-align:center;
+    margin-bottom:25px;
+    color:#ffffff;
+}
+
+.options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+}
+
+.option{
+    border:2px solid rgba(255,255,255,.22);
+    background:linear-gradient(145deg,#102c54,#081b37);
+    color:white;
+    padding:16px 15px;
+    border-radius:14px;
+    cursor:pointer;
+    font-size:17px;
+    font-weight:600;
+    text-align:left;
+    transition:.25s;
+}
+
+.option:hover{
+    transform:translateY(-2px);
+    border-color:#ffd700;
+    box-shadow:0 0 14px rgba(255,215,0,.25);
+}
+
+.option.correct{
+    background:linear-gradient(145deg,#08783d,#064d2a);
+    border-color:#36ff94;
+    box-shadow:0 0 18px rgba(54,255,148,.3);
+}
+
+.option.wrong{
+    background:linear-gradient(145deg,#8a1720,#500b12);
+    border-color:#ff5864;
+    box-shadow:0 0 18px rgba(255,70,80,.3);
+}
+
+.option.disabled{
+    pointer-events:none;
+}
+
+.feedback{
+    min-height:55px;
+    margin-top:20px;
+    text-align:center;
+    font-size:18px;
+    font-weight:bold;
+    line-height:1.5;
+}
+
+.feedback.correct-text{
+    color:#55ff9c;
+}
+
+.feedback.wrong-text{
+    color:#ff6f78;
+}
+
+.next-btn{
+    display:none;
+    margin:18px auto 0;
+    border:none;
+    border-radius:30px;
+    padding:13px 35px;
+    background:linear-gradient(90deg,#ffd700,#ff9d00);
+    color:#111;
+    font-size:17px;
+    font-weight:900;
+    cursor:pointer;
+    box-shadow:0 0 15px rgba(255,215,0,.35);
+    transition:.25s;
+}
+
+.next-btn:hover{
+    transform:scale(1.05);
+}
+
+.result{
+    display:none;
+    text-align:center;
+    padding:35px 15px;
+}
+
+.result-title{
+    font-size:30px;
+    color:#ffd700;
+    margin-bottom:20px;
+}
+
+.score-circle{
+    width:180px;
+    height:180px;
+    margin:20px auto;
+    border-radius:50%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    border:5px solid #ffd700;
+    background:radial-gradient(circle,#123d6d,#061328);
+    box-shadow:
+        0 0 25px rgba(255,215,0,.3),
+        inset 0 0 25px rgba(0,200,255,.15);
+}
+
+.score{
+    font-size:45px;
+    font-weight:900;
+    color:#ffffff;
+}
+
+.score-label{
+    color:#ffd700;
+    font-size:15px;
+}
+
+.result-message{
+    font-size:20px;
+    margin:20px 0;
+    line-height:1.6;
+}
+
+.restart{
+    border:none;
+    background:linear-gradient(90deg,#00eaff,#0077ff);
+    color:white;
+    padding:14px 35px;
+    border-radius:30px;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.footer{
+    text-align:center;
+    margin-top:18px;
+    color:#9fb4d3;
+    font-size:13px;
+}
+
+@media(max-width:650px){
+
+    .quiz-container{
+        padding:14px;
+        border-radius:18px;
+    }
+
+    .brand{
+        font-size:21px;
+    }
+
+    .teacher{
+        font-size:15px;
+    }
+
+    .subject{
+        font-size:16px;
+    }
+
+    .question{
+        font-size:18px;
+    }
+
+    .options{
+        grid-template-columns:1fr;
+    }
+
+    .option{
+        font-size:15px;
+        padding:14px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="quiz-container">
+
+    <div class="brand">
+        Student Care Academy
+    </div>
+
+    <div class="teacher">
+        Teacher:- Tapan Mandal
+    </div>
+
+    <div class="subject">
+        Class XII • Semester III • English<br>
+        Strong Roots — A.P.J. Abdul Kalam
+    </div>
+
+    <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div id="quizArea">
+
+        <div class="question-card">
+
+            <div class="question" id="question"></div>
+
+            <div class="options" id="options"></div>
+
+            <div class="feedback" id="feedback"></div>
+
+            <button class="next-btn" id="nextBtn" onclick="nextQuestion()">
+                Next
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="result" id="result">
+
+        <div class="result-title">
+            Quiz Completed!
+        </div>
+
+        <div class="score-circle">
+
+            <div class="score" id="finalScore">
+                0/50
+            </div>
+
+            <div class="score-label">
+                TOTAL SCORE
+            </div>
+
+        </div>
+
+        <div class="result-message" id="resultMessage"></div>
+
+        <button class="restart" onclick="restartQuiz()">
+            আবার Quiz দিন
+        </button>
+
+    </div>
+
+    <div class="footer">
+        Student Care Academy • Strong Roots
+    </div>
+
+</div>
+
+
+<script>
+
+const questions = [
+
+{
+q:`“Strong Roots” is an extract from which book?`,
+o:[
+`India 2020`,
+`Ignited Minds`,
+`Wings of Fire`,
+`My Journey`
+],
+a:2
+},
+
+{
+q:`A.P.J. Abdul Kalam was born in which type of family?`,
+o:[
+`A wealthy Muslim family`,
+`A middle-class Tamil family`,
+`A poor Bengali family`,
+`An upper-class Tamil family`
+],
+a:1
+},
+
+{
+q:`Rameswaram, at the time of Kalam’s birth, belonged to—`,
+o:[
+`the erstwhile Madras State`,
+`Kerala State`,
+`Mysore State`,
+`Andhra State`
+],
+a:0
+},
+
+{
+q:`Which combination correctly describes Jainulabdeen?`,
+o:[
+`Highly educated and wealthy`,
+`Wealthy but spiritually weak`,
+`Formally educated but poor`,
+`Neither much formally educated nor wealthy, but wise and generous`
+],
+a:3
+},
+
+{
+q:`Kalam describes his mother Ashiamma as—`,
+o:[
+`a strict teacher`,
+`an ideal helpmate to his father`,
+`a famous social worker`,
+`a religious scholar`
+],
+a:1
+},
+
+{
+q:`The title ‘Bahadur’ had been bestowed by the British on—`,
+o:[
+`Kalam’s father`,
+`Kalam’s grandfather`,
+`one of his mother’s forebears`,
+`Pakshi Lakshmana Sastry`
+],
+a:2
+},
+
+{
+q:`Which description best fits Kalam as a child?`,
+o:[
+`Short and rather undistinguished-looking`,
+`Tall and handsome`,
+`Tall and strong-looking`,
+`Short and exceptionally handsome`
+],
+a:0
+},
+
+{
+q:`Kalam’s ancestral house was situated on—`,
+o:[
+`Temple Street`,
+`Market Street`,
+`Coconut Street`,
+`Mosque Street`
+],
+a:3
+},
+
+{
+q:`The ancestral house of Kalam was built—`,
+o:[
+`in the early 18th century`,
+`in the middle of the 19th century`,
+`in the early 20th century`,
+`in the middle of the 20th century`
+],
+a:1
+},
+
+{
+q:`The ancestral house was mainly made of—`,
+o:[
+`wood and cement`,
+`marble and stone`,
+`limestone and brick`,
+`bamboo and brick`
+],
+a:2
+},
+
+{
+q:`The word “austere” in the context of Kalam’s father suggests—`,
+o:[
+`simple and avoiding unnecessary comforts`,
+`wealthy and luxurious`,
+`strict and unfriendly`,
+`careless and irresponsible`
+],
+a:0
+},
+
+{
+q:`According to Kalam, his father avoided—`,
+o:[
+`food and clothing`,
+`medicine and education`,
+`prayer and spiritual discussion`,
+`inessential comforts and luxuries`
+],
+a:3
+},
+
+{
+q:`Which of the following is NOT mentioned as a basic necessity provided in Kalam’s childhood?`,
+o:[
+`Food`,
+`Medicine`,
+`Clothing`,
+`Expensive ornaments`
+],
+a:3
+},
+
+{
+q:`Why does Kalam call his childhood “secure”?`,
+o:[
+`He lived in a luxurious house.`,
+`He received all necessities and emotional security.`,
+`He belonged to a very wealthy family.`,
+`He never faced any difficulty in life.`
+],
+a:1
+},
+
+{
+q:`Kalam normally ate with his mother—`,
+o:[
+`sitting on the floor of the kitchen`,
+`in the dining room`,
+`in the courtyard`,
+`near the mosque`
+],
+a:0
+},
+
+{
+q:`What did Ashiamma place before Kalam while serving his meal?`,
+o:[
+`A metal plate`,
+`A glass plate`,
+`A wooden bowl`,
+`A banana leaf`
+],
+a:3
+},
+
+{
+q:`Which combination represents the food mentioned in Kalam’s childhood meal?`,
+o:[
+`Rice, dal and curd`,
+`Rice, fish and chutney`,
+`Rice, aromatic sambar, pickle and coconut chutney`,
+`Bread, butter and jam`
+],
+a:2
+},
+
+{
+q:`The Shiva temple made Rameswaram famous mainly as—`,
+o:[
+`a centre of education`,
+`a pilgrimage site`,
+`a commercial centre`,
+`a military centre`
+],
+a:1
+},
+
+{
+q:`Kalam’s locality was predominantly—`,
+o:[
+`Hindu`,
+`Christian`,
+`Muslim`,
+`Sikh`
+],
+a:2
+},
+
+{
+q:`The Hindu families living in Kalam’s locality—`,
+o:[
+`lived separately from Muslims`,
+`lived amicably with their Muslim neighbours`,
+`frequently quarrelled with Muslims`,
+`later left Rameswaram`
+],
+a:1
+},
+
+{
+q:`What was one of Kalam’s vivid childhood experiences connected with his father?`,
+o:[
+`Going to the market with him`,
+`Going to the coconut grove with him`,
+`Going to the mosque with him for evening prayers`,
+`Studying Arabic with him`
+],
+a:2
+},
+
+{
+q:`Kalam could not understand the Arabic prayers because—`,
+o:[
+`he was too young to hear them`,
+`he did not know Arabic`,
+`the prayers were whispered`,
+`he was not allowed to listen`
+],
+a:1
+},
+
+{
+q:`Even without understanding the Arabic prayers, Kalam believed that they—`,
+o:[
+`reached God`,
+`frightened people`,
+`changed destiny immediately`,
+`cured every illness`
+],
+a:0
+},
+
+{
+q:`What did people of different religions offer to Kalam’s father after prayers?`,
+o:[
+`Flowers`,
+`Books`,
+`Bowls of water`,
+`Fruits`
+],
+a:2
+},
+
+{
+q:`What did Kalam’s father do with the water offered to him?`,
+o:[
+`He drank it.`,
+`He dipped his fingertips in it and said a prayer.`,
+`He gave it to Kalam.`,
+`He poured it into the mosque.`
+],
+a:1
+},
+
+{
+q:`The water blessed by Kalam’s father was carried home for—`,
+o:[
+`children`,
+`travellers`,
+`invalids`,
+`priests`
+],
+a:2
+},
+
+{
+q:`After recovering, people visited Kalam’s home mainly to—`,
+o:[
+`offer thanks`,
+`ask for food`,
+`meet Ashiamma`,
+`visit the mosque`
+],
+a:0
+},
+
+{
+q:`What did Kalam’s father tell the cured people to do?`,
+o:[
+`Thank him`,
+`Thank Allah, the merciful`,
+`Visit the temple`,
+`Offer him money`
+],
+a:1
+},
+
+{
+q:`Pakshi Lakshmana Sastry was—`,
+o:[
+`Kalam’s schoolteacher`,
+`the high priest of the Rameswaram temple`,
+`Kalam’s uncle`,
+`a coconut grove owner`
+],
+a:1
+},
+
+{
+q:`The relationship between Jainulabdeen and Pakshi Lakshmana Sastry primarily illustrates—`,
+o:[
+`political cooperation`,
+`commercial partnership`,
+`interfaith friendship and spiritual understanding`,
+`family relationship`
+],
+a:2
+},
+
+{
+q:`What were the two men often seen discussing?`,
+o:[
+`Science and technology`,
+`Politics and society`,
+`Education and employment`,
+`Spiritual matters`
+],
+a:3
+},
+
+{
+q:`According to Jainulabdeen, prayer makes possible—`,
+o:[
+`material prosperity`,
+`communion of the spirit between people`,
+`physical strength`,
+`worldly success`
+],
+a:1
+},
+
+{
+q:`When a person prays, according to Jainulabdeen, he transcends the body and becomes part of—`,
+o:[
+`the family`,
+`society`,
+`the cosmos`,
+`nature alone`
+],
+a:2
+},
+
+{
+q:`Which of the following is NOT mentioned as a division unknown to the cosmos?`,
+o:[
+`Wealth`,
+`Age`,
+`Caste`,
+`Language`
+],
+a:3
+},
+
+{
+q:`Which statement correctly expresses Jainulabdeen’s attitude towards adversity?`,
+o:[
+`Adversity should always be feared.`,
+`Adversity should be avoided at any cost.`,
+`Adversity can provide opportunities for introspection.`,
+`Adversity proves that destiny is against us.`
+],
+a:2
+},
+
+{
+q:`What did Kalam ask his father after hearing his ideas about suffering and introspection?`,
+o:[
+`Why he did not become a teacher`,
+`Why he did not tell those ideas to people who came to him for help and advice`,
+`Why he went to the mosque every evening`,
+`Why he avoided luxuries`
+],
+a:1
+},
+
+{
+q:`According to Jainulabdeen, when human beings find themselves alone, they naturally begin to look for—`,
+o:[
+`wealth`,
+`company`,
+`fame`,
+`power`
+],
+a:1
+},
+
+{
+q:`When people reach an “impasse”, they look for someone—`,
+o:[
+`to entertain them`,
+`to provide them with money`,
+`to show them the way out`,
+`to pray on their behalf only`
+],
+a:2
+},
+
+{
+q:`In helping distressed people, Jainulabdeen describes himself as a—`,
+o:[
+`teacher`,
+`judge`,
+`go-between`,
+`healer`
+],
+a:2
+},
+
+{
+q:`In the expression “propitiate demonic forces”, the word “propitiate” most nearly means—`,
+o:[
+`to anger`,
+`to appease`,
+`to ignore`,
+`to challenge`
+],
+a:1
+},
+
+{
+q:`Why does Jainulabdeen reject the approach of trying to propitiate demonic forces?`,
+o:[
+`Because it encourages a fear-ridden vision of destiny`,
+`Because prayers have no value`,
+`Because people should never seek help`,
+`Because spiritual matters are unimportant`
+],
+a:0
+},
+
+{
+q:`Which sequence correctly represents Jainulabdeen’s morning routine?`,
+o:[
+`ii → i → iii → iv`,
+`i → ii → iii → iv`,
+`i → iii → ii → iv`,
+`iv → i → ii → iii`
+],
+a:1
+},
+
+{
+q:`At what time did Kalam’s father begin his day?`,
+o:[
+`3 a.m.`,
+`4 a.m.`,
+`5 a.m.`,
+`6 a.m.`
+],
+a:1
+},
+
+{
+q:`How far was the coconut grove from Kalam’s home?`,
+o:[
+`About two miles`,
+`About three miles`,
+`About four miles`,
+`About five miles`
+],
+a:2
+},
+
+{
+q:`What did Kalam’s father usually bring back from the coconut grove?`,
+o:[
+`About a dozen coconuts`,
+`About a dozen mangoes`,
+`A basket of vegetables`,
+`Fresh flowers`
+],
+a:0
+},
+
+{
+q:`When did Kalam’s father have his breakfast?`,
+o:[
+`Before reading the namaz`,
+`Before going to the coconut grove`,
+`Immediately after waking up`,
+`After returning with the coconuts`
+],
+a:3
+},
+
+{
+q:`The same morning routine continued even when Kalam’s father was in his—`,
+o:[
+`early fifties`,
+`late fifties`,
+`early sixties`,
+`late sixties`
+],
+a:3
+},
+
+{
+q:`Kalam says that he tried to emulate his father in his own world of—`,
+o:[
+`literature and philosophy`,
+`science and technology`,
+`politics and administration`,
+`business and commerce`
+],
+a:1
+},
+
+{
+q:`According to Kalam, severing one’s emotional and physical bond leads towards—`,
+o:[
+`wealth, fame and power`,
+`success, status and recognition`,
+`freedom, happiness and peace of mind`,
+`isolation, silence and solitude`
+],
+a:2
+},
+
+{
+q:`Which statement best captures the central idea of “Strong Roots”?`,
+o:[
+`Material wealth is the foundation of a successful life.`,
+`Spiritual values, simplicity, inner strength and family influence shape a meaningful life.`,
+`Religious differences inevitably divide communities.`,
+`Scientific progress makes spiritual values unnecessary.`
+],
+a:1
+}
+
+];
+
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+
+const questionEl = document.getElementById("question");
+const optionsEl = document.getElementById("options");
+const feedbackEl = document.getElementById("feedback");
+const nextBtn = document.getElementById("nextBtn");
+const progressBar = document.getElementById("progressBar");
+
+function loadQuestion(){
+
+    answered = false;
+
+    const item = questions[currentQuestion];
+
+    questionEl.textContent = item.q;
+
+    optionsEl.innerHTML = "";
+
+    feedbackEl.innerHTML = "";
+    feedbackEl.className = "feedback";
+
+    nextBtn.style.display = "none";
+
+    item.o.forEach((option,index)=>{
+
+        const btn = document.createElement("button");
+
+        btn.className = "option";
+
+        btn.textContent = option;
+
+        btn.onclick = () => selectAnswer(index,btn);
+
+        optionsEl.appendChild(btn);
+
+    });
+
+    progressBar.style.width =
+        ((currentQuestion + 1) / questions.length * 100) + "%";
+}
+
+
+function selectAnswer(selected,selectedButton){
+
+    if(answered) return;
+
+    answered = true;
+
+    const correct = questions[currentQuestion].a;
+
+    const allOptions =
+        document.querySelectorAll(".option");
+
+    allOptions.forEach(btn=>{
+        btn.classList.add("disabled");
+    });
+
+    allOptions[correct].classList.add("correct");
+
+    if(selected === correct){
+
+        score++;
+
+        feedbackEl.className =
+            "feedback correct-text";
+
+        feedbackEl.innerHTML =
+            "✓ সঠিক উত্তর! খুব ভালো।";
+
+    }else{
+
+        selectedButton.classList.add("wrong");
+
+        feedbackEl.className =
+            "feedback wrong-text";
+
+        feedbackEl.innerHTML =
+            "✗ ভুল উত্তর! সঠিক উত্তরটি সবুজ রঙে দেখানো হয়েছে।";
+    }
+
+    nextBtn.style.display = "block";
+
+    if(currentQuestion === questions.length - 1){
+
+        nextBtn.textContent = "ফলাফল দেখুন";
+
+    }else{
+
+        nextBtn.textContent = "পরের প্রশ্ন";
+
+    }
+}
+
+
+function nextQuestion(){
+
+    if(currentQuestion < questions.length - 1){
+
+        currentQuestion++;
+
+        loadQuestion();
+
+    }else{
+
+        showResult();
+
+    }
+}
+
+
+function showResult(){
+
+    document.getElementById("quizArea").style.display = "none";
+
+    document.getElementById("result").style.display = "block";
+
+    document.getElementById("finalScore").textContent =
+        score + "/50";
+
+    const percentage =
+        Math.round((score / questions.length) * 100);
+
+    let message = "";
+
+    if(percentage >= 90){
+
+        message =
+        `অসাধারণ! 🎉<br>
+        আপনার ফলাফল ${percentage}%।<br>
+        Strong Roots অধ্যায়ের প্রস্তুতি খুব ভালো।`;
+
+    }else if(percentage >= 75){
+
+        message =
+        `খুব ভালো! 👏<br>
+        আপনার ফলাফল ${percentage}%।<br>
+        আরও একবার Revision করলে প্রস্তুতি আরও শক্ত হবে।`;
+
+    }else if(percentage >= 50){
+
+        message =
+        `ভালো চেষ্টা! 👍<br>
+        আপনার ফলাফল ${percentage}%।<br>
+        গুরুত্বপূর্ণ অংশগুলো আরও একবার পড়ে নিন।`;
+
+    }else{
+
+        message =
+        `আরও অনুশীলন করুন। 📚<br>
+        আপনার ফলাফল ${percentage}%।<br>
+        Strong Roots অধ্যায়টি আবার Revision করুন।`;
+    }
+
+    document.getElementById("resultMessage").innerHTML =
+        message;
+}
+
+
+function restartQuiz(){
+
+    currentQuestion = 0;
+
+    score = 0;
+
+    document.getElementById("quizArea").style.display =
+        "block";
+
+    document.getElementById("result").style.display =
+        "none";
+
+    loadQuestion();
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>

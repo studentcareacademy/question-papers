@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Student Care Academy - Ulysses Quiz</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#050b18;color:#fff;font-family:Arial,"Noto Sans Bengali",sans-serif}
+body{counter-reset:score}
+.wrap{width:100%;max-width:850px;margin:auto;padding:16px 12px 35px}
+.brand{text-align:center;font-size:clamp(20px,5vw,31px);font-weight:900;margin:4px 0 18px;animation:glow 1.7s ease-in-out infinite alternate}
+@keyframes glow{from{text-shadow:0 0 5px #fff,0 0 12px #39bfff}to{text-shadow:0 0 14px #fff,0 0 34px #008cff}}
+.box{background:linear-gradient(145deg,#142642,#070e1b);border:1px solid #41648f;border-radius:22px;padding:20px;box-shadow:0 14px 45px #0008}
+.nav{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px}
+.question-card{display:none}
+#p0:checked ~ .quiz .q0{display:block}
+#p1:checked ~ .quiz .q1{display:block}
+#p2:checked ~ .quiz .q2{display:block}
+#p3:checked ~ .quiz .q3{display:block}
+#p4:checked ~ .quiz .q4{display:block}
+#p5:checked ~ .quiz .q5{display:block}
+#p6:checked ~ .quiz .q6{display:block}
+#p7:checked ~ .quiz .q7{display:block}
+#p8:checked ~ .quiz .q8{display:block}
+#p9:checked ~ .quiz .q9{display:block}
+#p10:checked ~ .quiz .q10{display:block}
+#p11:checked ~ .quiz .q11{display:block}
+#p12:checked ~ .quiz .q12{display:block}
+#p13:checked ~ .quiz .q13{display:block}
+#p14:checked ~ .quiz .q14{display:block}
+#p15:checked ~ .quiz .q15{display:block}
+#p16:checked ~ .quiz .q16{display:block}
+#p17:checked ~ .quiz .q17{display:block}
+#p18:checked ~ .quiz .q18{display:block}
+#p19:checked ~ .quiz .q19{display:block}
+#p20:checked ~ .quiz .q20{display:block}
+#p21:checked ~ .quiz .q21{display:block}
+#p22:checked ~ .quiz .q22{display:block}
+#p23:checked ~ .quiz .q23{display:block}
+#p24:checked ~ .quiz .q24{display:block}
+#p25:checked ~ .quiz .q25{display:block}
+#p26:checked ~ .quiz .q26{display:block}
+#p27:checked ~ .quiz .q27{display:block}
+#p28:checked ~ .quiz .q28{display:block}
+#p29:checked ~ .quiz .q29{display:block}
+#p30:checked ~ .quiz .q30{display:block}
+#p31:checked ~ .quiz .q31{display:block}
+#p32:checked ~ .quiz .q32{display:block}
+#p33:checked ~ .quiz .q33{display:block}
+#p34:checked ~ .quiz .q34{display:block}
+#p35:checked ~ .quiz .q35{display:block}
+#p36:checked ~ .quiz .q36{display:block}
+#p37:checked ~ .quiz .q37{display:block}
+#p38:checked ~ .quiz .q38{display:block}
+#p39:checked ~ .quiz .q39{display:block}
+#p40:checked ~ .quiz .q40{display:block}
+#p41:checked ~ .quiz .q41{display:block}
+#p42:checked ~ .quiz .q42{display:block}
+#p43:checked ~ .quiz .q43{display:block}
+#p44:checked ~ .quiz .q44{display:block}
+#p45:checked ~ .quiz .q45{display:block}
+#p46:checked ~ .quiz .q46{display:block}
+#p47:checked ~ .quiz .q47{display:block}
+#p48:checked ~ .quiz .q48{display:block}
+#p49:checked ~ .quiz .q49{display:block}
+#p50:checked ~ .quiz .q50{display:block}
+#p51:checked ~ .quiz .q51{display:block}
+#p52:checked ~ .quiz .q52{display:block}
+#p53:checked ~ .quiz .q53{display:block}
+#p54:checked ~ .quiz .q54{display:block}
+#p55:checked ~ .quiz .q55{display:block}
+#p56:checked ~ .quiz .q56{display:block}
+#p57:checked ~ .quiz .q57{display:block}
+#p58:checked ~ .quiz .q58{display:block}
+#p59:checked ~ .quiz .q59{display:block}
+.question{font-size:clamp(20px,4vw,28px);font-weight:800;line-height:1.5;margin-bottom:21px}
+.answers{display:grid;gap:11px}
+.answer{display:flex;align-items:center;gap:12px;width:100%;min-height:60px;border:1px solid #4a6d98;background:#101e35;border-radius:14px;padding:12px 14px;font-size:17px;line-height:1.4;cursor:pointer}
+.answer:hover{background:#1b3152;border-color:#70a9df}
+.answer input{position:absolute;opacity:0}
+.bubble{flex:0 0 36px;width:36px;height:36px;border-radius:50%;background:#263c5d;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px}
+.answer:has(input:checked){background:#263858;border-color:#ffd42e;box-shadow:0 0 0 1px #ffd42e}
+.ans.correct:checked{counter-increment:score}
+.feedback{display:none;margin-top:14px;font-size:17px;font-weight:900}
+.question-card:has(.ans.correct:checked) .good{display:block;color:#55ffae}
+.question-card:has(input:not(.correct):checked) .bad{display:block;color:#ff7d86}
+.next{display:none;margin-top:15px;background:#2da8ff;color:#fff;padding:13px 20px;border-radius:12px;font-weight:900;cursor:pointer}
+.question-card:has(input:checked) .next{display:inline-block}
+.result{display:none;text-align:center;padding:34px 10px}
+#result:checked ~ .quiz .result{display:block}
+#result:checked ~ .quiz .question-card{display:none}
+.score{font-size:64px;font-weight:900;color:#ffd42e;margin:16px 0}
+.score::before{content:counter(score)}
+.score::after{content:" / 60";font-size:30px;color:#fff}
+.restart{display:inline-block;background:#ffd42e;color:#111;padding:13px 24px;border-radius:12px;font-weight:900;cursor:pointer}
+.note{text-align:center;color:#91a9c6;font-size:13px;margin-top:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">Student Care Academy; Teacher:-Tapan Mandal</div>
+  <input class="nav" type="radio" name="page" id="p0" checked>
+<input class="nav" type="radio" name="page" id="p1">
+<input class="nav" type="radio" name="page" id="p2">
+<input class="nav" type="radio" name="page" id="p3">
+<input class="nav" type="radio" name="page" id="p4">
+<input class="nav" type="radio" name="page" id="p5">
+<input class="nav" type="radio" name="page" id="p6">
+<input class="nav" type="radio" name="page" id="p7">
+<input class="nav" type="radio" name="page" id="p8">
+<input class="nav" type="radio" name="page" id="p9">
+<input class="nav" type="radio" name="page" id="p10">
+<input class="nav" type="radio" name="page" id="p11">
+<input class="nav" type="radio" name="page" id="p12">
+<input class="nav" type="radio" name="page" id="p13">
+<input class="nav" type="radio" name="page" id="p14">
+<input class="nav" type="radio" name="page" id="p15">
+<input class="nav" type="radio" name="page" id="p16">
+<input class="nav" type="radio" name="page" id="p17">
+<input class="nav" type="radio" name="page" id="p18">
+<input class="nav" type="radio" name="page" id="p19">
+<input class="nav" type="radio" name="page" id="p20">
+<input class="nav" type="radio" name="page" id="p21">
+<input class="nav" type="radio" name="page" id="p22">
+<input class="nav" type="radio" name="page" id="p23">
+<input class="nav" type="radio" name="page" id="p24">
+<input class="nav" type="radio" name="page" id="p25">
+<input class="nav" type="radio" name="page" id="p26">
+<input class="nav" type="radio" name="page" id="p27">
+<input class="nav" type="radio" name="page" id="p28">
+<input class="nav" type="radio" name="page" id="p29">
+<input class="nav" type="radio" name="page" id="p30">
+<input class="nav" type="radio" name="page" id="p31">
+<input class="nav" type="radio" name="page" id="p32">
+<input class="nav" type="radio" name="page" id="p33">
+<input class="nav" type="radio" name="page" id="p34">
+<input class="nav" type="radio" name="page" id="p35">
+<input class="nav" type="radio" name="page" id="p36">
+<input class="nav" type="radio" name="page" id="p37">
+<input class="nav" type="radio" name="page" id="p38">
+<input class="nav" type="radio" name="page" id="p39">
+<input class="nav" type="radio" name="page" id="p40">
+<input class="nav" type="radio" name="page" id="p41">
+<input class="nav" type="radio" name="page" id="p42">
+<input class="nav" type="radio" name="page" id="p43">
+<input class="nav" type="radio" name="page" id="p44">
+<input class="nav" type="radio" name="page" id="p45">
+<input class="nav" type="radio" name="page" id="p46">
+<input class="nav" type="radio" name="page" id="p47">
+<input class="nav" type="radio" name="page" id="p48">
+<input class="nav" type="radio" name="page" id="p49">
+<input class="nav" type="radio" name="page" id="p50">
+<input class="nav" type="radio" name="page" id="p51">
+<input class="nav" type="radio" name="page" id="p52">
+<input class="nav" type="radio" name="page" id="p53">
+<input class="nav" type="radio" name="page" id="p54">
+<input class="nav" type="radio" name="page" id="p55">
+<input class="nav" type="radio" name="page" id="p56">
+<input class="nav" type="radio" name="page" id="p57">
+<input class="nav" type="radio" name="page" id="p58">
+<input class="nav" type="radio" name="page" id="p59"><input class="nav" type="radio" name="page" id="result">
+  <div class="box quiz">
+    
+<section class="question-card q0">
+  <div class="question">Who is the speaker in Tennyson&#x27;s poem Ulysses?</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a0" class="ans"><span class="bubble">A</span><span>Telemachus</span></label><label class="answer"><input type="radio" name="a0" class="ans correct"><span class="bubble">B</span><span>Ulysses</span></label><label class="answer"><input type="radio" name="a0" class="ans"><span class="bubble">C</span><span>Achilles</span></label><label class="answer"><input type="radio" name="a0" class="ans"><span class="bubble">D</span><span>Dante</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p1">Next Question →</label>
+</section>
+<section class="question-card q1">
+  <div class="question">Ulysses describes himself as an “idle king” because he—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a1" class="ans"><span class="bubble">A</span><span>has lost his kingdom</span></label><label class="answer"><input type="radio" name="a1" class="ans"><span class="bubble">B</span><span>dislikes his son</span></label><label class="answer"><input type="radio" name="a1" class="ans correct"><span class="bubble">C</span><span>finds his present life inactive and unfulfilling</span></label><label class="answer"><input type="radio" name="a1" class="ans"><span class="bubble">D</span><span>has forgotten his past</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p2">Next Question →</label>
+</section>
+<section class="question-card q2">
+  <div class="question">Where does Ulysses live at the beginning of the poem?</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a2" class="ans"><span class="bubble">A</span><span>Troy</span></label><label class="answer"><input type="radio" name="a2" class="ans correct"><span class="bubble">B</span><span>Ithaca</span></label><label class="answer"><input type="radio" name="a2" class="ans"><span class="bubble">C</span><span>Rome</span></label><label class="answer"><input type="radio" name="a2" class="ans"><span class="bubble">D</span><span>Athens</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p3">Next Question →</label>
+</section>
+<section class="question-card q3">
+  <div class="question">Ulysses is matched with—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a3" class="ans"><span class="bubble">A</span><span>a young queen</span></label><label class="answer"><input type="radio" name="a3" class="ans correct"><span class="bubble">B</span><span>an aged wife</span></label><label class="answer"><input type="radio" name="a3" class="ans"><span class="bubble">C</span><span>a faithful daughter</span></label><label class="answer"><input type="radio" name="a3" class="ans"><span class="bubble">D</span><span>a widowed sister</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p4">Next Question →</label>
+</section>
+<section class="question-card q4">
+  <div class="question">The people ruled by Ulysses are described as—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a4" class="ans"><span class="bubble">A</span><span>brave and adventurous</span></label><label class="answer"><input type="radio" name="a4" class="ans correct"><span class="bubble">B</span><span>savage and inactive</span></label><label class="answer"><input type="radio" name="a4" class="ans"><span class="bubble">C</span><span>learned and artistic</span></label><label class="answer"><input type="radio" name="a4" class="ans"><span class="bubble">D</span><span>wealthy and powerful</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p5">Next Question →</label>
+</section>
+<section class="question-card q5">
+  <div class="question">The phrase “mete and dole / Unequal laws” refers to Ulysses&#x27; role as—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a5" class="ans"><span class="bubble">A</span><span>a sailor</span></label><label class="answer"><input type="radio" name="a5" class="ans"><span class="bubble">B</span><span>a warrior</span></label><label class="answer"><input type="radio" name="a5" class="ans correct"><span class="bubble">C</span><span>a ruler administering laws</span></label><label class="answer"><input type="radio" name="a5" class="ans"><span class="bubble">D</span><span>a teacher</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p6">Next Question →</label>
+</section>
+<section class="question-card q6">
+  <div class="question">What does Ulysses say he cannot do?</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a6" class="ans"><span class="bubble">A</span><span>Rule his kingdom</span></label><label class="answer"><input type="radio" name="a6" class="ans correct"><span class="bubble">B</span><span>Rest from travel</span></label><label class="answer"><input type="radio" name="a6" class="ans"><span class="bubble">C</span><span>Love his family</span></label><label class="answer"><input type="radio" name="a6" class="ans"><span class="bubble">D</span><span>Remember Troy</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p7">Next Question →</label>
+</section>
+<section class="question-card q7">
+  <div class="question">What does Ulysses wish to “drink … to the lees”?</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a7" class="ans"><span class="bubble">A</span><span>Knowledge</span></label><label class="answer"><input type="radio" name="a7" class="ans"><span class="bubble">B</span><span>Wealth</span></label><label class="answer"><input type="radio" name="a7" class="ans correct"><span class="bubble">C</span><span>Life</span></label><label class="answer"><input type="radio" name="a7" class="ans"><span class="bubble">D</span><span>Fame</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p8">Next Question →</label>
+</section>
+<section class="question-card q8">
+  <div class="question">The expression “drink life to the lees” suggests—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a8" class="ans correct"><span class="bubble">A</span><span>living life to the fullest</span></label><label class="answer"><input type="radio" name="a8" class="ans"><span class="bubble">B</span><span>rejecting all adventures</span></label><label class="answer"><input type="radio" name="a8" class="ans"><span class="bubble">C</span><span>avoiding difficulties</span></label><label class="answer"><input type="radio" name="a8" class="ans"><span class="bubble">D</span><span>enjoying material wealth</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p9">Next Question →</label>
+</section>
+<section class="question-card q9">
+  <div class="question">Ulysses says that he has—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a9" class="ans"><span class="bubble">A</span><span>always remained at home</span></label><label class="answer"><input type="radio" name="a9" class="ans correct"><span class="bubble">B</span><span>greatly suffered and greatly enjoyed</span></label><label class="answer"><input type="radio" name="a9" class="ans"><span class="bubble">C</span><span>never experienced sorrow</span></label><label class="answer"><input type="radio" name="a9" class="ans"><span class="bubble">D</span><span>never travelled by sea</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p10">Next Question →</label>
+</section>
+<section class="question-card q10">
+  <div class="question">The “rainy Hyades” are associated with—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a10" class="ans correct"><span class="bubble">A</span><span>a group of stars</span></label><label class="answer"><input type="radio" name="a10" class="ans"><span class="bubble">B</span><span>a group of sailors</span></label><label class="answer"><input type="radio" name="a10" class="ans"><span class="bubble">C</span><span>a group of islands</span></label><label class="answer"><input type="radio" name="a10" class="ans"><span class="bubble">D</span><span>a group of warriors</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p11">Next Question →</label>
+</section>
+<section class="question-card q11">
+  <div class="question">The phrase “I am become a name” mainly suggests Ulysses&#x27;—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a11" class="ans"><span class="bubble">A</span><span>anonymity</span></label><label class="answer"><input type="radio" name="a11" class="ans correct"><span class="bubble">B</span><span>fame</span></label><label class="answer"><input type="radio" name="a11" class="ans"><span class="bubble">C</span><span>poverty</span></label><label class="answer"><input type="radio" name="a11" class="ans"><span class="bubble">D</span><span>loneliness</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p12">Next Question →</label>
+</section>
+<section class="question-card q12">
+  <div class="question">Ulysses says that he has seen and known many—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a12" class="ans correct"><span class="bubble">A</span><span>cities, manners, climates, councils and governments</span></label><label class="answer"><input type="radio" name="a12" class="ans"><span class="bubble">B</span><span>forests, rivers, mountains and deserts only</span></label><label class="answer"><input type="radio" name="a12" class="ans"><span class="bubble">C</span><span>kings and queens only</span></label><label class="answer"><input type="radio" name="a12" class="ans"><span class="bubble">D</span><span>poets and philosophers only</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p13">Next Question →</label>
+</section>
+<section class="question-card q13">
+  <div class="question">Ulysses refers to the “ringing plains” of—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a13" class="ans"><span class="bubble">A</span><span>Ithaca</span></label><label class="answer"><input type="radio" name="a13" class="ans correct"><span class="bubble">B</span><span>Troy</span></label><label class="answer"><input type="radio" name="a13" class="ans"><span class="bubble">C</span><span>Sparta</span></label><label class="answer"><input type="radio" name="a13" class="ans"><span class="bubble">D</span><span>Athens</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p14">Next Question →</label>
+</section>
+<section class="question-card q14">
+  <div class="question">“I am a part of all that I have met” emphasizes the importance of—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a14" class="ans"><span class="bubble">A</span><span>isolation</span></label><label class="answer"><input type="radio" name="a14" class="ans correct"><span class="bubble">B</span><span>experience</span></label><label class="answer"><input type="radio" name="a14" class="ans"><span class="bubble">C</span><span>wealth</span></label><label class="answer"><input type="radio" name="a14" class="ans"><span class="bubble">D</span><span>political power</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p15">Next Question →</label>
+</section>
+<section class="question-card q15">
+  <div class="question">The “untravell’d world” in the poem represents—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a15" class="ans"><span class="bubble">A</span><span>a world already completely explored</span></label><label class="answer"><input type="radio" name="a15" class="ans correct"><span class="bubble">B</span><span>the unknown possibilities still waiting to be discovered</span></label><label class="answer"><input type="radio" name="a15" class="ans"><span class="bubble">C</span><span>Ulysses&#x27; lost kingdom</span></label><label class="answer"><input type="radio" name="a15" class="ans"><span class="bubble">D</span><span>his childhood home</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p16">Next Question →</label>
+</section>
+<section class="question-card q16">
+  <div class="question">The image of an “arch” through which an untravelled world gleams suggests that—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a16" class="ans correct"><span class="bubble">A</span><span>experience opens a wider horizon of knowledge</span></label><label class="answer"><input type="radio" name="a16" class="ans"><span class="bubble">B</span><span>travel has no value</span></label><label class="answer"><input type="radio" name="a16" class="ans"><span class="bubble">C</span><span>Ulysses fears the unknown</span></label><label class="answer"><input type="radio" name="a16" class="ans"><span class="bubble">D</span><span>the world is permanently closed</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p17">Next Question →</label>
+</section>
+<section class="question-card q17">
+  <div class="question">According to Ulysses, it is dull—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a17" class="ans"><span class="bubble">A</span><span>to travel</span></label><label class="answer"><input type="radio" name="a17" class="ans"><span class="bubble">B</span><span>to fight</span></label><label class="answer"><input type="radio" name="a17" class="ans correct"><span class="bubble">C</span><span>to pause and make an end</span></label><label class="answer"><input type="radio" name="a17" class="ans"><span class="bubble">D</span><span>to seek knowledge</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p18">Next Question →</label>
+</section>
+<section class="question-card q18">
+  <div class="question">“To rust unburnish&#x27;d” is used metaphorically to describe—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a18" class="ans"><span class="bubble">A</span><span>physical weapons only</span></label><label class="answer"><input type="radio" name="a18" class="ans correct"><span class="bubble">B</span><span>unused human potential</span></label><label class="answer"><input type="radio" name="a18" class="ans"><span class="bubble">C</span><span>the condition of the sea</span></label><label class="answer"><input type="radio" name="a18" class="ans"><span class="bubble">D</span><span>the condition of Ithaca</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p19">Next Question →</label>
+</section>
+<section class="question-card q19">
+  <div class="question">The phrase “not to shine in use” means that a person should—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a19" class="ans"><span class="bubble">A</span><span>remain inactive</span></label><label class="answer"><input type="radio" name="a19" class="ans correct"><span class="bubble">B</span><span>make practical use of his abilities</span></label><label class="answer"><input type="radio" name="a19" class="ans"><span class="bubble">C</span><span>avoid experience</span></label><label class="answer"><input type="radio" name="a19" class="ans"><span class="bubble">D</span><span>reject knowledge</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p20">Next Question →</label>
+</section>
+<section class="question-card q20">
+  <div class="question">Ulysses compares the pursuit of knowledge to—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a20" class="ans"><span class="bubble">A</span><span>a rising sun</span></label><label class="answer"><input type="radio" name="a20" class="ans correct"><span class="bubble">B</span><span>a sinking star</span></label><label class="answer"><input type="radio" name="a20" class="ans"><span class="bubble">C</span><span>a burning fire</span></label><label class="answer"><input type="radio" name="a20" class="ans"><span class="bubble">D</span><span>a flowing river</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p21">Next Question →</label>
+</section>
+<section class="question-card q21">
+  <div class="question">The phrase “beyond the utmost bound of human thought” indicates Ulysses&#x27; desire for—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a21" class="ans"><span class="bubble">A</span><span>limited knowledge</span></label><label class="answer"><input type="radio" name="a21" class="ans correct"><span class="bubble">B</span><span>endless intellectual exploration</span></label><label class="answer"><input type="radio" name="a21" class="ans"><span class="bubble">C</span><span>political authority</span></label><label class="answer"><input type="radio" name="a21" class="ans"><span class="bubble">D</span><span>domestic comfort</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p22">Next Question →</label>
+</section>
+<section class="question-card q22">
+  <div class="question">Who is Telemachus?</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a22" class="ans"><span class="bubble">A</span><span>Ulysses&#x27; father</span></label><label class="answer"><input type="radio" name="a22" class="ans correct"><span class="bubble">B</span><span>Ulysses&#x27; son</span></label><label class="answer"><input type="radio" name="a22" class="ans"><span class="bubble">C</span><span>Ulysses&#x27; friend</span></label><label class="answer"><input type="radio" name="a22" class="ans"><span class="bubble">D</span><span>Ulysses&#x27; commander</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p23">Next Question →</label>
+</section>
+<section class="question-card q23">
+  <div class="question">What does Ulysses leave to Telemachus?</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a23" class="ans"><span class="bubble">A</span><span>His sword and armour</span></label><label class="answer"><input type="radio" name="a23" class="ans"><span class="bubble">B</span><span>His ship and sailors</span></label><label class="answer"><input type="radio" name="a23" class="ans correct"><span class="bubble">C</span><span>The sceptre and the isle</span></label><label class="answer"><input type="radio" name="a23" class="ans"><span class="bubble">D</span><span>His treasure and weapons</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p24">Next Question →</label>
+</section>
+<section class="question-card q24">
+  <div class="question">Telemachus is characterized mainly by—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a24" class="ans"><span class="bubble">A</span><span>impatience and rebellion</span></label><label class="answer"><input type="radio" name="a24" class="ans correct"><span class="bubble">B</span><span>prudence and devotion to duty</span></label><label class="answer"><input type="radio" name="a24" class="ans"><span class="bubble">C</span><span>cruelty and ambition</span></label><label class="answer"><input type="radio" name="a24" class="ans"><span class="bubble">D</span><span>fear and weakness</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p25">Next Question →</label>
+</section>
+<section class="question-card q25">
+  <div class="question">Telemachus is expected to make the “rugged people”—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a25" class="ans"><span class="bubble">A</span><span>rich and famous</span></label><label class="answer"><input type="radio" name="a25" class="ans correct"><span class="bubble">B</span><span>mild and useful</span></label><label class="answer"><input type="radio" name="a25" class="ans"><span class="bubble">C</span><span>adventurous and restless</span></label><label class="answer"><input type="radio" name="a25" class="ans"><span class="bubble">D</span><span>powerful warriors</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p26">Next Question →</label>
+</section>
+<section class="question-card q26">
+  <div class="question">The phrase “slow prudence” suggests—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a26" class="ans"><span class="bubble">A</span><span>careless action</span></label><label class="answer"><input type="radio" name="a26" class="ans correct"><span class="bubble">B</span><span>thoughtful and gradual action</span></label><label class="answer"><input type="radio" name="a26" class="ans"><span class="bubble">C</span><span>sudden violence</span></label><label class="answer"><input type="radio" name="a26" class="ans"><span class="bubble">D</span><span>complete inactivity</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p27">Next Question →</label>
+</section>
+<section class="question-card q27">
+  <div class="question">Telemachus is “centred in the sphere of”—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a27" class="ans"><span class="bubble">A</span><span>adventure</span></label><label class="answer"><input type="radio" name="a27" class="ans correct"><span class="bubble">B</span><span>common duties</span></label><label class="answer"><input type="radio" name="a27" class="ans"><span class="bubble">C</span><span>warfare</span></label><label class="answer"><input type="radio" name="a27" class="ans"><span class="bubble">D</span><span>exploration</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p28">Next Question →</label>
+</section>
+<section class="question-card q28">
+  <div class="question">Which quality is most closely associated with Telemachus in the poem?</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a28" class="ans correct"><span class="bubble">A</span><span>Domestic responsibility</span></label><label class="answer"><input type="radio" name="a28" class="ans"><span class="bubble">B</span><span>Reckless adventure</span></label><label class="answer"><input type="radio" name="a28" class="ans"><span class="bubble">C</span><span>Military aggression</span></label><label class="answer"><input type="radio" name="a28" class="ans"><span class="bubble">D</span><span>Desire for fame</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p29">Next Question →</label>
+</section>
+<section class="question-card q29">
+  <div class="question">“He works his work, I mine” mainly establishes a contrast between—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a29" class="ans"><span class="bubble">A</span><span>father and mother</span></label><label class="answer"><input type="radio" name="a29" class="ans correct"><span class="bubble">B</span><span>Ulysses and Telemachus</span></label><label class="answer"><input type="radio" name="a29" class="ans"><span class="bubble">C</span><span>Ulysses and Achilles</span></label><label class="answer"><input type="radio" name="a29" class="ans"><span class="bubble">D</span><span>sailors and warriors</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p30">Next Question →</label>
+</section>
+<section class="question-card q30">
+  <div class="question">What is visible at the port when Ulysses turns towards his mariners?</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a30" class="ans"><span class="bubble">A</span><span>A burning palace</span></label><label class="answer"><input type="radio" name="a30" class="ans correct"><span class="bubble">B</span><span>A vessel with its sail</span></label><label class="answer"><input type="radio" name="a30" class="ans"><span class="bubble">C</span><span>A battlefield</span></label><label class="answer"><input type="radio" name="a30" class="ans"><span class="bubble">D</span><span>A royal procession</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p31">Next Question →</label>
+</section>
+<section class="question-card q31">
+  <div class="question">Ulysses&#x27; mariners are described as people who have—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a31" class="ans"><span class="bubble">A</span><span>only fought</span></label><label class="answer"><input type="radio" name="a31" class="ans"><span class="bubble">B</span><span>only travelled</span></label><label class="answer"><input type="radio" name="a31" class="ans correct"><span class="bubble">C</span><span>toiled, wrought and thought with him</span></label><label class="answer"><input type="radio" name="a31" class="ans"><span class="bubble">D</span><span>remained at home</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p32">Next Question →</label>
+</section>
+<section class="question-card q32">
+  <div class="question">The mariners welcomed both—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a32" class="ans"><span class="bubble">A</span><span>peace and silence</span></label><label class="answer"><input type="radio" name="a32" class="ans correct"><span class="bubble">B</span><span>thunder and sunshine</span></label><label class="answer"><input type="radio" name="a32" class="ans"><span class="bubble">C</span><span>wealth and fame</span></label><label class="answer"><input type="radio" name="a32" class="ans"><span class="bubble">D</span><span>war and defeat</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p33">Next Question →</label>
+</section>
+<section class="question-card q33">
+  <div class="question">The expression “free hearts, free foreheads” mainly conveys—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a33" class="ans"><span class="bubble">A</span><span>fear and submission</span></label><label class="answer"><input type="radio" name="a33" class="ans correct"><span class="bubble">B</span><span>courage and freedom</span></label><label class="answer"><input type="radio" name="a33" class="ans"><span class="bubble">C</span><span>sadness and isolation</span></label><label class="answer"><input type="radio" name="a33" class="ans"><span class="bubble">D</span><span>anger and revenge</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p34">Next Question →</label>
+</section>
+<section class="question-card q34">
+  <div class="question">Ulysses believes that old age still possesses—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a34" class="ans"><span class="bubble">A</span><span>only weakness</span></label><label class="answer"><input type="radio" name="a34" class="ans correct"><span class="bubble">B</span><span>honour and toil</span></label><label class="answer"><input type="radio" name="a34" class="ans"><span class="bubble">C</span><span>wealth and power</span></label><label class="answer"><input type="radio" name="a34" class="ans"><span class="bubble">D</span><span>youth and beauty</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p35">Next Question →</label>
+</section>
+<section class="question-card q35">
+  <div class="question">What does Ulysses acknowledge about death?</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a35" class="ans"><span class="bubble">A</span><span>It can always be avoided</span></label><label class="answer"><input type="radio" name="a35" class="ans correct"><span class="bubble">B</span><span>It closes all</span></label><label class="answer"><input type="radio" name="a35" class="ans"><span class="bubble">C</span><span>It brings eternal adventure</span></label><label class="answer"><input type="radio" name="a35" class="ans"><span class="bubble">D</span><span>It makes people young</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p36">Next Question →</label>
+</section>
+<section class="question-card q36">
+  <div class="question">Before death, Ulysses hopes that—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a36" class="ans correct"><span class="bubble">A</span><span>some noble work may still be done</span></label><label class="answer"><input type="radio" name="a36" class="ans"><span class="bubble">B</span><span>he will return permanently to domestic life</span></label><label class="answer"><input type="radio" name="a36" class="ans"><span class="bubble">C</span><span>he will forget his past</span></label><label class="answer"><input type="radio" name="a36" class="ans"><span class="bubble">D</span><span>he will abandon his companions</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p37">Next Question →</label>
+</section>
+<section class="question-card q37">
+  <div class="question">The phrase “men that strove with Gods” refers to the heroic—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a37" class="ans correct"><span class="bubble">A</span><span>nature of Ulysses and his companions</span></label><label class="answer"><input type="radio" name="a37" class="ans"><span class="bubble">B</span><span>political power of Telemachus</span></label><label class="answer"><input type="radio" name="a37" class="ans"><span class="bubble">C</span><span>peaceful life of Ithaca</span></label><label class="answer"><input type="radio" name="a37" class="ans"><span class="bubble">D</span><span>ordinary duties of the people</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p38">Next Question →</label>
+</section>
+<section class="question-card q38">
+  <div class="question">Which natural images mark the approaching evening?</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a38" class="ans"><span class="bubble">A</span><span>Rising sun and bright clouds</span></label><label class="answer"><input type="radio" name="a38" class="ans correct"><span class="bubble">B</span><span>Twinkling lights, waning day and rising moon</span></label><label class="answer"><input type="radio" name="a38" class="ans"><span class="bubble">C</span><span>Rainbows and flowers</span></label><label class="answer"><input type="radio" name="a38" class="ans"><span class="bubble">D</span><span>Morning birds and sunrise</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p39">Next Question →</label>
+</section>
+<section class="question-card q39">
+  <div class="question">The “deep” is personified as something that—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a39" class="ans"><span class="bubble">A</span><span>sings sweetly</span></label><label class="answer"><input type="radio" name="a39" class="ans correct"><span class="bubble">B</span><span>moans with many voices</span></label><label class="answer"><input type="radio" name="a39" class="ans"><span class="bubble">C</span><span>sleeps silently</span></label><label class="answer"><input type="radio" name="a39" class="ans"><span class="bubble">D</span><span>laughs loudly</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p40">Next Question →</label>
+</section>
+<section class="question-card q40">
+  <div class="question">“&#x27;Tis not too late to seek a newer world” expresses—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a40" class="ans"><span class="bubble">A</span><span>resignation</span></label><label class="answer"><input type="radio" name="a40" class="ans correct"><span class="bubble">B</span><span>renewed aspiration</span></label><label class="answer"><input type="radio" name="a40" class="ans"><span class="bubble">C</span><span>fear of death</span></label><label class="answer"><input type="radio" name="a40" class="ans"><span class="bubble">D</span><span>rejection of adventure</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p41">Next Question →</label>
+</section>
+<section class="question-card q41">
+  <div class="question">What does Ulysses ask his mariners to do?</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a41" class="ans"><span class="bubble">A</span><span>Return to the palace</span></label><label class="answer"><input type="radio" name="a41" class="ans correct"><span class="bubble">B</span><span>Push off and sail</span></label><label class="answer"><input type="radio" name="a41" class="ans"><span class="bubble">C</span><span>Prepare a feast</span></label><label class="answer"><input type="radio" name="a41" class="ans"><span class="bubble">D</span><span>Build a new city</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p42">Next Question →</label>
+</section>
+<section class="question-card q42">
+  <div class="question">The “sounding furrows” refer metaphorically to—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a42" class="ans"><span class="bubble">A</span><span>fields on land</span></label><label class="answer"><input type="radio" name="a42" class="ans correct"><span class="bubble">B</span><span>waves made by the ship</span></label><label class="answer"><input type="radio" name="a42" class="ans"><span class="bubble">C</span><span>mountain valleys</span></label><label class="answer"><input type="radio" name="a42" class="ans"><span class="bubble">D</span><span>roads in Ithaca</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p43">Next Question →</label>
+</section>
+<section class="question-card q43">
+  <div class="question">Ulysses&#x27; purpose is to sail—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a43" class="ans"><span class="bubble">A</span><span>towards Troy only</span></label><label class="answer"><input type="radio" name="a43" class="ans correct"><span class="bubble">B</span><span>beyond the sunset</span></label><label class="answer"><input type="radio" name="a43" class="ans"><span class="bubble">C</span><span>towards Ithaca</span></label><label class="answer"><input type="radio" name="a43" class="ans"><span class="bubble">D</span><span>towards the nearest island</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p44">Next Question →</label>
+</section>
+<section class="question-card q44">
+  <div class="question">The “baths / Of all the western stars” refers to the imagined place where—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a44" class="ans correct"><span class="bubble">A</span><span>stars seem to plunge into the western sea</span></label><label class="answer"><input type="radio" name="a44" class="ans"><span class="bubble">B</span><span>sailors take physical baths</span></label><label class="answer"><input type="radio" name="a44" class="ans"><span class="bubble">C</span><span>Ulysses builds a palace</span></label><label class="answer"><input type="radio" name="a44" class="ans"><span class="bubble">D</span><span>warriors gather</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p45">Next Question →</label>
+</section>
+<section class="question-card q45">
+  <div class="question">What does Ulysses accept as one possible result of the voyage?</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a45" class="ans correct"><span class="bubble">A</span><span>The gulfs may wash them down</span></label><label class="answer"><input type="radio" name="a45" class="ans"><span class="bubble">B</span><span>They will certainly become kings</span></label><label class="answer"><input type="radio" name="a45" class="ans"><span class="bubble">C</span><span>They will certainly return home</span></label><label class="answer"><input type="radio" name="a45" class="ans"><span class="bubble">D</span><span>They will never face danger</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p46">Next Question →</label>
+</section>
+<section class="question-card q46">
+  <div class="question">The “Happy Isles” are presented as a possible—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a46" class="ans correct"><span class="bubble">A</span><span>destination associated with blessedness</span></label><label class="answer"><input type="radio" name="a46" class="ans"><span class="bubble">B</span><span>battlefield</span></label><label class="answer"><input type="radio" name="a46" class="ans"><span class="bubble">C</span><span>prison</span></label><label class="answer"><input type="radio" name="a46" class="ans"><span class="bubble">D</span><span>marketplace</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p47">Next Question →</label>
+</section>
+<section class="question-card q47">
+  <div class="question">Whom does Ulysses hope to see in the Happy Isles?</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a47" class="ans"><span class="bubble">A</span><span>Telemachus</span></label><label class="answer"><input type="radio" name="a47" class="ans correct"><span class="bubble">B</span><span>Achilles</span></label><label class="answer"><input type="radio" name="a47" class="ans"><span class="bubble">C</span><span>Penelope</span></label><label class="answer"><input type="radio" name="a47" class="ans"><span class="bubble">D</span><span>Dante</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p48">Next Question →</label>
+</section>
+<section class="question-card q48">
+  <div class="question">The line “Tho&#x27; much is taken, much abides” suggests that—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a48" class="ans"><span class="bubble">A</span><span>age destroys everything</span></label><label class="answer"><input type="radio" name="a48" class="ans correct"><span class="bubble">B</span><span>something valuable remains despite loss</span></label><label class="answer"><input type="radio" name="a48" class="ans"><span class="bubble">C</span><span>nothing changes with age</span></label><label class="answer"><input type="radio" name="a48" class="ans"><span class="bubble">D</span><span>physical strength increases with time</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p49">Next Question →</label>
+</section>
+<section class="question-card q49">
+  <div class="question">According to the final stanza, Ulysses and his companions are no longer as strong as they were because of—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a49" class="ans"><span class="bubble">A</span><span>wealth and power</span></label><label class="answer"><input type="radio" name="a49" class="ans correct"><span class="bubble">B</span><span>time and fate</span></label><label class="answer"><input type="radio" name="a49" class="ans"><span class="bubble">C</span><span>travel and knowledge</span></label><label class="answer"><input type="radio" name="a49" class="ans"><span class="bubble">D</span><span>family and duty</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p50">Next Question →</label>
+</section>
+<section class="question-card q50">
+  <div class="question">What remains strong despite the weakening caused by time and fate?</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a50" class="ans"><span class="bubble">A</span><span>Physical beauty</span></label><label class="answer"><input type="radio" name="a50" class="ans"><span class="bubble">B</span><span>Political authority</span></label><label class="answer"><input type="radio" name="a50" class="ans correct"><span class="bubble">C</span><span>Will</span></label><label class="answer"><input type="radio" name="a50" class="ans"><span class="bubble">D</span><span>Wealth</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p51">Next Question →</label>
+</section>
+<section class="question-card q51">
+  <div class="question">“Made weak by time and fate, but strong in will” contains a contrast between—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a51" class="ans correct"><span class="bubble">A</span><span>physical decline and mental determination</span></label><label class="answer"><input type="radio" name="a51" class="ans"><span class="bubble">B</span><span>youth and childhood</span></label><label class="answer"><input type="radio" name="a51" class="ans"><span class="bubble">C</span><span>wealth and poverty</span></label><label class="answer"><input type="radio" name="a51" class="ans"><span class="bubble">D</span><span>land and sea</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p52">Next Question →</label>
+</section>
+<section class="question-card q52">
+  <div class="question">Which sequence correctly represents the final four verbs of the poem?</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a52" class="ans"><span class="bubble">A</span><span>To find, to seek, to strive, to yield</span></label><label class="answer"><input type="radio" name="a52" class="ans correct"><span class="bubble">B</span><span>To strive, to seek, to find, and not to yield</span></label><label class="answer"><input type="radio" name="a52" class="ans"><span class="bubble">C</span><span>To seek, to yield, to find, to strive</span></label><label class="answer"><input type="radio" name="a52" class="ans"><span class="bubble">D</span><span>To yield, to find, to seek, to strive</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p53">Next Question →</label>
+</section>
+<section class="question-card q53">
+  <div class="question">The phrase “not to yield” most nearly means—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a53" class="ans correct"><span class="bubble">A</span><span>not to surrender</span></label><label class="answer"><input type="radio" name="a53" class="ans"><span class="bubble">B</span><span>not to travel</span></label><label class="answer"><input type="radio" name="a53" class="ans"><span class="bubble">C</span><span>not to think</span></label><label class="answer"><input type="radio" name="a53" class="ans"><span class="bubble">D</span><span>not to speak</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p54">Next Question →</label>
+</section>
+<section class="question-card q54">
+  <div class="question">Which statement best reflects the central tension in the poem?</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a54" class="ans correct"><span class="bubble">A</span><span>Domestic duty versus the desire for adventure</span></label><label class="answer"><input type="radio" name="a54" class="ans"><span class="bubble">B</span><span>Wealth versus poverty</span></label><label class="answer"><input type="radio" name="a54" class="ans"><span class="bubble">C</span><span>Youth versus childhood</span></label><label class="answer"><input type="radio" name="a54" class="ans"><span class="bubble">D</span><span>War versus agriculture</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p55">Next Question →</label>
+</section>
+<section class="question-card q55">
+  <div class="question">Statement 1: Ulysses considers experience an important part of life. Statement 2: He believes that all experience enlarges the horizon of knowledge.</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a55" class="ans correct"><span class="bubble">A</span><span>Both statements are true</span></label><label class="answer"><input type="radio" name="a55" class="ans"><span class="bubble">B</span><span>Statement 1 is true, Statement 2 is false</span></label><label class="answer"><input type="radio" name="a55" class="ans"><span class="bubble">C</span><span>Statement 1 is false, Statement 2 is true</span></label><label class="answer"><input type="radio" name="a55" class="ans"><span class="bubble">D</span><span>Both statements are false</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p56">Next Question →</label>
+</section>
+<section class="question-card q56">
+  <div class="question">Statement 1: Telemachus and Ulysses have exactly the same idea of duty. Statement 2: Telemachus is suited to domestic governance, whereas Ulysses is drawn towards exploration.</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a56" class="ans"><span class="bubble">A</span><span>Both statements are true</span></label><label class="answer"><input type="radio" name="a56" class="ans"><span class="bubble">B</span><span>Statement 1 is true, Statement 2 is false</span></label><label class="answer"><input type="radio" name="a56" class="ans correct"><span class="bubble">C</span><span>Statement 1 is false, Statement 2 is true</span></label><label class="answer"><input type="radio" name="a56" class="ans"><span class="bubble">D</span><span>Both statements are false</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p57">Next Question →</label>
+</section>
+<section class="question-card q57">
+  <div class="question">Assertion (A): Ulysses refuses to accept old age as a reason for complete inactivity. Reason (R): He believes that meaningful work can still be accomplished before death.</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a57" class="ans correct"><span class="bubble">A</span><span>Both A and R are true, and R is the correct explanation of A</span></label><label class="answer"><input type="radio" name="a57" class="ans"><span class="bubble">B</span><span>Both A and R are true, but R is not the correct explanation of A</span></label><label class="answer"><input type="radio" name="a57" class="ans"><span class="bubble">C</span><span>A is true, but R is false</span></label><label class="answer"><input type="radio" name="a57" class="ans"><span class="bubble">D</span><span>A is false, but R is true</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p58">Next Question →</label>
+</section>
+<section class="question-card q58">
+  <div class="question">Which interpretation is most consistent with the closing idea of the poem?</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a58" class="ans"><span class="bubble">A</span><span>Human beings should surrender before ageing</span></label><label class="answer"><input type="radio" name="a58" class="ans correct"><span class="bubble">B</span><span>Physical decline can coexist with courage and determination</span></label><label class="answer"><input type="radio" name="a58" class="ans"><span class="bubble">C</span><span>Adventure has no value after youth</span></label><label class="answer"><input type="radio" name="a58" class="ans"><span class="bubble">D</span><span>Knowledge should be limited to practical matters</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="p59">Next Question →</label>
+</section>
+<section class="question-card q59">
+  <div class="question">The concluding spirit of Ulysses is best captured by the idea of—</div>
+  <div class="answers"><label class="answer"><input type="radio" name="a59" class="ans"><span class="bubble">A</span><span>passive retirement</span></label><label class="answer"><input type="radio" name="a59" class="ans correct"><span class="bubble">B</span><span>persistent striving despite limitations</span></label><label class="answer"><input type="radio" name="a59" class="ans"><span class="bubble">C</span><span>rejection of knowledge</span></label><label class="answer"><input type="radio" name="a59" class="ans"><span class="bubble">D</span><span>complete dependence on others</span></label></div>
+  <div class="feedback good">✓ Correct Answer</div>
+  <div class="feedback bad">✗ Incorrect Answer</div>
+  <label class="next" for="result">Show Result →</label>
+</section>
+    <section class="result">
+      <h2>Quiz Completed!</h2>
+      <div class="score"></div>
+      <p>আপনার মোট স্কোর</p>
+      <label class="restart" for="p0">Play Again</label>
+    </section>
+  </div>
+  <div class="note">No Timer • One Question at a Time</div>
+</div>
+</body>
+</html>9" class="ans"><span class="bubble">A</span><span>passive retirement</span></label><label class="answer"><input type="radio" name="a59" class="ans correct"><span class="bubble">B</span><span>persistent striving despite limitations</span></label><label class="answer"><input type="radio" name="a59" class="ans"><span class="bubble">C</span><span>rejection of knowledge</span></label><label class="answer"><input type="radio" name="a59" class="ans"><span class="bubble">D</spa

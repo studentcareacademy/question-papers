@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Class 11 English Semester-I Quiz</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at center, #0a1128 0%, #000411 100%);
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 20px 10px;
+      overflow-x: hidden;
+    }
+
+    /* Animated Header */
+    .header-container {
+      margin-bottom: 25px;
+      text-align: center;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .animated-banner {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      padding: 14px 24px;
+      border-radius: 50px;
+      background: linear-gradient(90deg, #ff8c00, #ffd700, #00d2ff, #ff8c00);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      border: 2px solid rgba(255, 215, 0, 0.4);
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.2), inset 0 0 15px rgba(0, 210, 255, 0.2);
+      animation: gradientMove 6s ease infinite, glowPulse 2.5s ease-in-out infinite alternate;
+      display: inline-block;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes glowPulse {
+      from {
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.2), inset 0 0 10px rgba(0, 210, 255, 0.2);
+        transform: scale(1);
+      }
+      to {
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.6), inset 0 0 20px rgba(0, 210, 255, 0.5);
+        transform: scale(1.02);
+      }
+    }
+
+    /* Quiz Container */
+    .quiz-wrapper {
+      width: 100%;
+      max-width: 850px;
+      background: rgba(8, 18, 48, 0.85);
+      border: 2px solid #e0a924;
+      border-radius: 20px;
+      box-shadow: 0 0 35px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(224, 169, 36, 0.25);
+      padding: 30px 25px;
+      position: relative;
+    }
+
+    /* Question Frame */
+    .question-box {
+      background: linear-gradient(180deg, #0f2b5c 0%, #051430 100%);
+      border: 2px solid #f5b027;
+      border-radius: 12px;
+      padding: 22px 20px;
+      margin-bottom: 25px;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(245, 176, 39, 0.35);
+      position: relative;
+    }
+
+    .question-text {
+      font-size: 1.25rem;
+      line-height: 1.6;
+      color: #f7f9fa;
+      font-weight: 600;
+    }
+
+    /* Options Grid */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 650px) {
+      .options-grid {
+        grid-template-columns: 1fr;
+      }
+      .animated-banner {
+        font-size: 1.1rem;
+        padding: 10px 18px;
+      }
+      .question-text {
+        font-size: 1.1rem;
+      }
+    }
+
+    .option-btn {
+      background: linear-gradient(180deg, #132d5e 0%, #061533 100%);
+      border: 1.5px solid #dca725;
+      color: #ffffff;
+      padding: 16px 20px;
+      font-size: 1rem;
+      font-weight: 500;
+      border-radius: 10px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      outline: none;
+      display: flex;
+      align-items: center;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      background: linear-gradient(180deg, #244b96 0%, #0d2757 100%);
+      border-color: #ffd700;
+      transform: translateY(-2px);
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+    }
+
+    .option-btn.correct {
+      background: linear-gradient(180deg, #117a3b 0%, #084d23 100%) !important;
+      border-color: #00ff66 !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 20px #00ff66 !important;
+      animation: correctFlash 0.5s ease 2;
+    }
+
+    .option-btn.incorrect {
+      background: linear-gradient(180deg, #b31b1b 0%, #660f0f 100%) !important;
+      border-color: #ff3333 !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 20px #ff3333 !important;
+    }
+
+    @keyframes correctFlash {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .progress-indicator {
+      font-size: 0.95rem;
+      color: #f1b739;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .next-btn {
+      background: linear-gradient(180deg, #e69500 0%, #995700 100%);
+      border: 1px solid #ffcc00;
+      color: #fff;
+      padding: 12px 30px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: none;
+      box-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
+    }
+
+    .next-btn:hover {
+      background: linear-gradient(180deg, #ffaa00 0%, #b86900 100%);
+      box-shadow: 0 0 20px rgba(255, 204, 0, 0.8);
+    }
+
+    /* Scoreboard */
+    .result-screen {
+      display: none;
+      text-align: center;
+      padding: 40px 10px;
+    }
+
+    .result-title {
+      font-size: 2.2rem;
+      color: #ffd700;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .score-circle {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #102d68 0%, #061129 100%);
+      border: 4px solid #f5b027;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 30px;
+      box-shadow: 0 0 30px rgba(245, 176, 39, 0.4);
+    }
+
+    .score-val {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .score-max {
+      font-size: 1rem;
+      color: #9cb5db;
+    }
+
+    .feedback-msg {
+      font-size: 1.25rem;
+      color: #e0e8f5;
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+
+    .restart-btn {
+      background: linear-gradient(180deg, #009944 0%, #005c29 100%);
+      border: 1px solid #00ff73;
+      color: #fff;
+      padding: 14px 40px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(0, 255, 115, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .restart-btn:hover {
+      box-shadow: 0 0 25px rgba(0, 255, 115, 0.8);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Animated Header -->
+  <div class="header-container">
+    <div class="animated-banner">
+      Student Care Academy; Teacher:-Tapan Mandal
+    </div>
+  </div>
+
+  <!-- Main Quiz Container -->
+  <div class="quiz-wrapper">
+    
+    <div id="quiz-screen">
+      <div class="question-box">
+        <div class="question-text" id="question-text">Loading question...</div>
+      </div>
+
+      <div class="options-grid" id="options-container">
+        <!-- Option buttons dynamically rendered -->
+      </div>
+
+      <div class="controls">
+        <div class="progress-indicator" id="progress-text"></div>
+        <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question</button>
+      </div>
+    </div>
+
+    <!-- Final Scoreboard Screen -->
+    <div class="result-screen" id="result-screen">
+      <div class="result-title">Quiz Completed</div>
+      <div class="score-circle">
+        <span class="score-val" id="final-score">0</span>
+        <span class="score-max">/ 100 Marks</span>
+      </div>
+      <div class="feedback-msg" id="feedback-msg"></div>
+      <button class="restart-btn" onclick="restartQuiz()">Start Again</button>
+    </div>
+
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        question: "The astrologer usually opened his business under the boughs of a —",
+        options: [
+          "banyan tree spreading over a broad road",
+          "tamarind tree flanking a path through Town Hall Park",
+          "peepal tree near the bustling marketplace",
+          "neem tree situated beside the public bus stand"
+        ],
+        answer: 1
+      },
+      {
+        question: "The vendor of fried groundnuts gave his ware diverse fancy names such as 'Bombay Ice-Cream', 'Delhi Almond', and —",
+        options: [
+          "Madras Delight",
+          "Royal Sweetmeat",
+          "Raja’s Delicacy",
+          "Maharaja’s Feast"
+        ],
+        answer: 2
+      },
+      {
+        question: "What specific physical mark helped the astrologer convince Guru Nayak of his uncanny vision?",
+        options: [
+          "A burn mark on his left cheek",
+          "The scar of a knife wound on his chest",
+          "A missing finger on his right hand",
+          "A bullet wound on his right shoulder"
+        ],
+        answer: 1
+      },
+      {
+        question: "At midnight, after counting twelve and a half annas, the astrologer confessed to his wife that —",
+        options: [
+          "he had gambled all his savings in the past",
+          "a great burden was lifted because the man he thought he had killed was alive",
+          "he intended to abandon astrology and return to agriculture",
+          "he cheated his client out of more than a rupee"
+        ],
+        answer: 1
+      },
+      {
+        question: "According to Sister Nivedita, Swami Vivekananda’s devotion to Kali emphasized that God must be realized not only in sweetness but also in —",
+        options: [
+          "sorrow, terror, and destruction",
+          "intellectual debates and dry philosophy",
+          "rigid ceremonial austerities alone",
+          "political dominance and worldly power"
+        ],
+        answer: 0
+      },
+      {
+        question: "Swamiji composed his well-known poem 'Kali the Mother' while residing in —",
+        options: [
+          "a houseboat in Srinagar",
+          "a solitary tent in Kshir Bhavani",
+          "the monastic cells of Belur Math",
+          "a pilgrim camp at Chandanwari"
+        ],
+        answer: 1
+      },
+      {
+        question: "Swamiji believed that one who genuinely seeks Truth must be prepared to —",
+        options: [
+          "evade all worldly conflicts quietly",
+          "worship the Terrible with fearless surrender",
+          "renounce human society entirely",
+          "seek material boons through sacred rituals"
+        ],
+        answer: 1
+      },
+      {
+        question: "What transformative spiritual attitude did Nivedita observe when Swamiji spoke of the Divine Mother?",
+        options: [
+          "An exclusive reliance on Vedic rituals",
+          "A childlike, spontaneous, and absolute self-abnegation",
+          "A scholarly skepticism regarding ancient legends",
+          "A preference for philosophical abstraction over personal worship"
+        ],
+        answer: 1
+      },
+      {
+        question: "On the sacred day of Rakhibandhan, pilgrims at the holy cave of Amarnath worship —",
+        options: [
+          "a natural golden lingam carved inside the rock",
+          "a colossal ice-lingam that waxes and wanes with the moon",
+          "a sacred spring emerging from beneath the stones",
+          "an eternal flame sustained by subterranean gas"
+        ],
+        answer: 1
+      },
+      {
+        question: "How did Swami Vivekananda present himself before the deity inside the Amarnath cave?",
+        options: [
+          "Clad in rich saffron robes carrying a pilgrim staff",
+          "Clad only in a waist-cloth and smeared with sacred ashes",
+          "Wearing heavy woolen robes suited for sub-zero winds",
+          "Prostrating silently behind the assembly of sadhus"
+        ],
+        answer: 1
+      },
+      {
+        question: "Following his mystical communion in the cave, Swamiji believed that Lord Shiva had granted him the rare gift of —",
+        options: [
+          "perpetual earthly youth",
+          "omniscience over worldly affairs",
+          "‘Iccha-mrityu’ or death at will",
+          "liberation from all bodily diseases"
+        ],
+        answer: 2
+      },
+      {
+        question: "Which natural phenomenon witnessed inside the cave deeply moved the pilgrims as an omen of divine blessing?",
+        options: [
+          "A sudden beam of sunlight piercing the gloom",
+          "The spontaneous flutter of a pair of white pigeons",
+          "The resounding echo of water drops falling in unison",
+          "The blooming of wild Himalayan flowers at the entrance"
+        ],
+        answer: 1
+      },
+      {
+        question: "The opening assertion “Earth has not anything to show more fair” establishes the poet’s mood of —",
+        options: [
+          "sorrowful nostalgia for pastoral nature",
+          "absolute aesthetic reverence and astonishment",
+          "sharp indignation towards industrial smoke",
+          "quiet indifference toward urban landscapes"
+        ],
+        answer: 1
+      },
+      {
+        question: "In Wordsworth’s description, London wears the beauty of the morning like a —",
+        options: [
+          "shining crown",
+          "delicate veil",
+          "garment",
+          "royal canopy"
+        ],
+        answer: 2
+      },
+      {
+        question: "Why does the poet refer to the structures of London as lying “Open unto the fields, and to the sky”?",
+        options: [
+          "The city walls had been torn down completely",
+          "The smokeless morning air reveals clear, unobstructed horizons",
+          "The countryside has encroached into the metropolis",
+          "The buildings were constructed entirely in open meadows"
+        ],
+        answer: 1
+      },
+      {
+        question: "The expression “And all that mighty heart is lying still!” uses the metaphor of ‘mighty heart’ to signify —",
+        options: [
+          "the dormant energy of the slumbering metropolis",
+          "the quietude of the Thames flowing toward the sea",
+          "the King resting within his palace",
+          "the exhausted spirit of industrial laborers"
+        ],
+        answer: 0
+      },
+      {
+        question: "The bangles described as “Silver and blue as the mountain mist” are meant for —",
+        options: [
+          "a bride on her bridal morning",
+          "a maiden’s wrist",
+          "a woman who has journeyed through life midway",
+          "elderly mothers serving their family"
+        ],
+        answer: 1
+      },
+      {
+        question: "In ‘The Bangle Sellers’, the bangles suitable for a bride are compared to —",
+        options: [
+          "limpid droplets of morning dew",
+          "fields of sunlit corn and the flame of marriage fire",
+          "clear amber skies at early dawn",
+          "purple blossoms hidden deep in woods"
+        ],
+        answer: 1
+      },
+      {
+        question: "What distinctive colors adorn the wrists of a middle-aged matriarch who has cradled sons?",
+        options: [
+          "Rainbow-tinted circles of light",
+          "Silver and delicate flush-pink",
+          "Purple and gold-flecked grey",
+          "Bright crimson and glowing yellow"
+        ],
+        answer: 2
+      },
+      {
+        question: "The phrase “serves her household in fruitful pride” reflects the woman’s —",
+        options: [
+          "silent rebellion against patriarchal norms",
+          "fulfillment and honour in nurturing her domestic world",
+          "grief over lost youth and fleeting dreams",
+          "yearning for a life outside home boundaries"
+        ],
+        answer: 1
+      },
+      {
+        question: "In the opening lines of ‘The Second Coming’, the falcon’s inability to hear the falconer symbolizes —",
+        options: [
+          "a breakdown of balance, discipline, and traditional authority",
+          "the natural migratory instinct of birds of prey",
+          "the triumph of scientific progress over ancient rites",
+          "the peaceful reconciliation of conflicting ideologies"
+        ],
+        answer: 0
+      },
+      {
+        question: "What terrifying paradox does Yeats observe about society in the lines “The best lack all conviction, while the worst / Are full of passionate intensity”?",
+        options: [
+          "The learned choose silence while fanatics wield ruthless power",
+          "Political leaders possess divine virtues while citizens disobey",
+          "Good men actively persecute the weak without regret",
+          "Immoral people surrender easily to benevolent guidance"
+        ],
+        answer: 0
+      },
+      {
+        question: "The vast monstrous form that troubles the poet’s vision from Spiritus Mundi has —",
+        options: [
+          "a dragon’s scaled torso and a lion’s head",
+          "a lion’s body and the head of a man",
+          "an eagle’s talons and a serpent’s body",
+          "a bull’s horns and a human torso"
+        ],
+        answer: 1
+      },
+      {
+        question: "According to the speaker, what event has disrupted the “twenty centuries of stony sleep”?",
+        options: [
+          "The cataclysmic outbreak of civil war",
+          "The arrival of an ancient pagan prophecy",
+          "The rocking cradle of Christ in Bethlehem",
+          "The industrial conquest of the natural world"
+        ],
+        answer: 2
+      },
+      {
+        question: "When Macbeth and Banquo first encountered the three Weird Sisters on the heath, the witches hailed Macbeth as —",
+        options: [
+          "Thane of Glamis, Thane of Cawdor, and King hereafter",
+          "Thane of Fife, Thane of Ross, and Prince of Cumberland",
+          "General of Scotland, Thane of Lochaber, and King of Britain",
+          "Duke of Albany, Thane of Angus, and Sovereign of Alba"
+        ],
+        answer: 0
+      },
+      {
+        question: "Just prior to assassinating King Duncan, Macbeth experienced a horrifying hallucination of —",
+        options: [
+          "an open grave with a crown lying inside",
+          "an airborne dagger dripping with drops of blood",
+          "an owl screeching upon the bedchamber roof",
+          "Banquo’s severed head accusing him of treason"
+        ],
+        answer: 1
+      },
+      {
+        question: "The second apparition raised by the witches comforted Macbeth with the prophecy that —",
+        options: [
+          "he would reign peacefully until old age",
+          "no man born of woman would ever harm him",
+          "Banquo’s sons would die in foreign lands",
+          "his castle walls could never be breached by fire"
+        ],
+        answer: 1
+      },
+      {
+        question: "How was the witches’ riddle concerning Birnam Wood ultimately fulfilled?",
+        options: [
+          "A catastrophic landslide swept the forest trees down the valley",
+          "Malcolm’s soldiers camouflaged their advance using boughs cut from the wood",
+          "The Scottish rebels set the entire forest ablaze",
+          "Macbeth’s guards mistook dense mist for moving trees"
+        ],
+        answer: 1
+      },
+      {
+        question: "What principal grievance fueled Iago’s initial malice against Othello?",
+        options: [
+          "Othello had confiscated Iago’s inherited estate in Cyprus",
+          "Othello appointed Michael Cassio as lieutenant over him",
+          "Othello had exiled Iago’s close kinsmen from Venice",
+          "Othello refused to support Iago’s naval campaign"
+        ],
+        answer: 1
+      },
+      {
+        question: "The fatal token that convinced Othello of Desdemona’s alleged infidelity was —",
+        options: [
+          "a diamond ring bearing the Venetian crest",
+          "a gold locket containing Brabantio’s portrait",
+          "an embroidered strawberry-spotted handkerchief",
+          "a silver necklace gifted on their wedding night"
+        ],
+        answer: 2
+      },
+      {
+        question: "Michael Cassio was stripped of his rank by Othello primarily because —",
+        options: [
+          "he deserted his post during a Turkish assault",
+          "he got drunk and engaged in a violent public brawl provoked by Iago",
+          "he confessed his secret affection for Desdemona",
+          "he embezzled state funds intended for garrison soldiers"
+        ],
+        answer: 1
+      },
+      {
+        question: "The true source and trail of the missing handkerchief were exposed to Othello by —",
+        options: [
+          "Bianca",
+          "Cassio",
+          "Emilia",
+          "Roderigo"
+        ],
+        answer: 2
+      },
+      {
+        question: "Duke Senior chose to reside with his faithful followers in the —",
+        options: [
+          "Palace of Frederick",
+          "Castle of Dunsinane",
+          "Forest of Arden",
+          "Plains of Illyria"
+        ],
+        answer: 2
+      },
+      {
+        question: "When banished by Duke Frederick, Rosalind disguised herself as a young youth named —",
+        options: [
+          "Aliena",
+          "Ganymede",
+          "Cesario",
+          "Fidelio"
+        ],
+        answer: 1
+      },
+      {
+        question: "Orlando demonstrated his passionate infatuation with Rosalind by —",
+        options: [
+          "carving love verses on tree trunks throughout the forest",
+          "challenging every forester to a duel of honor",
+          "presenting golden jewels to Duke Senior",
+          "sending love letters via the jester Touchstone"
+        ],
+        answer: 0
+      },
+      {
+        question: "What brought about the miraculous transformation and repentance of Duke Frederick?",
+        options: [
+          "A humiliating defeat in battlefield against his brother’s knights",
+          "An encounter with an old religious hermit on the outskirts of the forest",
+          "The sudden illness and passionate pleading of his daughter Celia",
+          "A terrifying dream revealing divine retribution"
+        ],
+        answer: 1
+      },
+      {
+        question: "“He gave her the coins. They were twelve and a half annas.” (Join into a single complex sentence)",
+        options: [
+          "He gave her the coins and they were twelve and a half annas.",
+          "The coins which he gave her amounted to twelve and a half annas.",
+          "Giving her the coins, he found twelve and a half annas.",
+          "Having twelve and a half annas, he gave her the coins."
+        ],
+        answer: 1
+      },
+      {
+        question: "“The city now doth wear the beauty of the morning.” (Change the voice)",
+        options: [
+          "The beauty of the morning is being worn by the city now.",
+          "The beauty of the morning is worn by the city now.",
+          "The beauty of the morning was worn by the city now.",
+          "The beauty of the morning has been worn by the city now."
+        ],
+        answer: 1
+      },
+      {
+        question: "The astrologer said to Guru Nayak, “Your enemy is dead.” (Change into Indirect Speech)",
+        options: [
+          "The astrologer told Guru Nayak that his enemy was dead.",
+          "The astrologer asked Guru Nayak if his enemy is dead.",
+          "The astrologer exclaimed to Guru Nayak that your enemy had been dead.",
+          "The astrologer ordered Guru Nayak that his enemy died."
+        ],
+        answer: 0
+      },
+      {
+        question: "“Earth has not anything to show more fair.” (Change into an Affirmative sentence without changing meaning)",
+        options: [
+          "Earth shows only unfair sights everywhere.",
+          "Earth has everything fair to show to everyone.",
+          "This is the fairest sight that Earth has to show.",
+          "Earth can hardly show any sight that is fair."
+        ],
+        answer: 2
+      },
+      {
+        question: "Swamiji entered the cave, ________ waist-cloth and smeared with ashes. (Choose the grammatically correct participle phrase)",
+        options: [
+          "clad only in a",
+          "cladded in an",
+          "had clad with a",
+          "was clad by a"
+        ],
+        answer: 0
+      },
+      {
+        question: "“The falcon cannot hear the falconer.” (Identify the correct passive transformation)",
+        options: [
+          "The falconer cannot hear the falcon.",
+          "The falconer cannot be heard by the falcon.",
+          "The falconer could not hear by the falcon.",
+          "The falconer is not being heard by the falcon."
+        ],
+        answer: 1
+      },
+      {
+        question: "Identify the sentence containing an appropriate prepositional usage:",
+        options: [
+          "The astrologer flung nuts into the crowd at pride.",
+          "Guru Nayak was left for dead in a ditch.",
+          "Swamiji set out to Amarnath on foot across July.",
+          "Bangles are bought with the fair for wives."
+        ],
+        answer: 1
+      },
+      {
+        question: "“Things fall apart; the centre cannot hold.” (Choose the correct split sentences)",
+        options: [
+          "(i) Things fall apart. (ii) The centre cannot hold it.",
+          "(i) Things fall apart. (ii) The centre cannot hold.",
+          "(i) Things are falling apart. (ii) The centre failed to hold.",
+          "(i) Because things fall apart, (ii) the centre cannot hold."
+        ],
+        answer: 1
+      },
+      {
+        question: "According to the passage, the primary function of literature is to —",
+        options: [
+          "entertain people during idle hours with fanciful myths",
+          "instruct individuals how to succeed in commercial businesses",
+          "refine emotional perception and educate the human conscience",
+          "provide historical statistics about ancient human societies"
+        ],
+        answer: 2
+      },
+      {
+        question: "What allows a reader to step beyond personal egoism?",
+        options: [
+          "Competing in intellectual debates",
+          "Engaging deeply with great literary creations",
+          "Acquiring speed in modern technological processes",
+          "Isolating oneself completely from the community"
+        ],
+        answer: 1
+      },
+      {
+        question: "The passage describes the modern era as one characterized by —",
+        options: [
+          "agrarian simplicity and spiritual tranquility",
+          "algorithmic speed and transactional relationships",
+          "artistic leisure and universal philanthropy",
+          "classical scholarship and moral discipline"
+        ],
+        answer: 1
+      },
+      {
+        question: "Why is literature termed an ‘indispensable sanctuary’?",
+        options: [
+          "Because it protects ancient manuscripts from destruction",
+          "Because it offers a tranquil haven for contemplative thought and human wisdom",
+          "Because it acts as an impenetrable shield against scientific education",
+          "Because it isolates students from competitive career pursuits"
+        ],
+        answer: 1
+      },
+      {
+        question: "The word ‘circumscribed’ as used in the passage most nearly means —",
+        options: [
+          "unrestricted and limitless",
+          "confined within narrow boundaries",
+          "beautifully decorated",
+          "globally recognized"
+        ],
+        answer: 1
+      },
+      {
+        question: "What is an appropriate antonym for the word ‘tribulations’ in this context?",
+        options: [
+          "Hardships",
+          "Joys",
+          "Calamities",
+          "Trials"
+        ],
+        answer: 1
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    const questionTextEl = document.getElementById('question-text');
+    const optionsContainerEl = document.getElementById('options-container');
+    const nextBtnEl = document.getElementById('next-btn');
+    const progressTextEl = document.getElementById('progress-text');
+
+    const quizScreenEl = document.getElementById('quiz-screen');
+    const resultScreenEl = document.getElementById('result-screen');
+    const finalScoreEl = document.getElementById('final-score');
+    const feedbackMsgEl = document.getElementById('feedback-msg');
+
+    function loadQuestion() {
+      const currentQ = quizData[currentQuestionIndex];
+      questionTextEl.textContent = currentQ.question;
+      optionsContainerEl.innerHTML = '';
+      nextBtnEl.style.display = 'none';
+
+      progressTextEl.textContent = `Question ${currentQuestionIndex + 1} of ${quizData.length}`;
+
+      currentQ.options.forEach((optText, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = optText;
+        btn.onclick = () => selectOption(btn, index, currentQ.answer);
+        optionsContainerEl.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedBtn, selectedIndex, correctIndex) {
+      const allButtons = optionsContainerEl.querySelectorAll('.option-btn');
+      allButtons.forEach(btn => btn.disabled = true);
+
+      if (selectedIndex === correctIndex) {
+        selectedBtn.classList.add('correct');
+        score += 2; // Each question carries 2 marks (50 x 2 = 100)
+      } else {
+        selectedBtn.classList.add('incorrect');
+        allButtons[correctIndex].classList.add('correct');
+      }
+
+      nextBtnEl.style.display = 'inline-block';
+    }
+
+    function nextQuestion() {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < quizData.length) {
+        loadQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      quizScreenEl.style.display = 'none';
+      resultScreenEl.style.display = 'block';
+      finalScoreEl.textContent = score;
+
+      let percentage = (score / 100) * 100;
+      let feedback = "";
+
+      if (percentage >= 90) {
+        feedback = "Outstanding Performance! You have mastered the Semester-I syllabus completely.";
+      } else if (percentage >= 75) {
+        feedback = "Excellent work! Your grasp of the texts and grammar is commendable.";
+      } else if (percentage >= 50) {
+        feedback = "Good attempt! Regular revision of Shakespearean drama and grammar will improve your score.";
+      } else {
+        feedback = "Needs improvement. Review the core texts and practice textual grammar thoroughly.";
+      }
+
+      feedbackMsgEl.textContent = feedback;
+    }
+
+    function restartQuiz() {
+      currentQuestionIndex = 0;
+      score = 0;
+      resultScreenEl.style.display = 'none';
+      quizScreenEl.style.display = 'block';
+      loadQuestion();
+    }
+
+    // Initialize Quiz
+    loadQuestion();
+  </script>
+</body>
+</html>

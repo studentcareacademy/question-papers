@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Student Care Academy - English Quiz</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial, "Noto Sans Bengali", sans-serif;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at top,#173b72 0%,#07162f 45%,#020814 100%);
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:15px;
+}
+
+.quiz-container{
+    width:100%;
+    max-width:850px;
+    min-height:600px;
+    background:rgba(4,18,43,.96);
+    border:2px solid #d6a93a;
+    border-radius:22px;
+    box-shadow:
+        0 0 20px rgba(255,193,7,.25),
+        inset 0 0 30px rgba(30,100,180,.12);
+    padding:20px;
+    overflow:hidden;
+}
+
+/* Animated Header */
+
+.brand{
+    text-align:center;
+    padding:10px 5px 20px;
+}
+
+.brand-title{
+    font-size:clamp(22px,5vw,38px);
+    font-weight:900;
+    letter-spacing:1px;
+    background:linear-gradient(
+        90deg,
+        #ffd700,
+        #ffffff,
+        #00e5ff,
+        #ffd700
+    );
+    background-size:300% auto;
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    animation:
+        shine 4s linear infinite,
+        glow 2s ease-in-out infinite alternate;
+}
+
+.brand-teacher{
+    margin-top:8px;
+    font-size:clamp(16px,3.5vw,23px);
+    font-weight:bold;
+    color:#fff;
+    animation:fadeTeacher 2s ease-in-out infinite alternate;
+}
+
+@keyframes shine{
+    0%{background-position:0% center;}
+    100%{background-position:300% center;}
+}
+
+@keyframes glow{
+    from{
+        filter:drop-shadow(0 0 2px #ffd700);
+    }
+    to{
+        filter:drop-shadow(0 0 12px #00e5ff);
+    }
+}
+
+@keyframes fadeTeacher{
+    from{opacity:.65;}
+    to{
+        opacity:1;
+        text-shadow:0 0 12px #00e5ff;
+    }
+}
+
+/* Progress */
+
+.progress-area{
+    width:100%;
+    height:7px;
+    background:#172744;
+    border-radius:20px;
+    overflow:hidden;
+    margin-bottom:25px;
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#ffd700,#00e5ff);
+    transition:width .5s ease;
+}
+
+/* Question */
+
+.question-box{
+    background:linear-gradient(
+        145deg,
+        rgba(20,55,105,.95),
+        rgba(7,25,55,.98)
+    );
+    border:1px solid rgba(255,215,0,.45);
+    border-radius:18px;
+    padding:25px 20px;
+    min-height:120px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    margin-bottom:22px;
+    box-shadow:0 5px 25px rgba(0,0,0,.3);
+}
+
+.question{
+    font-size:clamp(19px,4vw,27px);
+    line-height:1.5;
+    font-weight:800;
+}
+
+/* Options */
+
+.options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+}
+
+.option{
+    border:2px solid #49658e;
+    background:linear-gradient(
+        135deg,
+        #102b52,
+        #071b37
+    );
+    color:white;
+    border-radius:14px;
+    padding:17px 15px;
+    min-height:65px;
+    font-size:clamp(16px,3.5vw,20px);
+    font-weight:600;
+    cursor:pointer;
+    transition:.25s;
+    text-align:left;
+}
+
+.option:hover{
+    border-color:#ffd700;
+    transform:translateY(-2px);
+    box-shadow:0 0 14px rgba(255,215,0,.25);
+}
+
+.option.selected{
+    border-color:#00d9ff;
+    background:#123e67;
+}
+
+.option.correct{
+    background:linear-gradient(135deg,#075b3c,#0c8b59);
+    border-color:#19ff9a;
+}
+
+.option.wrong{
+    background:linear-gradient(135deg,#641d2a,#9b2639);
+    border-color:#ff5268;
+}
+
+.option.disabled{
+    cursor:default;
+    pointer-events:none;
+}
+
+/* Feedback */
+
+.feedback{
+    min-height:55px;
+    margin-top:18px;
+    text-align:center;
+    font-size:19px;
+    font-weight:bold;
+    line-height:1.5;
+}
+
+.correct-text{
+    color:#32ff9a;
+    text-shadow:0 0 10px rgba(50,255,154,.4);
+}
+
+.wrong-text{
+    color:#ff6878;
+    text-shadow:0 0 10px rgba(255,80,100,.4);
+}
+
+/* Next */
+
+.next-btn{
+    display:none;
+    width:100%;
+    margin-top:12px;
+    padding:15px;
+    border:none;
+    border-radius:13px;
+    background:linear-gradient(90deg,#dcae19,#ffd84d);
+    color:#07162f;
+    font-size:19px;
+    font-weight:900;
+    cursor:pointer;
+    box-shadow:0 5px 20px rgba(255,215,0,.25);
+    transition:.25s;
+}
+
+.next-btn:hover{
+    transform:scale(1.02);
+}
+
+/* Result */
+
+.result{
+    display:none;
+    text-align:center;
+    padding:25px 10px;
+}
+
+.result h2{
+    font-size:clamp(28px,7vw,48px);
+    color:#ffd700;
+    margin-bottom:20px;
+    animation:resultGlow 1.5s infinite alternate;
+}
+
+@keyframes resultGlow{
+    from{
+        text-shadow:0 0 5px #ffd700;
+    }
+    to{
+        text-shadow:
+            0 0 10px #ffd700,
+            0 0 25px #ff9d00;
+    }
+}
+
+.score-circle{
+    width:180px;
+    height:180px;
+    margin:20px auto;
+    border-radius:50%;
+    border:7px solid #ffd700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    background:radial-gradient(circle,#173b72,#06152d);
+    box-shadow:0 0 30px rgba(255,215,0,.3);
+}
+
+.score-number{
+    font-size:45px;
+    font-weight:900;
+    color:#fff;
+}
+
+.score-label{
+    font-size:16px;
+    color:#bcd4f5;
+}
+
+.result-message{
+    font-size:20px;
+    line-height:1.6;
+    margin:20px 0;
+    color:#e9f2ff;
+}
+
+.restart{
+    padding:15px 35px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(90deg,#00b8e6,#00e5ff);
+    color:#001426;
+    font-size:18px;
+    font-weight:900;
+    cursor:pointer;
+}
+
+/* Mobile */
+
+@media(max-width:650px){
+    .quiz-container{
+        padding:14px;
+        border-radius:17px;
+    }
+
+    .options{
+        grid-template-columns:1fr;
+        gap:10px;
+    }
+
+    .option{
+        min-height:58px;
+        padding:14px;
+    }
+
+    .question-box{
+        padding:20px 15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="quiz-container">
+
+    <div class="brand">
+        <div class="brand-title">
+            Student Care Academy
+        </div>
+
+        <div class="brand-teacher">
+            Teacher:- Tapan Mandal
+        </div>
+    </div>
+
+    <div class="progress-area">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div id="quizScreen">
+
+        <div class="question-box">
+            <div class="question" id="question"></div>
+        </div>
+
+        <div class="options" id="options"></div>
+
+        <div class="feedback" id="feedback"></div>
+
+        <button class="next-btn" id="nextBtn">
+            Next Question →
+        </button>
+
+    </div>
+
+    <div class="result" id="result">
+
+        <h2>Quiz Completed!</h2>
+
+        <div class="score-circle">
+            <div class="score-number" id="scoreNumber">0</div>
+            <div class="score-label">Total Score</div>
+        </div>
+
+        <div class="result-message" id="resultMessage"></div>
+
+        <button class="restart" onclick="restartQuiz()">
+            আবার শুরু করুন
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const questions = [
+
+{
+q:"Who is the author of The Bet?",
+options:[
+"Ruskin Bond",
+"Anton Chekhov",
+"A. P. J. Abdul Kalam",
+"J. M. Synge"
+],
+answer:1
+},
+
+{
+q:"At the beginning of the story, the banker and his guests were discussing—",
+options:[
+"education and wealth",
+"marriage and family",
+"capital punishment and life imprisonment",
+"crime and justice"
+],
+answer:2
+},
+
+{
+q:"The young lawyer was about ______ years old when the bet was made.",
+options:[
+"twenty",
+"twenty-five",
+"thirty",
+"thirty-five"
+],
+answer:1
+},
+
+{
+q:"According to the lawyer, if he had to choose between death penalty and life imprisonment, he would choose—",
+options:[
+"death penalty",
+"exile",
+"life imprisonment",
+"hard labour"
+],
+answer:2
+},
+
+{
+q:"How much money did the banker stake in the bet?",
+options:[
+"One million roubles",
+"Two million roubles",
+"Three million roubles",
+"Five million roubles"
+],
+answer:1
+},
+
+{
+q:"The lawyer originally proposed to remain in solitary confinement for—",
+options:[
+"five years",
+"ten years",
+"fifteen years",
+"twenty years"
+],
+answer:2
+},
+
+{
+q:"The lawyer's place of confinement was—",
+options:[
+"a prison in the city",
+"a monastery",
+"a lodge in the banker's garden",
+"a house near the sea"
+],
+answer:2
+},
+
+{
+q:"Which of the following was the lawyer NOT allowed to receive during his confinement?",
+options:[
+"Books",
+"Wine",
+"Newspapers",
+"Musical instruments"
+],
+answer:2
+},
+
+{
+q:"The period of the lawyer's confinement was fixed from—",
+options:[
+"November 14, 1870 to November 14, 1885",
+"November 14, 1875 to November 14, 1890",
+"December 14, 1870 to December 14, 1885",
+"October 14, 1870 to October 14, 1885"
+],
+answer:0
+},
+
+{
+q:"During the first year of confinement, the lawyer suffered mainly from—",
+options:[
+"hunger and illness",
+"loneliness and boredom",
+"anger and violence",
+"fear of the banker"
+],
+answer:1
+},
+
+{
+q:"Why did the lawyer reject wine and tobacco during the first year?",
+options:[
+"They were too expensive.",
+"They were forbidden by the banker.",
+"He believed they increased desires and spoiled the air.",
+"He wanted to save them for later."
+],
+answer:2
+},
+
+{
+q:"During the first year, the lawyer mainly read—",
+options:[
+"scientific treatises",
+"light books, novels and fantastic stories",
+"religious scriptures",
+"books on law"
+],
+answer:1
+},
+
+{
+q:"What happened to the piano in the second year?",
+options:[
+"It was removed from the lodge.",
+"The lawyer played it more frequently.",
+"The piano was heard no longer.",
+"The banker sold it."
+],
+answer:2
+},
+
+{
+q:"In the second year, the lawyer asked mainly for—",
+options:[
+"newspapers",
+"classics",
+"detective stories",
+"medical books"
+],
+answer:1
+},
+
+{
+q:"In which year did music become audible again and the lawyer ask for wine?",
+options:[
+"Third year",
+"Fourth year",
+"Fifth year",
+"Sixth year"
+],
+answer:2
+},
+
+{
+q:"During the fifth year, the lawyer spent much of his time—",
+options:[
+"studying languages",
+"eating, drinking and lying on his bed",
+"reading religious books",
+"writing letters to the banker"
+],
+answer:1
+},
+
+{
+q:"What did the lawyer often do with what he wrote during the fifth year?",
+options:[
+"He sent it to the banker.",
+"He published it.",
+"He tore it up the next morning.",
+"He kept it in a box."
+],
+answer:2
+},
+
+{
+q:"In the second half of the sixth year, the lawyer began to study—",
+options:[
+"law, politics and economics",
+"languages, philosophy and history",
+"mathematics, physics and chemistry",
+"medicine, biology and geography"
+],
+answer:1
+},
+
+{
+q:"Approximately how many volumes were procured for the lawyer during four years of intense study?",
+options:[
+"300",
+"400",
+"500",
+"600"
+],
+answer:3
+},
+
+{
+q:"The lawyer wrote a letter to the banker in—",
+options:[
+"four languages",
+"five languages",
+"six languages",
+"seven languages"
+],
+answer:2
+},
+
+{
+q:"The lawyer asked the banker to have a shot fired in the garden if—",
+options:[
+"the lawyer escaped from the lodge",
+"his writing in the six languages contained no mistake",
+"the banker agreed to pay him early",
+"the lawyer completed fifteen years"
+],
+answer:1
+},
+
+{
+q:"How many shots were eventually fired in the garden by the banker's order?",
+options:[
+"One",
+"Two",
+"Three",
+"Four"
+],
+answer:1
+},
+
+{
+q:"After the tenth year, the lawyer read nothing but—",
+options:[
+"Shakespeare",
+"the New Testament/Gospel",
+"philosophy",
+"natural science"
+],
+answer:1
+},
+
+{
+q:"After the Gospel, the lawyer turned to—",
+options:[
+"history of religions and theology",
+"mathematics and astronomy",
+"law and politics",
+"detective fiction"
+],
+answer:0
+},
+
+{
+q:"During the last two years, the lawyer's reading became—",
+options:[
+"completely restricted to poetry",
+"limited to religious books",
+"wide and indiscriminate",
+"limited to legal texts"
+],
+answer:2
+},
+
+{
+q:"Consider the following statements about the lawyer: Statement I: He was allowed to write letters during his confinement. Statement II: He was allowed to receive letters from other people.",
+options:[
+"Both Statement I and Statement II are true.",
+"Statement I is true, but Statement II is false.",
+"Statement I is false, but Statement II is true.",
+"Both Statement I and Statement II are false."
+],
+answer:1
+},
+
+{
+q:"Statement I: The lawyer's reading changed considerably over the fifteen years. Statement II: His reading moved through light literature, classics, philosophy, history, religion and many other subjects.",
+options:[
+"Both statements are true and Statement II supports Statement I.",
+"Both statements are true but Statement II does not support Statement I.",
+"Statement I is true but Statement II is false.",
+"Statement I is false but Statement II is true."
+],
+answer:0
+},
+
+{
+q:"Statement I: The banker remained financially secure throughout the fifteen years. Statement II: His speculation and activities on the Stock Exchange contributed to the decline of his fortune.",
+options:[
+"Both statements are true.",
+"Statement I is true, but Statement II is false.",
+"Statement I is false, but Statement II is true.",
+"Both statements are false."
+],
+answer:2
+},
+
+{
+q:"Assertion (A): The banker became deeply anxious as the end of the fifteen-year period approached. Reason (R): He feared that paying the two million roubles would ruin him financially.",
+options:[
+"Both A and R are true, and R is the correct explanation of A.",
+"Both A and R are true, but R is not the correct explanation of A.",
+"A is true, but R is false.",
+"A is false, but R is true."
+],
+answer:0
+},
+
+{
+q:"Assertion (A): The lawyer's attitude towards material wealth changed during his confinement. Reason (R): His prolonged reading and reflection led him to reject the worldly values he had once desired.",
+options:[
+"Both A and R are true, and R is the correct explanation of A.",
+"Both A and R are true, but R is not the correct explanation of A.",
+"A is true, but R is false.",
+"A is false, but R is true."
+],
+answer:0
+},
+
+{
+q:"Assertion (A): The banker went to the garden lodge at three o'clock in the morning. Reason (R): He had decided to kill the lawyer rather than pay the two million roubles.",
+options:[
+"Both A and R are true, and R is the correct explanation of A.",
+"Both A and R are true, but R is not the correct explanation of A.",
+"A is true, but R is false.",
+"A is false, but R is true."
+],
+answer:0
+},
+
+{
+q:"Arrange the stages of the lawyer's confinement in the correct chronological order: (i) languages, philosophy and history; (ii) classics; (iii) Gospel; (iv) light novels and fantastic stories.",
+options:[
+"(iv) → (ii) → (i) → (iii)",
+"(ii) → (iv) → (iii) → (i)",
+"(iv) → (i) → (ii) → (iii)",
+"(i) → (iv) → (ii) → (iii)"
+],
+answer:0
+},
+
+{
+q:"Arrange the events in the correct order: (i) The banker contemplated killing the lawyer. (ii) The banker and the lawyer made the bet. (iii) The lawyer wrote his final statement. (iv) The banker read the lawyer's statement.",
+options:[
+"(ii) → (i) → (iii) → (iv)",
+"(i) → (ii) → (iv) → (iii)",
+"(ii) → (iii) → (i) → (iv)",
+"(iii) → (ii) → (i) → (iv)"
+],
+answer:0
+},
+
+{
+q:"Match: First year—Light literature; Second year—Classics; Fifth year—Wine and music; After tenth year—Gospel.",
+options:[
+"First year-b, Second year-c, Fifth year-d, After tenth year-a",
+"First year-c, Second year-b, Fifth year-a, After tenth year-d",
+"First year-d, Second year-a, Fifth year-c, After tenth year-b",
+"First year-a, Second year-d, Fifth year-b, After tenth year-c"
+],
+answer:0
+},
+
+{
+q:"Match the characters/actions correctly: Banker—financial ruin; Lawyer—voluntary confinement; Watchmen—report departure; Guests—original debate.",
+options:[
+"Banker-a, Lawyer-b, Watchmen-c, Guests-d",
+"Banker-b, Lawyer-a, Watchmen-c, Guests-d",
+"Banker-b, Lawyer-c, Watchmen-d, Guests-a",
+"Banker-d, Lawyer-a, Watchmen-b, Guests-c"
+],
+answer:1
+},
+
+{
+q:"If the lawyer had completed the full fifteen years without violating the agreement, what was he entitled to receive?",
+options:[
+"One million roubles",
+"Two million roubles",
+"Five hundred thousand roubles",
+"Five million roubles"
+],
+answer:1
+},
+
+{
+q:"Why was the lawyer's confinement described as voluntary?",
+options:[
+"He had been sentenced by a court.",
+"He had chosen to enter the confinement himself.",
+"The banker forced him into the lodge.",
+"The watchmen selected the period for him."
+],
+answer:1
+},
+
+{
+q:"The banker's financial decline was associated particularly with his—",
+options:[
+"charitable activities",
+"excessive reading",
+"Stock Exchange speculation and risky business",
+"support for the lawyer's education"
+],
+answer:2
+},
+
+{
+q:"The lawyer's physical appearance after fifteen years suggests that the confinement had—",
+options:[
+"left him physically unchanged",
+"made him look much older and emaciated",
+"made him stronger than before",
+"improved his health"
+],
+answer:1
+},
+
+{
+q:"Why did the banker hesitate to carry out his plan to kill the lawyer after reading the letter?",
+options:[
+"The lawyer had already escaped.",
+"The letter revealed that the lawyer intended to renounce the money.",
+"The watchmen had arrived.",
+"The banker had forgotten the combination of the safe."
+],
+answer:1
+},
+
+{
+q:"In the context of the story, the word 'caprice' most nearly means—",
+options:[
+"a carefully planned decision",
+"a sudden and unpredictable whim",
+"a legal punishment",
+"a financial agreement"
+],
+answer:1
+},
+
+{
+q:"The word 'emaciated' means—",
+options:[
+"extremely thin and weak",
+"highly educated",
+"richly dressed",
+"physically powerful"
+],
+answer:0
+},
+
+{
+q:"The word 'stipulated' in the context of the bet means—",
+options:[
+"secretly changed",
+"formally agreed or fixed",
+"completely forgotten",
+"publicly rejected"
+],
+answer:1
+},
+
+{
+q:"The phrase 'fireproof safe' refers to a safe designed to—",
+options:[
+"prevent theft by guards",
+"protect its contents from fire",
+"store food safely",
+"keep books dry"
+],
+answer:1
+},
+
+{
+q:"Which development most clearly shows the transformation of the lawyer's intellectual interests?",
+options:[
+"He moved from books to complete rejection of reading.",
+"He moved from light literature to classics, philosophy, history, religion and varied subjects.",
+"He read only law throughout the fifteen years.",
+"He refused all books after the first year."
+],
+answer:1
+},
+
+{
+q:"Why is the banker's decision to kill the lawyer especially significant to the development of the story?",
+options:[
+"It shows that the banker has become concerned only with the lawyer's education.",
+"It creates the final crisis immediately before the bet is due to end.",
+"It proves that the lawyer has already broken the agreement.",
+"It explains why the lawyer began learning languages."
+],
+answer:1
+},
+
+{
+q:"Which contrast is most central to the relationship between the two main characters?",
+options:[
+"Youth and old age only",
+"Wealth and poverty only",
+"Material wealth and changing ideas about the value of life",
+"Education and physical strength"
+],
+answer:2
+},
+
+{
+q:"Which of the following sequences is correct?",
+options:[
+"Bet → confinement → intense study → banker's financial decline → lawyer's renunciation",
+"Confinement → bet → banker's decline → lawyer's study → renunciation",
+"Banker's decline → bet → lawyer's renunciation → confinement → study",
+"Study → bet → confinement → renunciation → banker's decline"
+],
+answer:0
+},
+
+{
+q:"Which statement best describes the ending of the story?",
+options:[
+"The lawyer remains until the exact final moment and receives the money.",
+"The banker pays the money and becomes bankrupt.",
+"The lawyer leaves before the agreed time, thereby giving up his claim to the money.",
+"The banker releases the lawyer early and pays him half the money."
+],
+answer:2
+},
+
+{
+q:"What does the lawyer's final decision primarily reveal about his changed attitude towards the two million roubles?",
+options:[
+"He considers them more valuable than freedom.",
+"He regards them as something he now rejects rather than desires.",
+"He wants to invest them in the Stock Exchange.",
+"He intends to give them to the banker."
+],
+answer:1
+}
+
+];
+
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+
+const questionEl = document.getElementById("question");
+const optionsEl = document.getElementById("options");
+const feedbackEl = document.getElementById("feedback");
+const nextBtn = document.getElementById("nextBtn");
+const progressBar = document.getElementById("progressBar");
+
+function loadQuestion(){
+
+    answered = false;
+
+    const data = questions[currentQuestion];
+
+    questionEl.textContent = data.q;
+
+    optionsEl.innerHTML = "";
+
+    feedbackEl.innerHTML = "";
+
+    nextBtn.style.display = "none";
+
+    data.options.forEach((option,index)=>{
+
+        const button = document.createElement("button");
+
+        button.className = "option";
+
+        button.textContent = option;
+
+        button.onclick = ()=>selectAnswer(index,button);
+
+        optionsEl.appendChild(button);
+
+    });
+
+    progressBar.style.width =
+        ((currentQuestion) / questions.length * 100) + "%";
+}
+
+
+function selectAnswer(selected,selectedButton){
+
+    if(answered) return;
+
+    answered = true;
+
+    const correct = questions[currentQuestion].answer;
+
+    const buttons =
+        document.querySelectorAll(".option");
+
+    buttons.forEach((button,index)=>{
+
+        button.classList.add("disabled");
+
+        if(index === correct){
+            button.classList.add("correct");
+        }
+
+    });
+
+    if(selected === correct){
+
+        score++;
+
+        selectedButton.classList.add("correct");
+
+        feedbackEl.innerHTML =
+            '<div class="correct-text">✓ সঠিক উত্তর!</div>';
+
+    }else{
+
+        selectedButton.classList.add("wrong");
+
+        feedbackEl.innerHTML =
+            '<div class="wrong-text">✗ ভুল উত্তর!</div>';
+
+    }
+
+    nextBtn.style.display = "block";
+
+    if(currentQuestion === questions.length - 1){
+
+        nextBtn.textContent = "ফলাফল দেখুন";
+
+    }else{
+
+        nextBtn.textContent = "Next Question →";
+
+    }
+
+}
+
+
+nextBtn.addEventListener("click",()=>{
+
+    currentQuestion++;
+
+    if(currentQuestion < questions.length){
+
+        loadQuestion();
+
+    }else{
+
+        showResult();
+
+    }
+
+});
+
+
+function showResult(){
+
+    document.getElementById("quizScreen").style.display = "none";
+
+    document.getElementById("result").style.display = "block";
+
+    progressBar.style.width = "100%";
+
+    document.getElementById("scoreNumber").textContent =
+        score + " / " + questions.length;
+
+    let message = "";
+
+    const percentage =
+        (score / questions.length) * 100;
+
+    if(percentage >= 90){
+
+        message =
+        "অসাধারণ! আপনার প্রস্তুতি খুবই ভালো। 🎉";
+
+    }else if(percentage >= 75){
+
+        message =
+        "খুব ভালো! আরও একটু অনুশীলন করলে ফল আরও ভালো হবে। 👏";
+
+    }else if(percentage >= 50){
+
+        message =
+        "ভালো চেষ্টা! গুরুত্বপূর্ণ অংশগুলো আবার revise করুন। 📚";
+
+    }else{
+
+        message =
+        "আরও অনুশীলন করুন এবং The Bet অধ্যায়টি আবার পড়ে quiz দিন। 💪";
+
+    }
+
+    document.getElementById("resultMessage").textContent =
+        message;
+}
+
+
+function restartQuiz(){
+
+    currentQuestion = 0;
+
+    score = 0;
+
+    document.getElementById("quizScreen").style.display =
+        "block";
+
+    document.getElementById("result").style.display =
+        "none";
+
+    loadQuestion();
+
+}
+
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Care Academy | Class 12 Nutrition Quiz</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap');
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:'Noto Sans Bengali',sans-serif;
+  background:linear-gradient(135deg,#071b3a,#123d68 45%,#071b3a);
+  color:#fff;min-height:100vh;
+}
+.container{max-width:900px;margin:auto;padding:18px}
+.header{
+  text-align:center;padding:18px 12px;margin-bottom:16px;
+  background:linear-gradient(135deg,#0b3b72,#09234a);
+  border:2px solid #f7c948;border-radius:20px;
+  box-shadow:0 8px 25px #0007;
+}
+.brand{
+  font-size:clamp(24px,6vw,42px);font-weight:800;color:#ffd54a;
+  animation:brandGlow 1.8s infinite alternate;
+}
+.teacher{font-size:18px;font-weight:700;color:#fff;margin-top:5px}
+.subtitle{font-size:15px;color:#cfe8ff;margin-top:8px}
+@keyframes brandGlow{
+  from{transform:scale(1);text-shadow:0 0 5px #ffd54a}
+  to{transform:scale(1.035);text-shadow:0 0 18px #ffd54a,0 0 30px #ff9f1c}
+}
+.progress-wrap{background:#071329;border-radius:20px;padding:8px;margin:12px 0}
+.progress{height:10px;border-radius:10px;background:#18d26e;width:0%;transition:.4s}
+.card{
+  background:#fff;color:#132238;border-radius:20px;padding:22px;
+  box-shadow:0 10px 30px #0008;margin-top:15px;
+}
+.badge{
+  display:inline-block;background:#0b4f9c;color:#fff;padding:6px 12px;
+  border-radius:20px;font-size:13px;font-weight:700;margin-bottom:10px
+}
+.qno{font-size:15px;color:#0b4f9c;font-weight:800}
+.question{font-size:21px;font-weight:800;line-height:1.6;margin:8px 0 18px}
+.options{display:grid;gap:11px}
+.option{
+  border:2px solid #d8e1ed;background:#f7faff;color:#17283d;
+  border-radius:14px;padding:13px 14px;text-align:left;font-size:16px;
+  cursor:pointer;transition:.2s;font-family:inherit
+}
+.option:hover{border-color:#1c73d1;transform:translateY(-1px)}
+.option.selected{border-color:#0b66c3;background:#e8f2ff}
+.option.correct{border-color:#16a05d;background:#e8fff2;color:#075b35}
+.option.wrong{border-color:#df3f3f;background:#fff0f0;color:#8d1111}
+.option:disabled{cursor:default}
+.feedback{margin-top:15px;padding:13px;border-radius:12px;font-weight:700;line-height:1.55;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:#e8fff2;color:#075b35;border:1px solid #68d59b}
+.feedback.no{background:#fff0f0;color:#8d1111;border:1px solid #ed8585}
+.explain{margin-top:8px;font-weight:500;color:#25364a}
+.next{
+  width:100%;margin-top:18px;padding:14px;border:0;border-radius:14px;
+  background:linear-gradient(90deg,#ffbd1b,#ff8c00);color:#151515;
+  font-size:17px;font-weight:800;cursor:pointer;font-family:inherit
+}
+.next:disabled{opacity:.45;cursor:not-allowed}
+.match-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0 17px
+}
+.match-box{
+  border:2px solid #b8c8da;border-radius:13px;padding:12px;
+  background:#f7faff
+}
+.match-box strong{color:#0b4f9c}
+.result{
+  text-align:center;padding:28px 18px;background:#fff;color:#17283d;
+  border-radius:20px;box-shadow:0 10px 30px #0008
+}
+.score{
+  font-size:52px;font-weight:900;color:#0b66c3;margin:10px 0
+}
+.result h2{color:#0b4f9c}
+.result-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.restart,.show-answers{
+  padding:13px 20px;border:0;border-radius:12px;font-family:inherit;
+  font-weight:800;cursor:pointer
+}
+.restart{background:#0b66c3;color:#fff}.show-answers{background:#ffd34e;color:#111}
+.summary{
+  text-align:left;margin-top:18px;background:#f5f8fc;padding:15px;border-radius:14px;
+  max-height:450px;overflow:auto
+}
+.summary-item{padding:10px;border-bottom:1px solid #d9e1ea;line-height:1.55}
+.correct-text{color:#078044;font-weight:800}.wrong-text{color:#c51f1f;font-weight:800}
+.hidden{display:none!important}
+.footer{text-align:center;padding:20px 5px;color:#c8d8eb;font-size:13px}
+@media(max-width:600px){
+ .container{padding:10px}.card{padding:16px}.question{font-size:18px}
+ .option{font-size:15px}.match-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <div class="brand">Student Care Academy</div>
+    <div class="teacher">Teacher:- Tapan Mandal</div>
+    <div class="subtitle">Class 12 | Nutrition | Full Syllabus (Semester-III)</div>
+  </header>
+
+  <div id="quizArea">
+    <div class="progress-wrap"><div id="progress" class="progress"></div></div>
+    <div id="counter" style="text-align:center;font-weight:700;color:#d9ebff"></div>
+    <div id="questionCard" class="card"></div>
+  </div>
+
+  <div id="resultArea" class="result hidden"></div>
+  <div class="footer">Student Care Academy • Class 12 Nutrition • Semester-III</div>
+</div>
+
+<script>
+const questions = [
+{n:1,cat:"MCQ - সাধারণ",q:"পাকস্থলীতে ভিটামিন B12 শোষণের জন্য প্রয়োজনীয় উপাদানটি কী?",opts:["পেপসিনোজেন","হাইড্রোক্লোরিক অ্যাসিড","ইনট্রিনসিক ফ্যাক্টর (Intrinsic Factor)","মিউকাস"],ans:2,exp:"ক্যাসেলস ইনট্রিনসিক ফ্যাক্টর পাকস্থলীর প্যারাইটাল কোষ থেকে নিঃসৃত হয় এবং ভিটামিন B12 শোষণে অপরিহার্য।"},
+{n:2,cat:"MCQ - সাধারণ",q:"মানবদেহে পিত্তরস (Bile) কোথায় সাময়িকভাবে সঞ্চিত থাকে?",opts:["যকৃৎ","অগ্ন্যাশয়","পিত্তাশয় (Gallbladder)","প্লীহা"],ans:2,exp:"পিত্তরস যকৃতে তৈরি হয় এবং পিত্তাশয়ে ঘনীভূত ও সঞ্চিত থাকে।"},
+{n:3,cat:"MCQ - সাধারণ",q:"ভারতে FSSAI (Food Safety and Standards Authority of India) আইন কত সালে প্রণীত হয়?",opts:["1954","2006","2012","2015"],ans:1,exp:"খাদ্য নিরাপত্তা ও মান বজায় রাখার জন্য Food Safety and Standards Act, 2006 প্রণীত হয়।"},
+{n:4,cat:"MCQ - সাধারণ",q:"ল্যাথারিজম (Lathyrism) নামক স্নায়বিক রোগটি কোন খাদ্যে ভেজালের কারণে হয়?",opts:["খেসারি ডাল","আর্জিমন তেল","মেটানিল ইয়েলো","সিসা"],ans:0,exp:"খেসারি ডালে থাকা BOAA/Lathyrus sativus-এর neurotoxic উপাদান দীর্ঘদিন বেশি গ্রহণে ল্যাথারিজমের সঙ্গে যুক্ত।"},
+{n:5,cat:"MCQ - সাধারণ",q:"শর্করা পরিপাকের চূড়ান্ত বা শেষ উৎপাদিত পদার্থটি কী?",opts:["গ্লিসারল","অ্যামাইনো অ্যাসিড","ফ্যাটি অ্যাসিড","মনোস্যাকারাইড (যেমন গ্লুকোজ)"],ans:3,exp:"জটিল শর্করা পরিপাকের শেষে গ্লুকোজ, ফ্রুক্টোজ ও গ্যালাকটোজের মতো মনোস্যাকারাইডে পরিণত হয়।"},
+{n:6,cat:"MCQ - সাধারণ",q:"প্রাপ্তবয়স্কদের ক্ষেত্রে ভিটামিন D-এর অভাবে কোন রোগ হয়?",opts:["রিকেট","অস্টিওম্যালাসিয়া","স্কার্ভি","রাতকানা"],ans:1,exp:"শিশুদের ভিটামিন D ঘাটতিতে রিকেট এবং প্রাপ্তবয়স্কদের ক্ষেত্রে অস্টিওম্যালাসিয়া দেখা দিতে পারে।"},
+{n:7,cat:"MCQ - সাধারণ",q:"পেপসিনোজেনকে সক্রিয় পেপসিনে পরিণত করে কে?",opts:["টায়ালিন","HCl (হাইড্রোক্লোরিক অ্যাসিড)","লাইপেজ","পিত্তলবণ"],ans:1,exp:"পাকস্থলীর অম্লীয় পরিবেশে HCl পেপসিনোজেনকে সক্রিয় পেপসিনে রূপান্তরে সাহায্য করে।"},
+{n:8,cat:"MCQ - সাধারণ",q:"জ্যাম বা জেলি সংরক্ষণে প্রধানত কোন উপাদানটি সংরক্ষক হিসেবে কাজ করে?",opts:["লবণ","ভিনিগার","চিনি","সর্ষের তেল"],ans:2,exp:"উচ্চ ঘনত্বের চিনি খাদ্যের water activity কমিয়ে অণুজীবের বৃদ্ধি বাধাগ্রস্ত করে।"},
+{n:9,cat:"MCQ - সাধারণ",q:"মাতৃস্তন্যে (কোলোস্ট্রামে) উপস্থিত কোন উপাদানটি শিশুর রোগ প্রতিরোধ ক্ষমতা গড়ে তোলে?",opts:["ল্যাকটোজ","IgA অ্যান্টিবডি","লাইসোজাইম","কেসিন"],ans:1,exp:"কোলোস্ট্রামে secretory IgA-সহ বিভিন্ন immune factor থাকে, যা শিশুকে passive protection দেয়।"},
+{n:10,cat:"MCQ - সাধারণ",q:"LTLT (Low Temperature Long Time) পাস্তুরাইজেশন পদ্ধতিতে দুধকে কত তাপমাত্রায় গরম করা হয়?",opts:["72°C","62.8°C","135°C","100°C"],ans:1,exp:"LTLT পদ্ধতিতে সাধারণত 63°C-এর কাছাকাছি, প্রায় 30 মিনিট ধরে দুধ গরম করা হয়।"},
+{n:11,cat:"MCQ - সাধারণ",q:"খাদ্যে উপস্থিত আয়রন (Iron) শোষণে কোনটি বিশেষভাবে সাহায্য করে?",opts:["ক্যালসিয়াম","ভিটামিন C","ভিটামিন D","ফসফরাস"],ans:1,exp:"ভিটামিন C non-heme iron-এর শোষণ বাড়াতে সাহায্য করে।"},
+{n:12,cat:"MCQ - সাধারণ",q:"গ্লুকোনিওজেনেসিস (Gluconeogenesis) প্রক্রিয়াটি প্রধানত কোথায় ঘটে?",opts:["পেশিকোষ","যকৃৎ","অগ্ন্যাশয়","ক্ষুদ্রান্ত্র"],ans:1,exp:"গ্লুকোনিওজেনেসিস প্রধানত যকৃতে এবং কিছুটা বৃক্কে ঘটে।"},
+{n:13,cat:"MCQ - সাধারণ",q:"অগ্ন্যাশয় রসের (Pancreatic juice) একটি প্রোটিন পরিপাককারী উৎসেচক হল-",opts:["টায়ালিন","ট্রিপসিন","রেনিন","মলটেজ"],ans:1,exp:"ট্রিপসিন একটি pancreatic protease, যা প্রোটিন পরিপাকে অংশ নেয়।"},
+{n:14,cat:"MCQ - সাধারণ",q:"BMI (Body Mass Index) নির্ণয়ের সঠিক সূত্র কোনটি?",opts:["ওজন (kg) / উচ্চতা (m)","ওজন (kg) / উচ্চতা (m)²","উচ্চতা (m) / ওজন (kg)²","ওজন (lb) / উচ্চতা (cm)"],ans:1,exp:"BMI = ওজন (kg) ÷ [উচ্চতা (m)]²।"},
+{n:15,cat:"MCQ - সাধারণ",q:"1 গ্রাম প্রোটিন জারণে কত শক্তি উৎপন্ন হয়?",opts:["4.1 kcal","9.3 kcal","7.0 kcal","2.0 kcal"],ans:0,exp:"পুষ্টিবিজ্ঞানের প্রচলিত মানে প্রোটিন থেকে প্রায় 4 kcal/g; কিছু পাঠ্যসূত্রে 4.1 kcal/g উল্লেখ থাকে।"},
+{n:16,cat:"MCQ - সাধারণ",q:"একটি অত্যাবশ্যকীয় ফ্যাটি অ্যাসিডের (EFA) উদাহরণ দাও।",opts:["স্টিয়ারিক অ্যাসিড","লিনোলেইক অ্যাসিড","পামিটিক অ্যাসিড","ওলেইক অ্যাসিড"],ans:1,exp:"লিনোলেইক অ্যাসিড একটি প্রধান essential fatty acid।"},
+{n:17,cat:"MCQ - সাধারণ",q:"শিশুদের প্রোটিন ও শক্তির অভাবজনিত রোগটিকে কী বলে?",opts:["ম্যারাসমাস","স্কার্ভি","পেলাগ্রা","বেরিবেরি"],ans:0,exp:"প্রোটিন ও মোট শক্তি উভয়ের ঘাটতিতে শিশুদের marasmus হতে পারে; প্রধানত protein deficiency-তে kwashiorkor হয়।"},
+{n:18,cat:"MCQ - সাধারণ",q:"ইউরিয়া চক্র (Urea Cycle) কোথায় সম্পন্ন হয়?",opts:["বৃক্ক","ফুসফুস","যকৃৎ","পাকস্থলী"],ans:2,exp:"ইউরিয়া চক্রের প্রধান স্থান যকৃত; চক্রের কিছু ধাপ mitochondria এবং কিছু cytosol-এ ঘটে।"},
+{n:19,cat:"MCQ - সাধারণ",q:"রক্তে গ্লুকোজের মাত্রা কমে গেলে কোন হরমোন তা বাড়াতে সাহায্য করে?",opts:["ইনসুলিন","গ্লুকাগন","থাইরক্সিন","মেলাটোনিন"],ans:1,exp:"গ্লুকাগন hepatic glycogenolysis ও gluconeogenesis বাড়িয়ে রক্তে glucose বজায় রাখতে সাহায্য করে।"},
+{n:20,cat:"MCQ - সাধারণ",q:"ক্যানিং (Canning) পদ্ধতিতে বাতাস বের করে দেওয়ার ধাপটিকে কী বলে?",opts:["ব্লাঞ্চিং","একজস্টিং (Exhausting)","সিলিং","স্টেরিলাইজেশন"],ans:1,exp:"Exhausting ধাপে container-এর ভেতরের বায়ু/অক্সিজেন কমানো হয়।"},
+
+{n:21,cat:"একাধিক বিবৃতি",q:"পরিপাক হরমোন সম্পর্কিত বিবৃতি:<br>I. সিক্রেটিন অগ্ন্যাশয় রস ক্ষরণে উদ্দীপনা দেয়।<br>II. কোলেসিস্টোকাইনিন (CCK) পিত্তাশয় সংকোচন ঘটায়।",opts:["I সত্য","II সত্য","I ও II উভয়ই সত্য","দুটিই মিথ্যা"],ans:2,exp:"Secretin pancreatic bicarbonate secretion বাড়ায় এবং CCK gallbladder contraction ও pancreatic enzyme secretion-এ ভূমিকা রাখে।"},
+{n:22,cat:"একাধিক বিবৃতি",q:"খাদ্যে ভেজাল:<br>I. কফির গুঁড়োতে তেঁতুল বীজ বা চিকোরি মেশানো হয়।<br>II. চা পাতায় ব্যবহৃত বা শুকিয়ে যাওয়া পাতা মেশানো হয়।",opts:["I সত্য","I ও II উভয়ই সত্য","II সত্য","কোনোটিই নয়"],ans:1,exp:"দুটি বক্তব্যই খাদ্যে ভেজালের প্রচলিত উদাহরণ হিসেবে দেওয়া হয়েছে।"},
+{n:23,cat:"একাধিক বিবৃতি",q:"BMR (Basal Metabolic Rate) নিয়ন্ত্রক শর্ত:<br>I. পুরুষদের তুলনায় মহিলাদের BMR বেশি।<br>II. বয়স বাড়ার সাথে সাথে BMR হ্রাস পায়।",opts:["I সত্য, II মিথ্যা","I মিথ্যা, II সত্য","I ও II সত্য","I ও II মিথ্যা"],ans:1,exp:"গড়ে lean body mass কম হওয়ার কারণে মহিলাদের BMR পুরুষদের তুলনায় কম; বয়স বাড়ার সঙ্গে BMR সাধারণত কমে।"},
+{n:24,cat:"একাধিক বিবৃতি",q:"ডায়াবেটিস মেলিটাস:<br>I. টাইপ-1 ডায়াবেটিসে ইনসুলিন একেবারে তৈরি হয় না।<br>II. টাইপ-2 ডায়াবেটিস প্রধানত স্থূলতা ও জীবনযাত্রার সাথে সম্পর্কিত।",opts:["I সত্য","I ও II উভয়ই সত্য","II সত্য","দুটিই মিথ্যা"],ans:1,exp:"Type-1-এ endogenous insulin খুব কম/প্রায় অনুপস্থিত হতে পারে; Type-2-এ insulin resistance-এর সঙ্গে স্থূলতা ও জীবনযাত্রার সম্পর্ক গুরুত্বপূর্ণ।"},
+{n:25,cat:"একাধিক বিবৃতি",q:"হিমোগ্লোবিন ও রক্তাল্পতা:<br>I. আয়রনের অভাবে মাইক্রোসাইটিক অ্যানিমিয়া হয়।<br>II. ভিটামিন B12-এর অভাবে পারনিসিয়াস অ্যানিমিয়া হয়।",opts:["I সত্য","II সত্য","I ও II উভয়ই সত্য","দুটিই মিথ্যা"],ans:2,exp:"Iron deficiency সাধারণত microcytic anemia সৃষ্টি করে; vitamin B12 deficiency megaloblastic anemia সৃষ্টি করে এবং intrinsic-factor deficiency থাকলে pernicious anemia হতে পারে।"},
+{n:26,cat:"একাধিক বিবৃতি",q:"ORS (Oral Rehydration Solution):<br>I. ORS-এ সোডিয়াম ক্লোরাইড থাকে।<br>II. ORS ডায়রিয়া বা কলেরায় জলশূন্যতা রোধে ব্যবহৃত হয়।",opts:["I সত্য","II সত্য","I ও II উভয়ই সত্য","দুটিই মিথ্যা"],ans:2,exp:"ORS-এ sodium ও glucose-সহ electrolyte থাকে এবং ডায়রিয়াজনিত dehydration প্রতিরোধ/চিকিৎসায় ব্যবহৃত হয়।"},
+{n:27,cat:"একাধিক বিবৃতি",q:"গ্লাইকোজেন সঞ্চয়:<br>I. গ্লাইকোজেন শুধুমাত্র যকৃতে সঞ্চিত থাকে।<br>II. পেশির গ্লাইকোজেন সরাসরি রক্তে গ্লুকোজ সরবরাহ করতে পারে না।",opts:["I সত্য, II মিথ্যা","I মিথ্যা, II সত্য","I ও II সত্য","I ও II মিথ্যা"],ans:1,exp:"Glycogen liver ও skeletal muscle উভয়েই সঞ্চিত হয়; muscle-এ glucose-6-phosphatase না থাকায় muscle glycogen সরাসরি blood glucose-এ পরিণত হয় না।"},
+{n:28,cat:"একাধিক বিবৃতি",q:"ভিটামিন A প্রফিল্যাক্সিস প্রোগ্রাম:<br>I. এই কর্মসূচির আওতায় শিশুদের 9 থেকে 36 মাস বয়স পর্যন্ত ভিটামিন A তেল খাওয়ানো হয়।<br>II. মোট 5টি ডোজ দেওয়া হয়।",opts:["I সত্য, II মিথ্যা","I ও II উভয়ই সত্য","I মিথ্যা, II সত্য","দুটিই মিথ্যা"],ans:0,exp:"প্রশ্নের প্রদত্ত উত্তরের ভিত্তিতে (A) রাখা হয়েছে। তবে বাস্তব জাতীয় কর্মসূচির schedule রাজ্য/সময়ের নির্দেশিকা অনুযায়ী ভিন্নভাবে বর্ণিত হতে পারে।"},
+{n:29,cat:"একাধিক বিবৃতি",q:"হিমায়ন (Freezing) পদ্ধতি:<br>I. হিমায়ন পদ্ধতিতে খাদ্যের অণুজীব ধ্বংস হয়ে যায়।<br>II. -18°C বা তার নিচে খাদ্য সংরক্ষণ করা হয়।",opts:["I সত্য, II মিথ্যা","I মিথ্যা, II সত্য","I ও II সত্য","দুটিই মিথ্যা"],ans:1,exp:"Freezing সাধারণত microorganisms-কে সম্পূর্ণ ধ্বংস করে না; তাদের বৃদ্ধি ও metabolic activity ব্যাপকভাবে কমিয়ে দেয়।"},
+{n:30,cat:"একাধিক বিবৃতি",q:"পরিপাক পদ্ধতি:<br>I. সেলুলোজ মানুষের পরিপাকতন্ত্রে হজম হয়।<br>II. মানুষের অন্ত্রে সেলুলেজ উৎসেচক থাকে না।",opts:["I মিথ্যা, II সত্য","I সত্য, II মিথ্যা","I ও II সত্য","I ও II মিথ্যা"],ans:0,exp:"মানুষের নিজস্ব cellulase নেই; তাই cellulose সাধারণত হজম হয় না এবং dietary fiber হিসেবে কাজ করে।"},
+
+{n:31,cat:"বিবৃতি-কারণ",q:"বিবৃতি (A): উচ্চ রক্তচাপের (Hypertension) রোগীদের কম সোডিয়াম যুক্ত খাবার দেওয়া হয়।<br>যুক্তি (R): সোডিয়াম শরীরে জল ধরে রাখে (Water retention), যা রক্তের আয়তন বাড়িয়ে রক্তচাপ বৃদ্ধি করতে পারে।",opts:["A ও R সঠিক, R হল A-এর সঠিক ব্যাখ্যা","A ও R সঠিক, কিন্তু R সঠিক ব্যাখ্যা নয়","A সঠিক কিন্তু R ভুল","A ভুল কিন্তু R সঠিক"],ans:0,exp:"অতিরিক্ত sodium ও fluid retention কিছু মানুষের blood pressure বাড়াতে পারে; তাই hypertension-এ sodium restriction উপকারী হতে পারে।"},
+{n:32,cat:"বিবৃতি-কারণ",q:"বিবৃতি (A): কোয়াশিয়রকর (Kwashiorkor) রোগে শিশুর শরীরে শোথ বা ইডিমা (Edema) দেখা যায়।<br>যুক্তি (R): প্রোটিনের অভাবে রক্তে অ্যালবুমিনের মাত্রা কমে গেলে plasma oncotic pressure কমতে পারে এবং edema হতে পারে।",opts:["A ও R সঠিক, R হল A-এর সঠিক ব্যাখ্যা","A ও R সঠিক, কিন্তু R সঠিক ব্যাখ্যা নয়","A সঠিক কিন্তু R ভুল","A ভুল কিন্তু R সঠিক"],ans:0,exp:"Severe protein deficiency-তে hypoalbuminemia ও কম plasma oncotic pressure edema-র একটি গুরুত্বপূর্ণ কারণ।"},
+{n:33,cat:"বিবৃতি-কারণ",q:"বিবৃতি (A): রান্না করলে খাদ্যের ভিটামিন C নষ্ট হয়ে যাওয়ার সম্ভাবনা থাকে।<br>যুক্তি (R): ভিটামিন C একটি তাপ-সংবেদনশীল এবং জলে দ্রবণীয় ভিটামিন।",opts:["A ও R সঠিক, R হল A-এর সঠিক ব্যাখ্যা","A ও R সঠিক, কিন্তু R সঠিক ব্যাখ্যা নয়","A সঠিক কিন্তু R ভুল","A ভুল কিন্তু R সঠিক"],ans:0,exp:"Vitamin C heat ও oxidation-এ ক্ষয় হতে পারে এবং water-soluble হওয়ায় রান্নার জলে বেরিয়েও যেতে পারে।"},
+{n:34,cat:"বিবৃতি-কারণ",q:"বিবৃতি (A): আয়োডিনের অভাবে গলগণ্ড বা গয়টার রোগ হয়।<br>যুক্তি (R): থাইরয়েড গ্রন্থি থেকে ইনসুলিন হরমোন তৈরির জন্য আয়োডিন অপরিহার্য।",opts:["A, R সঠিক এবং R, A-এর সঠিক ব্যাখ্যা","A, R সঠিক কিন্তু ব্যাখ্যা নয়","A সঠিক R ভুল","A ভুল R সঠিক"],ans:2,exp:"A সঠিক; iodine thyroid hormone তৈরিতে প্রয়োজনীয়। Insulin তৈরি হয় অগ্ন্যাশয়ে, thyroid-এ নয়।"},
+{n:35,cat:"বিবৃতি-কারণ",q:"বিবৃতি (A): যকৃৎ রোগ (যেমন জন্ডিস) হলে ফ্যাট জাতীয় খাদ্য কম দেওয়া উচিত।<br>যুক্তি (R): যকৃৎ ক্ষতিগ্রস্ত হলে পিত্তরসের উৎপাদন/প্রবাহে সমস্যা হতে পারে, ফলে fat digestion ব্যাহত হতে পারে।",opts:["A ও R সঠিক, R হল A-এর সঠিক ব্যাখ্যা","A ও R সঠিক, কিন্তু R সঠিক ব্যাখ্যা নয়","A সঠিক কিন্তু R ভুল","A ভুল কিন্তু R সঠিক"],ans:0,exp:"কিছু liver/biliary condition-এ fat digestion ও tolerance কমতে পারে; diet রোগের কারণ ও তীব্রতা অনুযায়ী নির্ধারিত হয়।"},
+{n:36,cat:"বিবৃতি-কারণ",q:"বিবৃতি (A): আচার (Pickle) সাধারণ তাপমাত্রাতেও অনেকদিন ভালো থাকতে পারে।<br>যুক্তি (R): আচারে থাকা বেশি তেল, লবণ বা অ্যাসিডিক উপাদান জীবাণুর বৃদ্ধিতে বাধা দেয়।",opts:["A ও R সঠিক, R হল A-এর সঠিক ব্যাখ্যা","A ও R সঠিক, কিন্তু R সঠিক ব্যাখ্যা নয়","A সঠিক কিন্তু R ভুল","A ভুল কিন্তু R সঠিক"],ans:0,exp:"Salt, acid এবং oil barrier-এর মতো preservation factors microbial growth কমাতে সাহায্য করে।"},
+{n:37,cat:"বিবৃতি-কারণ",q:"বিবৃতি (A): লালারস একটি গুরুত্বপূর্ণ পাচক রস হলেও এতে প্রোটিন পরিপাককারী উৎসেচক থাকে না।<br>যুক্তি (R): লালারসের টায়ালিন কেবলমাত্র শর্করা (শ্বেতসার) পরিপাকে অংশ নেয়।",opts:["A ও R সঠিক, R হল A-এর সঠিক ব্যাখ্যা","A ও R সঠিক, কিন্তু R সঠিক ব্যাখ্যা নয়","A সঠিক কিন্তু R ভুল","A ভুল কিন্তু R সঠিক"],ans:0,exp:"Salivary amylase/ptyalin starch digestion শুরু করে; salivary protease মানুষের স্বাভাবিক digestion-এর প্রধান enzyme নয়।"},
+{n:38,cat:"বিবৃতি-কারণ",q:"বিবৃতি (A): ডায়াবেটিস রোগীরা বারবার প্রস্রাব (Polyuria) করেন।<br>যুক্তি (R): রক্তে অতিরিক্ত গ্লুকোজ মূত্রে গেলে osmotic effect-এর মাধ্যমে বেশি জল বেরিয়ে যেতে পারে।",opts:["A ও R সঠিক, R হল A-এর সঠিক ব্যাখ্যা","A ও R সঠিক, কিন্তু R সঠিক ব্যাখ্যা নয়","A সঠিক কিন্তু R ভুল","A ভুল কিন্তু R সঠিক"],ans:0,exp:"Hyperglycemia থেকে glycosuria হলে osmotic diuresis হতে পারে, ফলে polyuria হয়।"},
+{n:39,cat:"বিবৃতি-কারণ",q:"বিবৃতি (A): রাতকানা রোগটি ভিটামিন A-এর অভাবে হয়।<br>যুক্তি (R): চোখের রেটিনায় rod কোষে rhodopsin গঠনে vitamin A দরকার।",opts:["A ও R সঠিক, R হল A-এর সঠিক ব্যাখ্যা","A ও R সঠিক, কিন্তু R সঠিক ব্যাখ্যা নয়","A সঠিক কিন্তু R ভুল","A ভুল কিন্তু R সঠিক"],ans:0,exp:"Vitamin A is needed for visual pigment chemistry; deficiency can impair dark adaptation and cause night blindness."},
+{n:40,cat:"বিবৃতি-কারণ",q:"বিবৃতি (A): পাস্তুরাইজেশন পদ্ধতিতে দুধের সব ধরনের রেণু বা স্পোর ধ্বংস হয়।<br>যুক্তি (R): দুধে উপস্থিত উপকারী ল্যাকটোব্যাসিলাস ব্যাকটেরিয়ার বৃদ্ধি ঘটাতে পাস্তুরাইজেশন করা হয়।",opts:["A ও R সঠিক, R হল A-এর সঠিক ব্যাখ্যা","A ও R সঠিক, কিন্তু R সঠিক ব্যাখ্যা নয়","A সঠিক কিন্তু R ভুল","দুটিই ভুল"],ans:3,exp:"Pasteurization sterilization নয়; spores সবসময় ধ্বংস হয় না। এর উদ্দেশ্য pathogenic microorganisms কমানো, beneficial Lactobacillus বাড়ানো নয়।"},
+
+{n:41,cat:"Matching / স্তম্ভ মেলানো",match:true,left:["(a) লোহা (Iron)","(b) আয়োডিন","(c) ভিটামিন A","(d) ভিটামিন C"],right:["(i) রাতকানা","(ii) স্কার্ভি","(iii) গয়টার (গলগণ্ড)","(iv) অ্যানিমিয়া (রক্তাল্পতা)"],opts:["a-iv, b-iii, c-i, d-ii","a-i, b-ii, c-iii, d-iv"],ans:0,exp:"Iron → anemia; iodine → goiter; vitamin A → night blindness; vitamin C → scurvy।"},
+{n:42,cat:"Matching / স্তম্ভ মেলানো",match:true,left:["(a) দুধ","(b) গোলমরিচ","(c) লঙ্কার গুঁড়ো","(d) কফি"],right:["(i) ইটের গুঁড়ো","(ii) খড়ির গুঁড়ো বা জল","(iii) পেঁপে বীজ","(iv) চিকোরি"],opts:["a-ii, b-iii, c-i, d-iv","a-iv, b-i, c-ii, d-iii"],ans:0,exp:"প্রদত্ত matching অনুযায়ী দুধ-খড়ি/জল, গোলমরিচ-পেঁপে বীজ, লঙ্কা-ইটের গুঁড়ো, কফি-চিকোরি।"},
+{n:43,cat:"Matching / স্তম্ভ মেলানো",match:true,left:["(a) অ্যামাইলেজ","(b) লাইপেজ","(c) প্রোটিয়েজ","(d) মলটেজ"],right:["(i) প্রোটিন","(ii) শ্বেতসার (Starch)","(iii) মলটোজ","(iv) লিপিড (Fat)"],opts:["a-ii, b-iv, c-i, d-iii","a-i, b-ii, c-iii, d-iv"],ans:0,exp:"Amylase → starch; lipase → fat; protease → protein; maltase → maltose।"},
+{n:44,cat:"Matching / স্তম্ভ মেলানো",match:true,left:["(a) হাইপারটেনশন","(b) ডায়াবেটিস","(c) কোষ্ঠকাঠিন্য","(d) জন্ডিস"],right:["(i) কম ফ্যাটযুক্ত ফাইবার সমৃদ্ধ খাবার","(ii) কম কার্বোহাইড্রেট, ফাইবার সমৃদ্ধ খাবার","(iii) কম সোডিয়াম (নুন) যুক্ত খাবার","(iv) উচ্চ তন্তু (High Fiber) যুক্ত খাবার"],opts:["a-iii, b-ii, c-iv, d-i","a-i, b-iii, c-ii, d-iv"],ans:0,exp:"প্রদত্ত প্রশ্নের matching অনুযায়ী hypertension → low sodium; diabetes → controlled carbohydrate/high fiber; constipation → high fiber; jaundice → low-fat pattern।"},
+{n:45,cat:"Matching / স্তম্ভ মেলানো",match:true,left:["(a) ইনসুলিন","(b) থাইরক্সিন","(c) গ্যাস্ট্রিন","(d) পিত্ত (হরমোন নয়, ক্ষরণ)"],right:["(i) থাইরয়েড গ্রন্থি","(ii) অগ্ন্যাশয় (বিটা কোষ)","(iii) যকৃৎ","(iv) পাকস্থলী"],opts:["a-ii, b-i, c-iv, d-iii","a-iii, b-ii, c-i, d-iv"],ans:0,exp:"Insulin → pancreatic beta cells; thyroxine → thyroid; gastrin → stomach; bile → liver।"},
+{n:46,cat:"Matching / স্তম্ভ মেলানো",match:true,left:["(a) শুকানো (Drying)","(b) ক্যানিং","(c) হিমায়ন","(d) চিনি প্রয়োগ"],right:["(i) মটরশুঁটি","(ii) মাছ","(iii) জ্যাম","(iv) টিনজাত ফল"],opts:["a-ii, b-iv, c-i, d-iii","a-i, b-ii, c-iii, d-iv"],ans:0,exp:"প্রদত্ত উদাহরণ অনুযায়ী drying → মাছ, canning → টিনজাত ফল, freezing → মটরশুঁটি, sugar → jam।"},
+{n:47,cat:"Matching / স্তম্ভ মেলানো",match:true,left:["(a) মুখগহ্বর","(b) পাকস্থলী","(c) ক্ষুদ্রান্ত্র","(d) বৃহদন্ত্র"],right:["(i) জল শোষণ ও মল গঠন","(ii) খাদ্য চর্বণ ও লালা মিশ্রণ","(iii) কাইম তৈরি ও প্রোটিন পরিপাক শুরু","(iv) চূড়ান্ত পরিপাক ও পুষ্টি শোষণ"],opts:["a-ii, b-iii, c-iv, d-i","a-iv, b-ii, c-i, d-iii"],ans:0,exp:"Mouth → chewing/saliva; stomach → chyme and protein digestion; small intestine → final digestion/absorption; large intestine → water absorption and feces formation।"},
+{n:48,cat:"Matching / স্তম্ভ মেলানো",match:true,left:["(a) ভিটামিন A","(b) ভিটামিন D","(c) ভিটামিন E","(d) ভিটামিন K"],right:["(i) ক্যালসিফেরল","(ii) রেটিনল","(iii) ফাইলোকুইনোন","(iv) টোকোফেরল"],opts:["a-ii, b-i, c-iv, d-iii","a-i, b-ii, c-iii, d-iv"],ans:0,exp:"Vitamin A → retinol; D → calciferol; E → tocopherol; K → phylloquinone।"},
+{n:49,cat:"Matching / স্তম্ভ মেলানো",match:true,left:["(a) শর্করা","(b) প্রোটিন","(c) ফ্যাট","(d) অ্যালকোহল"],right:["(i) 9 kcal/g","(ii) 4 kcal/g","(iii) 7 kcal/g","(iv) 4.1 kcal/g"],opts:["a-ii, b-iv, c-i, d-iii","a-i, b-ii, c-iii, d-iv"],ans:0,exp:"প্রদত্ত বিকল্প অনুযায়ী carbohydrate → 4 kcal/g, protein → 4.1 kcal/g, fat → 9 kcal/g, alcohol → 7 kcal/g।"},
+{n:50,cat:"Matching / স্তম্ভ মেলানো",match:true,left:["(a) ক্যালসিয়াম","(b) লোহা (Fe)","(c) সোডিয়াম","(d) জিঙ্ক"],right:["(i) অনাক্রম্যতা (Immunity) বৃদ্ধি","(ii) রক্তে অক্সিজেনের পরিবহণ","(iii) হাড় ও দাঁত গঠন","(iv) দেহে জলের ভারসাম্য রক্ষা"],opts:["a-iii, b-ii, c-iv, d-i","a-ii, b-i, c-iii, d-iv"],ans:0,exp:"Calcium → bones/teeth; iron → oxygen transport; sodium → fluid balance; zinc → immunity ও বহু enzyme function।"},
+{n:51,cat:"Matching / স্তম্ভ মেলানো",match:true,left:["(a) আন্ডারওয়েট","(b) নরমাল","(c) ওভারওয়েট","(d) ওবেস (Obese)"],right:["(i) 25 - 29.9","(ii) 18.5-এর কম","(iii) 30 বা তার বেশি","(iv) 18.5 - 24.9"],opts:["a-ii, b-iv, c-i, d-iii","a-i, b-ii, c-iii, d-iv"],ans:0,exp:"প্রাপ্তবয়স্কদের প্রচলিত BMI classification: underweight <18.5, normal 18.5–24.9, overweight 25–29.9, obesity ≥30।"},
+{n:52,cat:"Matching / স্তম্ভ মেলানো",match:true,left:["(a) অ্যানাবলিজম (উপচিতি)","(b) ক্যাটাবলিজম (অপচিতি)"],right:["(i) সরল উপাদান থেকে জটিল অণু গঠন (শক্তি সঞ্চয়)","(ii) জটিল অণু ভেঙে শক্তি উৎপাদন"],opts:["a-i, b-ii","a-ii, b-i"],ans:0,exp:"Anabolism builds complex molecules; catabolism breaks molecules down and generally releases usable energy।"},
+{n:53,cat:"Matching / স্তম্ভ মেলানো",match:true,left:["(a) 0-6 মাস","(b) 6 মাস পর","(c) 1 বছর পর"],right:["(i) পরিবারের স্বাভাবিক খাদ্য","(ii) শুধুমাত্র মাতৃদুগ্ধ","(iii) উইনিং (Weaning) খাদ্য শুরু"],opts:["a-ii, b-iii, c-i","a-i, b-ii, c-iii"],ans:0,exp:"প্রদত্ত pattern অনুযায়ী 0–6 months → exclusive breastfeeding; around 6 months → complementary/weaning foods; 1 year → family foods-এর দিকে অগ্রসর।"},
+{n:54,cat:"Matching / স্তম্ভ মেলানো",match:true,left:["(a) PFA (Prevention of Food Adulteration)","(b) FSSAI Act","(c) ECA (Essential Commodities Act)"],right:["(i) 2006","(ii) 1955 (Essential Commodities)","(iii) 1954"],opts:["a-iii, b-i, c-ii","a-i, b-ii, c-iii"],ans:0,exp:"PFA Act → 1954; Food Safety and Standards Act → 2006; Essential Commodities Act → 1955।"},
+{n:55,cat:"Matching / স্তম্ভ মেলানো",match:true,left:["(a) গ্যাস্ট্রিক জুস (পাকস্থলী)","(b) পিত্তরস"],right:["(i) ক্ষারীয় (Alkaline)","(ii) চরম আম্লিক (Highly Acidic)"],opts:["a-ii, b-i","a-i, b-ii"],ans:0,exp:"Gastric juice is strongly acidic; bile is alkaline।"},
+
+{n:56,cat:"ক্রম নির্ণয়",q:"প্রাণীয় পুষ্টির (Holozoic Nutrition) পর্যায়গুলির সঠিক ক্রম:",opts:["খাদ্যগ্রহণ → পরিপাক → শোষণ → আত্তীকরণ → বহিষ্করণ","পরিপাক → খাদ্যগ্রহণ → আত্তীকরণ → শোষণ → বহিষ্করণ","খাদ্যগ্রহণ → শোষণ → পরিপাক → আত্তীকরণ → বহিষ্করণ","আত্তীকরণ → খাদ্যগ্রহণ → পরিপাক → শোষণ → বহিষ্করণ"],ans:0,exp:"সঠিক ক্রম: Ingestion → Digestion → Absorption → Assimilation → Egestion।"},
+{n:57,cat:"ক্রম নির্ণয়",q:"ক্যানিং (Canning) পদ্ধতির সম্পূর্ণ ধাপগুলির সঠিক ক্রম:",opts:["ফল প্রস্তুতকরণ → ব্লাঞ্চিং → কৌটায় ভরা → একজস্টিং → সিলিং → স্টেরিলাইজেশন","ব্লাঞ্চিং → স্টেরিলাইজেশন → কৌটায় ভরা → একজস্টিং → সিলিং → ফল প্রস্তুতকরণ","কৌটায় ভরা → একজস্টিং → ব্লাঞ্চিং → সিলিং → স্টেরিলাইজেশন","ফল প্রস্তুতকরণ → একজস্টিং → ব্লাঞ্চিং → সিলিং → স্টেরিলাইজেশন"],ans:0,exp:"প্রদত্ত sequence অনুযায়ী preparation → blanching → filling → exhausting → sealing → sterilization।"},
+{n:58,cat:"ক্রম নির্ণয়",q:"রক্তে শর্করা বৃদ্ধির পর তা নিয়ন্ত্রণের সঠিক ক্রম:",opts:["খাদ্যগ্রহণ → রক্তে গ্লুকোজ বৃদ্ধি → অগ্ন্যাশয় থেকে ইনসুলিন ক্ষরণ → কোষে গ্লুকোজ প্রবেশ → রক্তে শর্করার মাত্রা স্বাভাবিক","অগ্ন্যাশয় থেকে ইনসুলিন ক্ষরণ → খাদ্যগ্রহণ → রক্তে গ্লুকোজ বৃদ্ধি","রক্তে গ্লুকোজ বৃদ্ধি → গ্লুকাগন ক্ষরণ → কোষে গ্লুকোজ প্রবেশ","খাদ্যগ্রহণ → কোষে গ্লুকোজ প্রবেশ → ইনসুলিন ক্ষরণ"],ans:0,exp:"খাবারের পর glucose বাড়লে pancreatic beta cells insulin release করে; insulin glucose uptake/storage বাড়ায়।"},
+{n:59,cat:"ক্রম নির্ণয়",q:"ORS তৈরির সঠিক ধাপের ক্রম:",opts:["হাত ধোয়া → জল ফোটানো → জল ঠান্ডা করা → ORS পাউডার মেশানো → পান করা","জল ফোটানো → ORS পাউডার মেশানো → হাত ধোয়া → পান করা","ORS পাউডার মেশানো → জল ফোটানো → জল ঠান্ডা করা → পান করা","জল ফোটানো → গরম জলে ORS মেশানো → ঠান্ডা করা → পান করা"],ans:0,exp:"পরিষ্কার/নিরাপদ জল ব্যবহার করে, নির্দেশিত পরিমাণ জলে ORS মেশাতে হয়; গরম জলে সরাসরি মেশানো উচিত নয়।"},
+{n:60,cat:"ক্রম নির্ণয়",q:"মানবদেহে লোহা (Iron) শোষণের সঠিক পথ:",opts:["খাদ্যের Fe3+ → পাকস্থলীর HCl দ্বারা Fe2+ এ রূপান্তর → ডিওডিনামে শোষণ","খাদ্যের Fe2+ → পাকস্থলীর HCl দ্বারা Fe3+ এ রূপান্তর → ডিওডিনামে শোষণ","ডিওডিনামে শোষণ → খাদ্যের Fe3+ → পাকস্থলীর HCl দ্বারা Fe2+ এ রূপান্তর","খাদ্যের Fe3+ → ইলিয়ামে শোষণ → Fe2+ এ রূপান্তর"],ans:0,exp:"প্রদত্ত sequence-টি পরীক্ষামুখী সরলীকরণ; বাস্তবে non-heme iron reduction, transport ও absorption-এ একাধিক প্রোটিন/পরিবেশ কাজ করে এবং duodenum গুরুত্বপূর্ণ স্থান।"},
+{n:61,cat:"ক্রম নির্ণয়",q:"সূর্যালোক থেকে ভিটামিন D সংশ্লেষের সঠিক ক্রম:",opts:["ত্বকের 7-ডিহাইড্রো কোলেস্টেরল → সূর্যালোক (UV) → কোলেক্যালসিফেরল → যকৃৎ → বৃক্ক (সক্রিয় ভিটামিন D)","সূর্যালোক → যকৃৎ → বৃক্ক → ত্বকের 7-ডিহাইড্রো কোলেস্টেরল","যকৃৎ → ত্বকের 7-ডিহাইড্রো কোলেস্টেরল → সূর্যালোক → বৃক্ক","কোলেক্যালসিফেরল → সূর্যালোক → ত্বকের 7-ডিহাইড্রো কোলেস্টেরল"],ans:0,exp:"UVB exposure converts 7-dehydrocholesterol to cholecalciferol; liver and kidney hydroxylation produces active calcitriol।"},
+{n:62,cat:"ক্রম নির্ণয়",q:"অনশন বা ফাস্টিং-এর সময় রক্তে শর্করার মাত্রা ঠিক রাখার ক্রম:",opts:["রক্তে গ্লুকোজ হ্রাস → আলফা কোষ থেকে গ্লুকাগন ক্ষরণ → যকৃতে গ্লাইকোজেনোলাইসিস → রক্তে গ্লুকোজ স্বাভাবিক","গ্লুকাগন ক্ষরণ → ইনসুলিন ক্ষরণ → গ্লাইকোজেনোলাইসিস","রক্তে গ্লুকোজ হ্রাস → ইনসুলিন ক্ষরণ → গ্লাইকোজেনোলাইসিস","যকৃতে গ্লাইকোজেনোলাইসিস → রক্তে গ্লুকোজ হ্রাস → গ্লুকাগন ক্ষরণ"],ans:0,exp:"Fasting-এ glucose কমলে glucagon বাড়ে এবং hepatic glycogenolysis/gluconeogenesis রক্তের glucose বজায় রাখতে সাহায্য করে।"},
+{n:63,cat:"ক্রম নির্ণয়",q:"খাদ্য গেলা (Swallowing/Deglutition) পদ্ধতির পর্যায়গুলির ক্রম:",opts:["ঐচ্ছিক মুখগহ্বর পর্যায় → গলবিল পর্যায় → গ্রাসনালি পর্যায়","গলবিল পর্যায় → গ্রাসনালি পর্যায় → মুখগহ্বর পর্যায়","গ্রাসনালি পর্যায় → মুখগহ্বর পর্যায় → গলবিল পর্যায়","ঐচ্ছিক মুখগহ্বর পর্যায় → গ্রাসনালি পর্যায় → গলবিল পর্যায়"],ans:0,exp:"Deglutition: oral phase → pharyngeal phase → esophageal phase।"},
+{n:64,cat:"ক্রম নির্ণয়",q:"জন্ডিস বা লিভারের রোগে ডায়েট থেরাপির সঠিক ক্রম (তীব্রতা কমার সাথে):",opts:["ইন্ট্রাভেনাস (IV) ফ্লুইড → পরিষ্কার তরল খাদ্য → নরম ফ্যাটবিহীন খাদ্য → সাধারণ লো-ফ্যাট খাদ্য","সাধারণ লো-ফ্যাট খাদ্য → ইন্ট্রাভেনাস ফ্লুইড → পরিষ্কার তরল খাদ্য","নরম ফ্যাটবিহীন খাদ্য → সাধারণ লো-ফ্যাট খাদ্য → ইন্ট্রাভেনাস ফ্লুইড","পরিষ্কার তরল খাদ্য → ইন্ট্রাভেনাস ফ্লুইড → নরম ফ্যাটবিহীন খাদ্য"],ans:0,exp:"প্রদত্ত প্রশ্নের sequence অনুযায়ী রোগীর সহনশীলতা ও অবস্থার উন্নতির সঙ্গে diet ধীরে ধীরে advance করা হয়। বাস্তবে diet রোগের কারণ ও তীব্রতা অনুযায়ী নির্ধারিত হয়।"},
+{n:65,cat:"ক্রম নির্ণয়",q:"শিশুদের উইনিং (Weaning) খাদ্যের সঠিক ক্রম:",opts:["তরল পরিপূরক (ফলের রস) → অর্ধ-কঠিন (ম্যাশ করা কলা/খিচুড়ি) → কঠিন বা পরিবারের সাধারণ খাবার","কঠিন খাবার → তরল পরিপূরক → অর্ধ-কঠিন","অর্ধ-কঠিন → তরল পরিপূরক → কঠিন খাবার","পরিবারের খাবার → অর্ধ-কঠিন → তরল পরিপূরক"],ans:0,exp:"Complementary feeding সাধারণত age-appropriate soft foods দিয়ে শুরু করে ধীরে ধীরে texture ও variety বাড়ানো হয়।"},
+{n:66,cat:"ক্রম নির্ণয়",q:"ফ্যাটে র্যান্সিডিটি (Rancidity) বা দুর্গন্ধ সৃষ্টির ক্রম:",opts:["ফ্যাট → বাতাসের অক্সিজেনের সংস্পর্শ → পারঅক্সাইড গঠন → দুর্গন্ধ ও স্বাদের পরিবর্তন","পারঅক্সাইড গঠন → ফ্যাট → দুর্গন্ধ","ফ্যাট → দুর্গন্ধ → বাতাসের অক্সিজেনের সংস্পর্শ","অক্সিজেনের সংস্পর্শ → দুর্গন্ধ → পারঅক্সাইড গঠন"],ans:0,exp:"Lipid oxidation-এ primary oxidation products যেমন hydroperoxides তৈরি হয় এবং পরে off-flavour/odour তৈরি হতে পারে।"},
+{n:67,cat:"ক্রম নির্ণয়",q:"দাঁতের ক্ষয় (Tooth Decay) হওয়ার ক্রম:",opts:["শর্করা যুক্ত খাদ্য গ্রহণ → ব্যাকটেরিয়া দ্বারা ল্যাকটিক অ্যাসিড তৈরি → এনামেল ক্ষয় → গহ্বর বা ক্যাভিটি সৃষ্টি","এনামেল ক্ষয় → শর্করা যুক্ত খাদ্য গ্রহণ → ব্যাকটেরিয়া দ্বারা ল্যাকটিক অ্যাসিড তৈরি","ব্যাকটেরিয়া দ্বারা ল্যাকটিক অ্যাসিড তৈরি → শর্করা যুক্ত খাদ্য গ্রহণ → ক্যাভিটি সৃষ্টি","ক্যাভিটি সৃষ্টি → এনামেল ক্ষয় → শর্করা যুক্ত খাদ্য গ্রহণ"],ans:0,exp:"Fermentable carbohydrates-এর ওপর oral bacteria acid তৈরি করে; repeated acid attack enamel demineralization ও caries-এর দিকে নিয়ে যেতে পারে।"},
+{n:68,cat:"ক্রম নির্ণয়",q:"নিউট্রিশন কেয়ার প্রসেস (Nutrition Care Process)-এর ধাপ:",opts:["পুষ্টি মূল্যায়ন (Assessment) → পুষ্টিগত রোগনির্ণয় (Diagnosis) → হস্তক্ষেপ (Intervention) → মনিটরিং ও মূল্যায়ন (Evaluation)","হস্তক্ষেপ → মূল্যায়ন → রোগনির্ণয় → মনিটরিং","রোগনির্ণয় → হস্তক্ষেপ → মনিটরিং → পুষ্টি মূল্যায়ন","পুষ্টি মূল্যায়ন → মনিটরিং → হস্তক্ষেপ → রোগনির্ণয়"],ans:0,exp:"NCP-এর প্রচলিত চার ধাপ হলো Assessment, Diagnosis, Intervention, Monitoring & Evaluation (ADIME)।"},
+{n:69,cat:"ক্রম নির্ণয়",q:"মাতৃস্তন্য ক্ষরণের হরমোনাল রিফ্লেক্সের ক্রম:",opts:["শিশুর স্তন্যপান → হাইপোথ্যালামাসে উদ্দীপনা → অক্সিটোসিন ক্ষরণ → দুধ নির্গমন (Let-down reflex)","অক্সিটোসিন ক্ষরণ → হাইপোথ্যালামাসে উদ্দীপনা → শিশুর স্তন্যপান","দুধ নির্গমন → শিশুর স্তন্যপান → অক্সিটোসিন ক্ষরণ","হাইপোথ্যালামাসে উদ্দীপনা → শিশুর স্তন্যপান → অক্সিটোসিন ক্ষরণ"],ans:0,exp:"Suckling neural signals stimulate hypothalamic pathways; oxytocin release causes milk ejection. Prolactin is central to milk production।"},
+{n:70,cat:"ক্রম নির্ণয়",q:"মানবদেহে প্রোটিন পরিপাক ও শোষণের পর্যায়ক্রম:",opts:["খাদ্যের প্রোটিন → পাকস্থলীতে পেপসিন দ্বারা পেপটাইড গঠন → অন্ত্রে অ্যামাইনো অ্যাসিডে রূপান্তর → রক্তে শোষণ","অন্ত্রে অ্যামাইনো অ্যাসিডে রূপান্তর → পাকস্থলীতে পেপসিন দ্বারা পেপটাইড গঠন → রক্তে শোষণ","খাদ্যের প্রোটিন → রক্তে শোষণ → অন্ত্রে অ্যামাইনো অ্যাসিডে রূপান্তর","রক্তে শোষণ → খাদ্যের প্রোটিন → পাকস্থলীতে পেপসিন"],ans:0,exp:"Protein digestion starts in the stomach and is completed mainly in the small intestine; amino acids are then absorbed."}]
+;
+
+let current=0,score=0,answered=false;
+const userAnswers=[];
+
+function esc(s){
+ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+}
+function render(){
+ const q=questions[current]; answered=false;
+ document.getElementById('counter').textContent=`Question ${q.n} of ${questions.length}`;
+ document.getElementById('progress').style.width=((current)/questions.length*100)+"%";
+ let body="";
+ if(q.match){
+   body+=`<div class="match-grid"><div class="match-box"><strong>Column A</strong><br><br>${q.left.map(esc).join("<br>")}</div><div class="match-box"><strong>Column B</strong><br><br>${q.right.map(esc).join("<br>")}</div></div>`;
+ }
+ body+=`<div class="qno">Question ${q.n}</div><div class="question">${q.q||""}</div>`;
+ body+=`<div class="options">${q.opts.map((o,i)=>`<button class="option" data-i="${i}" onclick="choose(${i})"><b>(${String.fromCharCode(65+i)})</b> ${esc(o)}</button>`).join("")}</div>`;
+ body+=`<div id="feedback" class="feedback"></div><button id="nextBtn" class="next" disabled>${current===questions.length-1?"Show Final Score":"Next Question"}</button>`;
+ document.getElementById('questionCard').innerHTML=body;
+ document.getElementById('nextBtn').onclick=nextQuestion;
+}
+function choose(i){
+ if(answered)return;
+ answered=true;
+ const q=questions[current];
+ userAnswers[current]=i;
+ document.querySelectorAll(".option").forEach((b,idx)=>{
+   b.disabled=true;
+   if(idx===q.ans)b.classList.add("correct");
+   if(idx===i && i!==q.ans)b.classList.add("wrong");
+ });
+ const fb=document.getElementById("feedback");
+ if(i===q.ans){
+   score++;
+   fb.className="feedback show ok";
+   fb.innerHTML="✓ সঠিক উত্তর!<div class='explain'>"+esc(q.exp)+"</div>";
+ }else{
+   fb.className="feedback show no";
+   fb.innerHTML="✗ ভুল উত্তর। সঠিক উত্তর: <b>("+String.fromCharCode(65+q.ans)+") "+esc(q.opts[q.ans])+"</b><div class='explain'>"+esc(q.exp)+"</div>";
+ }
+ document.getElementById("nextBtn").disabled=false;
+}
+function nextQuestion(){
+ if(current<questions.length-1){current++;render();}
+ else showResult();
+}
+function showResult(){
+ document.getElementById("quizArea").classList.add("hidden");
+ const r=document.getElementById("resultArea");r.classList.remove("hidden");
+ const pct=Math.round(score/questions.length*100);
+ let msg=pct>=80?"দারুণ প্রস্তুতি!":pct>=60?"ভালো হয়েছে। আরও একবার Revision করো।":"আরও Revision করলে স্কোর অনেক ভালো হবে।";
+ r.innerHTML=`<h2>Quiz Completed</h2><div class="score">${score} / ${questions.length}</div><div style="font-size:18px;font-weight:800">${pct}%</div><p>${msg}</p>
+ <div class="result-actions"><button class="restart" onclick="restartQuiz()">Restart Quiz</button><button class="show-answers" onclick="toggleSummary()">Answer Review</button></div>
+ <div id="summary" class="summary hidden">${questions.map((q,idx)=>{
+   const ua=userAnswers[idx],ok=ua===q.ans;
+   return `<div class="summary-item"><b>Question ${q.n}:</b> ${q.q||"(Matching / Sequence question)"}<br>
+   <span class="${ok?'correct-text':'wrong-text'}">${ok?"✓ Correct":"✗ Wrong"}</span>
+   ${!ok?`<br>Your answer: ${ua==null?"Not answered":esc(q.opts[ua])}`:""}
+   <br>Correct answer: <b>${esc(q.opts[q.ans])}</b></div>`;
+ }).join("")}</div>`;
+}
+function toggleSummary(){document.getElementById("summary").classList.toggle("hidden")}
+function restartQuiz(){current=0;score=0;answered=false;userAnswers.length=0;document.getElementById("quizArea").classList.remove("hidden");document.getElementById("resultArea").classList.add("hidden");render();window.scrollTo({top:0,behavior:"smooth"})}
+render();
+</script>
+</body>
+</html>

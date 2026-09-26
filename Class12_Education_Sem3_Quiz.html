@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Care Academy - Education Quiz</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700;800&display=swap');
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(135deg,#07142e,#101b45,#07142e);color:#fff;font-family:'Noto Sans Bengali',sans-serif;min-height:100vh}
+.container{max-width:850px;margin:auto;padding:16px}
+.header{background:linear-gradient(135deg,#172b68,#0b1638);border:2px solid #d7b45a;border-radius:20px;padding:20px 14px;text-align:center;box-shadow:0 0 25px #0008;margin-bottom:16px}
+.brand{font-size:25px;font-weight:800;color:#ffd75a;animation:glow 1.8s infinite alternate}
+.teacher{font-size:18px;font-weight:700;color:#fff;margin-top:6px;animation:slide 2s ease-in-out infinite alternate}
+@keyframes glow{from{text-shadow:0 0 4px #ffd75a}to{text-shadow:0 0 18px #ffd75a,0 0 30px #ffb300}}
+@keyframes slide{from{transform:scale(.98)}to{transform:scale(1.02)}}
+.meta{font-size:15px;color:#dbe6ff;margin-top:10px}
+.progress{height:9px;background:#26345e;border-radius:10px;overflow:hidden;margin:14px 0}
+.progress-bar{height:100%;width:0;background:linear-gradient(90deg,#ffca28,#ff8f00);transition:.3s}
+.card{background:#fff;color:#17213c;border-radius:18px;padding:22px;box-shadow:0 8px 28px #0007}
+.section{display:inline-block;background:#172b68;color:#ffd75a;padding:7px 12px;border-radius:20px;font-weight:700;font-size:14px;margin-bottom:12px}
+.qno{font-size:17px;font-weight:800;color:#b07800;margin-bottom:8px}
+.question{font-size:20px;line-height:1.65;font-weight:700;margin-bottom:18px}
+.statement{background:#f3f6ff;border-left:4px solid #344c9c;padding:12px;border-radius:10px;margin:10px 0;line-height:1.7}
+.options{display:grid;gap:11px;margin-top:15px}
+.option{border:2px solid #d9deeb;border-radius:12px;padding:13px 14px;background:#fff;cursor:pointer;font-size:17px;line-height:1.5;transition:.2s}
+.option:hover{border-color:#344c9c;background:#f5f7ff}
+.option.selected{border-color:#d69e00;background:#fff6d8}
+.option.correct{border-color:#168a4a;background:#dcf8e7}
+.option.wrong{border-color:#c62828;background:#ffe0e0}
+.matchbox{overflow-x:auto;background:#f8f9fd;border-radius:12px;padding:10px;margin:12px 0}
+.matchbox table{width:100%;border-collapse:collapse;color:#18213d;min-width:520px}
+.matchbox th,.matchbox td{border:1px solid #bcc5d8;padding:9px;text-align:left}
+.matchbox th{background:#e6ebfa}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+button{border:0;border-radius:12px;padding:13px 20px;font-size:16px;font-weight:800;cursor:pointer}
+.prev{background:#e5e9f2;color:#17213c}.next{background:#172b68;color:#fff}.submit{background:#0d8b4d;color:#fff}
+button:disabled{opacity:.45;cursor:not-allowed}
+.explain{display:none;margin-top:14px;background:#fff8dc;border-left:4px solid #e0a800;padding:12px;border-radius:10px;line-height:1.65}
+.result{display:none;text-align:center;background:#fff;color:#17213c;border-radius:20px;padding:28px;box-shadow:0 8px 28px #0008}
+.score{font-size:48px;font-weight:900;color:#0d8b4d}
+.result h2{color:#172b68}
+.restart{background:#172b68;color:#fff;margin-top:14px}
+.small{font-size:14px;color:#5e6880}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="brand">Student Care Academy</div>
+    <div class="teacher">Teacher:- Tapan Mandal</div>
+    <div class="meta">Class: 12 | Subject: Education | Semester-III Full Syllabus | WBCHSE</div>
+  </div>
+  <div id="quiz">
+    <div class="progress"><div class="progress-bar" id="bar"></div></div>
+    <div class="card">
+      <div id="content"></div>
+      <div class="nav">
+        <button class="prev" id="prev" onclick="prevQ()">Previous</button>
+        <button class="next" id="next" onclick="nextQ()">Next</button>
+        <button class="submit" id="finish" onclick="finishQuiz()" style="display:none">Submit</button>
+      </div>
+    </div>
+  </div>
+  <div class="result" id="result">
+    <h2>Quiz Completed</h2>
+    <div class="score" id="score"></div>
+    <p id="percent"></p>
+    <p id="message"></p>
+    <button class="restart" onclick="location.reload()">Try Again</button>
+  </div>
+</div>
+
+<script>
+const qs = [
+{sec:"সাধারণ MCQ",q:"স্বাধীন ভারতের প্রথম শিক্ষা কমিশন হলো—",o:["কোঠারী কমিশন","মুদালিয়র কমিশন","রাধাকৃষ্ণান কমিশন","হান্টার কমিশন"],a:2,e:"১৯৪৮-৪৯ সালে ড. সর্বপল্লী রাধাকৃষ্ণানের সভাপতিত্বে বিশ্ববিদ্যালয় শিক্ষা কমিশন গঠিত হয়, যা স্বাধীন ভারতের প্রথম শিক্ষা কমিশন।"},
+{sec:"সাধারণ MCQ",q:"'অপারেশন ব্ল্যাকবোর্ড' কোন্ স্তরের শিক্ষার সাথে যুক্ত?",o:["প্রাক্-প্রাথমিক শিক্ষা","প্রাথমিক শিক্ষা","মাধ্যমিক শিক্ষা","উচ্চমাধ্যমিক শিক্ষা"],a:1,e:"১৯৮৬ সালের জাতীয় শিক্ষানীতিতে প্রাথমিক বিদ্যালয়ের ন্যূনতম পরিকাঠামো উন্নয়নের জন্য এই কর্মসূচি নেওয়া হয়।"},
+{sec:"সাধারণ MCQ",q:"'DIET' প্রতিষ্ঠার সুপারিশ করা হয়েছিল—",o:["১৯৬৮ সালের জাতীয় শিক্ষানীতিতে","১৯৮৬ সালের জাতীয় শিক্ষানীতিতে","২০২০ সালের জাতীয় শিক্ষানীতিতে","সর্বশিক্ষা অভিযান, ২০০১"],a:1,e:"প্রাথমিক স্তরের শিক্ষকদের প্রশিক্ষণের জন্য ১৯৮৬ সালের শিক্ষানীতিতে প্রতিটি জেলায় DIET প্রতিষ্ঠার সুপারিশ করা হয়।"},
+{sec:"সাধারণ MCQ",q:"সম্পূর্ণ বধির শিশুরা কত ডেসিবেলের বেশি শব্দ শুনতে পারে না?",o:["40","50","60","70"],a:3,e:"প্রদত্ত প্রশ্নব্যাংকের উত্তর অনুযায়ী উত্তর 70।"},
+{sec:"সাধারণ MCQ",q:"ডেলরস্ কমিশনের প্রতিবেদনটির (1996) নাম কী?",o:["Education for All","Learning: The treasure within","Education for 21st century","Learning to be"],a:1,e:"UNESCO-র আন্তর্জাতিক শিক্ষা কমিশনের রিপোর্টের শিরোনাম ছিল Learning: The Treasure Within।"},
+{sec:"সাধারণ MCQ",q:"EWS শ্রেণীর অন্তর্ভুক্ত হওয়ার জন্য পরিবারের বার্ষিক আয়ের সীমা কত?",o:["15 লক্ষ","8 লক্ষ","10 লক্ষ","12 লক্ষ"],a:1,e:"প্রদত্ত প্রশ্নব্যাংকে EWS-এর আয়ের সীমা 8 লক্ষ টাকা হিসেবে দেওয়া হয়েছে।"},
+{sec:"সাধারণ MCQ",q:"“Education is the manifestation of perfection already in man.” — একথা বলেছেন:",o:["বিদ্যাসাগর","বিবেকানন্দ","রবীন্দ্রনাথ ঠাকুর","গান্ধীজী"],a:1,e:"স্বামী বিবেকানন্দের শিক্ষাদর্শনে মানুষের অন্তর্নিহিত পূর্ণতার বিকাশই শিক্ষার লক্ষ্য।"},
+{sec:"সাধারণ MCQ",q:"'ল্যাবরেটরী স্কুল' (Laboratory School) কে প্রতিষ্ঠা করেন?",o:["রুশো","রবীন্দ্রনাথ","গান্ধীজী","জন ডিউই"],a:3,e:"জন ডিউই 1896 সালে শিকাগো বিশ্ববিদ্যালয়ে Laboratory School প্রতিষ্ঠা করেন।"},
+{sec:"সাধারণ MCQ",q:"সেলিগম্যানের PERMA মডেলে 'A' কথাটির অর্থ হলো—",o:["Arrangement","Accomplishment","Accommodation","Assessment"],a:1,e:"PERMA = Positive Emotion, Engagement, Relationships, Meaning, Accomplishment।"},
+{sec:"সাধারণ MCQ",q:"RTE Act (Right to Education Act) কবে থেকে কার্যকর হয়?",o:["2002 সালে","2010 সালে","2005 সালে","2009 সালে"],a:1,e:"আইনটি 2009 সালে পাস হলেও 1 April 2010 থেকে কার্যকর হয়।"},
+{sec:"একাধিক বিবৃতি",q:"NEP 2020 সম্পর্কে সঠিক বিবৃতিগুলি নির্বাচন করো:",s:["i) শিক্ষার নতুন কাঠামো হলো 5+3+3+4","ii) ত্রিভাষা সূত্রের ওপর জোর দেওয়া হয়েছে","iii) M.Phil কোর্স বাতিল করা হয়েছে","iv) এটি রাধাকৃষ্ণান কমিশনের সুপারিশের ভিত্তিতে তৈরি"],o:["i, ii, iii সঠিক","কেবল i এবং iv সঠিক","i, iii, iv সঠিক","সবগুলি সঠিক"],a:0,e:"5+3+3+4 কাঠামো, ত্রিভাষা নীতি এবং M.Phil বাতিলের কথা রয়েছে। তবে এটি রাধাকৃষ্ণান কমিশনের ভিত্তিতে নয়।"},
+{sec:"একাধিক বিবৃতি",q:"অন্তর্ভুক্তিমূলক শিক্ষা (Inclusive Education) প্রসঙ্গে সঠিক বিবৃতিগুলি হলো:",s:["i) বৈচিত্র্য একটি সম্পদ।","ii) শিক্ষার্থীদের দক্ষতার ওপর ভিত্তি করে তাদের পৃথক করা উচিত।","iii) সকল শিক্ষার্থীর মানসম্মত শিক্ষায় অংশগ্রহণের অধিকার আছে।"],o:["i ও ii সঠিক","i ও iii সঠিক","ii ও iii সঠিক","কেবল iii সঠিক"],a:1,e:"অন্তর্ভুক্তিমূলক শিক্ষায় বৈচিত্র্যকে সম্পদ হিসেবে দেখা হয় এবং সকলের অংশগ্রহণ নিশ্চিত করা হয়।"},
+{sec:"একাধিক বিবৃতি",q:"রবীন্দ্রনাথ ঠাকুরের শিক্ষাদর্শন সম্পর্কিত সঠিক বিবৃতি:",s:["i) মাতৃভাষাই মাতৃদুগ্ধ— এটি তাঁর উক্তি।","ii) তিনি শ্রীনিকেতন প্রতিষ্ঠা করেছিলেন।","iii) তিনি নঈ-তালিম শিক্ষা প্রবর্তন করেন।"],o:["i ও ii সঠিক","কেবল ii সঠিক","i, ii, iii সঠিক","কেবল i সঠিক"],a:0,e:"শ্রীনিকেতন রবীন্দ্রনাথের সঙ্গে যুক্ত; নঈ-তালিমের প্রবর্তক গান্ধীজী।"},
+{sec:"একাধিক বিবৃতি",q:"ডেলরস্ কমিশনের শিক্ষার চারটি স্তম্ভ হলো:",s:["i) জানার জন্য শিখন (Learning to know)","ii) কর্মসম্পাদনের জন্য শিখন (Learning to do)","iii) অর্থ উপার্জনের জন্য শিখন (Learning to earn)","iv) একত্রে বসবাসের জন্য শিখন (Learning to live together)"],o:["i, ii, iv সঠিক","i, ii, iii সঠিক","ii, iii, iv সঠিক","সবগুলি সঠিক"],a:0,e:"চারটি স্তম্ভ হলো Learning to know, Learning to do, Learning to live together এবং Learning to be।"},
+{sec:"বিবৃতি-কারণ",q:"রুশোকে 'শিশুকেন্দ্রিক শিক্ষার জনক' বলা হয়।",r:"কারণ: তিনি তাঁর 'এমিল' গ্রন্থে প্রকৃতি নির্ভর এবং শিশুর চাহিদা অনুযায়ী শিক্ষার কথা বলেছিলেন, যাকে 'নেতিবাচক শিক্ষা' বলা হয়।",o:["A এবং R উভয়ই সত্য, এবং R হলো A-এর সঠিক ব্যাখ্যা।","A এবং R উভয়ই সত্য, কিন্তু R, A-এর সঠিক ব্যাখ্যা নয়।","A সত্য, কিন্তু R মিথ্যা।","A মিথ্যা, কিন্তু R সত্য।"],a:0,e:"রুশোর প্রকৃতিনির্ভর ও শিশুকেন্দ্রিক শিক্ষা-ভাবনা তাঁকে শিশুকেন্দ্রিক শিক্ষার অগ্রদূত করে।"},
+{sec:"বিবৃতি-কারণ",q:"CWSN শিশুদের জন্য ব্রেইল পদ্ধতি ব্যবহার করা হয়।",r:"কারণ: অটিজম আক্রান্ত শিশুদের সামাজিক যোগাযোগ এবং আত্ম-নিয়ন্ত্রণে অসুবিধা থাকে।",o:["A এবং R উভয়ই সত্য, এবং R হলো A-এর সঠিক ব্যাখ্যা।","A এবং R উভয়ই সত্য, কিন্তু R, A-এর সঠিক ব্যাখ্যা নয়।","A সত্য, কিন্তু R মিথ্যা।","A মিথ্যা, কিন্তু R সত্য।"],a:1,e:"দুটি বক্তব্যই সত্য; কিন্তু ব্রেইল দৃষ্টিহীনদের জন্য, অটিজমের বৈশিষ্ট্য তার ব্যাখ্যা নয়।"},
+{sec:"বিবৃতি-কারণ",q:"1952-53 সালের মুদালিয়র কমিশন 'বহুমুখী বিদ্যালয়' প্রতিষ্ঠার সুপারিশ করেছিল।",r:"কারণ: শিক্ষার্থীদের বিভিন্ন ধরনের বৃত্তিগত ও কারিগরি শিক্ষার প্রতি আগ্রহী করে তোলা এবং বৈচিত্র্যময় মেধার বিকাশ ঘটানো এর উদ্দেশ্য ছিল।",o:["A এবং R উভয়ই সত্য, এবং R হলো A-এর সঠিক ব্যাখ্যা।","A এবং R উভয়ই সত্য, কিন্তু R, A-এর সঠিক ব্যাখ্যা নয়।","A সত্য, কিন্তু R মিথ্যা।","A মিথ্যা, কিন্তু R সত্য।"],a:0,e:"মাধ্যমিক শিক্ষাকে বৈচিত্র্যময় ও কর্মমুখী করার জন্য Multipurpose School-এর প্রস্তাব দেওয়া হয়।"},
+{sec:"বিবৃতি-কারণ",q:"পজিটিভ সাইকোলজি-এর জনক হলেন মার্টিন সেলিগম্যান।",r:"কারণ: তিনি মানুষের আশা, সুখ এবং well-being-এর ওপর জোর দিয়েছিলেন।",o:["A এবং R উভয়ই সত্য, এবং R হলো A-এর সঠিক ব্যাখ্যা।","A এবং R উভয়ই সত্য, কিন্তু R, A-এর সঠিক ব্যাখ্যা নয়।","A সত্য, কিন্তু R মিথ্যা।","A মিথ্যা, কিন্তু R সত্য।"],a:0,e:"সেলিগম্যান ইতিবাচক গুণাবলি, সুখ ও well-being-এর অধ্যয়নকে গুরুত্ব দেন।"},
+{sec:"Matching",q:"নিচের স্তম্ভ দুটি মেলাও:",m:[["a) ডিসলেক্সিয়া (Dyslexia)","i) গণিত সম্পর্কিত সমস্যা"],["b) ডিসক্যালকুলিয়া (Dyscalculia)","ii) সূক্ষ্ম সঞ্চালনমূলক সমস্যা"],["c) ডিসগ্রাফিয়া (Dysgraphia)","iii) ভাষা ও পঠনগত সমস্যা"],["d) ডিসপ্রাক্সিয়া (Dyspraxia)","iv) লেখার সমস্যা"]],o:["a-iii, b-i, c-iv, d-ii","a-iv, b-ii, c-i, d-iii","a-iii, b-ii, c-iv, d-i","a-i, b-iii, c-ii, d-iv"],a:0,e:"Dyslexia=পঠন, Dyscalculia=গণিত, Dysgraphia=লেখা, Dyspraxia=মোটর/সঞ্চালন সমস্যা।"},
+{sec:"Matching",q:"শিক্ষাবিদ ও তাঁদের অবদান মেলাও:",m:[["a) জন ডিউই","i) নঈ-তালিম"],["b) মহাত্মা গান্ধী","ii) এমিল (Emile)"],["c) রুশো","iii) গণতন্ত্র ও শিক্ষা (Democracy and Education)"],["d) রবীন্দ্রনাথ ঠাকুর","iv) বিশ্বভারতী"]],o:["a-iii, b-i, c-ii, d-iv","a-ii, b-i, c-iii, d-iv","a-iii, b-iv, c-ii, d-i","a-i, b-ii, c-iv, d-iii"],a:0,e:"Dewey-Democracy and Education; Gandhi-Nai Talim; Rousseau-Emile; Tagore-Visva-Bharati।"},
+{sec:"Matching",q:"সংবিধানের ধারা ও বিষয়বস্তু মেলাও:",m:[["a) 21A নং ধারা","i) তপশিলি জাতি ও উপজাতির জন্য জাতীয় কমিশন"],["b) 338 নং ধারা","ii) শিক্ষার অধিকার আইন (6-14 বছর বিনামূল্যে শিক্ষা)"],["c) 29(2) নং ধারা","iii) পশ্চাৎপদ শ্রেণীর সামাজিক উন্নয়নে বিশেষ ব্যবস্থা"],["d) 15(4) নং ধারা","iv) সরকারি সাহায্যপ্রাপ্ত শিক্ষাপ্রতিষ্ঠানে প্রবেশাধিকারে বৈষম্য রোধ"]],o:["a-ii, b-i, c-iv, d-iii","a-i, b-ii, c-iii, d-iv","a-ii, b-iv, c-i, d-iii","a-iii, b-ii, c-iv, d-i"],a:0,e:"21A=শিক্ষার অধিকার; 338=SC/ST কমিশন; 29(2)=ভর্তিতে বৈষম্যরোধ; 15(4)=বিশেষ ব্যবস্থা।"},
+{sec:"Matching",q:"শিক্ষা কমিশন ও তাদের সুপারিশ মেলাও:",m:[["a) কোঠারী কমিশন (1964-66)","i) ত্রিভাষা সূত্র প্রথম উল্লেখ"],["b) মুদালিয়র কমিশন (1952-53)","ii) 10+2+3 কাঠামো প্রস্তাবনা"],["c) স্যাল্লার কমিশন (1917)","iii) গ্রামীণ বিশ্ববিদ্যালয়"],["d) রাধাকৃষ্ণান কমিশন (1948)","iv) ইন্টারমিডিয়েট কলেজ স্থাপন"]],o:["a-ii, b-i, c-iv, d-iii","a-ii, b-iv, c-i, d-iii","a-iii, b-i, c-ii, d-iv","a-i, b-ii, c-iii, d-iv"],a:0,e:"প্রদত্ত প্রশ্নব্যাংকের matching অনুযায়ী সঠিক উত্তর A।"},
+{sec:"Matching",q:"বিশেষ চাহিদা সম্পন্ন শিশুদের শিক্ষায় ব্যবহৃত উপকরণ মেলাও:",m:[["a) ব্রেইল (Braille)","i) শ্রবণ প্রতিবন্ধী"],["b) অডিওমিটার (Audiometer)","ii) দৃষ্টিহীন শিশু"],["c) স্টাইলাস (Stylus)","iii) শিখন অক্ষমতাসম্পন্ন শিশু (অ্যাবাকাস)"],["d) অ্যাবাকাস (Abacus)","iv) দৃষ্টিহীনদের লেখার সরঞ্জাম"]],o:["a-ii, b-i, c-iv, d-গাণিতিক কাজে দৃষ্টিহীন","a-ii, b-i, c-iv, d-iii","a-i, b-ii, c-iii, d-iv","a-iv, b-i, c-ii, d-iii"],a:0,e:"Braille ও Abacus দৃষ্টিহীনদের জন্য, Stylus ব্রেইল লেখার সরঞ্জাম এবং Audiometer শ্রবণক্ষমতা মাপতে ব্যবহৃত হয়।"},
+{sec:"খুব গুরুত্বপূর্ণ",q:"শিক্ষা কমিশন (1964-66) প্রস্তাবিত শিক্ষা কাঠামোটি হলো—",o:["10+3+2","10+2+3","10+2+4","10+2+2"],a:1,e:"কোঠারী কমিশন 10+2+3 কাঠামোর প্রস্তাব দেয়।"},
+{sec:"খুব গুরুত্বপূর্ণ",q:"“School is a miniature of society” — একথা কে বলেছিলেন?",o:["রুশো","রবীন্দ্রনাথ","জন ডিউই","বিদ্যাসাগর"],a:2,e:"জন ডিউই বিদ্যালয়কে সামাজিক জীবনের একটি ক্ষুদ্র রূপ হিসেবে দেখেছিলেন।"},
+{sec:"খুব গুরুত্বপূর্ণ",q:"ভারতের প্রথম মূক ও বধির শিক্ষার্থীদের জন্য বিদ্যালয় কোথায় চালু হয়?",o:["কলকাতা","বোম্বাই","পুনে","মাদ্রাজ"],a:1,e:"প্রদত্ত প্রশ্নব্যাংকের উত্তর: বোম্বাই।"},
+{sec:"খুব গুরুত্বপূর্ণ",q:"'অক্টেভ ব্যান্ড' যন্ত্রের সাহায্যে কী পরিমাপ করা হয়?",o:["অন্ধত্ব","বধিরতা","তোতলামো","চলনভঙ্গি"],a:1,e:"প্রদত্ত প্রশ্নব্যাংকের উত্তর অনুযায়ী Octave Band বধিরতা/শ্রবণক্ষমতা পরিমাপের সঙ্গে যুক্ত।"},
+{sec:"খুব গুরুত্বপূর্ণ",q:"নিচের কোনটি Well-being-এর উপাদান নয়?",o:["দৃঢ় সামাজিক সংযোগ","আর্থিক নিরাপত্তা","নিয়মিত শরীরচর্চা","ক্রমাগত ভয় ও উদ্বেগ"],a:3,e:"ক্রমাগত ভয় ও উদ্বেগ well-being-এর অন্তরায়।"},
+{sec:"খুব গুরুত্বপূর্ণ",q:"বিশ্বভারতী কবে প্রতিষ্ঠিত হয়?",o:["1921 সালে","1905 সালে","1902 সালে","1922 সালে"],a:0,e:"রবীন্দ্রনাথ 1921 সালে বিশ্বভারতী প্রতিষ্ঠা করেন।"},
+{sec:"খুব গুরুত্বপূর্ণ",q:"UEE-এর পূর্ণ রূপ কী?",o:["Universalization of Emergency Education","Universalization of Elementary Education","Universalization of Early Education","Universalization of External Education"],a:1,e:"UEE = Universalization of Elementary Education।"},
+{sec:"খুব গুরুত্বপূর্ণ",q:"'শিখন অক্ষমতা' (Learning Disability) শব্দটির জনক কে?",o:["রুশো","ফ্রয়েবেল","স্যামুয়েল কার্ক","পেস্তালৎসী"],a:2,e:"1963 সালে Samuel Kirk সর্বপ্রথম Learning Disability শব্দটি ব্যবহার করেন।"},
+{sec:"খুব গুরুত্বপূর্ণ",q:"কোন আন্তর্জাতিক সম্মেলনে 'Education for All' কর্মসূচি গৃহীত হয়েছিল?",o:["জেনেভা, সুইজারল্যাণ্ড","নিউইয়র্ক, আমেরিকা","জমতিয়েন, থাইল্যাণ্ড","প্যারিস, ফ্রান্স"],a:2,e:"1990 সালে Jomtien, Thailand-এ World Conference on Education for All অনুষ্ঠিত হয়।"},
+{sec:"খুব গুরুত্বপূর্ণ",q:"নিচের কোনটি ইতিবাচক ব্যক্তির বৈশিষ্ট্য?",o:["আশা (Hope)","হতাশা","নিরাশা","উদ্বিগ্নতা"],a:0,e:"আশা, ক্ষমা ও কৃতজ্ঞতা ইতিবাচক বৈশিষ্ট্যের উদাহরণ।"},
+{sec:"খুব গুরুত্বপূর্ণ",q:"'ত্রিভাষা সূত্রের' কথা প্রথম কোন কমিশন উল্লেখ করেছিল?",o:["মুদালিয়র কমিশন","রামমূর্তি কমিশন","স্যাল্লার কমিশন","কোঠারী কমিশন"],a:0,e:"প্রদত্ত প্রশ্নব্যাংকের পরীক্ষামুখী উত্তর মুদালিয়র কমিশন।"},
+{sec:"একাধিক বিবৃতি",q:"1948 সালের রাধাকৃষ্ণান কমিশনের সুপারিশগুলির মধ্যে কোনটি সঠিক?",s:["i) গ্রামীণ বিশ্ববিদ্যালয় স্থাপন।","ii) UGC গঠনের সুপারিশ।","iii) উচ্চশিক্ষায় ইংরেজির পাশাপাশি আঞ্চলিক ভাষার ব্যবহার।"],o:["i ও ii সঠিক","কেবল ii সঠিক","i, ii, iii সঠিক","ii ও iii সঠিক"],a:2,e:"প্রদত্ত প্রশ্নব্যাংকের উত্তর অনুযায়ী তিনটিই সঠিক।"},
+{sec:"একাধিক বিবৃতি",q:"অটিজমের বৈশিষ্ট্যগুলি হলো—",s:["i) সামাজিক যোগাযোগের অসুবিধা","ii) পুনরাবৃত্তিমূলক আচরণ (Repetitive behaviours)","iii) আত্ম-নিয়ন্ত্রণে অসুবিধা","iv) শারীরিক চলন সম্পূর্ণ অসম্ভব হওয়া"],o:["i, ii, iii সঠিক","i, ii, iv সঠিক","ii, iii, iv সঠিক","সবগুলি সঠিক"],a:0,e:"অটিজমে সামাজিক যোগাযোগ ও আচরণগত সমস্যা দেখা যায়; শারীরিক চলন সম্পূর্ণ অসম্ভব হওয়া সাধারণ বৈশিষ্ট্য নয়।"},
+{sec:"একাধিক বিবৃতি",q:"দৃষ্টিহীনদের শিক্ষার ক্ষেত্রে প্রয়োজনীয় উপকরণগুলি হলো—",s:["i) ব্রেইল ব্যবস্থা","ii) অ্যাবাকাস","iii) অডিও ক্যাসেট","iv) ছোট অক্ষরের বই"],o:["i, ii, iii সঠিক","i ও ii সঠিক","ii, iii, iv সঠিক","সবগুলি সঠিক"],a:0,e:"দৃষ্টিহীনদের জন্য Braille, Abacus ও Audio পদ্ধতি সহায়ক; ছোট অক্ষরের বই নয়।"},
+{sec:"বিবৃতি-কারণ",q:"1986 সালের জাতীয় শিক্ষানীতিকে সংশোধিত করে 1992 সালে Programme of Action (POA) গঠিত হয়।",r:"কারণ: রামমূর্তি কমিটি (1990) এবং জনার্দন রেড্ডি কমিটির (1992) পর্যালোচনার ভিত্তিতে পরিবর্তন করা হয়েছিল।",o:["A এবং R উভয়ই সত্য, এবং R হলো A-এর সঠিক ব্যাখ্যা।","A এবং R উভয়ই সত্য, কিন্তু R, A-এর সঠিক ব্যাখ্যা নয়।","A সত্য, কিন্তু R মিথ্যা।","A মিথ্যা, কিন্তু R সত্য।"],a:0,e:"প্রদত্ত প্রশ্নব্যাংকের উত্তর অনুযায়ী A ও R উভয়ই সত্য এবং R ব্যাখ্যা করে।"},
+{sec:"বিবৃতি-কারণ",q:"স্বামী বিবেকানন্দ নারীশিক্ষার তীব্র সমর্থক ছিলেন।",r:"কারণ: তিনি মনে করতেন, পুরুষ ও নারী একটি পাখির দুটি ডানার মতো; একটি ডানা ছাড়া পাখির ওড়া সম্ভব নয়।",o:["A এবং R উভয়ই সত্য, এবং R হলো A-এর সঠিক ব্যাখ্যা।","A এবং R উভয়ই সত্য, কিন্তু R, A-এর সঠিক ব্যাখ্যা নয়।","A সত্য, কিন্তু R মিথ্যা।","A মিথ্যা, কিন্তু R সত্য।"],a:0,e:"নারীশিক্ষাকে তিনি সমাজের সামগ্রিক অগ্রগতির জন্য গুরুত্বপূর্ণ মনে করতেন।"},
+{sec:"বিবৃতি-কারণ",q:"ডেলরস্ কমিশনের 'Learning to live together' বর্তমান বিশ্বে অত্যন্ত প্রাসঙ্গিক।",r:"কারণ: অসহিষ্ণুতা, যুদ্ধ ও বৈষম্য দূর করে বিশ্বশান্তি ও সংহতির জন্য পারস্পরিক বোঝাপড়া প্রয়োজন।",o:["A এবং R উভয়ই সত্য, এবং R হলো A-এর সঠিক ব্যাখ্যা।","A এবং R উভয়ই সত্য, কিন্তু R, A-এর সঠিক ব্যাখ্যা নয়।","A সত্য, কিন্তু R মিথ্যা।","A মিথ্যা, কিন্তু R সত্য।"],a:0,e:"ভিন্ন সংস্কৃতি ও মতাদর্শের মানুষের সঙ্গে শান্তিপূর্ণ সহাবস্থানের জন্য পারস্পরিক বোঝাপড়া গুরুত্বপূর্ণ।"},
+{sec:"Matching",q:"শিক্ষা নীতি ও সাল মেলাও:",m:[["a) সর্বশিক্ষা অভিযান (SSA)","i) 2020"],["b) প্রথম জাতীয় শিক্ষানীতি","ii) 1986"],["c) দ্বিতীয় জাতীয় শিক্ষানীতি","iii) 1968"],["d) নয়া জাতীয় শিক্ষানীতি","iv) 2001"]],o:["a-iv, b-iii, c-ii, d-i","a-iii, b-iv, c-i, d-ii","a-iv, b-ii, c-iii, d-i","a-i, b-ii, c-iii, d-iv"],a:0,e:"SSA=2001; প্রথম NPE=1968; দ্বিতীয় NPE=1986; NEP=2020।"},
+{sec:"Matching",q:"দার্শনিক গ্রন্থ ও রচয়িতা মেলাও:",m:[["a) শিক্ষার হেরফের","i) জন ডিউই"],["b) My Experiments with Truth","ii) রবীন্দ্রনাথ ঠাকুর"],["c) School and Society","iii) মহাত্মা গান্ধী"],["d) Emile","iv) রুশো"]],o:["a-ii, b-iii, c-i, d-iv","a-iii, b-ii, c-iv, d-i","a-ii, b-iv, c-iii, d-i","a-i, b-iii, c-ii, d-iv"],a:0,e:"শিক্ষার হেরফের-রবীন্দ্রনাথ; My Experiments with Truth-গান্ধী; School and Society-ডিউই; Emile-রুশো।"},
+{sec:"Matching",q:"ডেলরস্ কমিশনের 4 স্তম্ভ ও অর্থ মেলাও:",m:[["a) Learning to know","i) বৃত্তিমূলক ও প্রায়োগিক দক্ষতা"],["b) Learning to do","ii) মূল্যবোধ, নৈতিকতা ও ব্যক্তিত্বের বিকাশ"],["c) Learning to live together","iii) জ্ঞানার্জন ও কৌতূহল মেটানো"],["d) Learning to be","iv) সামাজিক সংহতি ও অন্যের প্রতি শ্রদ্ধা"]],o:["a-iii, b-i, c-iv, d-ii","a-i, b-iii, c-ii, d-iv","a-iii, b-iv, c-i, d-ii","a-ii, b-i, c-iv, d-iii"],a:0,e:"Know=জ্ঞানার্জন; Do=দক্ষতা; Live together=সামাজিক সংহতি; Be=সার্বিক বিকাশ।"},
+{sec:"গুরুত্বপূর্ণ",q:"সমাজের মধ্যে ভিন্ন ভিন্ন অর্থনৈতিক স্তরের ব্যক্তিদের মধ্যে সমবণ্টনের নীতিকে কী বলা হয়?",o:["রৈখিক সাম্যাবস্থা","অনুভূমিক সাম্যাবস্থা","উল্লম্ব সাম্যাবস্থা","জটিল সাম্যাবস্থা"],a:2,e:"প্রদত্ত প্রশ্নব্যাংকে Vertical Equity বা উল্লম্ব সাম্যাবস্থা উত্তর হিসেবে দেওয়া হয়েছে।"},
+{sec:"গুরুত্বপূর্ণ",q:"নিম্নলিখিত কোনটি রবীন্দ্রনাথ ঠাকুর রচিত নয়?",o:["ভারত পথিক","শিক্ষার হেরফের","শিক্ষার বাহন","স্ত্রী শিক্ষা"],a:3,e:"প্রদত্ত প্রশ্নব্যাংকের পরীক্ষামুখী উত্তর 'স্ত্রী শিক্ষা'।"},
+{sec:"গুরুত্বপূর্ণ",q:"লেখার ক্ষেত্রে Stylus-এর সাহায্য কারা নেয়?",o:["মূক ও বধির শিশুরা","দৃষ্টিহীন শিশুরা","অটিজম আক্রান্ত শিশুরা","অস্থিসমস্যা সংক্রান্ত শিশুরা"],a:1,e:"দৃষ্টিহীন শিশুরা Braille লেখার জন্য Stylus ব্যবহার করে।"},
+{sec:"গুরুত্বপূর্ণ",q:"CWSN-এর পূর্ণ রূপ কী?",o:["Child with Separate Need","Children with Special Needs","Child with Significant Needs","Children with Social Needs"],a:1,e:"CWSN = Children with Special Needs।"},
+{sec:"গুরুত্বপূর্ণ",q:"কোঠারী কমিশন (1964-66) কয়টি Task Force-এর মাধ্যমে কাজ পরিচালনা করেছিল?",o:["10টি","12টি","14টি","15টি"],a:1,e:"প্রদত্ত প্রশ্নব্যাংকে 12টি Task Force এবং 7টি Working Group-এর কথা বলা হয়েছে।"},
+{sec:"গুরুত্বপূর্ণ",q:"“চরিত্র গঠনই শিক্ষার চরম আদর্শ”— একথা বলেছেন:",o:["রুশো","বিবেকানন্দ","গান্ধীজী","রবীন্দ্রনাথ"],a:2,e:"প্রদত্ত প্রশ্নব্যাংকের পরীক্ষামুখী উত্তর গান্ধীজী।"},
+{sec:"গুরুত্বপূর্ণ",q:"'ব্রেইল' পদ্ধতি কতগুলি বিন্দুর (Dots) ওপর ভিত্তি করে তৈরি?",o:["4টি","6টি","8টি","10টি"],a:1,e:"প্রচলিত Braille cell 6টি উঁচু বিন্দুর বিন্যাসের ওপর ভিত্তি করে।"},
+{sec:"একাধিক বিবৃতি",q:"ইতিবাচক মনোবিজ্ঞান সম্পর্কে সঠিক তথ্য হলো:",s:["i) এটি মানুষের দুর্বলতার বদলে শক্তির ওপর ফোকাস করে।","ii) মার্টিন সেলিগম্যান এর প্রবক্তা।","iii) এটি কেবল হতাশাগ্রস্ত রোগীদের জন্য প্রযোজ্য।"],o:["i ও ii সঠিক","কেবল ii সঠিক","i, ii, iii সঠিক","ii ও iii সঠিক"],a:0,e:"Positive Psychology মানুষের শক্তি, গুণাবলি ও well-being-এর ওপর গুরুত্ব দেয়; কেবল রোগীদের জন্য নয়।"},
+{sec:"একাধিক বিবৃতি",q:"মহাত্মা গান্ধীর বুনিয়াদি শিক্ষার বৈশিষ্ট্যগুলি হলো:",s:["i) অবৈতনিক ও বাধ্যতামূলক শিক্ষা (7-14 বছর)","ii) মাতৃভাষার মাধ্যমে শিক্ষা","iii) Craft-কেন্দ্রিক শিক্ষা","iv) শ্রেণিকক্ষে কেবল তাত্ত্বিক শিক্ষা"],o:["i, ii, iii সঠিক","i, ii, iv সঠিক","ii, iii, iv সঠিক","সবগুলি সঠিক"],a:0,e:"নঈ-তালিমে মাতৃভাষা, craft এবং কাজের মাধ্যমে শিক্ষাকে গুরুত্ব দেওয়া হয়।"},
+{sec:"বিবৃতি-কারণ",q:"শিক্ষায় 'সমসুযোগ' বলতে সবাইকে একই শিক্ষা দেওয়া বোঝায় না।",r:"কারণ: প্রত্যেক শিক্ষার্থীর মেধা, আগ্রহ এবং চাহিদা আলাদা, তাই নিজস্ব যোগ্যতা অনুযায়ী বিকাশের সুযোগ প্রদানই সমসুযোগ।",o:["A এবং R উভয়ই সত্য, এবং R হলো A-এর সঠিক ব্যাখ্যা।","A এবং R উভয়ই সত্য, কিন্তু R, A-এর সঠিক ব্যাখ্যা নয়।"],a:0,e:"সমসুযোগ যান্ত্রিক সমতা নয়; শিক্ষার্থীর বৈচিত্র্য অনুযায়ী উপযুক্ত সুযোগ নিশ্চিত করাই লক্ষ্য।"},
+{sec:"বিবৃতি-কারণ",q:"প্রাক-প্রাথমিক শিক্ষায় মন্তেসরি পদ্ধতিতে 'Didactic Apparatus' ব্যবহৃত হয়।",r:"কারণ: মারিয়া মন্তেসরি বিশ্বাস করতেন, ইন্দ্রিয় পরিশীলনের মাধ্যমেই শিশুর প্রকৃত শিখন ঘটে।",o:["A এবং R উভয়ই সত্য, এবং R হলো A-এর সঠিক ব্যাখ্যা।","A এবং R উভয়ই সত্য, কিন্তু R, A-এর সঠিক ব্যাখ্যা নয়।"],a:0,e:"Montessori পদ্ধতিতে ইন্দ্রিয়-প্রশিক্ষণের জন্য বিশেষ didactic materials ব্যবহার করা হয়।"},
+{sec:"Matching",q:"প্রতিবন্ধকতার ধরন ও কারণ/লক্ষণ মেলাও:",m:[["a) সেরিব্রাল পলসি (Cerebral Palsy)","i) দৃষ্টি স্নায়ুর ক্ষতি"],["b) গ্লুকোমা (Glaucoma)","ii) মস্তিষ্কের স্নায়বিক ক্ষতি (Movement disorder)"],["c) কন্ডাকটিভ হিয়ারিং লস","iii) জন্মগত বা জিনগত সামাজিক-বিকাশগত সমস্যা"],["d) অটিজম (Autism)","iv) কানের মধ্য বা বহিরাংশে বাধা"]],o:["a-ii, b-i, c-iv, d-iii","a-i, b-ii, c-iii, d-iv","a-iii, b-iv, c-i, d-ii","a-ii, b-iv, c-i, d-iii"],a:0,e:"Cerebral Palsy=স্নায়বিক movement disorder; Glaucoma=চোখের রোগ; Conductive loss=কানের বাধাজনিত; Autism=স্নায়ুবিক বিকাশজনিত।"}
+];
+
+let idx=0, answers=Array(qs.length).fill(null), locked=Array(qs.length).fill(false);
+const content=document.getElementById("content"), bar=document.getElementById("bar");
+
+function render(){
+ const x=qs[idx];
+ let h=`<div class="section">${x.sec}</div><div class="qno">Question ${idx+1} of ${qs.length}</div><div class="question">${x.q}</div>`;
+ if(x.s) h+=`<div class="statement">${x.s.join("<br>")}</div>`;
+ if(x.r) h+=`<div class="statement"><b>Reason (R):</b> ${x.r}</div>`;
+ if(x.m){
+   h+=`<div class="matchbox"><table><tr><th>Column-I</th><th>Column-II</th></tr>`;
+   x.m.forEach(row=>h+=`<tr><td>${row[0]}</td><td>${row[1]}</td></tr>`);
+   h+=`</table></div>`;
+ }
+ h+=`<div class="options">`;
+ x.o.forEach((op,i)=>{
+   let cls="";
+   if(locked[idx]){
+     if(i===x.a) cls="correct";
+     else if(i===answers[idx]) cls="wrong";
+   } else if(i===answers[idx]) cls="selected";
+   h+=`<div class="option ${cls}" onclick="choose(${i})"><b>${String.fromCharCode(65+i)})</b> ${op}</div>`;
+ });
+ h+=`</div><div class="explain" id="exp"><b>ব্যাখ্যা:</b> ${x.e}</div>`;
+ content.innerHTML=h;
+ if(locked[idx]) document.getElementById("exp").style.display="block";
+ document.getElementById("prev").disabled=idx===0;
+ document.getElementById("next").style.display=idx===qs.length-1?"none":"inline-block";
+ document.getElementById("finish").style.display=idx===qs.length-1?"inline-block":"none";
+ bar.style.width=((idx+1)/qs.length*100)+"%";
+}
+function choose(i){
+ if(locked[idx]) return;
+ answers[idx]=i; locked[idx]=true; render();
+}
+function nextQ(){if(idx<qs.length-1){idx++;render()}}
+function prevQ(){if(idx>0){idx--;render()}}
+function finishQuiz(){
+ if(answers.includes(null)){alert("সব প্রশ্নের উত্তর দিন।");return}
+ let score=answers.reduce((n,a,i)=>n+(a===qs[i].a?1:0),0);
+ let pct=(score/qs.length*100).toFixed(1);
+ document.getElementById("quiz").style.display="none";
+ document.getElementById("result").style.display="block";
+ document.getElementById("score").textContent=score+" / "+qs.length;
+ document.getElementById("percent").textContent="Percentage: "+pct+"%";
+ document.getElementById("message").textContent=score===qs.length?"অসাধারণ! সব উত্তর সঠিক।":score>=qs.length*.8?"দারুণ ফলাফল! আরও একবার Revision করুন।":score>=qs.length*.5?"ভালো হয়েছে। ভুল প্রশ্নগুলো আবার পড়ুন।":"আরও Revision প্রয়োজন। Final Revision List দেখে আবার চেষ্টা করুন।";
+}
+render();
+</script>
+</body>
+</html>()}}
+function finishQuiz(){
+ if(answers.includes(null)){alert("সব প্রশ্নের উত্তর দিন।");return}
+ let score=answers.reduce((n,a,i)=>n+(a===qs[i].a?1:0),0)

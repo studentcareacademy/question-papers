@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Student Care Academy | Nutrition Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:14px;background:radial-gradient(circle at top,#28427d,#101832 55%,#070b18);color:white;font-family:'Noto Sans Bengali',sans-serif}.wrap{max-width:760px;margin:auto}.head{text-align:center;padding:20px 8px;background:#ffffff13;border:1px solid #ffffff30;border-radius:20px;margin-bottom:14px}.brand{font-size:clamp(20px,5vw,30px);font-weight:800;background:linear-gradient(100deg,#fff,#ffd54f,#62e6ff,#fff);background-size:300%;color:transparent;background-clip:text;animation:shine 4s linear infinite}.teacher{color:#ffe082;font-weight:700;animation:pulse 2s infinite}@keyframes shine{to{background-position:300%}}@keyframes pulse{50%{transform:scale(1.04)}}.sub{text-align:center;color:#9ae9ff;margin:14px 0;font-weight:700}.barbox,.panel,.result{background:#ffffff13;border:1px solid #ffffff30;border-radius:19px;padding:18px;margin:12px 0;box-shadow:0 10px 30px #0004}.stats{display:flex;justify-content:space-between;margin-bottom:8px;font-size:14px}.track{height:8px;border-radius:8px;background:#283453;overflow:hidden}.fill{height:100%;width:0;background:linear-gradient(90deg,#00d5ff,#72f28b);transition:width .3s}.question{font-size:19px;line-height:1.75;font-weight:700;white-space:pre-line}.matching{margin:15px 0;display:grid;grid-template-columns:1fr 1fr;gap:10px}.column{background:#ffffff0c;border:1px solid #ffffff2a;padding:12px;border-radius:12px;line-height:1.8;font-size:15px}.column strong{color:#ffdb75}.options{display:grid;gap:11px;margin-top:18px}.option{font:inherit;text-align:left;color:white;background:#0d183b;border:2px solid #4b5780;padding:13px;border-radius:13px;cursor:pointer;line-height:1.5}.option:not(:disabled):hover{border-color:#35d8ff;background:#17365c}.option:disabled{cursor:default;opacity:1}.option.correct{border-color:#31e58a;background:#10553b}.option.wrong{border-color:#ff6380;background:#67263e}.feedback{margin:15px 0;line-height:1.8;white-space:pre-line}.next,.restart{width:100%;border:0;border-radius:13px;padding:14px;font:inherit;font-weight:800;cursor:pointer;color:white;background:linear-gradient(90deg,#00a9df,#1763db)}.restart{background:linear-gradient(90deg,#f89d2a,#ed542e)}.result{text-align:center}.score{font-size:36px;color:#70edff;font-weight:800}.hide{display:none!important}.footer{text-align:center;color:#a9b5d4;font-size:12px;padding:18px}@media(max-width:480px){.matching{grid-template-columns:1fr}.panel{padding:15px}.question{font-size:17px}}
+</style></head><body><main class="wrap">
+<header class="head"><div class="brand">Student Care Academy</div><div class="teacher">Teacher:- Tapan Mandal</div></header>
+<div class="sub">Class 12 | Nutrition | Full Syllabus (Semester-III)</div>
+<section id="barbox" class="barbox"><div class="stats"><span id="progressText"></span><span id="liveScore"></span></div><div class="track"><div class="fill" id="fill"></div></div></section>
+<section id="panel" class="panel"><div class="question" id="question"></div><div id="matching" class="matching hide"></div><div id="options" class="options"></div><div id="feedback" class="feedback" aria-live="polite"></div><button id="next" class="next hide">পরের প্রশ্ন →</button></section>
+<section id="result" class="result hide"><h2>🎉 কুইজ সম্পূর্ণ!</h2><div class="score" id="finalScore"></div><p id="message"></p><button class="restart" id="restart">আবার শুরু করুন</button></section>
+<div class="footer">© Student Care Academy | Teacher:- Tapan Mandal</div></main>
+<script>
+"use strict";
+const raw = [
+["প্রাপ্তবয়স্কদের ক্ষেত্রে (ICMR 2020 অনুযায়ী) দৈনিক ক্যালসিয়ামের প্রয়োজনীয়তা কত?",["৫০০ মিলিগ্রাম","৬০০ মিলিগ্রাম","১০০০ মিলিগ্রাম","১২০০ মিলিগ্রাম"],2,"প্রদত্ত ICMR 2020 মান অনুযায়ী দৈনিক ১০০০ মিলিগ্রাম।"],
+["ফ্যাট বা লিপিডের ক্যালরি মূল্য (Calorific Value) কত?",["৪.০ kcal/g","৪.১ kcal/g","৭.০ kcal/g","৯.৩ kcal/g"],3,"প্রদত্ত প্রশ্নে ফ্যাটের স্থূল ক্যালরি মূল্য ৯.৩ kcal/g ধরা হয়েছে; খাদ্যশক্তির সাধারণ হিসাবে প্রায় ৯ kcal/g ব্যবহৃত হয়।"],
+["পেপসিনোজেন-কে সক্রিয় পেপসিনে পরিণত করে কোনটি?",["মিউকাস","রেনিন","টায়ালিন","হাইড্রোক্লোরিক অ্যাসিড"],3,"পাকস্থলীর HCl পেপসিনোজেন সক্রিয় করতে সাহায্য করে।"],
+["ম্যারাসমাস রোগ কাদের বেশি দেখা যায়?",["প্রাপ্তবয়স্কদের","বৃদ্ধদের","১ বছরের কম বয়সি শিশুদের","গর্ভবতী মায়েদের"],2,"প্রোটিন ও শক্তির তীব্র ঘাটতির কারণে বিশেষত ছোট শিশুদের ম্যারাসমাস হয়।"],
+["যকৃতে ইউরিয়া সংশ্লেষের চক্রের নাম কী?",["কোরি চক্র","গ্লাইকোলাইসিস","ক্রেবস চক্র","অরনিথিন চক্র"],3,"অরনিথিন বা ইউরিয়া চক্রে অ্যামোনিয়া থেকে ইউরিয়া তৈরি হয়।"],
+["লালারসের শর্করা ভঙ্গক (Amylolytic) উৎসেচক কোনটি?",["পেপসিন","লাইপেজ","রেনিন","টায়ালিন"],3,"লালারসের অ্যামাইলেজ বা টায়ালিন শ্বেতসার ভাঙতে সাহায্য করে।"],
+["কোনটি অপরিহার্য (Essential) অ্যামাইনো অ্যাসিড নয়?",["লিউসিন","লাইসিন","গ্লাইসিন","মেথিওনিন"],2,"গ্লাইসিন দেহে সংশ্লেষিত হতে পারে।"],
+["ক্রেবস চক্র কোষের কোথায় সম্পন্ন হয়?",["সাইটোপ্লাজম","রাইবোজোম","গলগি বডি","মাইটোকনড্রিয়া"],3,"ক্রেবস চক্রের অধিকাংশ বিক্রিয়া মাইটোকনড্রিয়ার ম্যাট্রিক্সে হয়।"],
+["পিত্তরস কোথা থেকে নিঃসৃত হয়?",["পিত্তাশয়","অগ্ন্যাশয়","যকৃৎ","ক্ষুদ্রান্ত্র"],2,"যকৃতে পিত্ত তৈরি হয়, পিত্তাশয়ে সঞ্চিত থাকে।"],
+["কোন ভিটামিনের অভাবে পারনিসিয়াস অ্যানিমিয়া হয়?",["ভিটামিন B1","ভিটামিন B2","ভিটামিন B12","ভিটামিন B6"],2,"Pernicious anemia হলো intrinsic factor-এর সমস্যায় ভিটামিন B12 শোষণ ব্যাহত হওয়ার একটি বিশেষ কারণ।"],
+["উৎসেচকের কাজ:\nI. ট্রিপসিন প্রোটিন পরিপাক করে।\nII. লাইপেজ ফ্যাট পরিপাক করে।",["শুধুমাত্র I সত্য","শুধুমাত্র II সত্য","I ও II উভয়ই সত্য","I ও II উভয়ই মিথ্যা"],2,"ট্রিপসিন প্রোটিন এবং লাইপেজ ফ্যাট পরিপাকে সাহায্য করে।"],
+["শ্বসন পর্যায়:\nI. গ্লাইকোলাইসিসে অক্সিজেনের প্রয়োজন হয়।\nII. ক্রেবস চক্র সাইটোপ্লাজমে ঘটে।",["শুধুমাত্র I সত্য","শুধুমাত্র II সত্য","I ও II উভয়ই সত্য","দুটিই মিথ্যা"],3,"গ্লাইকোলাইসিসে সরাসরি অক্সিজেন লাগে না; ক্রেবস চক্র মাইটোকনড্রিয়ায় ঘটে।"],
+["শর্করার শ্রেণিবিভাগ:\nI. গ্লুকোজ হলো মনোস্যাকারাইড।\nII. সুক্রোজ হলো ডাইস্যাকারাইড।",["শুধুমাত্র I সত্য","শুধুমাত্র II সত্য","I ও II উভয়ই সত্য","দুটিই মিথ্যা"],2,"গ্লুকোজ একশর্করা এবং সুক্রোজ দ্বিশর্করা।"],
+["হরমোনের কাজ:\nI. থাইরক্সিন BMR কমায়।\nII. ইনসুলিন রক্তে গ্লুকোজের মাত্রা বাড়ায়।",["শুধুমাত্র I সত্য","শুধুমাত্র II সত্য","I ও II উভয়ই সত্য","দুটিই মিথ্যা"],3,"থাইরক্সিন BMR বাড়ায়; ইনসুলিন রক্তের গ্লুকোজ কমায়।"],
+["ভিটামিনের দ্রাব্যতা:\nI. ভিটামিন C জলে দ্রবণীয়।\nII. ভিটামিন D ফ্যাটে দ্রবণীয়।",["শুধুমাত্র I সত্য","শুধুমাত্র II সত্য","I ও II উভয়ই সত্য","দুটিই মিথ্যা"],2,"ভিটামিন B ও C জলে এবং A, D, E, K চর্বিতে দ্রবণীয়।"],
+["খাদ্য সংরক্ষণ:\nI. ক্যানিং পদ্ধতিতে খাদ্য সংরক্ষণ করা হয়।\nII. ব্লাঞ্চিং ক্যানিং-এর একটি প্রাথমিক ধাপ।",["শুধুমাত্র I সত্য","শুধুমাত্র II সত্য","I ও II উভয়ই সত্য","দুটিই মিথ্যা"],2,"ক্যানিংয়ে অনেক ফল ও সবজির ক্ষেত্রে ব্লাঞ্চিং করা হয়।"],
+["মাতৃদুগ্ধ:\nI. শিশুদের খাদ্যে কোলোস্ট্রাম থাকা জরুরি নয়।\nII. কোলোস্ট্রামে কোনো অ্যান্টিবডি থাকে না।",["শুধুমাত্র I সত্য","শুধুমাত্র II সত্য","I ও II উভয়ই সত্য","I ও II উভয়ই মিথ্যা"],3,"কোলোস্ট্রামে IgA-সহ প্রতিরক্ষামূলক উপাদান থাকে।"],
+["খাদ্যে ভেজাল:\nI. সর্ষের তেলে আর্জিমন তেল মেশানো হয়।\nII. এর ফলে এপিডেমিক ড্রপসি রোগ হয়।",["শুধুমাত্র I সত্য","শুধুমাত্র II সত্য","I ও II উভয়ই সত্য","দুটিই মিথ্যা"],2,"আর্জিমন তেলের ভেজালে epidemic dropsy হতে পারে।"],
+["পরিপাক তন্ত্র:\nI. লাইসোজাইম পাকস্থলীতে থাকে।\nII. রেনিন শর্করা পরিপাক করে।",["শুধুমাত্র I সত্য","শুধুমাত্র II সত্য","I ও II উভয়ই সত্য","দুটিই মিথ্যা"],3,"প্রচলিত পাঠ্যভিত্তিক উত্তর: লাইসোজাইম লালারসে থাকে; রেনিন/কাইমোসিন শর্করা পরিপাক করে না।"],
+["সংরক্ষক:\nI. সোডিয়াম বেনজোয়েট একটি রাসায়নিক সংরক্ষক।\nII. এটি ফলের রসে ব্যবহৃত হয়।",["শুধুমাত্র I সত্য","শুধুমাত্র II সত্য","I ও II উভয়ই সত্য","দুটিই মিথ্যা"],2,"সোডিয়াম বেনজোয়েট অম্লীয় খাদ্যে সংরক্ষক হিসেবে ব্যবহৃত হয়।"]
+];
+const ar=["A সঠিক, R ভুল","A ভুল, R সঠিক","A ও R সঠিক, কিন্তু R সঠিক ব্যাখ্যা নয়","A ও R সঠিক এবং R সঠিক ব্যাখ্যা"];
+raw.push(
+["বিবৃতি (A): ডায়াবেটিস রোগীদের মিষ্টি ও কার্বোহাইড্রেট কম খেতে বলা হয়।\nযুক্তি (R): ইনসুলিন হরমোনের অভাবে রক্তে শর্করার মাত্রা বৃদ্ধি পায়।",ar,3,"ডায়াবেটিসে শর্করা গ্রহণের পরিমাণ ও ধরন নিয়ন্ত্রণ গুরুত্বপূর্ণ; রোগের ধরনভেদে ইনসুলিনের ঘাটতি বা প্রতিরোধ থাকে।"],
+["বিবৃতি (A): গর্ভাবস্থায় মায়ের আয়রনের চাহিদা বাড়ে।\nযুক্তি (R): ভ্রূণের লোহিত রক্তকণিকা গঠনে আয়রন অপরিহার্য।",ar,3,"মাতৃ রক্তের পরিমাণ ও ভ্রূণের বৃদ্ধির জন্য আয়রন প্রয়োজন।"],
+["বিবৃতি (A): রাতকানা রোগ ভিটামিন A-এর অভাবে হয়।\nযুক্তি (R): ভিটামিন C স্কার্ভি রোগ প্রতিরোধ করে।",ar,2,"দুটিই সত্য, কিন্তু দ্বিতীয়টি প্রথমটির কারণ নয়।"],
+["বিবৃতি (A): লবণ মাখিয়ে মাছ দীর্ঘদিন সংরক্ষণ করা যায়।\nযুক্তি (R): লবণের প্রভাবে বহিঃঅভিস্রবণে জীবাণুর কোষ থেকে জল বেরিয়ে যায়।",ar,3,"উচ্চ লবণ ঘনত্ব জীবাণুর বৃদ্ধি বাধাগ্রস্ত করে; সব জীবাণু যে মারা যায়, তা নয়।"],
+["বিবৃতি (A): লালারসে শর্করা পরিপাক শুরু হয়।\nযুক্তি (R): পাকস্থলীতে প্রোটিন পরিপাক হয়।",ar,2,"দুটি সত্য, কিন্তু পরস্পরের কারণ নয়।"],
+["বিবৃতি (A): উচ্চ রক্তচাপে সোডিয়াম বা নুন কম খেতে হয়।\nযুক্তি (R): সোডিয়াম শরীরে জল ধরে রেখে রক্তের আয়তন বাড়াতে পারে।",ar,3,"অতিরিক্ত সোডিয়াম কিছু মানুষের রক্তচাপ বাড়ায়।"],
+["বিবৃতি (A): যকৃৎ মানবদেহের সবচেয়ে বড় গ্রন্থি।\nযুক্তি (R): যকৃতে অরনিথিন চক্র সম্পন্ন হয়।",ar,2,"দুটি তথ্যই সত্য, কিন্তু কারণ-ব্যাখ্যার সম্পর্ক নেই।"],
+["বিবৃতি (A): কাঁচা ডিম খাওয়া উচিত নয়।\nযুক্তি (R): কাঁচা ডিমে অ্যাভিডিন থাকে, যা বায়োটিন শোষণে বাধা দেয়।",ar,3,"রান্নায় অ্যাভিডিনের কার্যকারিতা কমে; কাঁচা ডিমে সংক্রমণের ঝুঁকিও থাকে।"],
+["বিবৃতি (A): ভিটামিন D হাড় গঠনে সাহায্য করে।\nযুক্তি (R): ভিটামিন A চোখের রেটিনা সুস্থ রাখে।",ar,2,"দুটিই সত্য, কিন্তু দ্বিতীয়টি প্রথমটির ব্যাখ্যা নয়।"],
+["বিবৃতি (A): কোয়াশিয়রকর রোগে শিশুর দেহে শোথ (Edema) হয়।\nযুক্তি (R): প্রোটিনের অভাবে রক্তে অ্যালবুমিন কমে গেলে টিস্যুতে জল জমতে পারে।",ar,3,"রক্তের oncotic pressure কমা শোথের একটি গুরুত্বপূর্ণ কারণ।"]
+);
+const matches=[
+["ভিটামিন ও অভাবজনিত রোগ",["ভিটামিন A","ভিটামিন C","ভিটামিন D"],["রিকেট","স্কার্ভি","রাতকানা"],["a-i, b-ii, c-iii","a-ii, b-i, c-iii","a-iii, b-ii, c-i","a-ii, b-iii, c-i"],2,"ভিটামিন A—রাতকানা, C—স্কার্ভি, D—রিকেট।"],
+["উৎসেচক ও সাবস্ট্রেট",["পেপসিন","অ্যামাইলেজ","লাইপেজ"],["ফ্যাট","প্রোটিন","শর্করা"],["a-i, b-ii, c-iii","a-iii, b-i, c-ii","a-i, b-iii, c-ii","a-ii, b-iii, c-i"],3,"পেপসিন—প্রোটিন, অ্যামাইলেজ—শর্করা, লাইপেজ—ফ্যাট।"],
+["গ্রন্থি ও কাজ",["যকৃৎ","অগ্ন্যাশয়","পিত্তাশয়"],["ইনসুলিন ক্ষরণ","পিত্ত তৈরি","পিত্ত সঞ্চয়"],["a-i, b-ii, c-iii","a-iii, b-i, c-ii","a-ii, b-i, c-iii","a-ii, b-iii, c-i"],2,"যকৃৎ—পিত্ত তৈরি, অগ্ন্যাশয়—ইনসুলিন, পিত্তাশয়—পিত্ত সঞ্চয়।"],
+["বিপাকীয় পর্যায় ও সংঘটন স্থান/ফল",["গ্লাইকোলাইসিস","ক্রেবস চক্র","অরনিথিন চক্র"],["ইউরিয়া তৈরি","মাইটোকনড্রিয়া","সাইটোপ্লাজম"],["a-i, b-ii, c-iii","a-ii, b-iii, c-i","a-i, b-iii, c-ii","a-iii, b-ii, c-i"],3,"গ্লাইকোলাইসিস—সাইটোপ্লাজম; ক্রেবস—মাইটোকনড্রিয়া; অরনিথিন—ইউরিয়া তৈরি।"],
+["সংরক্ষণ ও ভেজাল",["লবণ","সোডিয়াম বেনজোয়েট","হলুদ গুঁড়ো"],["Class-II সংরক্ষক","Class-I সংরক্ষক","মেটানিল ইয়েলো"],["a-i, b-ii, c-iii","a-iii, b-i, c-ii","a-ii, b-i, c-iii","a-ii, b-iii, c-i"],2,"লবণ—Class-I, সোডিয়াম বেনজোয়েট—Class-II; হলুদে মেটানিল ইয়েলো ভেজাল হতে পারে। মূল প্রশ্নের মধু ও BHT-এর বদলে নির্ভুল শ্রেণিবিভাগের জন্য এই দুটি উদাহরণ নেওয়া হয়েছে।"],
+["পুষ্টির অভাবজনিত রোগ ও কারণ",["ম্যারাসমাস","কোয়াশিয়রকর","গয়টার"],["আয়োডিনের অভাব","প্রোটিন ও ক্যালরি উভয়ের অভাব","প্রধানত প্রোটিনের অভাব"],["a-i, b-ii, c-iii","a-iii, b-i, c-ii","a-ii, b-i, c-iii","a-ii, b-iii, c-i"],3,"ম্যারাসমাস—প্রোটিন ও শক্তির অভাব; কোয়াশিয়রকর—প্রধানত প্রোটিনের অভাব; গয়টার—আয়োডিনের অভাব।"],
+["খাদ্য ও পণ্যের মান নিয়ন্ত্রণ",["FSSAI","AGMARK","ISI"],["কৃষিজাত দ্রব্য","শিল্পজাত দ্রব্য","খাদ্য নিরাপত্তা"],["a-i, b-ii, c-iii","a-ii, b-iii, c-i","a-iii, b-i, c-ii","a-iii, b-ii, c-i"],2,"FSSAI—খাদ্য নিরাপত্তা; AGMARK—কৃষিজাত দ্রব্য; ISI—শিল্পজাত দ্রব্য।"],
+["অগ্ন্যাশয়ের কোষ ও নিঃসৃত হরমোন",["ইনসুলিন","গ্লুকাগন","সোমাটোস্ট্যাটিন"],["ডেল্টা কোষ","বিটা কোষ","আলফা কোষ"],["a-i, b-ii, c-iii","a-iii, b-i, c-ii","a-ii, b-i, c-iii","a-ii, b-iii, c-i"],3,"ইনসুলিন—বিটা, গ্লুকাগন—আলফা, সোমাটোস্ট্যাটিন—ডেল্টা কোষ।"],
+["পুষ্টি ও স্বাস্থ্য সূচক",["BMI","MUAC","HbA1c"],["দীর্ঘমেয়াদি রক্তশর্করা মূল্যায়ন","ওজনের শ্রেণিবিভাগ","শিশুদের পুষ্টি মূল্যায়ন"],["a-i, b-ii, c-iii","a-iii, b-i, c-ii","a-ii, b-iii, c-i","a-ii, b-i, c-iii"],2,"BMI—ওজনের শ্রেণিবিভাগ, MUAC—পুষ্টি মূল্যায়ন, HbA1c—দীর্ঘমেয়াদি রক্তশর্করা।"],
+["খাদ্য সংরক্ষণ পদ্ধতি ও প্রয়োগ",["ক্যানিং","পাস্তুরাইজেশন","হিমায়ন"],["দুধ","ফল ও সবজি","মাছ ও মাংস"],["a-i, b-ii, c-iii","a-iii, b-i, c-ii","a-ii, b-iii, c-i","a-ii, b-i, c-iii"],3,"ক্যানিং—ফল ও সবজি, পাস্তুরাইজেশন—দুধ, হিমায়ন—মাছ ও মাংস।"]
+];
+for(const m of matches)raw.push([m[0]+"—সঠিক মিল কোনটি?",m[3],m[4],m[5],m[1],m[2]]);
+raw.push(
+["প্রাণীয় পুষ্টির (Holozoic Nutrition) পর্যায়গুলির সঠিক ক্রম:",["পরিপাক → খাদ্যগ্রহণ → আত্তীকরণ → শোষণ → বহিষ্করণ","খাদ্যগ্রহণ → শোষণ → পরিপাক → আত্তীকরণ → বহিষ্করণ","খাদ্যগ্রহণ → পরিপাক → শোষণ → আত্তীকরণ → বহিষ্করণ","আত্তীকরণ → খাদ্যগ্রহণ → পরিপাক → শোষণ → বহিষ্করণ"],2,"খাদ্যগ্রহণ → পরিপাক → শোষণ → আত্তীকরণ → বহিষ্করণ।"],
+["গ্লাইকোলাইসিসের সঠিক পর্যায়ক্রম:",["গ্লুকোজ → গ্লুকোজ-6-ফসফেট → পাইরুভিক অ্যাসিড → ফ্রুক্টোজ-6-ফসফেট","গ্লুকোজ → ফ্রুক্টোজ-6-ফসফেট → গ্লুকোজ-6-ফসফেট → পাইরুভিক অ্যাসিড","পাইরুভিক অ্যাসিড → গ্লুকোজ-6-ফসফেট → ফ্রুক্টোজ-6-ফসফেট → গ্লুকোজ","গ্লুকোজ → গ্লুকোজ-6-ফসফেট → ফ্রুক্টোজ-6-ফসফেট → পাইরুভিক অ্যাসিড"],3,"গ্লুকোজ → গ্লুকোজ-6-ফসফেট → ফ্রুক্টোজ-6-ফসফেট → ... → পাইরুভিক অ্যাসিড।"],
+["অরনিথিন চক্রের সঠিক পর্যায়ক্রম:",["সাইট্রুলিন → অরনিথিন → আর্জিনিন → ইউরিয়া","অরনিথিন → আর্জিনিন → সাইট্রুলিন → ইউরিয়া","অরনিথিন → সাইট্রুলিন → আর্জিনিন → ইউরিয়া","ইউরিয়া → সাইট্রুলিন → আর্জিনিন → অরনিথিন"],2,"সরলীকৃত ক্রম: অরনিথিন → সাইট্রুলিন → আর্জিনিন → ইউরিয়া (মাঝে আর্জিনিনোসাক্সিনেটও থাকে)।"],
+["ক্যানিং বা কৌটাজাতকরণের সঠিক ক্রম:",["একজস্টিং → সিলিং → ব্লাঞ্চিং → সিরপিং → প্রক্রিয়াকরণ","ব্লাঞ্চিং → একজস্টিং → সিরপিং → সিলিং → প্রক্রিয়াকরণ","সিরপিং → ব্লাঞ্চিং → সিলিং → একজস্টিং → প্রক্রিয়াকরণ","ব্লাঞ্চিং → সিরপিং → একজস্টিং → সিলিং → প্রক্রিয়াকরণ"],3,"ব্লাঞ্চিং → সিরপিং → একজস্টিং → সিলিং → তাপীয় প্রক্রিয়াকরণ।"],
+["খাদ্যনালির সঠিক ক্রম:",["মুখগহ্বর → পাকস্থলী → গ্রাসনালি → ক্ষুদ্রান্ত্র → গলবিল","গলবিল → মুখগহ্বর → গ্রাসনালি → ক্ষুদ্রান্ত্র → পাকস্থলী","মুখগহ্বর → গলবিল → গ্রাসনালি → পাকস্থলী → ক্ষুদ্রান্ত্র","মুখগহ্বর → গ্রাসনালি → গলবিল → পাকস্থলী → ক্ষুদ্রান্ত্র"],2,"মুখগহ্বর → গলবিল → গ্রাসনালি → পাকস্থলী → ক্ষুদ্রান্ত্র।"],
+["ক্ষুদ্রান্ত্রের অংশগুলির সঠিক ক্রম:",["জেজুনাম → ডিওডিনাম → ইলিয়াম","ইলিয়াম → জেজুনাম → ডিওডিনাম","ডিওডিনাম → ইলিয়াম → জেজুনাম","ডিওডিনাম → জেজুনাম → ইলিয়াম"],3,"ডিওডিনাম → জেজুনাম → ইলিয়াম।"],
+["ফ্যাট পরিপাকের সঠিক ক্রম:",["মনোগ্লিসারাইড → লিপিড → ফ্যাটি অ্যাসিড","ট্রাইগ্লিসারাইড → ফ্যাটি অ্যাসিড → লিপিড","লিপিড → ট্রাইগ্লিসারাইড → মনোগ্লিসারাইড + ফ্যাটি অ্যাসিড","লিপিড → ফ্যাটি অ্যাসিড → কোলেস্টেরল"],2,"খাদ্যের প্রধান লিপিড ট্রাইগ্লিসারাইড লাইপেজের সাহায্যে মনোগ্লিসারাইড ও ফ্যাটি অ্যাসিডে ভাঙে।"],
+["শিশুর খাদ্যাভ্যাসের সঠিক ক্রম:",["সাধারণ খাদ্য → মাতৃদুগ্ধ → কোলোস্ট্রাম → উইনিং খাদ্য","মাতৃদুগ্ধ → কোলোস্ট্রাম → সাধারণ খাদ্য → উইনিং খাদ্য","উইনিং খাদ্য → কোলোস্ট্রাম → মাতৃদুগ্ধ → সাধারণ খাদ্য","কোলোস্ট্রাম → মাতৃদুগ্ধ → উইনিং খাদ্য → সাধারণ খাদ্য"],3,"প্রথমে কোলোস্ট্রাম, তারপর মাতৃদুগ্ধ; প্রায় ৬ মাসে পরিপূরক খাদ্য শুরু।"],
+["রক্ত জমাট বাঁধার সাধারণ ক্রম:",["ফাইব্রিনোজেন → থ্রম্বিন → প্রোথ্রম্বিন → ফাইব্রিন","ফাইব্রিন → প্রোথ্রম্বিন → থ্রম্বিন → ফাইব্রিনোজেন","প্রোথ্রম্বিন → থ্রম্বিন → ফাইব্রিনোজেন → ফাইব্রিন","থ্রম্বিন → ফাইব্রিনোজেন → প্রোথ্রম্বিন → ফাইব্রিন"],2,"প্রোথ্রম্বিন থেকে থ্রম্বিন; থ্রম্বিন ফাইব্রিনোজেনকে ফাইব্রিনে রূপান্তরিত করে।"],
+["শর্করা পরিপাকের সঠিক ক্রম:",["মুখবিবরের অ্যামাইলেজ → মলটেজ → গ্লুকোজ → অ্যামাইলেজ","শ্বেতসার → টায়ালিন → গ্লুকোজ → মলটোজ → মলটেজ","শ্বেতসার → মলটোজ → টায়ালিন → গ্লুকোজ → মলটেজ","শ্বেতসার → টায়ালিন → মলটোজ → মলটেজ → গ্লুকোজ"],3,"অ্যামাইলেজ শ্বেতসার ভাঙে; মলটেজ মলটোজকে গ্লুকোজে ভাঙে।"]
+);
+const $=id=>document.getElementById(id);
+let pos=0,score=0,answered=false;
+const key="studentCareNutritionSem3Attempts";
+let attempts=0;
+function getAttempts(){try{return Number(localStorage.getItem(key))||0}catch(e){return attempts}}
+function saveAttempts(v){attempts=v;try{localStorage.setItem(key,String(v))}catch(e){}}
+saveAttempts(getAttempts()+1);
+function load(){
+answered=false;const q=raw[pos];
+$("question").textContent=q[0];$("feedback").textContent="";$("next").classList.add("hide");$("options").replaceChildren();
+$("progressText").textContent="প্রশ্ন "+(pos+1)+" / "+raw.length;$("liveScore").textContent="Score: "+score;$("fill").style.width=pos/raw.length*100+"%";
+$("matching").replaceChildren();$("matching").classList.toggle("hide",!q[4]);
+if(q[4]){
+for(let c=0;c<2;c++){
+const box=document.createElement("div");box.className="column";
+const title=document.createElement("strong");title.textContent=c===0?"বাম স্তম্ভ":"ডান স্তম্ভ";box.append(title,document.createElement("br"));
+q[4+c].forEach((item,i)=>{const line=document.createElement("div");line.textContent=(c===0?["(a) ","(b) ","(c) "][i]:["(i) ","(ii) ","(iii) "][i])+item;box.append(line)});
+$("matching").append(box);
+}}
+q[1].forEach((opt,i)=>{const b=document.createElement("button");b.className="option";b.textContent="ABCD"[i]+") "+opt;b.onclick=()=>choose(i);$("options").append(b)});
+}
+function choose(i){
+if(answered)return;answered=true;const q=raw[pos],buttons=[...$("options").children];
+buttons.forEach(b=>b.disabled=true);buttons[q[2]].classList.add("correct");
+if(i===q[2])score++;else buttons[i].classList.add("wrong");
+$("liveScore").textContent="Score: "+score;
+$("feedback").textContent=(i===q[2]?"✓ সঠিক উত্তর!":"✗ ভুল উত্তর! সঠিক উত্তর: "+"ABCD"[q[2]]+") "+q[1][q[2]])+"\nব্যাখ্যা: "+q[3];
+$("feedback").style.color=i===q[2]?"#a7ffcf":"#ffced5";$("next").classList.remove("hide");
+$("next").textContent=pos===raw.length-1?"ফলাফল দেখুন →":"পরের প্রশ্ন →";
+}
+$("next").onclick=()=>{
+pos++;if(pos<raw.length){load();window.scrollTo({top:0,behavior:"smooth"})}
+else{$("panel").classList.add("hide");$("barbox").classList.add("hide");$("result").classList.remove("hide");$("finalScore").textContent="Total Score: "+score+"/"+raw.length+" ("+attempts+")";let pct=Math.round(score/raw.length*100);$("message").textContent="তোমার স্কোর: "+pct+"%। "+(pct>=90?"অসাধারণ!":pct>=70?"খুব ভালো!":pct>=50?"ভালো চেষ্টা!":"আরও অনুশীলন করো।");window.scrollTo({top:0,behavior:"smooth"})}
+};
+$("restart").onclick=()=>{pos=0;score=0;saveAttempts(getAttempts()+1);$("result").classList.add("hide");$("panel").classList.remove("hide");$("barbox").classList.remove("hide");load();window.scrollTo({top:0,behavior:"smooth"})};
+if(raw.length!==50)throw new Error("Expected 50 questions, found "+raw.length);
+load();
+</script></body></html>াফল দেখুন →":"পরের প্রশ্ন →";
+}
+$("next").onclick=()=>{
+pos++;if(pos<raw.length){load();window.scrollTo({top:0,behavior:"smooth"})}
+else{$("panel").classList.add("hide");$("barbox").classList.add("hide");$("result").classList.remove("hide");$("finalScore").textContent="Total Score: "+score+"/"+raw.length+" ("+attempts+")";let pct=Math.round(score/raw.length*100);$("message").textContent="তোমার স্কোর: "+pct+"%। "+(pct>=90?"অসাধারণ!":pct>=70?"খুব ভালো!":pct>=50?"ভালো চেষ্টা!":"আরও অনুশীলন করো।");window.scrollTo({top:0,behavior:"smooth"})}
+};
+$("restart").onclick=()=>{po

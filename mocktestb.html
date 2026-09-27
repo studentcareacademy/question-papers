@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Care Academy - Nutrition Quiz</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap');
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:'Noto Sans Bengali',sans-serif;
+    background:
+        radial-gradient(circle at top,#243b70 0%,#111936 45%,#070b18 100%);
+    min-height:100vh;
+    color:#fff;
+    padding:15px;
+}
+
+.container{
+    width:100%;
+    max-width:850px;
+    margin:auto;
+}
+
+/* Animated Header */
+.header{
+    text-align:center;
+    padding:18px 10px 20px;
+    margin-bottom:15px;
+    border-radius:18px;
+    background:linear-gradient(135deg,#101d46,#192d65,#101936);
+    border:2px solid #e9c46a;
+    box-shadow:0 0 20px rgba(255,205,80,.25);
+    overflow:hidden;
+}
+
+.academy{
+    font-size:25px;
+    font-weight:800;
+    color:#ffd86b;
+    letter-spacing:.5px;
+    animation:
+        glow 2s infinite alternate,
+        slideIn 1.2s ease;
+}
+
+.teacher{
+    margin-top:6px;
+    font-size:18px;
+    font-weight:600;
+    color:#fff;
+    animation:fadeTeacher 2s ease infinite alternate;
+}
+
+@keyframes glow{
+    from{
+        text-shadow:0 0 5px #ffd86b;
+        transform:scale(1);
+    }
+    to{
+        text-shadow:
+        0 0 8px #ffd86b,
+        0 0 18px #ffb703,
+        0 0 30px #ffb703;
+        transform:scale(1.025);
+    }
+}
+
+@keyframes slideIn{
+    from{
+        transform:translateY(-30px);
+        opacity:0;
+    }
+    to{
+        transform:translateY(0);
+        opacity:1;
+    }
+}
+
+@keyframes fadeTeacher{
+    from{opacity:.65;}
+    to{opacity:1;}
+}
+
+/* Subject */
+.subject{
+    text-align:center;
+    background:rgba(255,255,255,.08);
+    padding:10px;
+    border-radius:12px;
+    margin-bottom:15px;
+    border:1px solid rgba(255,255,255,.2);
+    font-size:16px;
+    font-weight:600;
+}
+
+/* Quiz Card */
+.quiz-card{
+    background:linear-gradient(145deg,#121d40,#0d1530);
+    border-radius:22px;
+    padding:20px;
+    border:2px solid rgba(255,210,90,.65);
+    box-shadow:0 10px 35px rgba(0,0,0,.45);
+}
+
+.progress{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+    font-size:15px;
+    color:#ffd86b;
+    font-weight:700;
+}
+
+.progress-bar{
+    width:100%;
+    height:8px;
+    background:#252d4d;
+    border-radius:10px;
+    overflow:hidden;
+    margin-bottom:18px;
+}
+
+.progress-fill{
+    height:100%;
+    width:2%;
+    background:linear-gradient(90deg,#ffb703,#ffd166,#fff3b0);
+    transition:width .4s ease;
+}
+
+.question{
+    background:linear-gradient(135deg,#1d2d5b,#162347);
+    border-radius:16px;
+    padding:18px;
+    font-size:18px;
+    line-height:1.8;
+    font-weight:600;
+    border-left:5px solid #ffd166;
+    margin-bottom:18px;
+}
+
+.options{
+    display:grid;
+    gap:12px;
+}
+
+.option{
+    width:100%;
+    border:none;
+    border-radius:14px;
+    padding:14px 16px;
+    background:linear-gradient(135deg,#202e58,#172344);
+    color:#fff;
+    text-align:left;
+    font-family:inherit;
+    font-size:16px;
+    cursor:pointer;
+    border:1px solid rgba(255,255,255,.18);
+    transition:all .25s ease;
+}
+
+.option:hover:not(:disabled){
+    transform:translateX(5px);
+    background:linear-gradient(135deg,#314778,#253863);
+    border-color:#ffd166;
+}
+
+.option.correct{
+    background:linear-gradient(135deg,#087f5b,#0b5d45);
+    border-color:#53f2bd;
+    box-shadow:0 0 15px rgba(83,242,189,.3);
+}
+
+.option.wrong{
+    background:linear-gradient(135deg,#a61e35,#711426);
+    border-color:#ff7186;
+    box-shadow:0 0 15px rgba(255,80,110,.25);
+}
+
+.option:disabled{
+    cursor:not-allowed;
+}
+
+.answer-box{
+    margin-top:15px;
+    padding:13px;
+    border-radius:12px;
+    display:none;
+    line-height:1.7;
+    font-size:15px;
+}
+
+.answer-box.show{
+    display:block;
+}
+
+.answer-box.correct-msg{
+    background:rgba(20,160,110,.16);
+    border:1px solid #36d99c;
+    color:#7dffd0;
+}
+
+.answer-box.wrong-msg{
+    background:rgba(200,30,55,.15);
+    border:1px solid #ff647c;
+    color:#ffacb9;
+}
+
+.next-btn{
+    display:none;
+    width:100%;
+    margin-top:16px;
+    padding:14px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(135deg,#ffb703,#f48c06);
+    color:#161616;
+    font-family:inherit;
+    font-size:17px;
+    font-weight:800;
+    cursor:pointer;
+    box-shadow:0 5px 18px rgba(255,183,3,.3);
+    transition:.2s;
+}
+
+.next-btn:hover{
+    transform:translateY(-2px);
+}
+
+.next-btn.show{
+    display:block;
+}
+
+/* Result */
+.result{
+    display:none;
+    text-align:center;
+    padding:35px 20px;
+    background:linear-gradient(145deg,#152451,#0c1530);
+    border:2px solid #ffd166;
+    border-radius:22px;
+    box-shadow:0 0 30px rgba(255,209,102,.25);
+}
+
+.result.show{
+    display:block;
+}
+
+.result h2{
+    color:#ffd166;
+    font-size:30px;
+    margin-bottom:20px;
+}
+
+.score-circle{
+    width:150px;
+    height:150px;
+    margin:0 auto 20px;
+    border-radius:50%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    background:radial-gradient(circle,#263c76,#111a38);
+    border:5px solid #ffd166;
+    box-shadow:0 0 25px rgba(255,209,102,.35);
+}
+
+.score-number{
+    font-size:38px;
+    font-weight:800;
+    color:#fff;
+}
+
+.score-label{
+    color:#ffd166;
+    font-size:14px;
+}
+
+.result-message{
+    font-size:18px;
+    margin:15px 0 20px;
+    line-height:1.8;
+}
+
+.restart{
+    border:none;
+    padding:13px 28px;
+    border-radius:12px;
+    background:#ffd166;
+    color:#111;
+    font-family:inherit;
+    font-size:16px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+@media(max-width:600px){
+    body{
+        padding:8px;
+    }
+
+    .academy{
+        font-size:21px;
+    }
+
+    .teacher{
+        font-size:15px;
+    }
+
+    .question{
+        font-size:16px;
+        line-height:1.75;
+        padding:15px;
+    }
+
+    .option{
+        font-size:15px;
+        padding:12px;
+    }
+
+    .quiz-card{
+        padding:14px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <div class="academy">Student Care Academy</div>
+        <div class="teacher">Teacher:- Tapan Mandal</div>
+    </div>
+
+    <div class="subject">
+        Class: 12 | Subject: পুষ্টিবিজ্ঞান (Nutrition) | Semester: III | Full Syllabus
+    </div>
+
+    <div class="quiz-card" id="quizCard">
+
+        <div class="progress">
+            <span id="questionNo">Question 1</span>
+            <span id="scoreText">Score: 0</span>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="question" id="question"></div>
+
+        <div class="options" id="options"></div>
+
+        <div class="answer-box" id="answerBox"></div>
+
+        <button class="next-btn" id="nextBtn" onclick="nextQuestion()">
+            পরবর্তী প্রশ্ন →
+        </button>
+
+    </div>
+
+    <div class="result" id="result">
+
+        <h2>Quiz সম্পূর্ণ হয়েছে!</h2>
+
+        <div class="score-circle">
+            <div class="score-number" id="finalScore">0/50</div>
+            <div class="score-label">Total Score</div>
+        </div>
+
+        <div class="result-message" id="resultMessage"></div>
+
+        <button class="restart" onclick="restartQuiz()">
+            আবার Quiz দিন
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+const questions = [
+
+{
+q:"পেশিতে অ্যানেরোবিক শ্বসনে উৎপন্ন ল্যাকটিক অ্যাসিড রক্তে বাহিত হয়ে যকৃতে পুনরায় গ্লুকোজে রূপান্তরিত হয়। এটি কোন চক্রের অংশ?",
+options:[
+"কোরি চক্র (Cori Cycle)",
+"ক্রেবস চক্র",
+"অরনিথিন চক্র",
+"গ্লাইঅক্সিলেট চক্র"
+],
+answer:0,
+explanation:"পেশি ও যকৃতের মধ্যে গ্লুকোজ ও ল্যাকটিক অ্যাসিডের এই আবর্তনকে বিজ্ঞানী কার্ল কোরি এবং গার্টি কোরি আবিষ্কার করেন।"
+},
+
+{
+q:"পাইরুভিক অ্যাসিড থেকে অ্যাসিটাইল Co-A তে রূপান্তরিত হওয়ার ধাপে (লিঙ্ক বিক্রিয়া) কোন কো-এনজাইমটি অপরিহার্য?",
+options:[
+"PLP",
+"FAD",
+"TPP (Thiamine Pyrophosphate)",
+"Biotin"
+],
+answer:2,
+explanation:"পাইরুভেট ডিহাইড্রোজিনেজ কমপ্লেক্স উৎসেচকের কাজ করার জন্য ভিটামিন B1-এর কো-এনজাইম রূপ TPP প্রয়োজন।"
+},
+
+{
+q:"একজন সুস্থ মানুষের মিশ্র খাদ্যের (Mixed Diet) গড় শ্বসন অনুপাত বা Respiratory Quotient (RQ) কত হয়?",
+options:[
+"১.০",
+"০.৮৫",
+"০.৭",
+"১.২"
+],
+answer:1,
+explanation:"শর্করার RQ ১.০ এবং ফ্যাটের ০.৭। মিশ্র খাদ্যে উভয়ের সংমিশ্রণ থাকায় গড় মান ০.৮৫ হয়।"
+},
+
+{
+q:"যকৃতে অরনিথিন চক্র চলাকালীন ইউরিয়া উৎপন্ন হওয়ার ঠিক আগের ধাপে কোন অ্যামাইনো অ্যাসিডটি উপস্থিত থাকে?",
+options:[
+"সাইট্রুলিন",
+"অরনিথিন",
+"গ্লুটামিন",
+"আর্জিনিন"
+],
+answer:3,
+explanation:"আর্জিনিনেজ উৎসেচকের প্রভাবে আর্জিনিন ভেঙে ইউরিয়া ও অরনিথিন তৈরি করে।"
+},
+
+{
+q:"পেশি কোষে সঞ্চিত গ্লাইকোজেন ভেঙে গ্লুকোজ-৬-ফসফেট হলেও তা রক্তে গ্লুকোজরূপে মিশতে পারে না, কারণ পেশিতে কোন উৎসেচকটি অনুপস্থিত?",
+options:[
+"গ্লুকোজ-৬-ফসফাটেজ",
+"হেক্সোকাইনেজ",
+"ফসফোরাইলেজ",
+"অ্যালডোলেজ"
+],
+answer:0,
+explanation:"গ্লুকোজ-৬-ফসফাটেজ মূলত যকৃৎ ও বৃক্কে থাকে, যা গ্লুকোজ-৬-ফসফেট থেকে ফসফেট মূলক সরিয়ে গ্লুকোজ তৈরি করতে পারে।"
+},
+
+{
+q:"অবাত শ্বসনে বা অ্যানেরোবিক গ্লাইকোলাইসিসে এক অণু গ্লুকোজ থেকে সম্পূর্ণ নিট কতগুলি ATP পাওয়া যায়?",
+options:[
+"৩৮ ATP",
+"৮ ATP",
+"২ ATP",
+"৩৬ ATP"
+],
+answer:2,
+explanation:"অবাত শ্বসনে গ্লাইকোলাইসিসে ৪টি ATP উৎপন্ন হয় এবং ২টি খরচ হয়, তাই নিট লাভ ২ ATP।"
+},
+
+{
+q:"খাদ্যের ফ্যাট অন্ত্রে শোষিত হওয়ার পর লসিকা বাহে (Lacteal) প্রবেশের পূর্বে কোন লিপোপ্রোটিন গঠন করে?",
+options:[
+"VLDL",
+"HDL",
+"LDL",
+"কাইলোমাইক্রন"
+],
+answer:3,
+explanation:"অন্ত্রের কোষ বা এন্টেরোসাইট ট্রাইগ্লিসারাইডকে প্রোটিন দিয়ে মুড়ে কাইলোমাইক্রন তৈরি করে।"
+},
+
+{
+q:"কোন ভিটামিনের অভাবে ডার্মাটাইটিস, ডায়রিয়া এবং ডিমেনশিয়া—এই '3D' লক্ষণযুক্ত পেলাগ্রা রোগ হয়?",
+options:[
+"থায়ামিন",
+"নিয়াসিন (ভিটামিন B3)",
+"রাইবোফ্লাভিন",
+"ফলিক অ্যাসিড"
+],
+answer:1,
+explanation:"নিয়াসিনের অভাবে পেলাগ্রা হয়। নিয়াসিনকে Pellagra Preventive Factor (PPF) বলা হয়।"
+},
+
+{
+q:"ভারতের খাদ্যের নিরাপত্তা ও মান নির্ধারণকারী সর্বোচ্চ সংস্থা 'FSSAI' আইনটি কত সালে প্রণীত হয়?",
+options:[
+"২০০৬",
+"১৯৫৪",
+"২০১২",
+"১৯৯৫"
+],
+answer:0,
+explanation:"Food Safety and Standards Act, 2006 অনুযায়ী FSSAI গঠিত হয়।"
+},
+
+{
+q:"হলুদের গুঁড়োয় ক্ষতিকারক কৃত্রিম রং 'মেটানিল ইয়েলো' মেশানো আছে কি না, তা পরীক্ষা করতে কোন রাসায়নিক বিকারকটি ব্যবহৃত হয়?",
+options:[
+"নাইট্রিক অ্যাসিড (HNO3)",
+"হাইড্রোক্লোরিক অ্যাসিড (HCl)",
+"আয়োডিন দ্রবণ",
+"বেনেডিক্ট দ্রবণ"
+],
+answer:1,
+explanation:"ভেজাল হলুদের গুঁড়োতে কয়েক ফোঁটা গাঢ় HCl দিলে রং পরিবর্তিত হয়ে ম্যাজেন্টা বা গোলাপি হতে পারে।"
+},
+
+{
+q:"মানব কোষে ফ্যাটি অ্যাসিডের বিটা-অক্সিডেশন (Beta-oxidation) প্রক্রিয়াটি প্রধানত কোষের কোন অংশে সম্পন্ন হয়?",
+options:[
+"সাইটোপ্লাজম",
+"নিউক্লিয়াস",
+"মাইটোকনড্রিয়া",
+"এন্ডোপ্লাজমিক রেটিকুলাম"
+],
+answer:2,
+explanation:"ফ্যাটি অ্যাসিড কার্নিটিন শাটলের মাধ্যমে মাইটোকনড্রিয়ার ম্যাট্রিক্সে প্রবেশ করে জারিত হয়।"
+},
+
+{
+q:"ডিওডিনামে অম্লীয় কাইম প্রবেশ করার পর, অগ্ন্যাশয় রস ক্ষরণকে উদ্দীপিত করতে ক্ষুদ্রান্ত্রের মিউকোসা থেকে কোন হরমোনটি নির্গত হয়?",
+options:[
+"গ্যাস্ট্রিন",
+"সোমাটোস্ট্যাটিন",
+"ইনসুলিন",
+"কোলেসিস্টোকাইনিন (CCK)"
+],
+answer:3,
+explanation:"CCK অগ্ন্যাশয়কে পাচক উৎসেচক ক্ষরণে এবং পিত্তাশয়কে পিত্ত নির্গমনে উদ্দীপ্ত করে।"
+},
+
+{
+q:"ইনভার্ট সুগার (Invert Sugar) মূলত কোন দুটি শর্করার সমপরিমাণ মিশ্রণ?",
+options:[
+"গ্লুকোজ ও ফ্রুক্টোজ",
+"গ্লুকোজ ও গ্যালাকটোজ",
+"ফ্রুক্টোজ ও গ্যালাকটোজ",
+"দুটি গ্লুকোজ অণু"
+],
+answer:0,
+explanation:"সুক্রোজকে অম্ল বা ইনভার্টেজ উৎসেচক দিয়ে আর্দ্রবিশ্লেষণ করলে সমপরিমাণ গ্লুকোজ ও ফ্রুক্টোজ তৈরি হয়।"
+},
+
+{
+q:"প্রোস্টাগ্ল্যান্ডিন (Prostaglandins) হরমোন সংশ্লেষের জন্য মানবদেহে কোন অত্যাবশ্যকীয় ফ্যাটি অ্যাসিডটি প্রিকার্সর (Precursor) হিসেবে কাজ করে?",
+options:[
+"ওলেইক অ্যাসিড",
+"লিনোলিক অ্যাসিড",
+"স্টিয়ারিক অ্যাসিড",
+"অ্যারাকিডোনিক অ্যাসিড"
+],
+answer:3,
+explanation:"অ্যারাকিডোনিক অ্যাসিড একটি ২০-কার্বন যুক্ত পলিআনস্যাচুরেটেড ফ্যাটি অ্যাসিড, যা প্রোস্টাগ্ল্যান্ডিন সংশ্লেষে precursor হিসেবে কাজ করে।"
+},
+
+{
+q:"ফিনাইলকিটোনুরিয়া (PKU) নামক জিনগত বিপাকীয় ত্রুটিযুক্ত রোগটি কোন উৎসেচকের অভাবে হয়?",
+options:[
+"টাইরোসিনেজ",
+"হোমোজেণ্টিসেট অক্সিডেজ",
+"ফিনাইলঅ্যালানিন হাইড্রোক্সিলেজ",
+"গ্লুকোকাইনেজ"
+],
+answer:2,
+explanation:"এই উৎসেচকের অভাবে ফিনাইলঅ্যালানিন টাইরোসিনে পরিণত হতে পারে না, ফলে তা শরীরে জমতে থাকে।"
+},
+
+{
+q:"প্রোটিনের গুণগত মান বিচার করতে ব্যবহৃত 'বায়োলজিক্যাল ভ্যালু' (Biological Value বা BV) সবচেয়ে বেশি কোন প্রোটিন যুক্ত খাদ্যের?",
+options:[
+"সয়াবিন",
+"ডিম",
+"গরুর মাংস",
+"ডাল"
+],
+answer:1,
+explanation:"ডিমের প্রোটিনকে উচ্চ Biological Value-এর reference protein হিসেবে ধরা হয়।"
+},
+
+{
+q:"HMP শান্ট (Hexose Monophosphate Shunt) বা পেন্টোজ ফসফেট পাথওয়ে থেকে কোষের জন্য অত্যন্ত প্রয়োজনীয় কোন উপাদানটি উৎপন্ন হয়, যা ফ্যাট সংশ্লেষে অপরিহার্য?",
+options:[
+"NADPH",
+"FADH2",
+"ATP",
+"GTP"
+],
+answer:0,
+explanation:"এই পাথওয়েতে ATP উৎপন্ন হয় না; বরং ফ্যাটি অ্যাসিড ও স্টেরয়েড সংশ্লেষের জন্য প্রয়োজনীয় NADPH তৈরি হয়।"
+},
+
+{
+q:"ট্রিপসিনোজেনকে সক্রিয় করার জন্য এন্টেরোকাইনেজ উৎসেচকটি মানবদেহের কোথা থেকে নিঃসৃত হয়?",
+options:[
+"যকৃৎ",
+"অগ্ন্যাশয়",
+"ডিওডিনামের মিউকোসা",
+"পাকস্থলী"
+],
+answer:2,
+explanation:"ক্ষুদ্রান্ত্রের ব্রাশ বর্ডার থেকে নির্গত এন্টেরোকাইনেজ অগ্ন্যাশয়ের নিষ্ক্রিয় ট্রিপসিনোজেনকে সক্রিয় ট্রিপসিনে রূপান্তর করে।"
+},
+
+{
+q:"প্রোটিন বিপাকের ট্রান্সমিথাইলেশন (Transmethylation) প্রক্রিয়ায় প্রধান মিথাইল দাতা (Methyl donor) হিসেবে কে কাজ করে?",
+options:[
+"কো-এনজাইম এ",
+"পাইরিডক্সাল ফসফেট",
+"গ্লুটামিন",
+"এস-অ্যাডেনোসাইল মেথিওনিন (SAM)"
+],
+answer:3,
+explanation:"SAM হল মিথাইল মূলক স্থানান্তরের সবচেয়ে গুরুত্বপূর্ণ জৈবিক যৌগ।"
+},
+
+{
+q:"অগ্ন্যাশয় রসে উপস্থিত প্রোটিওলাইটিক উৎসেচক 'ট্রিপসিনোজেন' সক্রিয় হওয়ার পর নিজে কোন উৎসেচকটিকে সক্রিয় করে?",
+options:[
+"পেপসিনোজেন",
+"কাইমোট্রিপসিনোজেন",
+"রেনিন",
+"অ্যামাইলেজ"
+],
+answer:1,
+explanation:"সক্রিয় ট্রিপসিন অন্যান্য প্রোটিওলাইটিক এনজাইম যেমন কাইমোট্রিপসিনোজেন ও কার্বক্সিপেপটাইডেজকে সক্রিয় করে।"
+},
+
+{
+q:"গর্ভাবস্থায় ভ্রূণের নিউরাল টিউব ডিফেক্ট (NTD) প্রতিরোধ করার জন্য কোন ভিটামিনটি অত্যন্ত গুরুত্বপূর্ণ?",
+options:[
+"ভিটামিন C",
+"ভিটামিন B12",
+"ফলিক অ্যাসিড (ভিটামিন B9)",
+"নিয়াসিন"
+],
+answer:2,
+explanation:"গর্ভাবস্থার প্রথম দিকে ফলিক অ্যাসিডের পর্যাপ্ততা ভ্রূণের নিউরাল টিউবের স্বাভাবিক বিকাশে গুরুত্বপূর্ণ।"
+},
+
+{
+q:"গ্লাইকোলাইসিস প্রক্রিয়ার রেট-লিমিটিং (Rate-limiting) উৎসেচক কোনটি?",
+options:[
+"হেক্সোকাইনেজ",
+"ফসফোফ্রুক্টোকাইনেজ (PFK)",
+"অ্যালডোলেজ",
+"পাইরুভেট কাইনেজ"
+],
+answer:1,
+explanation:"PFK ফ্রুক্টোজ-৬-ফসফেট থেকে ফ্রুক্টোজ-১,৬-বিসফসফেট তৈরির ধাপটি নিয়ন্ত্রণ করে।"
+},
+
+{
+q:"অগ্ন্যাশয় রসের কোন উৎসেচকটি প্রোটিন পরিপাকে অংশ নেয় না?",
+options:[
+"ট্রিপসিন",
+"কাইমোট্রিপসিন",
+"কার্বক্সিপেপটাইডেজ",
+"লাইপেজ"
+],
+answer:3,
+explanation:"লাইপেজ একটি ফ্যাট-ভঙ্গক বা Lipolytic উৎসেচক।"
+},
+
+{
+q:"মানবদেহে পিত্তরস (Bile juice) কোথায় উৎপন্ন হয়?",
+options:[
+"যকৃৎ",
+"পিত্তাশয়",
+"অগ্ন্যাশয়",
+"ক্ষুদ্রান্ত্র"
+],
+answer:0,
+explanation:"পিত্তরস যকৃতে উৎপন্ন হয়ে পিত্তাশয়ে সাময়িকভাবে সঞ্চিত থাকে।"
+},
+
+{
+q:"HMP শান্ট (পেন্টোজ ফসফেট পাথওয়ে) থেকে ফ্যাট সংশ্লেষের জন্য কোষের সাইটোপ্লাজমে কী উৎপন্ন হয়?",
+options:[
+"ATP",
+"NADH",
+"NADPH",
+"FADH2"
+],
+answer:2,
+explanation:"HMP শান্ট ফ্যাটি অ্যাসিড ও স্টেরয়েড সংশ্লেষের জন্য প্রয়োজনীয় NADPH প্রদান করে।"
+},
+
+{
+q:"ল্যাকটোজ শর্করাটি কোন দুটি এক-শর্করার (Monosaccharide) সমন্বয়ে গঠিত?",
+options:[
+"গ্লুকোজ ও ফ্রুক্টোজ",
+"গ্লুকোজ ও গ্যালাকটোজ",
+"দুটি গ্লুকোজ অণু",
+"ফ্রুক্টোজ ও গ্যালাকটোজ"
+],
+answer:1,
+explanation:"ল্যাকটোজ একটি ডাইস্যাকারাইড যা গ্লুকোজ ও গ্যালাকটোজ দ্বারা গঠিত।"
+},
+
+{
+q:"রক্তে শর্করার মাত্রা নিয়ন্ত্রণকারী হরমোন 'ইনসুলিন' কোথা থেকে নিঃসৃত হয়?",
+options:[
+"থাইরয়েড গ্রন্থি",
+"পিটুইটারি গ্রন্থি",
+"অগ্ন্যাশয়ের আলফা কোষ",
+"অগ্ন্যাশয়ের বিটা কোষ"
+],
+answer:3,
+explanation:"অগ্ন্যাশয়ের আইলেটস অফ ল্যাঙ্গারহ্যানসের বিটা কোষ থেকে ইনসুলিন নিঃসৃত হয়।"
+},
+
+{
+q:"ফ্যাট বা লিপিডের বিটা-অক্সিডেশন মানবদেহের কোষের কোন অংশে সম্পন্ন হয়?",
+options:[
+"মাইটোকনড্রিয়া",
+"সাইটোপ্লাজম",
+"রাইবোজোম",
+"গলগি বডি"
+],
+answer:0,
+explanation:"ফ্যাটি অ্যাসিড কার্নিটিন শাটলের মাধ্যমে মাইটোকনড্রিয়ার ম্যাট্রিক্সে প্রবেশ করে বিটা-অক্সিডেশন সম্পন্ন করে।"
+},
+
+{
+q:"প্রোটিন বিপাকে ট্রান্সঅ্যামিনেশন (Transamination) প্রক্রিয়ায় কো-এনজাইম হিসেবে কে কাজ করে?",
+options:[
+"থায়ামিন পাইরোফসফেট (TPP)",
+"পাইরিডক্সাল ফসফেট (PLP)",
+"কো-এনজাইম এ (Co-A)",
+"নিকোটিনামাইড (NAD)"
+],
+answer:1,
+explanation:"ভিটামিন B6-এর সক্রিয় রূপ PLP অ্যামাইনোট্রান্সফারেজ উৎসেচকের কো-এনজাইম হিসেবে কাজ করে।"
+},
+
+{
+q:"ICMR (2020) নির্দেশিকা অনুযায়ী একজন সুস্থ প্রাপ্তবয়স্ক মানুষের দৈনিক কত ক্যালসিয়াম প্রয়োজন?",
+options:[
+"৬০০ মিলিগ্রাম",
+"৮০০ মিলিগ্রাম",
+"১০০০ মিলিগ্রাম",
+"১২০০ মিলিগ্রাম"
+],
+answer:2,
+explanation:"প্রশ্নে প্রদত্ত ICMR (2020) নির্দেশিকা অনুযায়ী উত্তর ১০০০ মিলিগ্রাম।"
+},
+
+{
+q:"প্রোটিনের মান নির্ণয় সম্পর্কে নিচের কোনটি সঠিক?",
+options:[
+"শুধুমাত্র I সত্য",
+"শুধুমাত্র II সত্য",
+"I ও II উভয়ই সত্য",
+"I ও II উভয়ই মিথ্যা"
+],
+answer:0,
+explanation:"I সত্য। II মিথ্যা, কারণ সয়াবিনের BV ডিমের চেয়ে বেশি নয়।"
+},
+
+{
+q:"ভিটামিনের কাজ ও ধর্ম সম্পর্কে নিচের কোনটি সঠিক? I. ভিটামিন K রক্ত তঞ্চনে সাহায্য করে। II. ভিটামিন C একটি ফ্যাটে দ্রবণীয় ভিটামিন।",
+options:[
+"শুধুমাত্র I সত্য",
+"শুধুমাত্র II সত্য",
+"I ও II উভয়ই সত্য",
+"I ও II উভয়ই মিথ্যা"
+],
+answer:0,
+explanation:"ভিটামিন K রক্ত তঞ্চনে সাহায্য করে। ভিটামিন C জলে দ্রবণীয়।"
+},
+
+{
+q:"ডায়াবেটিস মেলিটাস সম্পর্কে নিচের কোনটি সঠিক? I. ইনসুলিন হরমোনের অভাবে বা অকার্যকারিতায় ডায়াবেটিস হয়। II. ডায়াবেটিস রোগীদের উচ্চ ফাইবার যুক্ত খাবার দেওয়া উচিত।",
+options:[
+"শুধুমাত্র I সত্য",
+"শুধুমাত্র II সত্য",
+"I ও II উভয়ই সত্য",
+"I ও II উভয়ই মিথ্যা"
+],
+answer:2,
+explanation:"I ও II উভয়ই সত্য। খাদ্যতালিকায় পর্যাপ্ত ফাইবার রক্তে গ্লুকোজের ওঠানামা নিয়ন্ত্রণে সহায়ক হতে পারে।"
+},
+
+{
+q:"ক্রেবস চক্র (TCA Cycle) সম্পর্কে নিচের কোনটি সঠিক? I. এই চক্রটি মাইটোকনড্রিয়ার ম্যাট্রিক্সে সম্পন্ন হয়। II. এটি একটি সম্পূর্ণ অবায়বীয় (Anaerobic) প্রক্রিয়া।",
+options:[
+"শুধুমাত্র I সত্য",
+"শুধুমাত্র II সত্য",
+"I ও II উভয়ই সত্য",
+"I ও II উভয়ই মিথ্যা"
+],
+answer:0,
+explanation:"ক্রেবস চক্র মাইটোকনড্রিয়ার ম্যাট্রিক্সে সংঘটিত হয় এবং এটি aerobic metabolism-এর সঙ্গে সম্পর্কিত।"
+},
+
+{
+q:"খাদ্যে ভেজাল সম্পর্কে নিচের কোনটি সঠিক? I. কালো মরিচে প্রায়শই শুকনো পেঁপের বীজ মেশানো হয়। II. সর্ষের তেলে মেটানিল ইয়েলো মেশানো হয়।",
+options:[
+"শুধুমাত্র I সত্য",
+"শুধুমাত্র II সত্য",
+"I ও II উভয়ই সত্য",
+"I ও II উভয়ই মিথ্যা"
+],
+answer:0,
+explanation:"প্রশ্নে প্রদত্ত তথ্য অনুযায়ী I সত্য এবং II মিথ্যা। মেটানিল ইয়েলো সাধারণত হলুদ গুঁড়োর ভেজাল হিসেবে উল্লেখ করা হয়।"
+},
+
+{
+q:"হরমোন ও রক্তশর্করা সম্পর্কে নিচের কোনটি সঠিক? I. গ্লুকাগন রক্তে শর্করার মাত্রা কমায়। II. সোমাটোস্ট্যাটিন ইনসুলিন ও গ্লুকাগন উভয়ের ক্ষরণে বাধা দেয়।",
+options:[
+"শুধুমাত্র I সত্য",
+"শুধুমাত্র II সত্য",
+"I ও II উভয়ই সত্য",
+"I ও II উভয়ই মিথ্যা"
+],
+answer:1,
+explanation:"গ্লুকাগন রক্তে শর্করার মাত্রা বৃদ্ধি করে, কমায় না। সোমাটোস্ট্যাটিন ইনসুলিন ও গ্লুকাগনের ক্ষরণ দমন করতে পারে।"
+},
+
+{
+q:"খনিজ পদার্থের ভূমিকা সম্পর্কে নিচের কোনটি সঠিক? I. আয়রনের অভাবে মেগালোব্লাস্টিক অ্যানিমিয়া হয়। II. আয়োডিনের অভাবে থাইরয়েড গ্রন্থি ফুলে গয়টার রোগ হয়।",
+options:[
+"শুধুমাত্র I সত্য",
+"শুধুমাত্র II সত্য",
+"I ও II উভয়ই সত্য",
+"I ও II উভয়ই মিথ্যা"
+],
+answer:1,
+explanation:"আয়রনের অভাবে সাধারণত microcytic hypochromic anemia হয়। আয়োডিনের অভাবে goitre হতে পারে।"
+},
+
+{
+q:"পরিপাক রস সম্পর্কে নিচের কোনটি সঠিক? I. পিত্তরসে ফ্যাট পরিপাককারী উৎসেচক লাইপেজ থাকে। II. পাকস্থলীর গ্যাস্ট্রিক জুসে হাইড্রোক্লোরিক অ্যাসিড (HCl) থাকে।",
+options:[
+"শুধুমাত্র I সত্য",
+"শুধুমাত্র II সত্য",
+"I ও II উভয়ই সত্য",
+"I ও II উভয়ই মিথ্যা"
+],
+answer:1,
+explanation:"পিত্তরসে কোনো পাচক উৎসেচক থাকে না; এটি ফ্যাট emulsification-এ সাহায্য করে। গ্যাস্ট্রিক জুসে HCl থাকে।"
+},
+
+{
+q:"খাদ্য সংরক্ষক সম্পর্কে নিচের কোনটি সঠিক? I. চিনি ও লবণ হলো Class-I বা প্রাকৃতিক সংরক্ষক। II. সোডিয়াম মেটাবাইসালফাইট হলো Class-II রাসায়নিক সংরক্ষক।",
+options:[
+"শুধুমাত্র I সত্য",
+"শুধুমাত্র II সত্য",
+"I ও II উভয়ই সত্য",
+"I ও II উভয়ই মিথ্যা"
+],
+answer:2,
+explanation:"চিনি ও লবণ Class-I preservative এবং sodium metabisulphite Class-II chemical preservative হিসেবে পরিচিত।"
+},
+
+{
+q:"পুষ্টির অভাবজনিত রোগ সম্পর্কে নিচের কোনটি সঠিক? I. ম্যারাসমাস রোগ ক্যালরি ও প্রোটিন উভয়ের ঘাটতির কারণে হয়। II. কোয়াশিয়রকর রোগে শিশুর দেহে শোথ বা Edema-এর লক্ষণ থাকে না।",
+options:[
+"শুধুমাত্র I সত্য",
+"শুধুমাত্র II সত্য",
+"I ও II উভয়ই সত্য",
+"I ও II উভয়ই মিথ্যা"
+],
+answer:0,
+explanation:"ম্যারাসমাসে শক্তি ও প্রোটিন উভয়ের ঘাটতি থাকে। কোয়াশিয়রকরে edema একটি গুরুত্বপূর্ণ বৈশিষ্ট্য।"
+},
+
+{
+q:"বিবৃতি (A): লালারসে শর্করা পরিপাক হয়। যুক্তি (R): লালারসে লাইসোজাইম নামক ব্যাকটেরিয়ানাশক উৎসেচক থাকে।",
+options:[
+"A ও R সঠিক, R হল A-এর সঠিক ব্যাখ্যা",
+"A ও R সঠিক, কিন্তু R সঠিক ব্যাখ্যা নয়",
+"A সঠিক কিন্তু R ভুল",
+"A ভুল কিন্তু R সঠিক"
+],
+answer:1,
+explanation:"লালারসে অ্যামাইলেজ থাকার কারণে শর্করা পরিপাক হয়। লাইসোজাইমের জীবাণুনাশক কাজের সঙ্গে শর্করা পরিপাকের সরাসরি সম্পর্ক নেই।"
+},
+
+{
+q:"বিবৃতি (A): কাঁচা ডিম খাওয়া স্বাস্থ্যের পক্ষে উপকারী নয়। যুক্তি (R): কাঁচা ডিমে 'অ্যাভিডিন' নামক প্রোটিন থাকে যা লোহা (Iron) শোষণে বাধা দেয়।",
+options:[
+"A ও R সঠিক, R হল A-এর সঠিক ব্যাখ্যা",
+"A ও R সঠিক, কিন্তু R সঠিক ব্যাখ্যা নয়",
+"A সঠিক কিন্তু R ভুল",
+"A ভুল কিন্তু R সঠিক"
+],
+answer:2,
+explanation:"অ্যাভিডিন বায়োটিনের সঙ্গে যুক্ত হয়ে তার শোষণে বাধা দিতে পারে; আয়রন শোষণে বাধা দেওয়ার কারণটি সঠিক নয়।"
+},
+
+{
+q:"বিবৃতি (A): ডায়াবেটিস রোগীরা বারবার প্রস্রাব (Polyuria) করেন। যুক্তি (R): রক্তে অতিরিক্ত গ্লুকোজ মূত্রের মাধ্যমে বেরিয়ে যাওয়ার সময় অভিস্রবণ প্রক্রিয়ায় প্রচুর জল সাথে নিয়ে যায়।",
+options:[
+"A ও R সঠিক, R হল A-এর সঠিক ব্যাখ্যা",
+"A ও R সঠিক, কিন্তু R সঠিক ব্যাখ্যা নয়",
+"A সঠিক কিন্তু R ভুল",
+"A ভুল কিন্তু R সঠিক"
+],
+answer:0,
+explanation:"গ্লাইকোসুরিয়ার ফলে osmotic diuresis হয় এবং বেশি পরিমাণে প্রস্রাব হতে পারে।"
+},
+
+{
+q:"বিবৃতি (A): ভিটামিন C খাদ্যে উপস্থিত থাকলে স্কার্ভি রোগ প্রতিরোধ করা যায়। যুক্তি (R): ভিটামিন C কোলাজেন প্রোটিন সংশ্লেষে অপরিহার্য ভূমিকা পালন করে।",
+options:[
+"A ও R সঠিক, R হল A-এর সঠিক ব্যাখ্যা",
+"A ও R সঠিক, কিন্তু R সঠিক ব্যাখ্যা নয়",
+"A সঠিক কিন্তু R ভুল",
+"A ভুল কিন্তু R সঠিক"
+],
+answer:0,
+explanation:"ভিটামিন C কোলাজেন সংশ্লেষে গুরুত্বপূর্ণ; এর অভাবে স্কার্ভি হতে পারে।"
+},
+
+{
+q:"বিবৃতি (A): উচ্চ রক্তচাপের রোগীদের খাবারে নুন বেশি খেতে বলা হয়। যুক্তি (R): সোডিয়াম শরীরে জল ধরে রাখে (Water retention), যা রক্তের আয়তন বাড়িয়ে দেয়।",
+options:[
+"A ও R সঠিক, R হল A-এর সঠিক ব্যাখ্যা",
+"A ও R সঠিক, কিন্তু R সঠিক ব্যাখ্যা নয়",
+"A সঠিক কিন্তু R ভুল",
+"A ভুল কিন্তু R সঠিক"
+],
+answer:3,
+explanation:"উচ্চ রক্তচাপের ক্ষেত্রে অতিরিক্ত সোডিয়াম কমানোর পরামর্শ দেওয়া হয়। সোডিয়াম জলধারণ বাড়াতে পারে।"
+},
+
+{
+q:"বিবৃতি (A): ল্যাকটোজ ইনটলারেন্স থাকলে দুধ খেলে পেটে গ্যাস বা ডায়রিয়া হয়। যুক্তি (R): অন্ত্রে ল্যাকটেজ উৎসেচকের অভাবে ল্যাকটোজ হজম হতে পারে না এবং অন্ত্রের ব্যাকটেরিয়ার গাঁজনে গ্যাস তৈরি করে।",
+options:[
+"A ও R সঠিক, R হল A-এর সঠিক ব্যাখ্যা",
+"A ও R সঠিক, কিন্তু R সঠিক ব্যাখ্যা নয়",
+"A সঠিক কিন্তু R ভুল",
+"A ভুল কিন্তু R সঠিক"
+],
+answer:0,
+explanation:"ল্যাকটেজের ঘাটতিতে lactose হজম না হয়ে বৃহদান্ত্রে পৌঁছায় এবং ব্যাকটেরিয়াল fermentation-এর ফলে গ্যাস ও অন্যান্য উপসর্গ হতে পারে।"
+},
+
+{
+q:"বিবৃতি (A): যকৃৎ মানবদেহের প্রধান বিপাকীয় অঙ্গ। যুক্তি (R): যকৃতে পিত্তরস তৈরি হয় যা ফ্যাট পরিপাকে সাহায্য করে।",
+options:[
+"A ও R সঠিক, R হল A-এর সঠিক ব্যাখ্যা",
+"A ও R সঠিক, কিন্তু R সঠিক ব্যাখ্যা নয়",
+"A সঠিক কিন্তু R ভুল",
+"A ভুল কিন্তু R সঠিক"
+],
+answer:1,
+explanation:"যকৃতে কার্বোহাইড্রেট, প্রোটিন ও ফ্যাটের বহু বিপাকীয় কাজ হয়। পিত্ত তৈরি হওয়া যকৃতকে বিপাকীয় অঙ্গ বলার একমাত্র কারণ নয়।"
+},
+
+{
+q:"বিবৃতি (A): হিমায়ন (Freezing) পদ্ধতিতে খাদ্যের সমস্ত জীবাণু স্থায়ীভাবে মরে যায়। যুক্তি (R): নিম্ন তাপমাত্রায় জীবাণুর বৃদ্ধি ও বিপাকীয় কাজ সাময়িকভাবে বন্ধ থাকে।",
+options:[
+"A ও R সঠিক, R হল A-এর সঠিক ব্যাখ্যা",
+"A ও R সঠিক, কিন্তু R সঠিক ব্যাখ্যা নয়",
+"A সঠিক কিন্তু R ভুল",
+"A ভুল কিন্তু R সঠিক"
+],
+answer:3,
+explanation:"Freezing সাধারণত জীবাণুর বৃদ্ধি ও কার্যকলাপ কমায় বা সাময়িকভাবে বন্ধ করে; সব জীবাণু স্থায়ীভাবে মারা যায় না।"
+},
+
+{
+q:"বিবৃতি (A): থেরাপিউটিক ডায়েটে DASH ডায়েট রক্তচাপ নিয়ন্ত্রণ করতে ব্যবহৃত হয়। যুক্তি (R): DASH ডায়েটে সোডিয়ামের পরিমাণ খুব বেশি থাকে।",
+options:[
+"A ও R সঠিক, R হল A-এর সঠিক ব্যাখ্যা",
+"A ও R সঠিক, কিন্তু R সঠিক ব্যাখ্যা নয়",
+"A সঠিক কিন্তু R ভুল",
+"A ভুল কিন্তু R সঠিক"
+],
+answer:2,
+explanation:"DASH diet উচ্চ রক্তচাপ নিয়ন্ত্রণে ব্যবহৃত হয় এবং এতে sodium intake সীমিত রাখা হয়।"
+},
+
+{
+q:"বিবৃতি (A): পেপসিন একটি প্রোটিওলাইটিক (প্রোটিন ভঙ্গক) উৎসেচক। যুক্তি (R): পেপসিন পাকস্থলীতে প্রোটিনকে ভেঙে প্রোটিওজ ও পেপটনে পরিণত করে।",
+options:[
+"A ও R সঠিক, R হল A-এর সঠিক ব্যাখ্যা",
+"A ও R সঠিক, কিন্তু R সঠিক ব্যাখ্যা নয়",
+"A সঠিক কিন্তু R ভুল",
+"A ভুল কিন্তু R সঠিক"
+],
+answer:0,
+explanation:"পেপসিন পাকস্থলীতে প্রোটিন পরিপাকের একটি গুরুত্বপূর্ণ proteolytic enzyme।"
+},
+
+{
+q:"ভিটামিন ও অভাবজনিত রোগের সঠিক মিল কোনটি? B3—পেলাগ্রা, B1—বেরিবেরি, B12—পারনিসিয়াস অ্যানিমিয়া।",
+options:[
+"B3-বেরিবেরি, B1-পারনিসিয়াস অ্যানিমিয়া, B12-পেলাগ্রা",
+"B3-পেলাগ্রা, B1-বেরিবেরি, B12-পারনিসিয়াস অ্যানিমিয়া",
+"B3-পারনিসিয়াস অ্যানিমিয়া, B1-পেলাগ্রা, B12-বেরিবেরি",
+"B3-পেলাগ্রা, B1-পারনিসিয়াস অ্যানিমিয়া, B12-বেরিবেরি"
+],
+answer:1,
+explanation:"Vitamin B3-এর ঘাটতিতে Pellagra, B1-এর ঘাটতিতে Beriberi এবং B12-এর ঘাটতিতে Pernicious anemia হতে পারে।"
+},
+
+{
+q:"অগ্ন্যাশয়ের কোষ ও হরমোনের সঠিক মিল কোনটি?",
+options:[
+"আলফা কোষ-গ্লুকাগন, বিটা কোষ-ইনসুলিন, ডেল্টা কোষ-সোমাটোস্ট্যাটিন",
+"আলফা কোষ-সোমাটোস্ট্যাটিন, বিটা কোষ-গ্লুকাগন, ডেল্টা কোষ-ইনসুলিন",
+"আলফা কোষ-ইনসুলিন, বিটা কোষ-গ্লুকাগন, ডেল্টা কোষ-সোমাটোস্ট্যাটিন",
+"আলফা কোষ-গ্লুকাগন, বিটা কোষ-সোমাটোস্ট্যাটিন, ডেল্টা কোষ-ইনসুলিন"
+],
+answer:0,
+explanation:"Alpha cells থেকে glucagon, beta cells থেকে insulin এবং delta cells থেকে somatostatin নিঃসৃত হয়।"
+},
+
+{
+q:"পাচক উৎসেচক ও সাবস্ট্রেটের সঠিক মিল কোনটি?",
+options:[
+"অ্যামাইলেজ-ফ্যাট, ট্রিপসিন-স্টার্চ, লাইপেজ-প্রোটিন",
+"অ্যামাইলেজ-প্রোটিন, ট্রিপসিন-ফ্যাট, লাইপেজ-স্টার্চ",
+"অ্যামাইলেজ-স্টার্চ, ট্রিপসিন-প্রোটিন, লাইপেজ-ফ্যাট",
+"অ্যামাইলেজ-স্টার্চ, ট্রিপসিন-ফ্যাট, লাইপেজ-প্রোটিন"
+],
+answer:2,
+explanation:"Amylase starch-এর উপর, trypsin protein-এর উপর এবং lipase fat-এর উপর কাজ করে।"
+},
+
+{
+q:"ভেজাল উপাদান ও খাদ্যের সঠিক মিল কোনটি?",
+options:[
+"মেটানিল ইয়েলো-সর্ষের তেল, আর্জিমন তেল-হলুদ গুঁড়ো, চিকোরি-কফি",
+"মেটানিল ইয়েলো-হলুদ গুঁড়ো, আর্জিমন তেল-সর্ষের তেল, চিকোরি-কফি",
+"মেটানিল ইয়েলো-সর্ষের তেল, আর্জিমন তেল-কফি, চিকোরি-হলুদ গুঁড়ো",
+"মেটানিল ইয়েলো-কফি, আর্জিমন তেল-হলুদ গুঁড়ো, চিকোরি-সর্ষের তেল"
+],
+answer:1,
+explanation:"প্রদত্ত মিল অনুযায়ী metanil yellow—turmeric powder, argemone oil—mustard oil এবং chicory—coffee।"
+},
+
+{
+q:"খনিজ পদার্থ ও কাজের সঠিক মিল কোনটি?",
+options:[
+"আয়রন-থাইরক্সিন, ক্যালসিয়াম-হিমোগ্লোবিন, আয়োডিন-অস্থি",
+"আয়রন-হিমোগ্লোবিন, ক্যালসিয়াম-অস্থি ও দাঁত, আয়োডিন-থাইরক্সিন",
+"আয়রন-অস্থি, ক্যালসিয়াম-থাইরক্সিন, আয়োডিন-হিমোগ্লোবিন",
+"আয়রন-হিমোগ্লোবিন, ক্যালসিয়াম-থাইরক্সিন, আয়োডিন-অস্থি"
+],
+answer:1,
+explanation:"Iron haemoglobin formation-এ, calcium bone ও teeth formation-এ এবং iodine thyroxine synthesis-এ গুরুত্বপূর্ণ।"
+},
+
+{
+q:"খাদ্য সংরক্ষণ পদ্ধতি ও মূল নীতির সঠিক মিল কোনটি?",
+options:[
+"পাস্তুরাইজেশন-তাপ প্রয়োগে প্যাথোজেন মুক্ত করা, ব্লাঞ্চিং-ফুটন্ত জলে উৎসেচক নিষ্ক্রিয় করা, একজস্টিং-অক্সিজেন অপসারণ",
+"পাস্তুরাইজেশন-উৎসেচক নিষ্ক্রিয় করা, ব্লাঞ্চিং-প্যাথোজেন মুক্ত করা, একজস্টিং-অক্সিজেন অপসারণ",
+"পাস্তুরাইজেশন-অক্সিজেন অপসারণ, ব্লাঞ্চিং-উৎসেচক নিষ্ক্রিয় করা, একজস্টিং-প্যাথোজেন মুক্ত করা",
+"পাস্তুরাইজেশন-প্যাথোজেন মুক্ত করা, ব্লাঞ্চিং-অক্সিজেন অপসারণ, একজস্টিং-উৎসেচক নিষ্ক্রিয় করা"
+],
+answer:0,
+explanation:"Pasteurization-এ তাপ প্রয়োগ করা হয়; blanching-এ enzyme activity কমানো/নিষ্ক্রিয় করা হয়; exhausting-এ air বা oxygen অপসারণ করা হয়।"
+},
+
+{
+q:"হরমোন ও পরিপাকে কাজের সঠিক মিল কোনটি?",
+options:[
+"গ্যাস্ট্রিন-পিত্তাশয় সংকোচন, সিক্রেটিন-গ্যাস্ট্রিক জুস, CCK-বাইকার্বনেট",
+"গ্যাস্ট্রিন-গ্যাস্ট্রিক জুস ক্ষরণে উদ্দীপনা, সিক্রেটিন-অগ্ন্যাশয় রসে বাইকার্বনেট বাড়ায়, CCK-পিত্তাশয় সংকোচন ঘটায়",
+"গ্যাস্ট্রিন-বাইকার্বনেট, সিক্রেটিন-পিত্তাশয় সংকোচন, CCK-গ্যাস্ট্রিক জুস",
+"গ্যাস্ট্রিন-পিত্তাশয় সংকোচন, সিক্রেটিন-বাইকার্বনেট, CCK-গ্যাস্ট্রিক জুস"
+],
+answer:1,
+explanation:"Gastrin gastric secretion উদ্দীপিত করে, secretin pancreatic bicarbonate secretion বাড়ায় এবং CCK gallbladder contraction ঘটায়।"
+},
+
+{
+q:"বিপাকীয় পথ ও সংঘটন স্থানের সঠিক মিল কোনটি?",
+options:[
+"ক্রেবস চক্র-মাইটোকনড্রিয়া, গ্লাইকোলাইসিস-সাইটোপ্লাজম, কোরি চক্র-পেশি ও যকৃৎ",
+"ক্রেবস চক্র-পেশি ও যকৃৎ, গ্লাইকোলাইসিস-মাইটোকনড্রিয়া, কোরি চক্র-সাইটোপ্লাজম",
+"ক্রেবস চক্র-সাইটোপ্লাজম, গ্লাইকোলাইসিস-পেশি ও যকৃৎ, কোরি চক্র-মাইটোকনড্রিয়া",
+"ক্রেবস চক্র-মাইটোকনড্রিয়া, গ্লাইকোলাইসিস-পেশি ও যকৃৎ, কোরি চক্র-সাইটোপ্লাজম"
+],
+answer:0,
+explanation:"Krebs cycle মাইটোকনড্রিয়ায়, glycolysis cytoplasm-এ এবং Cori cycle muscle ও liver-এর মধ্যে সংঘটিত হয়।"
+},
+
+{
+q:"BMI মান ও শ্রেণীবিভাগের সঠিক মিল কোনটি?",
+options:[
+"Underweight-১৮.৫–২৪.৯, Normal-১৮.৫-এর নীচে, Overweight-২৫.০–২৯.৯",
+"Underweight-১৮.৫-এর নীচে, Normal-১৮.৫–২৪.৯, Overweight-২৫.০–২৯.৯",
+"Underweight-২৫.০–২৯.৯, Normal-১৮.৫-এর নীচে, Overweight-১৮.৫–২৪.৯",
+"Underweight-১৮.৫-এর নীচে, Normal-২৫.০–২৯.৯, Overweight-১৮.৫–২৪.৯"
+],
+answer:1,
+explanation:"প্রদত্ত BMI শ্রেণীবিভাগ অনুযায়ী Underweight <18.5, Normal 18.5–24.9 এবং Overweight 25.0–29.9।"
+},
+
+{
+q:"রোগ ও থেরাপিউটিক পথ্যের সঠিক মিল কোনটি?",
+options:[
+"সিলিয়াক ডিজিজ-ফ্যাট-বর্জিত নরম খাদ্য, হাইপারটেনশন-গ্লুটেন-ফ্রি ডায়েট, জন্ডিস-DASH",
+"সিলিয়াক ডিজিজ-সোডিয়াম-নিয়ন্ত্রিত ডায়েট, হাইপারটেনশন-ফ্যাট-বর্জিত খাদ্য, জন্ডিস-গ্লুটেন-ফ্রি",
+"সিলিয়াক ডিজিজ-গ্লুটেন-ফ্রি ডায়েট, হাইপারটেনশন-সোডিয়াম-নিয়ন্ত্রিত (DASH) ডায়েট, জন্ডিস-ফ্যাট-বর্জিত নরম খাদ্য",
+"সিলিয়াক ডিজিজ-DASH, হাইপারটেনশন-গ্লুটেন-ফ্রি, জন্ডিস-সোডিয়াম-নিয়ন্ত্রিত"
+],
+answer:2,
+explanation:"Celiac disease-এ gluten-free diet, hypertension-এ sodium-controlled/DASH diet এবং প্রদত্ত শ্রেণীবিভাগ অনুযায়ী jaundice-এ fat-restricted soft diet ব্যবহৃত হয়।"
+},
+
+{
+q:"মানবদেহে প্রাণীয় পুষ্টির (Holozoic nutrition) সঠিক পর্যায়ক্রম কোনটি?",
+options:[
+"পরিপাক → খাদ্যগ্রহণ → শোষণ → আত্তীকরণ → বহিষ্করণ",
+"খাদ্যগ্রহণ → শোষণ → পরিপাক → আত্তীকরণ → বহিষ্করণ",
+"খাদ্যগ্রহণ → পরিপাক → শোষণ → আত্তীকরণ → বহিষ্করণ",
+"খাদ্যগ্রহণ → আত্তীকরণ → পরিপাক → শোষণ → বহিষ্করণ"
+],
+answer:2,
+explanation:"Holozoic nutrition-এর ধাপ: ingestion → digestion → absorption → assimilation → egestion।"
+},
+
+{
+q:"গ্লাইকোলাইসিসের প্রথম দিকের ধাপের সঠিক ক্রম কোনটি?",
+options:[
+"গ্লুকোজ → গ্লুকোজ-৬-ফসফেট → ফ্রুক্টোজ-৬-ফসফেট → ফ্রুক্টোজ ১,৬-বিসফসফেট",
+"গ্লুকোজ → ফ্রুক্টোজ-৬-ফসফেট → গ্লুকোজ-৬-ফসফেট → ফ্রুক্টোজ ১,৬-বিসফসফেট",
+"গ্লুকোজ-৬-ফসফেট → গ্লুকোজ → ফ্রুক্টোজ-৬-ফসফেট → ফ্রুক্টোজ ১,৬-বিসফসফেট",
+"ফ্রুক্টোজ ১,৬-বিসফসফেট → গ্লুকোজ-৬-ফসফেট → ফ্রুক্টোজ-৬-ফসফেট → গ্লুকোজ"
+],
+answer:0,
+explanation:"গ্লাইকোলাইসিসের শুরুতে glucose → glucose-6-phosphate → fructose-6-phosphate → fructose-1,6-bisphosphate হয়।"
+},
+
+{
+q:"অরনিথিন চক্রের (Urea Cycle) যৌগের সঠিক ক্রম কোনটি?",
+options:[
+"সাইট্রুলিন → অরনিথিন → আর্জিনিনোসাকসিনেট → আর্জিনিন → ইউরিয়া",
+"অরনিথিন → সাইট্রুলিন → আর্জিনিনোসাকসিনেট → আর্জিনিন → ইউরিয়া",
+"আর্জিনিন → অরনিথিন → সাইট্রুলিন → আর্জিনিনোসাকসিনেট → ইউরিয়া",
+"অরনিথিন → আর্জিনিনোসাকসিনেট → সাইট্রুলিন → আর্জিনিন → ইউরিয়া"
+],
+answer:1,
+explanation:"Urea cycle-এর প্রধান ক্রম: ornithine → citrulline → argininosuccinate → arginine → urea + ornithine।"
+},
+
+{
+q:"ফল ও সবজি ক্যানিং (Canning) করার ধাপের সঠিক ক্রম কোনটি?",
+options:[
+"ব্লাঞ্চিং → কৌটায় ভরা → একজস্টিং → সিলিং → স্টেরিলাইজেশন",
+"একজস্টিং → ব্লাঞ্চিং → কৌটায় ভরা → স্টেরিলাইজেশন → সিলিং",
+"কৌটায় ভরা → একজস্টিং → ব্লাঞ্চিং → সিলিং → স্টেরিলাইজেশন",
+"স্টেরিলাইজেশন → ব্লাঞ্চিং → কৌটায় ভরা → একজস্টিং → সিলিং"
+],
+answer:0,
+explanation:"প্রশ্নে প্রদত্ত canning-এর ক্রম অনুযায়ী blanching → filling → exhausting → sealing → sterilization।"
+},
+
+{
+q:"মানবদেহে লোহা (Iron) শোষণের সঠিক পথ কোনটি?",
+options:[
+"খাদ্যের Fe3+ → ডিওডিনামে শোষণ → পাকস্থলীতে Fe2+ রূপান্তর → রক্তে ট্রান্সফেরিন",
+"খাদ্যের Fe3+ → রক্তে ট্রান্সফেরিন → ডিওডিনামে শোষণ → পাকস্থলীতে Fe2+",
+"খাদ্যের Fe3+ → পাকস্থলীতে Fe2+ এ রূপান্তর → ডিওডিনামে শোষণ → রক্তে ট্রান্সফেরিনের সাথে যুক্ত হওয়া",
+"পাকস্থলীতে Fe2+ → খাদ্যের Fe3+ → রক্তে ট্রান্সফেরিন → ডিওডিনামে শোষণ"
+],
+answer:2,
+explanation:"প্রশ্নের প্রদত্ত ক্রম অনুযায়ী খাদ্যের Fe3+ পাকস্থলীতে Fe2+-এ রূপান্তরিত হয়ে ডিওডিনামে শোষিত হয় এবং পরে রক্তে transferrin-এর সঙ্গে যুক্ত হয়।"
+},
+
+{
+q:"ফ্যাট পরিপাক ও শোষণের সঠিক ক্রম কোনটি?",
+options:[
+"ফ্যাট → লাইপেজের ক্রিয়া → পিত্ত দ্বারা ইমালসিফিকেশন → ফ্যাটি অ্যাসিড ও গ্লিসারল",
+"ফ্যাট → পিত্ত দ্বারা ইমালসিফিকেশন → লাইপেজের ক্রিয়া → ফ্যাটি অ্যাসিড ও গ্লিসারল",
+"ইমালসিফিকেশন → ফ্যাটি অ্যাসিড ও গ্লিসারল → ফ্যাট → লাইপেজের ক্রিয়া",
+"লাইপেজের ক্রিয়া → ফ্যাট → ইমালসিফিকেশন → ফ্যাটি অ্যাসিড ও গ্লিসারল"
+],
+answer:1,
+explanation:"প্রথমে bile salts-এর সাহায্যে emulsification, এরপর lipase-এর ক্রিয়ায় fat ভাঙে।"
+},
+
+{
+q:"রক্ত জমাট বাঁধার (Blood Coagulation) রাসায়নিক ক্রম কোনটি?",
+options:[
+"প্রোথ্রম্বিন থেকে থ্রম্বিন → থ্রম্বোপ্লাস্টিন রিলিজ → ফাইব্রিনোজেন থেকে ফাইব্রিন",
+"ফাইব্রিনোজেন থেকে ফাইব্রিন → প্রোথ্রম্বিন থেকে থ্রম্বিন → থ্রম্বোপ্লাস্টিন রিলিজ",
+"থ্রম্বোপ্লাস্টিন রিলিজ → ফাইব্রিনোজেন থেকে ফাইব্রিন → প্রোথ্রম্বিন থেকে থ্রম্বিন",
+"থ্রম্বোপ্লাস্টিন রিলিজ → প্রোথ্রম্বিন থেকে থ্রম্বিন → ফাইব্রিনোজেন থেকে ফাইব্রিন (জালক)"
+],
+answer:3,
+explanation:"প্রদত্ত ক্রম অনুযায়ী thromboplastin release → prothrombin থেকে thrombin → fibrinogen থেকে fibrin।"
+},
+
+{
+q:"ভিটামিন A অভাবজনিত চোখের রোগের ক্লিনিক্যাল ক্রম কোনটি?",
+options:[
+"রাতকানা → কনজাংটিভাল জেরোসিস → বিটট স্পট → কর্নিয়াল জেরোসিস",
+"বিটট স্পট → রাতকানা → কর্নিয়াল জেরোসিস → কনজাংটিভাল জেরোসিস",
+"কর্নিয়াল জেরোসিস → রাতকানা → বিটট স্পট → কনজাংটিভাল জেরোসিস",
+"কনজাংটিভাল জেরোসিস → রাতকানা → কর্নিয়াল জেরোসিস → বিটট স্পট"
+],
+answer:0,
+explanation:"Vitamin A deficiency-এর ocular manifestations-এর প্রদত্ত ক্রম অনুযায়ী night blindness → conjunctival xerosis → Bitot spot → corneal xerosis।"
+},
+
+{
+q:"পরিপাকতন্ত্রের অংশগুলোর (উপর থেকে নিচে) সঠিক ক্রম কোনটি?",
+options:[
+"গ্রাসনালী → ডিওডিনাম → পাকস্থলী → ইলিয়াম → জেজুনাম",
+"গ্রাসনালী → পাকস্থলী → ডিওডিনাম → জেজুনাম → ইলিয়াম",
+"ডিওডিনাম → গ্রাসনালী → পাকস্থলী → জেজুনাম → ইলিয়াম",
+"পাকস্থলী → গ্রাসনালী → জেজুনাম → ডিওডিনাম → ইলিয়াম"
+],
+answer:1,
+explanation:"পরিপাকতন্ত্রের এই অংশগুলোর সঠিক ক্রম: oesophagus → stomach → duodenum → jejunum → ileum।"
+},
+
+{
+q:"নবজাতক থেকে শিশুর আহারের পরিবর্তনের সঠিক ক্রম কোনটি?",
+options:[
+"মাতৃদুগ্ধ → কোলোস্ট্রাম → কঠিন খাদ্য → উইনিং",
+"উইনিং → মাতৃদুগ্ধ → কোলোস্ট্রাম → কঠিন খাদ্য",
+"কোলোস্ট্রাম → মাতৃদুগ্ধ → পরিপূরক তরল (উইনিং) → কঠিন খাদ্য",
+"কঠিন খাদ্য → উইনিং → মাতৃদুগ্ধ → কোলোস্ট্রাম"
+],
+answer:2,
+explanation:"প্রশ্নে প্রদত্ত ক্রম অনুযায়ী colostrum → breast milk → complementary/weaning foods → solid foods।"
+}
+
+];
+
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+
+const questionEl = document.getElementById("question");
+const optionsEl = document.getElementById("options");
+const answerBox = document.getElementById("answerBox");
+const nextBtn = document.getElementById("nextBtn");
+const questionNo = document.getElementById("questionNo");
+const scoreText = document.getElementById("scoreText");
+const progressFill = document.getElementById("progressFill");
+const quizCard = document.getElementById("quizCard");
+const result = document.getElementById("result");
+const finalScore = document.getElementById("finalScore");
+const resultMessage = document.getElementById("resultMessage");
+
+function loadQuestion(){
+
+    answered = false;
+
+    const q = questions[currentQuestion];
+
+    questionNo.textContent =
+        "Question " + (currentQuestion + 1);
+
+    scoreText.textContent =
+        "Score: " + score;
+
+    progressFill.style.width =
+        ((currentQuestion + 1) / questions.length * 100) + "%";
+
+    questionEl.innerHTML =
+        "<strong>" + (currentQuestion + 1) + ".</strong> " + q.q;
+
+    optionsEl.innerHTML = "";
+
+    q.options.forEach((option,index)=>{
+
+        const btn = document.createElement("button");
+
+        btn.className = "option";
+
+        btn.innerHTML =
+            String.fromCharCode(65 + index) +
+            ") " + option;
+
+        btn.onclick = () =>
+            selectAnswer(index,btn);
+
+        optionsEl.appendChild(btn);
+    });
+
+    answerBox.className = "answer-box";
+    answerBox.innerHTML = "";
+
+    nextBtn.className = "next-btn";
+
+    if(currentQuestion === questions.length - 1){
+        nextBtn.textContent = "ফলাফল দেখুন →";
+    }else{
+        nextBtn.textContent = "পরবর্তী প্রশ্ন →";
+    }
+}
+
+function selectAnswer(selected,selectedButton){
+
+    if(answered) return;
+
+    answered = true;
+
+    const q = questions[currentQuestion];
+
+    const allButtons =
+        document.querySelectorAll(".option");
+
+    allButtons.forEach(btn=>{
+        btn.disabled = true;
+    });
+
+    if(selected === q.answer){
+
+        score++;
+
+        selectedButton.classList.add("correct");
+
+        answerBox.className =
+            "answer-box show correct-msg";
+
+        answerBox.innerHTML =
+            "<strong>✓ সঠিক উত্তর!</strong><br>" +
+            "উত্তর: " +
+            q.options[q.answer] +
+            "<br><br>" +
+            "<strong>ব্যাখ্যা:</strong> " +
+            q.explanation;
+
+    }else{
+
+        selectedButton.classList.add("wrong");
+
+        allButtons[q.answer].classList.add("correct");
+
+        answerBox.className =
+            "answer-box show wrong-msg";
+
+        answerBox.innerHTML =
+            "<strong>✗ ভুল উত্তর!</strong><br>" +
+            "সঠিক উত্তর: " +
+            q.options[q.answer] +
+            "<br><br>" +
+            "<strong>ব্যাখ্যা:</strong> " +
+            q.explanation;
+    }
+
+    scoreText.textContent =
+        "Score: " + score;
+
+    nextBtn.className =
+        "next-btn show";
+}
+
+function nextQuestion(){
+
+    if(!answered) return;
+
+    currentQuestion++;
+
+    if(currentQuestion < questions.length){
+
+        loadQuestion();
+
+        window.scrollTo({
+            top:0,
+            behavior:"smooth"
+        });
+
+    }else{
+
+        showResult();
+    }
+}
+
+function showResult(){
+
+    quizCard.style.display = "none";
+
+    result.className = "result show";
+
+    finalScore.textContent =
+        score + "/" + questions.length;
+
+    const percentage =
+        (score / questions.length) * 100;
+
+    if(percentage >= 90){
+
+        resultMessage.innerHTML =
+            "🏆 অসাধারণ! আপনার প্রস্তুতি খুবই ভালো।<br>" +
+            "আপনি " + percentage.toFixed(0) +
+            "% নম্বর পেয়েছেন।";
+
+    }else if(percentage >= 70){
+
+        resultMessage.innerHTML =
+            "🎉 খুব ভালো! আরও একটু অনুশীলন করলে আরও ভালো ফল হবে।<br>" +
+            "আপনি " + percentage.toFixed(0) +
+            "% নম্বর পেয়েছেন।";
+
+    }else if(percentage >= 50){
+
+        resultMessage.innerHTML =
+            "👍 ভালো চেষ্টা! গুরুত্বপূর্ণ অধ্যায়গুলো আরও একবার অনুশীলন করুন।<br>" +
+            "আপনি " + percentage.toFixed(0) +
+            "% নম্বর পেয়েছেন।";
+
+    }else{
+
+        resultMessage.innerHTML =
+            "📚 আরও অনুশীলন প্রয়োজন। আবার Quiz দিয়ে নিজেকে যাচাই করুন।<br>" +
+            "আপনি " + percentage.toFixed(0) +
+            "% নম্বর পেয়েছেন।";
+    }
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+function restartQuiz(){
+
+    currentQuestion = 0;
+    score = 0;
+    answered = false;
+
+    result.className = "result";
+
+    quizCard.style.display = "block";
+
+    loadQuestion();
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>

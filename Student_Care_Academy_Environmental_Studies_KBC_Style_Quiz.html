@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Student Care Academy - Environmental Studies Quiz</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:"Noto Sans Bengali","Nirmala UI",sans-serif;background:radial-gradient(circle at top,#15245b,#050914 70%);color:#fff;padding:18px}
+.container{max-width:760px;margin:auto}
+.header{text-align:center;padding:18px 12px 12px;margin-bottom:15px;border:1px solid #5366d9;border-radius:18px;background:linear-gradient(135deg,#101b45,#17286c);box-shadow:0 0 25px #263da855}
+.brand{font-size:clamp(25px,6vw,42px);font-weight:900;letter-spacing:1px;background:linear-gradient(90deg,#ffd54a,#fff,#55d6ff,#ffd54a);background-size:300% auto;-webkit-background-clip:text;color:transparent;animation:shine 4s linear infinite}
+.teacher{font-size:18px;color:#dce4ff;margin-top:5px;font-weight:700}
+@keyframes shine{to{background-position:300% center}}
+.stats{display:flex;justify-content:space-between;gap:10px;margin:10px 0;color:#d8e1ff;font-weight:700}
+.card{background:rgba(14,23,54,.96);border:1px solid #4256a9;border-radius:20px;padding:22px;box-shadow:0 15px 40px #0008}
+.progress{height:8px;background:#25315e;border-radius:20px;overflow:hidden;margin-bottom:20px}
+.progressbar{height:100%;width:0;background:linear-gradient(90deg,#ffd54a,#48d9ff);transition:.35s}
+.qno{color:#ffd54a;font-weight:900;font-size:18px;margin-bottom:12px}
+.question{font-size:21px;line-height:1.65;font-weight:800;margin-bottom:20px}
+.option{width:100%;text-align:left;border:1px solid #4a5ca5;background:#172247;color:white;padding:15px 16px;border-radius:13px;margin:8px 0;font-size:17px;cursor:pointer;transition:.2s}
+.option:hover{transform:translateY(-1px);background:#22326b}
+.option.correct{background:#116b45;border-color:#39e49a}
+.option.wrong{background:#7c2430;border-color:#ff6577}
+.option.disabled{cursor:default}
+.feedback{min-height:32px;text-align:center;font-size:18px;font-weight:800;margin:14px 0}
+.next{display:none;width:100%;border:0;border-radius:14px;padding:15px;background:linear-gradient(90deg,#ffb300,#ffcf40);color:#111;font-size:18px;font-weight:900;cursor:pointer}
+.result{display:none;text-align:center;padding:25px}
+.score{font-size:48px;font-weight:900;color:#ffd54a;margin:12px}
+.result button{border:0;padding:14px 25px;border-radius:13px;font-size:17px;font-weight:900;cursor:pointer;background:#55d6ff}
+.small{color:#aebce8;font-size:14px;margin-top:12px}
+</style>
+</head>
+<body>
+<div class="container">
+<header class="header">
+  <div class="brand">Student Care Academy</div>
+  <div class="teacher">Teacher:- Tapan Mandal</div>
+  <div style="margin-top:8px;font-weight:700">Class: XII | Semester: III | Subject: Environmental Studies</div>
+  <div style="color:#ffd54a;margin-top:6px;font-weight:900">Online Mock Test</div>
+</header>
+
+<div class="stats">
+  <span id="count">Quiz Played: 0 times</span>
+  <span id="liveScore">Score: 0</span>
+</div>
+
+<div class="card" id="quizCard">
+  <div class="progress"><div class="progressbar" id="progress"></div></div>
+  <div class="qno" id="qno"></div>
+  <div class="question" id="question"></div>
+  <div id="options"></div>
+  <div class="feedback" id="feedback"></div>
+  <button class="next" id="next">Next Question →</button>
+</div>
+
+<div class="card result" id="result">
+  <div style="font-size:28px;font-weight:900">Quiz Completed 🎉</div>
+  <div class="score" id="finalScore"></div>
+  <div id="resultText"></div>
+  <div class="small" id="attemptText"></div>
+  <button onclick="startQuiz()">Play Again</button>
+</div>
+</div>
+
+<script>
+const questions = [{"q": "বাস্তুতন্ত্রে 'Gross Primary Productivity (GPP)' এবং 'Net Primary Productivity (NPP)'-এর মধ্যে সঠিক সম্পর্কটি কী?", "options": ["GPP = NPP + শ্বসন (Respiration)", "NPP = GPP + শ্বসন (Respiration)", "GPP = NPP × শ্বসন (Respiration)", "NPP = GPP / শ্বসন (Respiration)"], "answer": 0}, {"q": "পাথুরে বা শুষ্ক পরিবেশে (Xerosere) উদ্ভিদ পর্যায়ক্রমের (Ecological Succession) সূচনাকারী বা পাইওনিয়ার (Pioneer) প্রজাতি কোনটি?", "options": ["মস জাতীয় উদ্ভিদ (Bryophytes)", "ক্রাস্টোজ লাইকেন (Crustose Lichen)", "বিরুৎ জাতীয় উদ্ভিদ (Herbs)", "ফার্ন জাতীয় উদ্ভিদ"], "answer": 1}, {"q": "কোনো একটি নির্দিষ্ট সময়ে বাস্তুতন্ত্রের নির্দিষ্ট স্থানে উপস্থিত মোট অজৈব পুষ্টি উপাদানের (Inorganic nutrients) পরিমাণকে কী বলা হয়?", "options": ["Standing crop", "Standing state", "Biomass", "Net productivity"], "answer": 1}, {"q": "গভীর সমুদ্রের 'হাইড্রোথার্মাল ভেন্ট' (Hydrothermal Vent) বাস্তুতন্ত্রের শক্তির প্রাথমিক উৎপাদক কারা?", "options": ["ফাইটোপ্ল্যাঙ্কটন", "কেমোসিন্থেটিক ব্যাকটেরিয়া (Chemosynthetic bacteria)", "সায়ানোব্যাকটেরিয়া", "জুপ্ল্যাঙ্কটন"], "answer": 1}, {"q": "\"দুটি ভিন্ন প্রজাতি একই বাস্তুতান্ত্রিক নিচ (Ecological Niche) দীর্ঘকাল ধরে একসাথে শেয়ার করতে পারে না\"—এই নীতিটি কার?", "options": ["ওডাম (Odum)", "এলটন (Elton)", "গস (Gause - Competitive Exclusion Principle)", "হেকেল (Haeckel)"], "answer": 2}, {"q": "নিম্নলিখিত কোনটি পাললিক জীব-ভূরাসায়নিক চক্রের (Sedimentary cycle) উদাহরণ?", "options": ["নাইট্রোজেন চক্র", "কার্বন চক্র", "অক্সিজেন চক্র", "ফসফরাস চক্র"], "answer": 3}, {"q": "যে প্রজাতি বাস্তুতন্ত্রে সংখ্যায় কম থাকলেও তাদের অবলুপ্তির ফলে সমগ্র বাস্তুতন্ত্র ভেঙে পড়তে পারে, তাদের কী বলে?", "options": ["এন্ডেমিক প্রজাতি (Endemic Species)", "কিস্টোন প্রজাতি (Keystone Species)", "আমব্রেলা প্রজাতি (Umbrella Species)", "ইনডিকেটর প্রজাতি (Indicator Species)"], "answer": 1}, {"q": "ডিনাইট্রিফিকেশন (Denitrification) প্রক্রিয়ায় অংশগ্রহণকারী একটি ব্যাকটেরিয়া হলো:", "options": ["রাইজোবিয়াম (Rhizobium)", "নাইট্রোসোমোনাস (Nitrosomonas)", "সিউডোমোনাস (Pseudomonas)", "অ্যাজোটোব্যাক্টর (Azotobacter)"], "answer": 2}, {"q": "লজিস্টিক পপুলেশন গ্রোথ কার্ভ (Logistic Growth Curve)-এর আকৃতি কীরূপ হয়?", "options": ["J-আকৃতির", "S-আকৃতির (Sigmoid)", "ঘণ্টা আকৃতির (Bell-shaped)", "উল্টানো U-আকৃতির"], "answer": 1}, {"q": "যে প্রজাতি সংরক্ষণের মাধ্যমে স্বয়ংক্রিয়ভাবে একটি বিস্তীর্ণ অঞ্চলের অন্যান্য প্রজাতিও সংরক্ষিত হয়, তাকে কী বলে?", "options": ["কিস্টোন প্রজাতি", "আমব্রেলা প্রজাতি (Umbrella species)", "পাইওনিয়ার প্রজাতি", "বহিরাগত প্রজাতি"], "answer": 1}, {"q": "জীববৈচিত্র্য হটস্পট (Biodiversity Hotspot) নির্বাচনের দুটি প্রধান শর্ত কী কী?", "options": ["উচ্চ এন্ডেমিজম এবং উচ্চ বিপন্নতা (High Endemism and High Threat)", "উচ্চ প্রজনন হার এবং বিশাল আয়তন", "কেবল উদ্ভিদের প্রাচুর্য এবং জলের প্রাচুর্য", "শীতল আবহাওয়া এবং উচ্চ বৃষ্টিপাত"], "answer": 0}, {"q": "ডোডো পাখির অবলুপ্তির সাথে সাথে মরিশাসের ক্যালভারিয়া (Calvaria) গাছের প্রজনন বন্ধ হয়ে যায়। এটি কীসের উদাহরণ?", "options": ["মাস এক্সটিংশন (Mass extinction)", "কো-এক্সটিংশন বা সহ-বিলুপ্তি (Co-extinction)", "জেনেটিক ড্রিফট (Genetic drift)", "ন্যাচারাল সিলেকশন"], "answer": 1}, {"q": "ভারতের জয়েন্ট ফরেস্ট ম্যানেজমেন্ট (JFM) ব্যবস্থা প্রথম কোথায় এবং কবে সাফল্য লাভ করে?", "options": ["1970-এর দশকে উত্তরাখণ্ডের গাড়োয়ালে", "1971 সালে রাজস্থানের বিষ্ণোই গ্রামে", "1971-72 সালে পশ্চিমবঙ্গের আড়াবাড়ি অরণ্যে", "1980 সালে কেরালার সাইলেন্ট ভ্যালিতে"], "answer": 2}, {"q": "'বায়োলজিক্যাল ডাইভারসিটি অ্যাক্ট, 2002' অনুযায়ী স্থানীয় বা পঞ্চায়েত স্তরে গঠিত জীববৈচিত্র্য পরিচালন কমিটির নাম কী?", "options": ["National Biodiversity Authority (NBA)", "State Biodiversity Board (SBB)", "Biodiversity Management Committee (BMC)", "People’s Biodiversity Register (PBR)"], "answer": 2}, {"q": "মেঘালয়ের 'মাওফলং' (Mawphlang) নিচের কোনটির একটি উৎকৃষ্ট উদাহরণ?", "options": ["ন্যাশনাল পার্ক (National Park)", "বায়োস্ফিয়ার রিজার্ভ (Biosphere Reserve)", "পবিত্র বনভূমি (Sacred Grove)", "বোটানিক্যাল গার্ডেন (Botanical Garden)"], "answer": 2}, {"q": "আলফা, বিটা এবং গামা জীববৈচিত্র্যের মধ্যে কোনটি দুটি পৃথক বাসস্থানের জীববৈচিত্র্যের তুলনামূলক পার্থক্য নির্দেশ করে?", "options": ["আলফা বৈচিত্র্য", "বিটা বৈচিত্র্য", "গামা বৈচিত্র্য", "ডেল্টা বৈচিত্র্য"], "answer": 1}, {"q": "বন্যপ্রাণী সংরক্ষণ আইন (Wildlife Protection Act, 1972) অনুযায়ী কোন তফসিলে (Schedule) অন্তর্ভুক্ত প্রাণীদের শিকার করলে সর্বোচ্চ শাস্তির বিধান রয়েছে?", "options": ["Schedule V", "Schedule III", "Schedule IV", "Schedule I এবং Part II of Schedule II"], "answer": 3}, {"q": "ভারতের একটি অত্যন্ত আগ্রাসী বহিরাগত (Invasive alien) উদ্ভিদ প্রজাতির নাম, যা জলজ বাস্তুতন্ত্র ধ্বংস করে?", "options": ["সর্পগন্ধা (Rauvolfia serpentina)", "কচুরিপানা (Eichhornia crassipes)", "পদ্ম (Nelumbo nucifera)", "সুন্দরী (Heritiera fomes)"], "answer": 1}, {"q": "কোন তাপমাত্রায় ক্রায়োপ্রিজারভেশন (Cryopreservation)-এর মাধ্যমে এক্স-সিটু সংরক্ষণ করা হয়?", "options": ["-4°C", "-80°C", "-196°C (তরল নাইট্রোজেনে)", "-273°C"], "answer": 2}, {"q": "বোটানিক্যাল গার্ডেন এবং জিন ব্যাঙ্ক (Gene Bank) কোন ধরনের সংরক্ষণের উদাহরণ?", "options": ["ইন-সিটু (In-situ) সংরক্ষণ", "এক্স-সিটু (Ex-situ) সংরক্ষণ", "অন-সাইট (On-site) সংরক্ষণ", "বায়োস্ফিয়ার সংরক্ষণ"], "answer": 1}, {"q": "জলাভূমি সংরক্ষণের জন্য আন্তর্জাতিক চুক্তি 'রামসর কনভেনশন' (Ramsar Convention) কত সালে স্বাক্ষরিত হয়?", "options": ["1972 সালে", "1971 সালে", "1992 সালে", "1997 সালে"], "answer": 1}, {"q": "'স্টকহোম কনভেনশন' (Stockholm Convention) প্রধানত কোন পরিবেশগত সমস্যার সমাধানের সাথে যুক্ত?", "options": ["বিশ্ব উষ্ণায়ন", "ওজোন স্তর ক্ষয়", "Persistent Organic Pollutants (POPs) বা স্থায়ী জৈব দূষক নিয়ন্ত্রণ", "পরিযায়ী পাখি সংরক্ষণ"], "answer": 2}, {"q": "ওজোন স্তর রক্ষার্থে স্বাক্ষরিত 'মন্ট্রিল প্রোটোকল' (Montreal Protocol) কবে থেকে কার্যকর হয়?", "options": ["1987 সালে স্বাক্ষরিত ও 1989 সালে কার্যকর", "1997 সালে স্বাক্ষরিত ও 2005 সালে কার্যকর", "1972 সালে স্বাক্ষরিত ও 1974 সালে কার্যকর", "1992 সালে স্বাক্ষরিত ও 1994 সালে কার্যকর"], "answer": 0}, {"q": "ধরিত্রী সম্মেলন বা আর্থ সামিট (1992)-এ গৃহীত 'এজেন্ডা 21' (Agenda 21)-এর মূল লক্ষ্য কী?", "options": ["ওজোন স্তর সংরক্ষণ", "একবিংশ শতাব্দীতে স্থিতিশীল উন্নয়ন (Sustainable Development) অর্জন", "21টি বিপন্ন প্রাণীকে রক্ষা করা", "প্লাস্টিক দূষণ বন্ধ করা"], "answer": 1}, {"q": "পরিযায়ী বন্যপ্রাণী প্রজাতি সংরক্ষণের জন্য স্বাক্ষরিত আন্তর্জাতিক চুক্তি কোনটি?", "options": ["CITES", "কিয়োটো প্রোটোকল", "বন কনভেনশন (Bonn Convention / CMS)", "ব্যাসেল কনভেনশন (Basel Convention)"], "answer": 2}, {"q": "CITES-এর 'Appendix I'-এ কোন ধরনের প্রাণীদের তালিকাভুক্ত করা হয়?", "options": ["যে প্রজাতিগুলি বিপন্ন এবং যাদের আন্তর্জাতিক বাণিজ্য সম্পূর্ণ নিষিদ্ধ", "যে প্রজাতিগুলি অতিমাত্রায় সুরক্ষিত নয়", "যে প্রজাতিগুলির বাণিজ্য অবাধে করা যায়", "শুধুমাত্র উদ্ভিদ প্রজাতিদের"], "answer": 0}, {"q": "'কার্বন ক্রেডিট' (Carbon Credit)-এর ধারণাটি আন্তর্জাতিকভাবে কোন চুক্তির মাধ্যমে সর্বপ্রথম আইনি স্বীকৃতি পায়?", "options": ["মন্ট্রিল প্রোটোকল", "কিয়োটো প্রোটোকল", "রামসর চুক্তি", "প্যারিস এগ্রিমেন্ট"], "answer": 1}, {"q": "'ব্যাসেল কনভেনশন' (Basel Convention) কীসের সাথে সম্পর্কিত?", "options": ["গ্রিনহাউস গ্যাস নির্গমন হ্রাস", "ক্ষতিকর বর্জ্যের আন্তঃসীমান্ত পরিবহন নিয়ন্ত্রণ (Control of Transboundary Movements of Hazardous Wastes)", "আন্তর্জাতিক নদীগুলোর জল বণ্টন", "সামুদ্রিক প্রবাল প্রাচীর সংরক্ষণ"], "answer": 1}, {"q": "পরিবেশ সুরক্ষা আইন (Environment Protection Act), যা ভোপাল গ্যাস দুর্ঘটনার পর প্রণীত হয়, তা কত সালে পাস হয়?", "options": ["1972 সালে", "1981 সালে", "1986 সালে", "2002 সালে"], "answer": 2}, {"q": "IUCN-এর 'Critically Endangered' (CR) ক্যাটাগরির অন্তর্ভুক্ত হওয়ার অন্যতম শর্ত কী?", "options": ["গত 10 বছরে জনসংখ্যা 50% হ্রাস পাওয়া", "গত 10 বছরে বা 3 প্রজন্মে জনসংখ্যা 90% বা তার বেশি হ্রাস পাওয়া", "10,000 এর বেশি পরিণত সদস্য থাকা", "কোনো তথ্য উপলব্ধ না থাকা"], "answer": 1}, {"q": "বায়োম্যাগনিফিকেশন (Biomagnification)-এর ফলে জলজ খাদ্যশৃঙ্খলের কোন স্তরে DDT-র ঘনত্ব সবচেয়ে বেশি পরিলক্ষিত হয়?", "options": ["উৎপাদক স্তরে (ফাইটোপ্ল্যাঙ্কটন)", "প্রাথমিক খাদক স্তরে (জুপ্ল্যাঙ্কটন)", "গৌণ খাদক স্তরে (ছোট মাছ)", "সর্বোচ্চ খাদক স্তরে (মাছরাঙা বা মাছখেকো পাখি)"], "answer": 3}, {"q": "আলোকরাসায়নিক ধোঁয়াশা (Photochemical smog)-এর একটি অন্যতম ক্ষতিকারক গৌণ দূষক (Secondary pollutant) কোনটি?", "options": ["কার্বন মনোক্সাইড (CO)", "সালফার ডাইঅক্সাইড (SO2)", "প্যান (PAN - Peroxyacetyl Nitrate)", "ক্লোরোফ্লুরোকার্বন (CFC)"], "answer": 2}, {"q": "জলে BOD (Biochemical Oxygen Demand)-এর মাত্রা বৃদ্ধি পেলে দ্রবীভূত অক্সিজেনের (DO - Dissolved Oxygen) কী পরিবর্তন ঘটে?", "options": ["বৃদ্ধি পায়", "একই থাকে", "মারাত্মকভাবে হ্রাস পায়", "প্রথমে বাড়ে, পরে কমে"], "answer": 2}, {"q": "কৃষি জমি থেকে ধুয়ে আসা অতিরিক্ত ফসফেট ও নাইট্রেট জলাশয়ে মিশলে শৈবালের অতিরিক্ত বৃদ্ধি ঘটে। এই ঘটনাকে কী বলে?", "options": ["বায়োম্যাগনিফিকেশন", "ইউট্রোফিকেশন (Eutrophication)", "অ্যালিলোপ্যাথি", "ডি-অক্সিজেনেশন"], "answer": 1}, {"q": "মানুষের শরীরে ক্যাডমিয়াম (Cd) দূষণের প্রভাবে কোন রোগ সৃষ্টি হয়?", "options": ["মিনামাটা (Minamata)", "ব্ল্যাক ফুট ডিজিজ (Black Foot Disease)", "ইতাই-ইতাই (Itai-Itai) বা আউচ-আউচ", "ব্লু বেবি সিনড্রোম (Blue Baby Syndrome)"], "answer": 2}, {"q": "তাপবিদ্যুৎ কেন্দ্র থেকে নির্গত অন্যতম প্রধান বায়ুদূষক কোনটি, যা কৃষি জমিকে অনুর্বর করে দেয়?", "options": ["ওজোন", "প্যান", "ফ্লাই অ্যাশ (Fly Ash)", "মিথেন"], "answer": 2}, {"q": "বিশ্ব উষ্ণায়নের (Global Warming) প্রভাবে মহাসাগরের জলের অম্লতা বৃদ্ধির ফলে প্রবাল প্রাচীরের সাদা হয়ে যাওয়াকে কী বলা হয়?", "options": ["কোরাল রিফ এক্সটিংশন", "কোরাল ব্লিচিং (Coral Bleaching)", "ওশান অ্যাসিডিফিকেশন", "অ্যালগাল ব্লুম"], "answer": 1}, {"q": "স্ট্র্যাটোস্ফিয়ারে ওজোন স্তর ধ্বংসের জন্য প্রধানত কোন পরমাণুটি অনুঘটক হিসেবে কাজ করে?", "options": ["সক্রিয় ক্লোরিন পরমাণু (Active Chlorine atom)", "কার্বন পরমাণু", "সোডিয়াম পরমাণু", "আর্গন পরমাণু"], "answer": 0}, {"q": "ই-বর্জ্য বা ইলেকট্রনিক বর্জ্য থেকে পরিবেশে মেশা একটি অত্যন্ত ক্ষতিকারক ভারী ধাতু কোনটি?", "options": ["সোডিয়াম", "পটাশিয়াম", "সীসা বা লেড (Lead)", "ম্যাগনেসিয়াম"], "answer": 2}, {"q": "ভূ-গর্ভস্থ পানীয় জলে কিসের আধিক্যের ফলে 'ব্লু-বেবি সিনড্রোম' (Blue Baby Syndrome / Methemoglobinemia) রোগ হয়?", "options": ["আর্সেনিক", "নাইট্রেট (Nitrate)", "ফ্লোরাইড", "পারদ"], "answer": 1}, {"q": "বাস্তুতন্ত্রে শক্তি প্রবাহের সময় একটি ট্রফিক স্তর (Trophic level) থেকে পরবর্তী ট্রফিক স্তরে যে পরিমাণ শক্তি হস্তান্তরিত হয়, তাকে কী বলে?", "options": ["নিট প্রাইমারি প্রোডাক্টিভিটি", "গ্রস প্রোডাক্টিভিটি", "ইকোলজিক্যাল এফিশিয়েন্সি (Ecological Efficiency) বা ট্রফিক লেভেল ট্রান্সফার এফিশিয়েন্সি", "অ্যাসিমিলেশন এফিশিয়েন্সি"], "answer": 2}, {"q": "দুটি প্রজাতির পারস্পরিক সম্পর্কের ক্ষেত্রে, যদি একটি প্রজাতি উপকৃত হয় এবং অপরটির কোনো ক্ষতি বা লাভ না হয় (+/0), তবে তাকে কী বলে?", "options": ["মিউচুয়ালিজম (Mutualism)", "কমেনসালিজম (Commensalism)", "প্যারাসাইটিজম (Parasitism)", "অ্যামেনসালিজম (Amensalism)"], "answer": 1}, {"q": "পপুলেশন ইকোলজিতে 'K' অক্ষরটি দ্বারা কী নির্দেশ করা হয়?", "options": ["ইনট্রিনসিক রেট অফ ন্যাচারাল ইনক্রিজ (r)", "ক্যারিং ক্যাপাসিটি বা বহন ক্ষমতা (Carrying Capacity)", "মৃত্যুহার (Mortality)", "পপুলেশন ডেনসিটি (N)"], "answer": 1}, {"q": "একটি উন্মুক্ত মহাসাগরীয় বাস্তুতন্ত্রে (Open ocean ecosystem) প্রাথমিক উৎপাদনশীলতা (Primary Productivity) মূলত কোন উপাদানের অভাবে সীমিত (Limited) থাকে?", "options": ["কার্বন ডাইঅক্সাইড", "সূর্যালোক (উপরের স্তরে)", "পুষ্টি উপাদান যেমন নাইট্রোজেন ও ফসফরাস (Nutrients)", "অক্সিজেন"], "answer": 2}, {"q": "বাস্তুতন্ত্রে যে অঞ্চলে প্রান্তিক প্রভাব বা 'এজ এফেক্ট' (Edge Effect) দেখা যায়, তার বৈশিষ্ট্য কী?", "options": ["সেখানে জীববৈচিত্র্য সবচেয়ে কম থাকে", "সেখানে কেবল একটি প্রজাতির আধিপত্য থাকে", "সেখানে জীববৈচিত্র্য ও ঘনত্ব তুলনামূলকভাবে বেশি হয়", "সেখানে কোনো খাদক থাকে না"], "answer": 2}, {"q": "কার্বন ডাইঅক্সাইডের (CO2) গ্লোবাল ওয়ার্মিং পটেনশিয়াল (GWP)-কে যদি 1 ধরা হয়, তবে মিথেন (CH4)-এর GWP আনুমানিক কত?", "options": ["5 গুণ", "25-28 গুণ", "300 গুণ", "1000 গুণ"], "answer": 1}, {"q": "পরিবেশগত প্রভাব মূল্যায়ন বা EIA (Environmental Impact Assessment) প্রক্রিয়ার প্রথম ধাপ কোনটি?", "options": ["স্কোপিং (Scoping)", "স্ক্রিনিং (Screening)", "পাবলিক হেয়ারিং (Public Hearing)", "বেসলাইন ডেটা কালেকশন"], "answer": 1}, {"q": "রাষ্ট্রসংঘ কর্তৃক গৃহীত 'টেকসই উন্নয়ন লক্ষ্যমাত্রা' বা Sustainable Development Goals (SDGs)-এর মোট লক্ষ্যের (Goals) সংখ্যা কত?", "options": ["8টি (MDG-র মতো)", "21টি", "17টি", "25টি"], "answer": 2}, {"q": "বায়ুমণ্ডলে এরোসল (Aerosol) কণা বৃদ্ধির সম্ভাব্য প্রধান নেতিবাচক প্রভাব কী?", "options": ["গ্লোবাল ওয়ার্মিং চরমভাবে বৃদ্ধি করা", "গ্লোবাল ডিমিং (Global dimming) বা সূর্যরশ্মি পৃথিবীতে পৌঁছাতে বাধা সৃষ্টি করা", "ওজোন স্তর দ্রুত তৈরি করা", "সমুদ্রের জলস্তর বৃদ্ধি করা"], "answer": 1}, {"q": "কোন পরিবেশগত আন্দোলনে নারীদের ভূমিকা সবচেয়ে বেশি ছিল, যা উত্তরাখণ্ডের গাড়োয়াল হিমালয়ে গাছ কাটার বিরুদ্ধে হয়েছিল?", "options": ["সাইলেন্ট ভ্যালি আন্দোলন", "আপ্পিকো আন্দোলন", "চিপকো আন্দোলন", "নর্মদা বাঁচাও আন্দোলন"], "answer": 2}];
+let current=0, score=0, answered=false;
+const key='sca_environment_quiz_plays';
+let plays=Number(localStorage.getItem(key)||0);
+document.getElementById('count').textContent='Quiz Played: '+plays+' times';
+
+const letters=['A','B','C','D'];
+function startQuiz(){
+  current=0; score=0; answered=false;
+  plays++; localStorage.setItem(key,plays);
+  document.getElementById('count').textContent='Quiz Played: '+plays+' times';
+  document.getElementById('quizCard').style.display='block';
+  document.getElementById('result').style.display='none';
+  document.getElementById('liveScore').textContent='Score: 0';
+  showQuestion();
+}
+function showQuestion(){
+  answered=false;
+  const item=questions[current];
+  document.getElementById('qno').textContent='Question '+(current+1);
+  document.getElementById('question').textContent=item.q;
+  document.getElementById('progress').style.width=((current)/questions.length*100)+'%';
+  document.getElementById('feedback').textContent='';
+  const box=document.getElementById('options'); box.innerHTML='';
+  item.options.forEach((opt,i)=>{
+    const b=document.createElement('button');
+    b.className='option';
+    b.innerHTML='<b>'+letters[i]+'.</b> '+opt;
+    b.onclick=()=>selectAnswer(i,b);
+    box.appendChild(b);
+  });
+  document.getElementById('next').style.display='none';
+}
+function selectAnswer(index,clicked){
+  if(answered) return;
+  answered=true;
+  const item=questions[current];
+  const all=document.querySelectorAll('.option');
+  all.forEach((b,i)=>{b.classList.add('disabled');if(i===item.answer)b.classList.add('correct')});
+  if(index===item.answer){
+    score++; clicked.classList.add('correct');
+    document.getElementById('feedback').textContent='✓ সঠিক উত্তর! +1';
+  }else{
+    clicked.classList.add('wrong');
+    document.getElementById('feedback').textContent='✗ ভুল উত্তর! সঠিক উত্তর: '+letters[item.answer]+'.';
+  }
+  document.getElementById('liveScore').textContent='Score: '+score;
+  document.getElementById('next').style.display='block';
+}
+document.getElementById('next').onclick=()=>{
+  current++;
+  if(current<questions.length) showQuestion(); else finish();
+};
+function finish(){
+  document.getElementById('quizCard').style.display='none';
+  document.getElementById('result').style.display='block';
+  document.getElementById('finalScore').textContent=score+' / '+questions.length;
+  const pct=Math.round(score/questions.length*100);
+  document.getElementById('resultText').textContent='Your Score: '+pct+'%';
+  document.getElementById('attemptText').textContent='এই কুইজটি আপনি মোট '+plays+' বার খেলেছেন।';
+}
+startQuiz();
+</script>
+</body>
+</html>

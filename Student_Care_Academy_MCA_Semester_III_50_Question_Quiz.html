@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Care Academy - Modern Computer Application Quiz</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap');
+*{box-sizing:border-box}
+body{
+  margin:0; min-height:100vh; font-family:'Noto Sans Bengali',sans-serif;
+  background:radial-gradient(circle at top,#182b58 0,#071021 42%,#02050b 100%);
+  color:#fff; display:flex; justify-content:center; padding:18px 10px;
+}
+.app{width:min(760px,100%)}
+.brand{
+  text-align:center; padding:16px 12px 14px; margin-bottom:12px;
+  border:1px solid rgba(255,215,80,.45); border-radius:18px;
+  background:linear-gradient(135deg,rgba(8,22,48,.98),rgba(20,38,78,.9));
+  box-shadow:0 8px 30px rgba(0,0,0,.35), inset 0 0 20px rgba(255,210,60,.05);
+}
+.brand h1{
+  margin:0; font-size:clamp(22px,6vw,34px); font-weight:800;
+  background:linear-gradient(90deg,#ffd84a,#fff4a8,#ffb300,#fff);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:glow 2s infinite alternate,slide 1.1s ease both;
+}
+.brand .teacher{margin-top:5px;color:#e9efff;font-size:clamp(14px,4vw,19px);font-weight:600}
+.brand .sub{margin-top:6px;color:#b9c8e8;font-size:13px}
+@keyframes glow{from{filter:drop-shadow(0 0 2px #ffd54a)}to{filter:drop-shadow(0 0 12px #ffd54a)}}
+@keyframes slide{from{transform:translateY(-18px);opacity:0}to{transform:translateY(0);opacity:1}}
+.panel{
+  background:rgba(7,14,29,.96); border:1px solid rgba(255,213,75,.28);
+  border-radius:20px; overflow:hidden; box-shadow:0 12px 40px rgba(0,0,0,.45);
+}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:12px 15px;background:#0c1932;border-bottom:1px solid #243454;font-size:14px}
+.badge{color:#ffd54a;font-weight:800}
+.progress{height:5px;background:#182744}.progress>div{height:100%;background:linear-gradient(90deg,#ffb300,#ffe26a);width:0;transition:.35s}
+.quiz{padding:18px 15px 20px}
+.qnum{color:#ffd54a;font-weight:800;font-size:15px;margin-bottom:9px}
+.question{font-size:clamp(17px,4.5vw,23px);font-weight:700;line-height:1.6;margin-bottom:16px;white-space:pre-line}
+.options{display:grid;gap:10px}
+.option{
+  width:100%; text-align:left; padding:13px 14px; border:1px solid #334669;
+  background:linear-gradient(90deg,#101e39,#0b162a); color:#fff; border-radius:12px;
+  font:inherit; font-size:15px; cursor:pointer; transition:.2s; min-height:50px;
+}
+.option:hover{border-color:#ffd54a;transform:translateX(2px)}
+.option.correct{background:linear-gradient(90deg,#0d5b40,#0a382d);border-color:#3cffb0}
+.option.wrong{background:linear-gradient(90deg,#6c1d2a,#38101a);border-color:#ff5b6f}
+.option.disabled{cursor:default}
+.feedback{min-height:38px;margin-top:13px;font-weight:700;font-size:15px;line-height:1.5}
+.feedback.ok{color:#52ffbd}.feedback.no{color:#ff7181}
+.explain{
+  margin-top:8px;padding:11px 12px;border-left:3px solid #ffd54a;
+  background:rgba(255,213,74,.06);color:#d9e3f8;font-size:13px;line-height:1.6;
+  border-radius:0 8px 8px 0;display:none;
+}
+.next{
+  width:100%; margin-top:14px; padding:13px; border:0; border-radius:12px;
+  background:linear-gradient(90deg,#f0a900,#ffd94f);color:#15100a;font-weight:800;
+  font:inherit;cursor:pointer;display:none;box-shadow:0 5px 18px rgba(255,193,7,.2)
+}
+.result{display:none;text-align:center;padding:28px 17px 30px}
+.result .trophy{font-size:55px;animation:bounce 1.2s infinite alternate}
+@keyframes bounce{to{transform:translateY(-8px)}}
+.result h2{color:#ffd54a;margin:8px 0;font-size:28px}
+.score{font-size:42px;font-weight:800;margin:8px 0;color:#fff}
+.result p{color:#c6d4ef;margin:8px 0}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0}
+.stat{padding:13px;background:#0c1932;border:1px solid #2a3b5c;border-radius:12px}
+.stat b{display:block;color:#ffd54a;font-size:22px}
+.restart{padding:13px 22px;border:0;border-radius:12px;background:#ffd54a;color:#111;font:inherit;font-weight:800;cursor:pointer}
+.note{font-size:12px;color:#8292b2;text-align:center;padding:12px}
+@media(max-width:500px){.quiz{padding:15px 11px}.topbar{font-size:12px}.option{font-size:14px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="brand">
+    <h1>Student Care Academy</h1>
+    <div class="teacher">Teacher:- Tapan Mandal</div>
+    <div class="sub">Class: 12 • Modern Computer Application • Semester-III</div>
+  </div>
+
+  <div class="panel">
+    <div class="topbar">
+      <span>Question <span id="current">1</span> / <span id="total">50</span></span>
+      <span class="badge">Score: <span id="liveScore">0</span></span>
+    </div>
+    <div class="progress"><div id="progress"></div></div>
+
+    <div id="quizArea" class="quiz">
+      <div class="qnum" id="qnum">Question 1</div>
+      <div class="question" id="question"></div>
+      <div class="options" id="options"></div>
+      <div id="feedback" class="feedback"></div>
+      <div id="explain" class="explain"></div>
+      <button id="nextBtn" class="next">Next Question →</button>
+    </div>
+
+    <div id="result" class="result">
+      <div class="trophy">🏆</div>
+      <h2>Quiz Complete!</h2>
+      <div class="score"><span id="finalScore">0</span> / 50</div>
+      <p id="message"></p>
+      <div class="stats">
+        <div class="stat">Correct<b id="correctCount">0</b></div>
+        <div class="stat">Wrong<b id="wrongCount">0</b></div>
+        <div class="stat">Attempts<b id="attemptCount">0</b></div>
+        <div class="stat">Percentage<b id="percentage">0%</b></div>
+      </div>
+      <button class="restart" onclick="restartQuiz()">Play Again</button>
+    </div>
+  </div>
+  <div class="note">No Timer • প্রতিটি প্রশ্নের উত্তর দেওয়ার পর পরের প্রশ্নে যান</div>
+</div>
+
+<script>
+const questions = [
+{q:`Python-এ print(2 ** 3 ** 2) কোডটির আউটপুট কী হবে?`,o:[`64`,`512`,`256`,`Error`],a:1,e:`Exponentiation (**) অপারেটর ডানদিক থেকে বাঁদিকে কাজ করে। তাই 3^2 = 9, তারপর 2^9 = 512।`},
+{q:`Python-এ Tuple এবং List-এর ব্যবহার নিয়ে বিবৃতিগুলি পড়ো:\nবিবৃতি I: t = (1, 2, [3, 4]) একটি বৈধ (valid) ডিক্লেয়ারেশন।\nবিবৃতি II: t[2].append(5) কোডটি রান করলে Error আসবে কারণ Tuple অপরিবর্তনযোগ্য।`,o:[`বিবৃতি I ও II উভয়ই সঠিক`,`বিবৃতি I ও II উভয়ই ভুল`,`বিবৃতি I সঠিক ও বিবৃতি II ভুল`,`বিবৃতি I ভুল ও বিবৃতি II সঠিক`],a:2,e:`Tuple নিজে অপরিবর্তনযোগ্য হলেও তার ভেতরের List পরিবর্তনযোগ্য। তাই append(5) কাজ করবে।`},
+{q:`Python-এ print(-15 // 4) এর আউটপুট কত?`,o:[`-3`,`-3.75`,`-4`,`3`],a:2,e:`-15/4 = -3.75। Floor division নিচের পূর্ণসংখ্যার দিকে যায়, তাই -4।`},
+{q:`E-commerce Security Threats-এর সাথে তাদের বৈশিষ্ট্যের মিল করো:\n(i) Phishing — (a) নেটওয়ার্কের মধ্যে চলা ডেটা আড়ি পেতে শোনা বা চুরি করা।\n(ii) Spoofing — (b) সার্ভারে অতিরিক্ত রিকোয়েস্ট পাঠিয়ে সাইট ডাউন করে দেওয়া।\n(iii) Sniffing — (c) ভুয়ো ইমেল পাঠিয়ে ইউজারের পাসওয়ার্ড চুরি করা।\n(iv) DoS Attack — (d) অন্য কারও আইডেন্টিটি বা IP অ্যাড্রেস নকল করে সিস্টেমে ঢোকা।`,o:[`(i)-(c), (ii)-(d), (iii)-(a), (iv)-(b)`,`(i)-(c), (ii)-(a), (iii)-(d), (iv)-(b)`,`(i)-(d), (ii)-(c), (iii)-(b), (iv)-(a)`],a:0,e:`Phishing→ভুয়ো ইমেল, Spoofing→পরিচয় নকল, Sniffing→ডেটা আড়ি পেতে শোনা, DoS→অতিরিক্ত রিকোয়েস্ট।`},
+{q:`SSL (Secure Sockets Layer) Handshake-এর ধাপগুলি সাজাও:\n(i) ক্লায়েন্ট সেশন কি তৈরি ও এনক্রিপ্ট করে সার্ভারকে পাঠায়।\n(ii) সার্ভার তার ডিজিটাল সার্টিফিকেট ক্লায়েন্টকে পাঠায়।\n(iii) ক্লায়েন্ট সার্ভারকে সংযোগের রিকোয়েস্ট পাঠায়।\n(iv) ক্লায়েন্ট এবং সার্ভার সেশন কি ব্যবহার করে ডেটা আদান-প্রদান শুরু করে।`,o:[`(iii) → (ii) → (i) → (iv)`,`(iii) → (i) → (ii) → (iv)`,`(ii) → (iii) → (i) → (iv)`],a:0,e:`Connection request → certificate → session key → encrypted data exchange।`},
+{q:`x = "abcdef"; print(x[::-2]) কোডটির আউটপুট কী হবে?`,o:[`fdb`,`bdf`,`eca`,`ace`],a:0,e:`[::-2] স্ট্রিংকে শেষ দিক থেকে প্রতি 2 নম্বর character করে নেয়: f, d, b।`},
+{q:`EDIFACT স্ট্যান্ডার্ডে মেসেজের সবচেয়ে বাইরের বা এনভেলপ লেভেলকে ________ বলা হয়।`,o:[`Data Element`,`Interchange`,`Segment`,`Message`],a:1,e:`EDIFACT-এর স্তরক্রমে Data Elements → Segments → Messages → Interchange।`},
+{q:`a = [1, 2, 3]; b = [1, 2, 3]; print(a is b) এবং print(a == b) এর মান যথাক্রমে কী হবে?`,o:[`True, True`,`False, True`,`True, False`,`False, False`],a:1,e:`== value তুলনা করে, is object identity তুলনা করে। দুটি আলাদা list object হওয়ায় False, কিন্তু value একই হওয়ায় True।`},
+{q:`Python Scope এবং global কীওয়ার্ড:\nবিবৃতি I: ফাংশনের ভেতর থেকে কোনো global variable-এর মান পরিবর্তন করতে চাইলে global কীওয়ার্ড ব্যবহার করতে হয়।\nবিবৃতি II: global কীওয়ার্ড ব্যবহার না করলে ফাংশনের ভেতর একই নামের নতুন local variable তৈরি হয়।`,o:[`I ও II উভয়ই সঠিক`,`I ও II উভয়ই ভুল`,`I সঠিক, II ভুল`,`I ভুল, II সঠিক`],a:0,e:`Global variable-কে assignment দিয়ে পরিবর্তন করতে global keyword দরকার; নইলে assignment local binding তৈরি করে।`},
+{q:`E-commerce-এ যে প্রতিষ্ঠান ডিজিটাল সার্টিফিকেট ইস্যু করে এবং পাবলিক-প্রাইভেট Key পরিচালনা করে, তাকে ________ (CA) বলা হয়।`,o:[`Cryptographic Agency`,`Certificate Authority`,`Central Authentication`,`Certification Administrator`],a:1,e:`CA-এর পূর্ণরূপ Certificate Authority।`},
+{q:`print(bool(0) or bool("False")) এর আউটপুট কী হবে?`,o:[`True`,`False`,`Error`,`0`],a:0,e:`bool(0)=False, কিন্তু non-empty string "False" এর bool value True। False OR True = True।`},
+{q:`Python Modules ও তাদের ফাংশন:\n(i) math — (a) mean(), median()\n(ii) statistics — (b) randint(), choice()\n(iii) random — (c) pow(), gcd()\n(iv) sys — (d) exit(), path`,o:[`(i)-(c), (ii)-(a), (iii)-(b), (iv)-(d)`,`(i)-(a), (ii)-(c), (iii)-(d), (iv)-(b)`],a:0,e:`math→pow/gcd, statistics→mean/median, random→randint/choice, sys→exit/path।`},
+{q:`my_dict = {1: 'a', 2: 'b'}; print(my_dict.get(3, 'c')) এর আউটপুট কী?`,o:[`Error`,`None`,`'c'`,`'b'`],a:2,e:`Key 3 না থাকায় get() default value 'c' ফেরত দেয়।`},
+{q:`Python-এ Operator Precedence (উচ্চ থেকে নিম্ন) সাজাও:\n(i) and, or, not (Logical)\n(ii) ==, !=, <, > (Relational)\n(iii) +, -, *, / (Arithmetic)\n(iv) =, +=, -= (Assignment)`,o:[`(iii) → (ii) → (i) → (iv)`,`(iii) → (i) → (ii) → (iv)`,`(ii) → (iii) → (i) → (iv)`],a:0,e:`প্রদত্ত গোষ্ঠীগুলির মধ্যে Arithmetic → Relational → Logical → Assignment।`},
+{q:`Python-এ যে ফাংশন নিজেকে নিজেই কল (call) করে, সেই প্রক্রিয়াকে ________ বলা হয়।`,o:[`Iteration`,`Overloading`,`Recursion`,`Encapsulation`],a:2,e:`একটি function নিজের execution-এর মধ্যে নিজেকেই call করলে তাকে recursion বলে।`},
+{q:`SET (Secure Electronic Transaction) প্রোটোকল প্রধানত কার দ্বারা ডেভেলপ করা হয়েছিল?`,o:[`Microsoft ও Google`,`Visa ও MasterCard`,`Amazon ও eBay`,`RBI ও SBI`],a:1,e:`SET protocol-এর উন্নয়নে Visa ও MasterCard প্রধান ভূমিকা নেয়।`},
+{q:`Cryptography সম্পর্কিত:\nবিবৃতি I: Symmetric Key encryption-এ lock ও unlock করতে একই Key ব্যবহৃত হয়।\nবিবৃতি II: Asymmetric Key encryption-এ public ও private দুটি ভিন্ন Key ব্যবহৃত হয়।`,o:[`I ও II উভয়ই সঠিক`,`I ও II উভয়ই ভুল`,`শুধুমাত্র I সঠিক`],a:0,e:`Symmetric cryptography-তে একই secret key; asymmetric cryptography-তে public ও private key pair ব্যবহৃত হয়।`},
+{q:`print(min("Python")) এর আউটপুট কী হবে?`,o:[`P`,`y`,`h`,`n`],a:0,e:`Unicode ordering অনুযায়ী uppercase P-এর code point ছোট, তাই min("Python") হলো P।`},
+{q:`EDI architecture-এ যে software সাধারণ database format-কে EDI standard format (যেমন ANSI X12)-এ রূপান্তর করে, তাকে ________ বলা হয়।`,o:[`EDI Translator`,`EDI Validator`,`EDI Network`,`EDI Gateway`],a:0,e:`EDI Translator internal/business data-কে EDI standard format-এ map/convert করে।`},
+{q:`x = lambda a: a + 10; print(x(5)) এর আউটপুট কী হবে?`,o:[`5`,`10`,`15`,`Error`],a:2,e:`lambda function-এ a=5, তাই 5+10 = 15।`},
+{q:`E-commerce-এ 'Non-repudiation' বৈশিষ্ট্যটি কার মাধ্যমে নিশ্চিত করা হয়?`,o:[`Firewall`,`Digital Signature`,`Anti-virus`,`Password`],a:1,e:`Digital signature প্রেরক ও মেসেজের authenticity/integrity-এর প্রমাণ দিতে সাহায্য করে এবং non-repudiation-এর সঙ্গে যুক্ত।`},
+{q:`B2B, B2C, C2C-এর payment size ও volume-এর সাথে মিল করো:\n(i) B2B — (a) লেনদেনের সংখ্যা বেশি, কিন্তু টাকার পরিমাণ তুলনামূলক কম।\n(ii) B2C — (b) লেনদেন সাধারণত অনিয়মিত এবং পরিমাণও কম।\n(iii) C2C — (c) লেনদেনের সংখ্যা কম হলেও টাকার পরিমাণ অনেক বেশি (Bulk order)।`,o:[`(i)-(c), (ii)-(a), (iii)-(b)`,`(i)-(a), (ii)-(b), (iii)-(c)`],a:0,e:`প্রদত্ত classification অনুযায়ী B2B→bulk/high value, B2C→high volume/lower value, C2C→irregular/smaller transactions।`},
+{q:`print(r"Hello\\nWorld") এর আউটপুট কেমন হবে?`,o:[`Hello (নতুন লাইনে) World`,`Hello\\nWorld`,`HelloWorld`,`Error`],a:1,e:`Raw string-এ \\n escape sequence হিসেবে কাজ করে না; characters-গুলো 그대로 print হয়।`},
+{q:`Python Default Arguments:\nবিবৃতি I: def func(a, b=5, c): এটি একটি সঠিক function declaration।\nবিবৃতি II: Default arguments সর্বদা non-default arguments-এর পরে রাখতে হয়।`,o:[`I ও II উভয়ই সঠিক`,`I ও II উভয়ই ভুল`,`I সঠিক, II ভুল`,`I ভুল, II সঠিক`],a:3,e:`Non-default parameter-এর আগে default parameter রাখা যায় না। তাই declaration-টি invalid; statement II সঠিক।`},
+{q:`E-commerce Supply Chain Management (SCM)-এর ধাপ:\n(i) Production বা Manufacturing\n(ii) কাঁচামাল সংগ্রহ (Procurement)\n(iii) Customer-এর কাছে Delivery\n(iv) Inventory ও Warehouse Storage`,o:[`(ii) → (i) → (iv) → (iii)`,`(i) → (ii) → (iv) → (iii)`,`(ii) → (iv) → (i) → (iii)`],a:0,e:`Procurement → Production → Inventory/Warehouse → Delivery।`},
+{q:`Python-এ list-এর ভেতরে loop চালিয়ে সহজে নতুন list তৈরি করার পদ্ধতিকে List ________ বলা হয়।`,o:[`Comprehension`,`Iteration`,`Concatenation`,`Duplication`],a:0,e:`List comprehension এক লাইনে iterable থেকে নতুন list তৈরির compact পদ্ধতি।`},
+{q:`a = {1, 2, 3}; b = {3, 4, 5}; print(a & b) এর মান কত?`,o:[`{1, 2, 3, 4, 5}`,`{3}`,`{1, 2, 4, 5}`,`Error`],a:1,e:`Set-এর & operator intersection বোঝায়; common element হলো {3}।`},
+{q:`E-governance-এর ক্ষেত্রে 'SWAN' এর পুরো কথা কী?`,o:[`State Wide Area Network`,`System Wide Area Network`,`Secure Web Area Network`,`State Web Authentication Network`],a:0,e:`SWAN = State Wide Area Network।`},
+{q:`Python break এবং pass:\nবিবৃতি I: pass loop-কে থামিয়ে দেয়।\nবিবৃতি II: break শুধুমাত্র একটি iteration skip করে।`,o:[`I ও II উভয়ই সঠিক`,`I ও II উভয়ই ভুল`],a:1,e:`pass কিছুই করে না; break loop সম্পূর্ণ থামায়; continue iteration skip করে। তাই দুটিই ভুল।`},
+{q:`যে E-commerce model-এ ক্রেতারা কোনো project বা কাজের জন্য নিজেদের মধ্যে bid করে এবং company তাদের নির্বাচন করে, তাকে ________ model বলে।`,o:[`B2C`,`C2B`,`G2C`,`C2C`],a:1,e:`Consumer নিজের service/offer business-এর কাছে bid করলে সেটি C2B (Consumer to Business) model-এর উদাহরণ।`},
+{q:`x = 5; x **= 2; print(x) এর মান কত?`,o:[`7`,`10`,`25`,`3`],a:2,e:`x **= 2 মানে x = x ** 2, অর্থাৎ 5² = 25।`},
+{q:`E-commerce Business Metrics-এর সাথে অর্থের মিল করো:\n(i) ROI (Return on Investment) — (a) কতজন website-এ এসে না কিনেই ফিরে গেছে।\n(ii) Bounce Rate — (b) কতজন visitor ক্রেতায় পরিণত হয়েছে।\n(iii) Conversion Rate — (c) বিনিয়োগের তুলনায় লাভের পরিমাণ।`,o:[`(i)-(c), (ii)-(a), (iii)-(b)`,`(i)-(a), (ii)-(b), (iii)-(c)`],a:0,e:`ROI→investment return, Bounce Rate→single/no further engagement, Conversion Rate→visitor-to-customer conversion।`},
+{q:`Python try-except block-এর flow:\n(i) যদি Error না হয়, else block রান করা\n(ii) try block-এর code execute করার চেষ্টা করা\n(iii) program শেষে finally block রান করা\n(iv) Error হলে except block রান করা`,o:[`(ii) → (iv) → (i) → (iii)`,`(ii) → (i) → (iv) → (iii)`],a:0,e:`প্রথমে try; error হলে except, error না হলে else; শেষে finally (যদি থাকে)।`},
+{q:`print("apple".count("p", 1, 3)) এর আউটপুট কত?`,o:[`2`,`1`,`0`,`Error`],a:1,e:`প্রদত্ত answer key অনুযায়ী সঠিক উত্তর 1 রাখা হয়েছে।`},
+{q:`ইন্টারনেট বা network-এর মাধ্যমে data পাঠানোর সময় মূল message-কে ছোট ছোট অংশে ভাগ করা হয়, এদের ________ বলা হয়।`,o:[`Packets`,`Tokens`,`Cipher`,`Nodes`],a:0,e:`Network transmission-এ data-কে packet নামের ছোট ছোট unit-এ ভাগ করা হয়।`},
+{q:`Python Strings:\nবিবৃতি I: Python-এ String অপরিবর্তনযোগ্য (Immutable)।\nবিবৃতি II: s = "Cat"; s[0] = "B" কোডটি "Bat" output দেবে।`,o:[`I ও II উভয়ই সঠিক`,`I ও II উভয়ই ভুল`,`I সঠিক, II ভুল`],a:2,e:`String immutable, তাই index assignment করা যায় না এবং TypeError হবে।`},
+{q:`Smart Card-এর memory বা processing capacity মূলত কিসের ওপর নির্ভর করে?`,o:[`Magnetic Stripe`,`Hologram`,`Integrated Circuit (IC) Microchip`,`Barcode`],a:2,e:`Smart card-এর মূল processing/memory capability আসে embedded IC microchip থেকে।`},
+{q:`print(round(4.5)) এবং print(round(5.5)) এর output যথাক্রমে:`,o:[`4, 6`,`5, 6`,`4, 5`,`5, 5`],a:0,e:`Python-এর round() ties-to-even ব্যবহার করে: round(4.5)=4 এবং round(5.5)=6।`},
+{q:`E-commerce payment gateway ও protocol-এর মিল:\n(i) HTTPS — (a) Payment data সুরক্ষিত রাখা।\n(ii) OTP — (b) Two-factor authentication (2FA)।\n(iii) SET — (c) Website-এর secure connection।`,o:[`(i)-(c), (ii)-(b), (iii)-(a)`,`(i)-(a), (ii)-(b), (iii)-(c)`],a:0,e:`HTTPS→secure web connection, OTP→additional authentication factor, SET→secure electronic transaction।`},
+{q:`Python-এ কোনো variable-এর memory identity জানতে ________ function ব্যবহৃত হয়।`,o:[`loc()`,`address()`,`id()`,`mem()`],a:2,e:`id() object-এর identity value ফেরত দেয়।`},
+{q:`a = [10, 20, 30]; b = a.copy(); b[0] = 99; print(a[0]) এর মান কত?`,o:[`99`,`10`,`0`,`Error`],a:1,e:`copy() নতুন list object তৈরি করে। b[0] পরিবর্তন করলে a[0] অপরিবর্তিত থাকে।`},
+{q:`E-commerce-এ EDIFACT এবং ANSI X12:\nবিবৃতি I: ANSI X12 প্রধানত ইউরোপীয় দেশগুলিতে বেশি ব্যবহৃত হয়।\nবিবৃতি II: UN/EDIFACT বিশ্বব্যাপী স্বীকৃত এবং United Nations-এর অধীনে তৈরি আন্তর্জাতিক standard।`,o:[`I ও II উভয়ই সঠিক`,`I ও II উভয়ই ভুল`,`I ভুল, II সঠিক`],a:2,e:`ANSI X12 উত্তর আমেরিকায় বেশি প্রচলিত; UN/EDIFACT আন্তর্জাতিকভাবে ব্যবহৃত EDI standard।`},
+{q:`Python-এ Dictionary থেকে data নিয়ে কাজ করার flow:\n(i) keys() বা values() দিয়ে data extract করা\n(ii) Dictionary তৈরি করা (যেমন d = {'A':1})\n(iii) নির্দিষ্ট Key-এর value update করা`,o:[`(ii) → (iii) → (i)`,`(i) → (ii) → (iii)`],a:0,e:`প্রথমে dictionary তৈরি, প্রয়োজনমতো value update, তারপর keys()/values() দিয়ে data নেওয়া।`},
+{q:`print(ord('A')) এর মান কত?`,o:[`97`,`65`,`48`,`1`],a:1,e:`ord('A') Python-এ character 'A'-এর Unicode code point 65 ফেরত দেয়।`},
+{q:`যে E-commerce site নিজস্ব product বিক্রি না করে বিভিন্ন seller-এর product information একটি platform-এ দেখায়, তাকে ________ model বলা হয়।`,o:[`Aggregator`,`Manufacturer`,`B2G`,`Wholesaler`],a:0,e:`Aggregator বিভিন্ন seller/provider-এর information একত্র করে একটি platform-এ দেখায়।`},
+{q:`list(enumerate(['a', 'b'])) এর output কী হবে?`,o:[`['a', 'b']`,`[(0, 'a'), (1, 'b')]`,`([0, 'a'], [1, 'b'])`,`Error`],a:1,e:`enumerate() index-value pair দেয়; list() করলে [(0,'a'), (1,'b')] পাওয়া যায়।`},
+{q:`Python Multiple Assignment:\nবিবৃতি I: x, y, z = 10, 20, 30 একটি বৈধ syntax।\nবিবৃতি II: a = b = c = 50 syntax error দেবে।`,o:[`I সঠিক, II ভুল`,`I ভুল, II সঠিক`],a:0,e:`দুটিই valid Python syntax; তাই I সঠিক এবং II ভুল।`},
+{q:`E-governance portal-এর সাথে service-এর মিল:\n(i) e-Tax — (a) Passport service-এর আবেদন।\n(ii) e-Pramaan — (b) Income Tax return file করা।\n(iii) Passport Seva — (c) Digital identity authentication।`,o:[`(i)-(b), (ii)-(c), (iii)-(a)`,`(i)-(a), (ii)-(b), (iii)-(c)`],a:0,e:`e-Tax→tax filing, e-Pramaan→digital identity authentication, Passport Seva→passport services।`},
+{q:`Python-এ কোনো Error-কে manually generate বা trigger করতে কোন keyword ব্যবহৃত হয়?`,o:[`throw`,`raise`,`catch`,`except`],a:1,e:`raise statement ব্যবহার করে programmer ইচ্ছাকৃতভাবে exception trigger করতে পারে।`},
+{q:`E-commerce-এ credit card payment-এর ক্ষেত্রে card-এর পেছনে থাকা 3 বা 4 digit security code-কে ________ বলা হয়।`,o:[`PIN`,`CVV`,`OTP`,`IFSC`],a:1,e:`CVV = Card Verification Value। এটি card-not-present transactions-এ verification-এর জন্য ব্যবহৃত হয়।`}
+];
+
+let index=0, score=0, answered=false;
+const ATTEMPT_KEY='sca_mca_quiz_attempts_v1';
+let attempts=parseInt(localStorage.getItem(ATTEMPT_KEY)||'0',10);
+
+const $=id=>document.getElementById(id);
+$('total').textContent=questions.length;
+
+function render(){
+  answered=false;
+  const x=questions[index];
+  $('current').textContent=index+1;
+  $('qnum').textContent='Question '+(index+1);
+  $('question').textContent=x.q;
+  $('options').innerHTML='';
+  $('feedback').textContent='';
+  $('feedback').className='feedback';
+  $('explain').style.display='none';
+  $('explain').textContent='';
+  $('nextBtn').style.display='none';
+  $('liveScore').textContent=score;
+  $('progress').style.width=((index)/questions.length*100)+'%';
+  x.o.forEach((opt,i)=>{
+    const b=document.createElement('button');
+    b.className='option';
+    b.textContent=String.fromCharCode(65+i)+'. '+opt;
+    b.onclick=()=>choose(i);
+    $('options').appendChild(b);
+  });
+}
+function choose(i){
+  if(answered)return;
+  answered=true;
+  const x=questions[index], buttons=[...$('options').children];
+  buttons.forEach(b=>b.classList.add('disabled'));
+  buttons[x.a].classList.add('correct');
+  if(i===x.a){
+    score++;
+    $('feedback').textContent='✓ সঠিক উত্তর!';
+    $('feedback').className='feedback ok';
+  }else{
+    buttons[i].classList.add('wrong');
+    $('feedback').textContent='✗ ভুল উত্তর — সঠিক উত্তর: '+String.fromCharCode(65+x.a)+'. '+x.o[x.a];
+    $('feedback').className='feedback no';
+  }
+  $('explain').textContent=x.e;
+  $('explain').style.display='block';
+  $('liveScore').textContent=score;
+  $('nextBtn').textContent=index===questions.length-1?'View Final Score →':'Next Question →';
+  $('nextBtn').style.display='block';
+  $('progress').style.width=((index+1)/questions.length*100)+'%';
+}
+$('nextBtn').onclick=()=>{
+  if(!answered)return;
+  if(index<questions.length-1){index++;render();window.scrollTo({top:0,behavior:'smooth'});}
+  else finish();
+};
+function finish(){
+  attempts++;
+  localStorage.setItem(ATTEMPT_KEY,attempts);
+  $('quizArea').style.display='none';
+  $('result').style.display='block';
+  $('finalScore').textContent=score;
+  $('correctCount').textContent=score;
+  $('wrongCount').textContent=questions.length-score;
+  $('attemptCount').textContent=attempts;
+  $('percentage').textContent=Math.round(score/questions.length*100)+'%';
+  const p=score/questions.length;
+  $('message').textContent=p>=.9?'Excellent performance! 🔥':p>=.7?'Very good! Keep practising. ⭐':p>=.5?'Good effort! আরও practice করুন. 💪':'Practice more and try again. 📚';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function restartQuiz(){
+  index=0;score=0;
+  $('result').style.display='none';
+  $('quizArea').style.display='block';
+  render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+render();
+</script>
+</body>
+</html>

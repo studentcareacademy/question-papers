@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Student Care Academy — Class XII Philosophy Quiz</title>
+<style>
+*{box-sizing:border-box} body{margin:0;background:#080b14;color:#fff;font-family:system-ui,-apple-system,"Noto Sans Bengali",sans-serif}
+.wrap{max-width:760px;margin:auto;padding:16px}
+.brand{text-align:center;padding:18px 10px;margin-bottom:14px;border-radius:18px;background:linear-gradient(135deg,#101a3a,#24103f);box-shadow:0 0 25px #00d9ff55;overflow:hidden}
+.brand h1{margin:0;font-size:clamp(22px,6vw,36px);animation:glow 1.8s infinite alternate}
+.brand p{margin:7px 0 0;font-size:17px;color:#ffd86b;animation:pulse 1.4s infinite}
+@keyframes glow{from{text-shadow:0 0 5px #00eaff}to{text-shadow:0 0 24px #ff2bd6,0 0 40px #00eaff}}
+@keyframes pulse{50%{transform:scale(1.04)}}
+.top{display:flex;justify-content:space-between;gap:10px;margin:10px 0}
+.badge{background:#151b2c;border:1px solid #33415c;border-radius:12px;padding:9px 12px;font-weight:700}
+.card{background:#111728;border:1px solid #293653;border-radius:18px;padding:18px;box-shadow:0 12px 35px #0008}
+.qno{color:#65e8ff;font-weight:800;margin-bottom:8px}
+.question{font-size:20px;line-height:1.65;margin-bottom:16px}
+.options{display:grid;gap:10px}
+.opt{width:100%;border:1px solid #394965;background:#182137;color:#fff;border-radius:12px;padding:13px;text-align:left;font-size:16px;cursor:pointer;transition:.2s}
+.opt:hover{transform:translateY(-1px);border-color:#00d9ff}
+.opt.correct{background:#104d31;border-color:#24df86}
+.opt.wrong{background:#5a1921;border-color:#ff5e6c}
+.opt:disabled{cursor:default}
+.match{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 16px}
+.match div{padding:10px;border-radius:10px;background:#0d1322;border:1px solid #32405d;line-height:1.5}
+.next{display:none;margin-top:16px;width:100%;padding:13px;border:0;border-radius:12px;background:linear-gradient(90deg,#00b8ff,#7b4dff);color:#fff;font-size:17px;font-weight:800;cursor:pointer}
+.result{display:none;text-align:center;padding:28px 15px}
+.score{font-size:48px;font-weight:900;color:#ffd34e}
+.small{opacity:.8;font-size:14px;margin-top:10px}
+.restart{margin-top:18px;padding:12px 20px;border:0;border-radius:12px;background:#ff2e88;color:#fff;font-weight:800;font-size:16px}
+.progress{height:8px;background:#1c263b;border-radius:10px;overflow:hidden;margin:12px 0 18px}
+.bar{height:100%;width:0;background:linear-gradient(90deg,#00eaff,#ff2bd6);transition:.25s}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="brand"><h1>Student Care Academy</h1><p>Teacher:-Tapan Mandal</p></header>
+<div id="quiz">
+  <div class="top"><div class="badge" id="counter">Question 1 / 50</div><div class="badge">Score: <span id="score">0</span> | Exam: <span id="attempts">0</span></div></div>
+  <div class="progress"><div class="bar" id="bar"></div></div>
+  <div class="card" id="card"></div>
+</div>
+<div class="result" id="result">
+  <h2>Quiz Completed 🎉</h2>
+  <div class="score" id="finalScore">0 / 50</div>
+  <p id="finalText"></p>
+  <button class="restart" onclick="restart()">Restart Quiz</button>
+</div>
+</div>
+<script>
+const questions=[{"num": 1, "q": "স্পিনোজার মতে বিশ্বে দ্রব্যের সংখ্যা কয়টি?", "ans": "১ টি", "opts": ["৩ টি", "অসংখ্য", "১ টি", "২ টি"], "correct": 2}, {"num": 2, "q": "প্লেটোর মতে প্রকৃত জ্ঞান বলতে কী বোঝায়?", "ans": "ধারণার জ্ঞান বা বৌদ্ধিক জ্ঞান", "opts": ["ধারণার জ্ঞান বা বৌদ্ধিক জ্ঞান", "ইন্দ্রিয়গ্রাহ্য জ্ঞান", "কর্মের জ্ঞান", "শুধু স্মৃতির জ্ঞান"], "correct": 0}, {"num": 3, "q": "রামানুজের বেদান্ত দর্শন দর্শনের ইতিহাসে কী নামে পরিচিত?", "ans": "বিশিষ্টাদ্বৈতবাদ", "opts": ["দ্বৈতাদ্বৈতবাদ", "বিশিষ্টাদ্বৈতবাদ", "দ্বৈতবাদ", "শুদ্ধাদ্বৈতবাদ"], "correct": 1}, {"num": 4, "q": "অদ্বৈত বেদান্ত মতে মায়ার কয়টি শক্তি ও কী কী?", "ans": "২ টি - আবরণ শক্তি ও বিক্ষেপ শক্তি", "opts": ["১ টি - আবরণ শক্তি", "৩ টি - সৃষ্টিশক্তি, পালনশক্তি, লয়শক্তি", "২ টি - আবরণ শক্তি ও বিক্ষেপ শক্তি", "৪ টি - চার মহাশক্তি"], "correct": 2}, {"num": 5, "q": "'Deep Ecology' বা গভীর বাস্তুবিদ্যা শব্দটি প্রথম কে ব্যবহার করেন?", "ans": "আরনে নেস", "opts": ["আরনে নেস", "শংকরাচার্য", "হিউম", "পিটার সিঙ্গার"], "correct": 0}, {"num": 6, "q": "'Animal Liberation' নামক বিখ্যাত গ্রন্থটির রচয়িতা কে?", "ans": "পিটার সিঙ্গার", "opts": ["পিটার সিঙ্গার", "প্লেটো", "কার্ল মার্কস", "আরনে নেস"], "correct": 0}, {"num": 7, "q": "লকের মতে মানুষের মন জন্মের সময় কেমন থাকে?", "ans": "অলিখিত সাদা কাগজের মতো (Tabula Rasa)", "opts": ["শূন্য মস্তিষ্ক নয়, জন্মগতভাবে পরিপূর্ণ", "শুধু সহজাত ধারণায় পূর্ণ", "অলিখিত সাদা কাগজের মতো (Tabula Rasa)", "পরিপূর্ণ জ্ঞানসম্পন্ন"], "correct": 2}, {"num": 8, "q": "কান্টের জ্ঞানতত্ত্ব দর্শনের ইতিহাসে কী নামে পরিচিত?", "ans": "বিচারবাদ (Critical Philosophy)", "opts": ["অভিজ্ঞতাবাদ", "প্রকৃতিবাদ", "বিচারবাদ (Critical Philosophy)", "বুদ্ধিবাদ"], "correct": 2}, {"num": 9, "q": "দেকার্ত কোন্ পদ্ধতি প্রয়োগ করে তাঁর দর্শনের আলোচনা শুরু করেন?", "ans": "সংশয় পদ্ধতি (Method of Doubt)", "opts": ["পর্যবেক্ষণ পদ্ধতি", "সংশয় পদ্ধতি (Method of Doubt)", "ঐতিহাসিক পদ্ধতি", "সামাজিক পদ্ধতি"], "correct": 1}, {"num": 10, "q": "লাইবনিজ ঈশ্বরের অস্তিত্ব প্রমাণের জন্য প্রধানত কোন্ যুক্তির সাহায্য নিয়েছেন?", "ans": "পূর্বপ্রতিষ্ঠিত শৃঙ্খলার যুক্তি", "opts": ["পূর্বপ্রতিষ্ঠিত শৃঙ্খলার যুক্তি", "সৃষ্টির যুক্তি", "অভিজ্ঞতার যুক্তি", "নৈতিক যুক্তি"], "correct": 0}, {"num": 11, "q": "অদ্বৈত বেদান্ত মতে 'অধ্যাস' কী?", "ans": "অতস্মিন তদ্বুদ্ধি অর্থাৎ এক বস্তুর ওপর অন্য বস্তুর ভ্রান্ত আরোপ", "opts": ["জ্ঞানলাভের প্রক্রিয়া", "কর্মফলের বন্ধন", "অতস্মিন তদ্বুদ্ধি অর্থাৎ এক বস্তুর ওপর অন্য বস্তুর ভ্রান্ত আরোপ", "এক বস্তুর ওপর অন্য বস্তুর ভ্রান্ত আরোপ"], "correct": 2}, {"num": 12, "q": "বেদান্ত দর্শন মতে মোক্ষ কত প্রকার?", "ans": "২ প্রকার - জীবন্মুক্তি ও বিদেহমুক্তি", "opts": ["৩ প্রকার", "২ প্রকার - জীবন্মুক্তি ও বিদেহমুক্তি", "৪ প্রকার", "১ প্রকার"], "correct": 1}, {"num": 13, "q": "সমাজের ক্ষুদ্রতম একক কাকে বলা হয়?", "ans": "পরিবারকে", "opts": ["বিদ্যালয়কে", "পরিবারকে", "সম্প্রদায়কে", "রাষ্ট্রকে"], "correct": 1}, {"num": 14, "q": "সমাজতত্ত্বের জনক (Father of Sociology) কাকে বলা হয়?", "ans": "অগাস্ট কোঁত", "opts": ["দুর্খেইম", "মার্কস", "প্লেটো", "অগাস্ট কোঁত"], "correct": 3}, {"num": 15, "q": "নারীবাদের (Feminism) মূল লক্ষ্য কী?", "ans": "লিঙ্গ বৈষম্য দূর করে সমাজ, রাজনীতি ও অর্থনীতিতে নারী ও পুরুষের সমান অধিকার প্রতিষ্ঠা করা", "opts": ["লিঙ্গ বৈষম্য দূর করে সমাজ, রাজনীতি ও অর্থনীতিতে নারী ও পুরুষের সমান অধিকার প্রতিষ্ঠা করা", "শুধু নারীদের রাজনৈতিক অধিকার", "শুধু অর্থনৈতিক সমতা", "লিঙ্গ বৈষম্য দূর করে সমান অধিকার প্রতিষ্ঠা"], "correct": 0}, {"num": 16, "q": "পদ্ধতিগত দিক থেকে কৃপাহত্যাকে প্রধানত কয়ভাগে ভাগ করা যায়?", "ans": "২ ভাগে - সক্রিয় কৃপাহত্যা ও নিষ্ক্রিয় কৃপাহত্যা", "opts": ["১ ভাগে", "২ ভাগে - সক্রিয় কৃপাহত্যা ও নিষ্ক্রিয় কৃপাহত্যা", "৪ ভাগে", "৩ ভাগে"], "correct": 1}, {"num": 17, "q": "হিউম মানবমনের সমস্ত বিষয়বস্তুকে (Perceptions) কয় ভাগে ভাগ করেছেন?", "ans": "২ ভাগে - মুদ্রণ (Impressions) এবং ধারণা (Ideas)", "opts": ["১ ভাগে - ধারণা", "৩ ভাগে - মুদ্রণ, ধারণা ও বিচার", "৪ ভাগে - সংবেদন, ধারণা, বিচার, স্মৃতি", "২ ভাগে - মুদ্রণ (Impressions) এবং ধারণা (Ideas)"], "correct": 3}, {"num": 18, "q": "কান্ট তাঁর দর্শনে মোট কয়টি 'বোধবিকল্প' বা Categories of Understanding-এর কথা বলেছেন?", "ans": "১২ টি", "opts": ["৮ টি", "১২ টি", "৪ টি", "১০ টি"], "correct": 1}, {"num": 19, "q": "অ্যারিস্টটলের মতে কারণ কয়টি ও কী কী?", "ans": "৪ টি - উপাদান, আকারগত, নিমিত্ত এবং পরিণাম কারণ", "opts": ["৩ টি", "৪ টি - উপাদান, আকারগত, নিমিত্ত এবং পরিণাম কারণ", "২ টি", "৫ টি"], "correct": 1}, {"num": 20, "q": "মার্কসের দর্শনে ইতিহাসের ব্যাখ্যামূলক তত্ত্বটিকে কী বলা হয়?", "ans": "ঐতিহাসিক বস্তুবাদ", "opts": ["দ্বান্দ্বিক বস্তুবাদ", "অস্তিত্ববাদ", "ঐতিহাসিক ভাববাদ", "ঐতিহাসিক বস্তুবাদ"], "correct": 3}, {"num": 21, "q": "বিবৃতি (A): লাইবনিজের মতে \"দ্রব্য হল গবাক্ষহীন চিৎ পরমাণু\"। কারণ (R): দ্রব্য (মনাদ) গুলি, একে অন্যের ওপর প্রভাব বিস্তার করতে পারে না।", "ans": "(A) এবং (R) উভয়েই সত্য এবং (R) হল (A)-এর সঠিক ব্যাখ্যা।", "opts": ["উভয়ই মিথ্যা", "(A) এবং (R) উভয়েই সত্য এবং (R) হল (A)-এর সঠিক ব্যাখ্যা।", "A সত্য, R মিথ্যা", "A মিথ্যা, R সত্য"], "correct": 1}, {"num": 22, "q": "বিবৃতি (A): অদ্বৈত বেদান্ত অনুসারে ব্রহ্ম এক ও অদ্বিতীয়। কারণ (R): অদ্বৈত বেদান্ত অনুসারে \"ব্রহ্ম সত্য, জগস্মিথ্যা, জীব ব্রহ্মৈব না পরঃ\"।", "ans": "(A) এবং (R) দুটোই সঠিক এবং (R), (A)-এর সঠিক ব্যাখ্যা।", "opts": ["উভয়ই মিথ্যা", "(A) এবং (R) দুটোই সঠিক এবং (R), (A)-এর সঠিক ব্যাখ্যা।", "A সত্য, R মিথ্যা", "A মিথ্যা, R সত্য"], "correct": 1}, {"num": 23, "q": "বিবৃতি (A): দেকার্তকে দর্শনের ইতিহাসে দ্বৈতবাদী বলা হয়। কারণ (R): তিনি মন এবং দেহ-এই দুটি স্বতন্ত্র ও নিরপেক্ষ সাপেক্ষ-দ্রব্য স্বীকার করেছেন।", "ans": "(A) এবং (R) উভয়েই সত্য এবং (R) হলো (A)-এর সঠিক ব্যাখ্যা।", "opts": ["উভয়ই মিথ্যা", "(A) এবং (R) উভয়েই সত্য এবং (R) হলো (A)-এর সঠিক ব্যাখ্যা।", "A মিথ্যা, R সত্য", "A সত্য, R মিথ্যা"], "correct": 1}, {"num": 24, "q": "বিবৃতি (A): বার্কলের দর্শন শেষ পর্যন্ত আত্মগত ভাববাদে পর্যবসিত হয়। কারণ (R): বার্কলে মনে করেন জ্ঞাতা মনের নিরপেক্ষভাবে কোনো জড় দ্রব্যের অস্তিত্ব থাকতে পারে।", "ans": "(A) সত্য, কিন্তু (R) মিথ্যা।", "opts": ["A মিথ্যা, R সত্য", "উভয়ই সত্য", "(A) সত্য, কিন্তু (R) মিথ্যা।", "উভয়ই মিথ্যা"], "correct": 2}, {"num": 25, "q": "বিবৃতি (A): কান্ট বুদ্ধিবাদ এবং অভিজ্ঞতাবাদের মধ্যে সমন্বয় সাধন করেছেন। কারণ (R): কান্টের মতে, জ্ঞানের জন্য সংবেদন এবং বোধবিকল্প দুটিরই সমান প্রয়োজন।", "ans": "(A) এবং (R) উভয়েই সত্য এবং (R) হলো (A)-এর সঠিক ব্যাখ্যা।", "opts": ["(A) এবং (R) উভয়েই সত্য এবং (R) হলো (A)-এর সঠিক ব্যাখ্যা।", "A মিথ্যা, R সত্য", "A সত্য, R মিথ্যা", "উভয়ই মিথ্যা"], "correct": 0}, {"num": 26, "q": "বিবৃতি (A): বর্তমানের বিশাল জনবহুল আধুনিক রাষ্ট্রগুলিতে 'প্রত্যক্ষ গণতন্ত্র' প্রয়োগ করা সম্ভব। কারণ (R): প্রত্যক্ষ গণতন্ত্রে রাষ্ট্রের সকল নাগরিক সরাসরি শাসনকার্যে অংশগ্রহণ করে।", "ans": "(A) মিথ্যা, কিন্তু (R) সত্য।", "opts": ["উভয়ই সত্য", "(A) মিথ্যা, কিন্তু (R) সত্য।", "উভয়ই মিথ্যা", "A সত্য, R মিথ্যা"], "correct": 1}, {"num": 27, "q": "বিবৃতি (A): সমাজবিজ্ঞানে পরিবারকে একটি 'গৌণ গোষ্ঠী' বলা হয়। কারণ (R): পরিবারের সদস্যদের মধ্যে সম্পর্ক অত্যন্ত নৈর্ব্যক্তিক এবং আনুষ্ঠানিক।", "ans": "(A) এবং (R) দুটোই মিথ্যা।", "opts": ["(A) এবং (R) দুটোই মিথ্যা।", "উভয়ই সত্য", "A সত্য, R মিথ্যা", "A মিথ্যা, R সত্য"], "correct": 0}, {"num": 28, "q": "বিবৃতি (A): সক্রিয় কৃপাহত্যায় রোগীকে প্রাণঘাতী ওষুধ প্রয়োগ করে সরাসরি মৃত্যু ঘটানো হয়। কারণ (R): সক্রিয় কৃপাহত্যা বিশ্বের প্রতিটি দেশে আইনত স্বীকৃত।", "ans": "(A) সত্য, কিন্তু (R) মিথ্যা।", "opts": ["উভয়ই মিথ্যা", "উভয়ই সত্য", "A মিথ্যা, R সত্য", "(A) সত্য, কিন্তু (R) মিথ্যা।"], "correct": 3}, {"num": 29, "q": "বিবৃতি (A): পিটার সিঙ্গার প্রাণীদের অধিকারের পক্ষে যুক্তি দিয়েছেন। কারণ (R): তিনি মনে করেন প্রাণীদেরও মানুষের মতো বিচারবুদ্ধি ও বুদ্ধিমত্তা আছে।", "ans": "(A) সত্য, কিন্তু (R) মিথ্যা।", "opts": ["(A) সত্য, কিন্তু (R) মিথ্যা।", "উভয়ই সত্য", "উভয়ই মিথ্যা", "A মিথ্যা, R সত্য"], "correct": 0}, {"num": 30, "q": "বিবৃতি (A): শংকরাচার্য কেবল 'বিদেহমুক্তি'কেই একমাত্র মোক্ষ বলে স্বীকার করেছেন। কারণ (R): তাঁর মতে শরীর ধারণ করে আত্মজ্ঞান বা ব্রহ্মজ্ঞান লাভ করা সম্পূর্ণ অসম্ভব।", "ans": "(A) এবং (R) উভয়েই মিথ্যা।", "opts": ["A সত্য, R মিথ্যা", "(A) এবং (R) উভয়েই মিথ্যা।", "A মিথ্যা, R সত্য", "উভয়ই সত্য"], "correct": 1}, {"num": 31, "q": "স্তম্ভ-১ ও স্তম্ভ-২ মেলাও: i) স্বাজাত্যবোধ -> a) সংঘ; ii) নির্ভরশীলতা -> b) প্রতিষ্ঠান; iii) এক বা একাধিক স্বার্থসিদ্ধি -> c) সমাজ; iv) বিধিনিয়ম, রীতিনীতি -> d) সম্প্রদায়।", "ans": "i-d, ii-c, iii-a, iv-b", "opts": ["i-a, ii-d, iii-c, iv-b", "i-d, ii-c, iii-a, iv-b", "i-c, ii-d, iii-a, iv-b", "i-d, ii-a, iii-b, iv-c"], "correct": 1}, {"num": 32, "q": "দার্শনিক ও মতবাদ মেলাও: A) Pre-established Harmony, B) Sub specie aeternitatis, C) Method of Doubt, D) Tabula Rasa. i) স্পিনোজা, ii) দেকার্ত, iii) লাইবনিজ, iv) লক।", "ans": "A-iii, B-i, C-ii, D-iv", "opts": ["A-i, B-iii, C-ii, D-iv", "A-ii, B-i, C-iii, D-iv", "A-iii, B-i, C-ii, D-iv", "A-iv, B-i, C-ii, D-iii"], "correct": 2}, {"num": 33, "q": "দার্শনিক ও তত্ত্ব মেলাও: A) Representative Realism, B) Subjective Idealism, C) Phenomenalism, D) Transcendental Idealism. i) বার্কলে, ii) লক, iii) কান্ট, iv) হিউম।", "ans": "A-ii, B-i, C-iv, D-iii", "opts": ["A-ii, B-i, C-iv, D-iii", "A-ii, B-iv, C-i, D-iii", "A-iii, B-i, C-iv, D-ii", "A-i, B-ii, C-iv, D-iii"], "correct": 0}, {"num": 34, "q": "গ্রন্থ ও প্রণেতা মেলাও: A) A Treatise of Human Nature, B) Critique of Pure Reason, C) Principles of Human Knowledge, D) Essay Concerning Human Understanding. i) কান্ট, ii) হিউম, iii) লক, iv) বার্কলে।", "ans": "A-ii, B-i, C-iv, D-iii", "opts": ["A-ii, B-i, C-iv, D-iii", "A-iv, B-iii, C-ii, D-i", "A-i, B-ii, C-iii, D-iv", "A-ii, B-iv, C-i, D-iii"], "correct": 0}, {"num": 35, "q": "ভারতীয় দর্শন ও ধারণা মেলাও: A) বিবর্তবাদ, B) পরিণামবাদ, C) অধ্যাস. i) অদ্বৈত বেদান্ত, ii) শংকরাচার্য, iii) বিশিষ্টাদ্বৈত বেদান্ত।", "ans": "A-i, B-iii, C-ii", "opts": ["A-ii, B-i, C-iii", "A-i, B-iii, C-ii", "A-iii, B-i, C-ii", "A-i, B-ii, C-iii"], "correct": 1}, {"num": 36, "q": "গ্রন্থ ও লেখক মেলাও: A) The Republic, B) Politics, C) The Prince, D) Das Kapital. i) কার্ল মার্কস, ii) ম্যাকিয়াভেলি, iii) অ্যারিস্টটল, iv) প্লেটো।", "ans": "A-iv, B-iii, C-ii, D-i", "opts": ["A-ii, B-iii, C-i, D-iv", "A-iv, B-ii, C-iii, D-i", "A-iii, B-iv, C-ii, D-i", "A-iv, B-iii, C-ii, D-i"], "correct": 3}, {"num": 37, "q": "গোষ্ঠী ও উদাহরণ মেলাও: A) Primary Group, B) Secondary Group, C) Community, D) Association. i) ট্রেড ইউনিয়ন, ii) গ্রাম, iii) পরিবার, iv) রাজনৈতিক দল।", "ans": "A-iii, B-iv, C-ii, D-i", "opts": ["A-i, B-iv, C-ii, D-iii", "A-iv, B-iii, C-i, D-ii", "A-iii, B-iv, C-ii, D-i", "A-iii, B-ii, C-iv, D-i"], "correct": 2}, {"num": 38, "q": "বাস্তুবিদ্যা ও দৃষ্টিভঙ্গি মেলাও: A) Deep Ecology, B) Shallow Ecology, C) Biocentrism, D) Ecocentrism. i) মানবকেন্দ্রিক, ii) বাস্তুতন্ত্রের অন্তর্নিহিত মূল্য, iii) সমগ্র জীবমণ্ডল, iv) সমস্ত জীবের মূল্য।", "ans": "A-ii, B-i, C-iv, D-iii", "opts": ["A-ii, B-iv, C-iii, D-i", "A-i, B-ii, C-iv, D-iii", "A-ii, B-i, C-iv, D-iii", "A-iii, B-i, C-iv, D-ii"], "correct": 2}, {"num": 39, "q": "অধিকার ও উদাহরণ মেলাও: A) Natural Right, B) Moral Right, C) Legal Right, D) Political Right. i) সম্পত্তির অধিকার, ii) ভোট দেওয়ার অধিকার, iii) গুরুজনদের শ্রদ্ধা, iv) জীবনের অধিকার।", "ans": "A-iv, B-iii, C-i, D-ii", "opts": ["A-iii, B-iv, C-i, D-ii", "A-iv, B-i, C-ii, D-iii", "A-i, B-iii, C-iv, D-ii", "A-iv, B-iii, C-i, D-ii"], "correct": 3}, {"num": 40, "q": "কারণের শর্ত ও অর্থ মেলাও: A) Necessary condition, B) Sufficient condition, C) Positive condition, D) Negative condition. i) যা উপস্থিত থাকলে কার্য ঘটবেই, ii) যাকে উপস্থিত থাকতে হয়, iii) যা না থাকলে কার্য ঘটে না, iv) যাকে অনুপস্থিত থাকতে হয়।", "ans": "A-iii, B-i, C-ii, D-iv", "opts": ["A-iii, B-i, C-ii, D-iv", "A-ii, B-iv, C-i, D-iii", "A-i, B-iii, C-ii, D-iv", "A-iii, B-ii, C-iv, D-i"], "correct": 0}, {"num": 41, "q": "\"আমি চিন্তা করি, তাই আমি আছি\" (Cogito ergo sum) - উক্তিটি কে করেছেন?", "ans": "দেকার্ত", "opts": ["স্পিনোজা", "সক্রেটিস", "প্লেটো", "দেকার্ত"], "correct": 3}, {"num": 42, "q": "\"মানুষ স্বভাবতই সামাজিক জীব\" - বিখ্যাত উক্তিটি কার?", "ans": "অ্যারিস্টটল", "opts": ["অ্যারিস্টটল", "হেগেল", "রুশো", "প্লেটো"], "correct": 0}, {"num": 43, "q": "\"গণতন্ত্র হলো জনগণের, জনগণের দ্বারা এবং জনগণের জন্য শাসন\" - কার উক্তি?", "ans": "আব্রাহাম লিংকন", "opts": ["হেগেল", "রুশো", "আব্রাহাম লিংকন", "অ্যারিস্টটল"], "correct": 2}, {"num": 44, "q": "\"রাষ্ট্র হলো পৃথিবীতে ঈশ্বরের পদচারণা\" - উক্তিটি কার?", "ans": "হেগেল", "opts": ["হেগেল", "রুশো", "অগাস্ট কোঁত", "মার্কস"], "correct": 0}, {"num": 45, "q": "\"জীবনযুদ্ধে টিকে থাকে যে যত শক্তিশালী\" (Survival of the fittest) - কে বলেছেন?", "ans": "হার্বার্ট স্পেনসার", "opts": ["ডারউইন", "নিটশে", "মার্কস", "হার্বার্ট স্পেনসার"], "correct": 3}, {"num": 46, "q": "\"ব্রহ্ম সত্য, জগন্মিথ্যা, জীব ব্রহ্মৈব না পরঃ\" - এই বিখ্যাত উক্তিটি কোন্ দর্শনের মূলভিত্তি?", "ans": "অদ্বৈত বেদান্ত (শংকরাচার্য)", "opts": ["সাংখ্য দর্শন", "অদ্বৈত বেদান্ত (শংকরাচার্য)", "দ্বৈত বেদান্ত", "বিশিষ্টাদ্বৈতবাদ"], "correct": 1}, {"num": 47, "q": "\"মানুষ জন্মগতভাবে স্বাধীন, কিন্তু সর্বত্র সে শৃঙ্খলিত\" - কার উক্তি?", "ans": "জঁ জাক রুশো", "opts": ["জঁ জাক রুশো", "কার্ল মার্কস", "থমাস হবস", "জন লক"], "correct": 0}, {"num": 48, "q": "\"দুনিয়ার মজদুর এক হও! তোমাদের হারানোর মতো শৃঙ্খল ছাড়া আর কিছু নেই\" - এই বিখ্যাত আহ্বান কাদের?", "ans": "কার্ল মার্কস এবং ফ্রেডরিখ এঙ্গেলস", "opts": ["রুশো ও ভলতেয়ার", "লেনিন ও স্টালিন", "প্লেটো ও অ্যারিস্টটল", "কার্ল মার্কস এবং ফ্রেডরিখ এঙ্গেলস"], "correct": 3}, {"num": 49, "q": "\"আমি কেবল এটুকুই জানি যে, আমি কিছুই জানি না\" - কার বিখ্যাত উক্তি?", "ans": "সক্রেটিস", "opts": ["অ্যারিস্টটল", "প্লেটো", "দেকার্ত", "সক্রেটিস"], "correct": 3}, {"num": 50, "q": "\"ঈশ্বর মৃত\" (God is dead) - এই বিতর্কিত ও বিখ্যাত উক্তিটি কোন্ দার্শনিকের?", "ans": "ফ্রেডরিখ নিটশে", "opts": ["শংকরাচার্য", "সক্রেটিস", "হেগেল", "ফ্রেডরিখ নিটশে"], "correct": 3}];
+let idx=0, score=0, answered=false;
+let attempts=Number(localStorage.getItem("philosophyQuizAttempts")||0);
+document.getElementById("attempts").textContent=attempts;
+
+function render(){
+ answered=false;
+ const x=questions[idx];
+ document.getElementById("counter").textContent=`Question ${idx+1} / ${questions.length}`;
+ document.getElementById("score").textContent=score;
+ document.getElementById("bar").style.width=((idx/questions.length)*100)+"%";
+ const isMatch=idx>=30 && idx<40;
+ let matchHtml="";
+ if(isMatch){
+   const m=x.q.match(/স্তম্ভ-১ ও স্তম্ভ-২ মেলাও:\s*(.*)/);
+   if(m) {
+     const parts=m[1].split(";").map(s=>s.trim()).filter(Boolean);
+     const left=parts.filter(p=>p.includes("->"));
+     if(left.length) matchHtml='<div class="match">'+left.map(p=>{
+       const [a,b]=p.split("->").map(s=>s.trim()); return `<div>${a}</div><div>${b}</div>`;
+     }).join("")+'</div>';
+   }
+ }
+ document.getElementById("card").innerHTML=`
+   <div class="qno">Q${x.num}</div>
+   ${matchHtml}
+   <div class="question">${x.q}</div>
+   <div class="options">${x.opts.map((o,i)=>`<button class="opt" onclick="choose(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join("")}</div>
+   <button class="next" id="next" onclick="nextQ()">${idx===questions.length-1?"Show Result":"Next Question"} →</button>`;
+}
+function choose(i){
+ if(answered)return;
+ answered=true;
+ const x=questions[idx], buttons=document.querySelectorAll(".opt");
+ buttons.forEach((b,n)=>{b.disabled=true;if(n===x.correct)b.classList.add("correct")});
+ if(i===x.correct) score++; else buttons[i].classList.add("wrong");
+ document.getElementById("score").textContent=score;
+ document.getElementById("next").style.display="block";
+}
+function nextQ(){
+ if(idx<questions.length-1){idx++;render();} else showResult();
+}
+function showResult(){
+ document.getElementById("quiz").style.display="none";
+ document.getElementById("result").style.display="block";
+ document.getElementById("finalScore").textContent=`${score} / ${questions.length}`;
+ document.getElementById("finalText").textContent=`Correct: ${score} | Wrong: ${questions.length-score}`;
+ document.getElementById("bar").style.width="100%";
+}
+function restart(){
+ attempts++;
+ localStorage.setItem("philosophyQuizAttempts",attempts);
+ idx=0;score=0;
+ document.getElementById("result").style.display="none";
+ document.getElementById("quiz").style.display="block";
+ document.getElementById("attempts").textContent=attempts;
+ render();
+}
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Student Care Academy - Sequence Quiz</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap');
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:'Noto Sans Bengali',sans-serif;
+    background:
+        radial-gradient(circle at top,#182c5c 0%,#071126 42%,#020712 100%);
+    min-height:100vh;
+    color:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:15px;
+}
+
+.quiz-container{
+    width:100%;
+    max-width:850px;
+    min-height:650px;
+    background:rgba(8,17,38,.96);
+    border:2px solid rgba(255,215,80,.65);
+    border-radius:25px;
+    box-shadow:
+        0 0 25px rgba(255,215,80,.18),
+        0 20px 70px rgba(0,0,0,.6);
+    overflow:hidden;
+    position:relative;
+}
+
+/* HEADER */
+.header{
+    text-align:center;
+    padding:22px 15px 18px;
+    background:
+        linear-gradient(135deg,#071a45,#0d2b66,#071a45);
+    border-bottom:1px solid rgba(255,215,80,.35);
+}
+
+.academy{
+    font-size:clamp(24px,6vw,42px);
+    font-weight:800;
+    color:#ffd84d;
+    letter-spacing:1px;
+    animation:academyGlow 2s infinite alternate;
+}
+
+.teacher{
+    margin-top:5px;
+    font-size:clamp(16px,4vw,23px);
+    font-weight:700;
+    color:#fff;
+    animation:teacherGlow 2s infinite alternate;
+}
+
+@keyframes academyGlow{
+    from{
+        text-shadow:0 0 5px #ffd84d;
+        transform:scale(1);
+    }
+    to{
+        text-shadow:
+        0 0 8px #ffd84d,
+        0 0 20px #ffae00,
+        0 0 35px #ffae00;
+        transform:scale(1.025);
+    }
+}
+
+@keyframes teacherGlow{
+    from{
+        text-shadow:0 0 4px #fff;
+    }
+    to{
+        text-shadow:0 0 8px #fff,0 0 18px #4da6ff;
+    }
+}
+
+/* TOP INFO */
+.top-info{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:13px 18px;
+    background:#050d20;
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.question-count{
+    color:#ffd84d;
+    font-weight:700;
+}
+
+.attempt{
+    color:#8fd3ff;
+    font-weight:700;
+}
+
+/* PROGRESS */
+.progress-box{
+    padding:12px 20px 5px;
+}
+
+.progress-bg{
+    width:100%;
+    height:8px;
+    background:#17233f;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress{
+    width:10%;
+    height:100%;
+    background:linear-gradient(90deg,#ffd84d,#ff8c00);
+    border-radius:20px;
+    transition:.4s;
+}
+
+/* QUESTION */
+.question-area{
+    padding:25px 25px 10px;
+}
+
+.question-number{
+    display:inline-block;
+    background:#ffd84d;
+    color:#071126;
+    padding:5px 13px;
+    border-radius:20px;
+    font-weight:800;
+    margin-bottom:12px;
+}
+
+.question{
+    font-size:clamp(18px,4vw,25px);
+    line-height:1.65;
+    font-weight:700;
+}
+
+/* OPTIONS */
+.options{
+    padding:18px 25px;
+    display:grid;
+    gap:12px;
+}
+
+.option{
+    width:100%;
+    padding:15px 17px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.18);
+    background:linear-gradient(135deg,#101e3c,#0b1730);
+    color:#fff;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:17px;
+    text-align:left;
+    transition:.25s;
+}
+
+.option:hover{
+    transform:translateX(5px);
+    border-color:#ffd84d;
+    background:#172a51;
+}
+
+.option.correct{
+    background:#084d31;
+    border:2px solid #27e68a;
+    color:#fff;
+}
+
+.option.wrong{
+    background:#5a1017;
+    border:2px solid #ff4d61;
+}
+
+.option.disabled{
+    pointer-events:none;
+}
+
+/* FEEDBACK */
+.feedback{
+    margin:0 25px;
+    padding:14px;
+    border-radius:13px;
+    display:none;
+    line-height:1.7;
+    font-size:15px;
+}
+
+.feedback.correct-feedback{
+    display:block;
+    background:rgba(0,180,100,.13);
+    border:1px solid #27e68a;
+    color:#8fffc4;
+}
+
+.feedback.wrong-feedback{
+    display:block;
+    background:rgba(255,50,70,.13);
+    border:1px solid #ff4d61;
+    color:#ffb3bb;
+}
+
+/* NEXT */
+.next-area{
+    padding:18px 25px 25px;
+    text-align:right;
+}
+
+.next-btn,
+.restart-btn{
+    border:none;
+    border-radius:25px;
+    padding:12px 27px;
+    background:linear-gradient(135deg,#ffd84d,#ff9900);
+    color:#071126;
+    font-family:inherit;
+    font-size:16px;
+    font-weight:800;
+    cursor:pointer;
+    box-shadow:0 5px 18px rgba(255,170,0,.25);
+    transition:.25s;
+}
+
+.next-btn:hover,
+.restart-btn:hover{
+    transform:scale(1.04);
+}
+
+.next-btn{
+    display:none;
+}
+
+/* RESULT */
+.result{
+    display:none;
+    text-align:center;
+    padding:45px 25px;
+}
+
+.result-title{
+    font-size:clamp(27px,7vw,42px);
+    color:#ffd84d;
+    font-weight:800;
+    margin-bottom:25px;
+}
+
+.score-circle{
+    width:170px;
+    height:170px;
+    margin:0 auto 25px;
+    border-radius:50%;
+    border:7px solid #ffd84d;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    background:#071126;
+    box-shadow:0 0 30px rgba(255,216,77,.25);
+}
+
+.score{
+    font-size:42px;
+    font-weight:800;
+    color:#fff;
+}
+
+.score-label{
+    font-size:14px;
+    color:#aaa;
+}
+
+.result-info{
+    font-size:19px;
+    line-height:2;
+    margin-bottom:25px;
+}
+
+.result-info span{
+    color:#ffd84d;
+    font-weight:800;
+}
+
+.message{
+    margin-bottom:25px;
+    color:#9ed9ff;
+    font-size:17px;
+}
+
+.footer{
+    text-align:center;
+    padding:12px;
+    color:#657695;
+    font-size:12px;
+    border-top:1px solid rgba(255,255,255,.06);
+}
+
+/* MOBILE */
+@media(max-width:600px){
+    body{
+        padding:7px;
+    }
+
+    .quiz-container{
+        border-radius:18px;
+        min-height:650px;
+    }
+
+    .question-area{
+        padding:20px 17px 8px;
+    }
+
+    .options{
+        padding:14px 17px;
+    }
+
+    .feedback{
+        margin:0 17px;
+    }
+
+    .next-area{
+        padding:15px 17px 20px;
+    }
+
+    .option{
+        font-size:15px;
+        padding:13px;
+    }
+
+    .top-info{
+        padding:11px 13px;
+        font-size:13px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="quiz-container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="academy">Student Care Academy</div>
+        <div class="teacher">Teacher:- Tapan Mandal</div>
+    </div>
+
+    <!-- QUIZ -->
+    <div id="quizScreen">
+
+        <div class="top-info">
+            <div class="question-count" id="questionCount">
+                প্রশ্ন 1 / 10
+            </div>
+
+            <div class="attempt">
+                Exam Attempt: <span id="attemptNumber">1</span>
+            </div>
+        </div>
+
+        <div class="progress-box">
+            <div class="progress-bg">
+                <div class="progress" id="progress"></div>
+            </div>
+        </div>
+
+        <div class="question-area">
+
+            <div class="question-number" id="questionNumber">
+                SET 1
+            </div>
+
+            <div class="question" id="question">
+            </div>
+
+        </div>
+
+        <div class="options" id="options"></div>
+
+        <div id="feedback" class="feedback"></div>
+
+        <div class="next-area">
+            <button class="next-btn" id="nextBtn" onclick="nextQuestion()">
+                পরবর্তী প্রশ্ন →
+            </button>
+        </div>
+
+    </div>
+
+    <!-- RESULT -->
+    <div class="result" id="resultScreen">
+
+        <div class="result-title">
+            🎉 পরীক্ষা সম্পূর্ণ!
+        </div>
+
+        <div class="score-circle">
+            <div class="score" id="finalScore">0/10</div>
+            <div class="score-label">TOTAL SCORE</div>
+        </div>
+
+        <div class="result-info">
+            সঠিক উত্তর: <span id="correctCount">0</span><br>
+            ভুল উত্তর: <span id="wrongCount">0</span><br>
+            Exam Attempt: <span id="finalAttempt">1</span>
+        </div>
+
+        <div class="message" id="resultMessage"></div>
+
+        <button class="restart-btn" onclick="restartQuiz()">
+            🔄 আবার পরীক্ষা দিন
+        </button>
+
+    </div>
+
+    <div class="footer">
+        Class-12 • Semester-3 • Biology
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   QUESTION DATABASE
+========================= */
+
+const questions = [
+
+{
+    set:"SET 1",
+    question:"একটি পরাগধানীর প্রস্থচ্ছেদে, বাইরে থেকে ভেতরের দিকে প্রাচীর স্তরগুলোর সঠিক ক্রমটি শনাক্ত করো।",
+    options:[
+        "A. ট্যাপেটাম → এন্ডোথিসিয়াম → এপিডার্মিস → মধ্যস্তর",
+        "B. এন্ডোথিসিয়াম → এপিডার্মিস → মধ্যস্তর → ট্যাপেটাম",
+        "C. এপিডার্মিস → এন্ডোথিসিয়াম → মধ্যস্তর → ট্যাপেটাম",
+        "D. মধ্যস্তর → এপিডার্মিস → এন্ডোথিসিয়াম → ট্যাপেটাম"
+    ],
+    answer:2,
+    correct:"C → B → D → A",
+    explanation:"এপিডার্মিস সবচেয়ে বাইরের স্তর, তার ভেতরে এন্ডোথিসিয়াম, এরপর মধ্যস্তর এবং সবচেয়ে ভেতরে ট্যাপেটাম থাকে।"
+},
+
+{
+    set:"SET 2",
+    question:"মানুষের স্পার্মাটোজেনেসিস (Spermatogenesis) প্রক্রিয়ার সঠিক ক্রমটি কী?",
+    options:[
+        "A. স্পার্মাটিড → স্পার্মাটোগোনিয়া → প্রাথমিক স্পার্মাটোসাইট → গৌণ স্পার্মাটোসাইট → শুক্রাণু",
+        "B. স্পার্মাটোগোনিয়া → প্রাথমিক স্পার্মাটোসাইট → গৌণ স্পার্মাটোসাইট → স্পার্মাটিড → শুক্রাণু",
+        "C. প্রাথমিক স্পার্মাটোসাইট → স্পার্মাটোগোনিয়া → গৌণ স্পার্মাটোসাইট → শুক্রাণু → স্পার্মাটিড",
+        "D. স্পার্মাটোগোনিয়া → গৌণ স্পার্মাটোসাইট → প্রাথমিক স্পার্মাটোসাইট → স্পার্মাটিড → শুক্রাণু"
+    ],
+    answer:1,
+    correct:"B → D → E → A → C",
+    explanation:"স্পার্মাটোগোনিয়া থেকে প্রাথমিক স্পার্মাটোসাইট, এরপর মিয়োসিস-I-এর মাধ্যমে গৌণ স্পার্মাটোসাইট, মিয়োসিস-II-এর মাধ্যমে স্পার্মাটিড এবং শেষে স্পার্মিয়োজেনেসিসের মাধ্যমে শুক্রাণু তৈরি হয়।"
+},
+
+{
+    set:"SET 3",
+    question:"ডাউন সিনড্রোম (Down's syndrome) ঘটায় এমন কোশীয় ঘটনাগুলির সঠিক ক্রম চিহ্নিত করো।",
+    options:[
+        "A. নিষেক → non-disjunction → অতিরিক্ত ক্রোমোজোমযুক্ত গ্যামেট → ট্রাইজোমি 21",
+        "B. non-disjunction → অতিরিক্ত 21 নং ক্রোমোজোমযুক্ত গ্যামেট → স্বাভাবিক গ্যামেটের সাথে নিষেক → ট্রাইজোমি 21",
+        "C. অতিরিক্ত গ্যামেট → নিষেক → non-disjunction → ট্রাইজোমি 21",
+        "D. ট্রাইজোমি 21 → নিষেক → non-disjunction → গ্যামেট"
+    ],
+    answer:1,
+    correct:"B → D → A → C",
+    explanation:"প্রথমে non-disjunction-এর ফলে 21 নং ক্রোমোজোমের অতিরিক্ত কপি-যুক্ত গ্যামেট তৈরি হয়। এরপর স্বাভাবিক গ্যামেটের সঙ্গে নিষেকের ফলে Trisomy 21 তৈরি হয়।"
+},
+
+{
+    set:"SET 4",
+    question:"সিকল-সেল অ্যানিমিয়ার ক্লিনিকাল প্রকাশের দিকে পরিচালিত ঘটনাগুলির সঠিক ক্রম চিহ্নিত করো।",
+    options:[
+        "A. GAG → GUG → CTC → CAC → ভ্যালিন প্রতিস্থাপন → sickling",
+        "B. CTC → CAC → GAG → GUG → গ্লুটামিক অ্যাসিডের বদলে ভ্যালিন → sickling",
+        "C. ভ্যালিন প্রতিস্থাপন → DNA mutation → mRNA পরিবর্তন → sickling",
+        "D. sickling → ভ্যালিন প্রতিস্থাপন → mRNA পরিবর্তন → DNA mutation"
+    ],
+    answer:1,
+    correct:"D → C → A → B",
+    explanation:"প্রথমে β-globin জিনে point mutation ঘটে। এরপর mRNA codon GAG থেকে GUG হয়। ফলে glutamic acid-এর পরিবর্তে valine যুক্ত হয় এবং কম অক্সিজেন চাপে RBC sickling করে।"
+},
+
+{
+    set:"SET 5",
+    question:"ল্যাকটোজ যখন lac operon-এ একটি inducer হিসেবে কাজ করে, তখন ঘটা ঘটনাগুলির সঠিক ক্রম চিহ্নিত করো।",
+    options:[
+        "A. Repressor নিষ্ক্রিয় → lactose প্রবেশ → transcription → lac mRNA",
+        "B. Lactose প্রবেশ → repressor-এর সঙ্গে আবদ্ধ হয়ে নিষ্ক্রিয় → RNA polymerase-এর access → z, y, a gene-এর transcription",
+        "C. RNA polymerase access → lactose প্রবেশ → repressor সক্রিয় → transcription",
+        "D. z, y, a transcription → lactose প্রবেশ → repressor নিষ্ক্রিয় → RNA polymerase access"
+    ],
+    answer:1,
+    correct:"D → C → A → B",
+    explanation:"প্রথমে lactose কোশে প্রবেশ করে। এটি repressor-এর সঙ্গে আবদ্ধ হয়ে তাকে নিষ্ক্রিয় করে। এরপর RNA polymerase promoter-এ কাজ করতে পারে এবং z, y ও a gene-এর transcription হয়।"
+},
+
+{
+    set:"SET 6",
+    question:"থ্যালাসেমিয়ার (Thalassemia) প্রকাশের দিকে পরিচালিত ঘটনাগুলির সঠিক ক্রম চিহ্নিত করো।",
+    options:[
+        "A. গ্লোবিন সংশ্লেষণ হ্রাস → gene mutation → abnormal Hb → anaemia",
+        "B. নির্দিষ্ট globin gene-এর mutation/deletion → α বা β globin chain-এর সংশ্লেষণ হ্রাস → abnormal Hb → clinical anaemia",
+        "C. anaemia → abnormal Hb → gene mutation → globin synthesis হ্রাস",
+        "D. abnormal Hb → globin gene mutation → anaemia → globin synthesis হ্রাস"
+    ],
+    answer:1,
+    correct:"C → D → A → B",
+    explanation:"প্রথমে নির্দিষ্ট globin gene-এ mutation বা deletion ঘটে। এর ফলে α বা β globin chain-এর সংশ্লেষণ কমে যায়, abnormal haemoglobin তৈরি হয় এবং শেষে clinical anaemia দেখা দেয়।"
+},
+
+{
+    set:"SET 7",
+    question:"পৃথিবীর ইতিহাসে ভূতাত্ত্বিক যুগগুলোর প্রাচীনতম থেকে সাম্প্রতিকতম পর্যন্ত সঠিক ক্রমটি চিহ্নিত করো।",
+    options:[
+        "A. Paleozoic → Precambrian → Mesozoic → Cenozoic",
+        "B. Precambrian → Paleozoic → Mesozoic → Cenozoic",
+        "C. Mesozoic → Paleozoic → Precambrian → Cenozoic",
+        "D. Cenozoic → Mesozoic → Paleozoic → Precambrian"
+    ],
+    answer:1,
+    correct:"C → B → D → A",
+    explanation:"প্রাচীনতম থেকে ক্রমটি হলো Precambrian → Paleozoic → Mesozoic → Cenozoic।"
+},
+
+{
+    set:"SET 8",
+    question:"DNA replication fork-এ ঘটা ঘটনাগুলির সঠিক ক্রমটি চিহ্নিত করো।",
+    options:[
+        "A. DNA polymerase → helicase → ligase → continuous/discontinuous synthesis",
+        "B. Helicase দ্বারা unwinding → DNA-dependent DNA polymerase-এর binding → leading ও lagging strand synthesis → ligase দ্বারা Okazaki fragments যুক্তকরণ",
+        "C. Ligase → helicase → polymerase → Okazaki fragments",
+        "D. Leading strand synthesis → helicase → ligase → polymerase"
+    ],
+    answer:1,
+    correct:"D → C → B → A",
+    explanation:"প্রথমে helicase DNA double helix খুলে দেয়। এরপর DNA polymerase যুক্ত হয়ে DNA synthesis করে। শেষে DNA ligase Okazaki fragments জুড়ে দেয়।"
+},
+
+{
+    set:"SET 9",
+    question:"ইউক্যারিওটদের ক্ষেত্রে প্রাথমিক transcript বা hnRNA-এর post-transcriptional modifications-এর সঠিক ক্রমটি চিহ্নিত করো।",
+    options:[
+        "A. Splicing → transcription → poly-A tail → 5′ cap",
+        "B. Transcription → 3′ poly-A tail → 5′ cap → splicing",
+        "C. hnRNA transcription → 5′ cap → 3′ poly-A tail → splicing",
+        "D. 5′ cap → transcription → splicing → poly-A tail"
+    ],
+    answer:2,
+    correct:"B → D → A → C",
+    explanation:"প্রথমে transcription-এর মাধ্যমে hnRNA তৈরি হয়। এরপর 5′ প্রান্তে cap, 3′ প্রান্তে poly-A tail এবং শেষে splicing হয়ে mature mRNA তৈরি হয়।"
+},
+
+{
+    set:"SET 10",
+    question:"Translation-এর initiation এবং elongation পর্যায়ের সময় ঘটা ঘটনাগুলির সঠিক ক্রমটি চিহ্নিত করো।",
+    options:[
+        "A. Large subunit → mRNA-small subunit binding → peptide bond → initiator tRNA",
+        "B. Initiator tRNA → small subunit → large subunit → peptide bond",
+        "C. mRNA-এর small ribosomal subunit-এর সঙ্গে binding → start codon-এর সঙ্গে initiator tRNA pairing → large subunit binding → peptide bond formation",
+        "D. Peptide bond → large subunit → initiator tRNA → small subunit"
+    ],
+    answer:2,
+    correct:"C → B → A → D",
+    explanation:"প্রথমে mRNA small ribosomal subunit-এর সঙ্গে যুক্ত হয়। এরপর start codon-এর সঙ্গে initiator tRNA যুক্ত হয়। তারপর large subunit যুক্ত হয় এবং elongation-এর সময় peptide bond তৈরি হয়।"
+}
+
+];
+
+
+/* =========================
+   VARIABLES
+========================= */
+
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+
+let attempt =
+    parseInt(localStorage.getItem("sequenceQuizAttempt") || "0") + 1;
+
+localStorage.setItem("sequenceQuizAttempt", attempt);
+
+document.getElementById("attemptNumber").textContent = attempt;
+
+
+/* =========================
+   LOAD QUESTION
+========================= */
+
+function loadQuestion(){
+
+    answered = false;
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("questionCount").textContent =
+        `প্রশ্ন ${currentQuestion + 1} / ${questions.length}`;
+
+    document.getElementById("questionNumber").textContent =
+        q.set;
+
+    document.getElementById("question").textContent =
+        q.question;
+
+    document.getElementById("progress").style.width =
+        ((currentQuestion + 1) / questions.length * 100) + "%";
+
+    const optionsBox =
+        document.getElementById("options");
+
+    optionsBox.innerHTML = "";
+
+    q.options.forEach((option,index)=>{
+
+        const button =
+            document.createElement("button");
+
+        button.className = "option";
+
+        button.textContent = option;
+
+        button.onclick = function(){
+
+            selectAnswer(index,button);
+
+        };
+
+        optionsBox.appendChild(button);
+
+    });
+
+    const feedback =
+        document.getElementById("feedback");
+
+    feedback.className = "feedback";
+    feedback.innerHTML = "";
+
+    document.getElementById("nextBtn").style.display = "none";
+}
+
+
+/* =========================
+   SELECT ANSWER
+========================= */
+
+function selectAnswer(index,button){
+
+    if(answered) return;
+
+    answered = true;
+
+    const q = questions[currentQuestion];
+
+    const buttons =
+        document.querySelectorAll(".option");
+
+    buttons.forEach(btn=>{
+        btn.classList.add("disabled");
+    });
+
+    if(index === q.answer){
+
+        score++;
+
+        button.classList.add("correct");
+
+        showFeedback(
+            true,
+            "✅ সঠিক উত্তর!",
+            q.correct,
+            q.explanation
+        );
+
+    }else{
+
+        button.classList.add("wrong");
+
+        buttons[q.answer].classList.add("correct");
+
+        showFeedback(
+            false,
+            "❌ ভুল উত্তর!",
+            "সঠিক ক্রম: " + q.correct,
+            q.explanation
+        );
+    }
+
+    document.getElementById("nextBtn").style.display =
+        "inline-block";
+}
+
+
+/* =========================
+   FEEDBACK
+========================= */
+
+function showFeedback(isCorrect,title,order,explanation){
+
+    const feedback =
+        document.getElementById("feedback");
+
+    feedback.className =
+        "feedback " +
+        (isCorrect
+            ? "correct-feedback"
+            : "wrong-feedback");
+
+    feedback.innerHTML =
+        `<strong>${title}</strong><br>
+         <b>${order}</b><br>
+         ${explanation}`;
+}
+
+
+/* =========================
+   NEXT QUESTION
+========================= */
+
+function nextQuestion(){
+
+    currentQuestion++;
+
+    if(currentQuestion < questions.length){
+
+        loadQuestion();
+
+        window.scrollTo({
+            top:0,
+            behavior:"smooth"
+        });
+
+    }else{
+
+        showResult();
+
+    }
+}
+
+
+/* =========================
+   RESULT
+========================= */
+
+function showResult(){
+
+    document.getElementById("quizScreen").style.display =
+        "none";
+
+    document.getElementById("resultScreen").style.display =
+        "block";
+
+    document.getElementById("finalScore").textContent =
+        `${score}/${questions.length}`;
+
+    document.getElementById("correctCount").textContent =
+        score;
+
+    document.getElementById("wrongCount").textContent =
+        questions.length - score;
+
+    document.getElementById("finalAttempt").textContent =
+        attempt;
+
+    let percentage =
+        (score / questions.length) * 100;
+
+    let message = "";
+
+    if(percentage === 100){
+
+        message =
+        "🏆 অসাধারণ! সবকটি প্রশ্নের উত্তর সঠিক হয়েছে।";
+
+    }else if(percentage >= 80){
+
+        message =
+        "🔥 খুব ভালো! আপনার প্রস্তুতি শক্তিশালী।";
+
+    }else if(percentage >= 60){
+
+        message =
+        "👍 ভালো হয়েছে। আরও একবার revision দিলে আরও ভালো হবে।";
+
+    }else if(percentage >= 40){
+
+        message =
+        "📚 আরও কিছুটা practice ও revision প্রয়োজন।";
+
+    }else{
+
+        message =
+        "💪 আবার চেষ্টা করুন। নিয়মিত practice করলে উন্নতি হবে।";
+    }
+
+    document.getElementById("resultMessage").textContent =
+        message;
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+
+/* =========================
+   RESTART
+========================= */
+
+function restartQuiz(){
+
+    currentQuestion = 0;
+    score = 0;
+
+    attempt++;
+
+    localStorage.setItem(
+        "sequenceQuizAttempt",
+        attempt
+    );
+
+    document.getElementById("attemptNumber").textContent =
+        attempt;
+
+    document.getElementById("quizScreen").style.display =
+        "block";
+
+    document.getElementById("resultScreen").style.display =
+        "none";
+
+    loadQuestion();
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+
+/* =========================
+   START
+========================= */
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>

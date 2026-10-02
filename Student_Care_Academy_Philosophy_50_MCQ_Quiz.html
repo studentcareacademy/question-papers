@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Care Academy - Philosophy Quiz</title>
+<style>
+:root {
+  --bg1:#06122b; --bg2:#101d3d; --gold:#f5c451; --gold2:#ffe28a;
+  --cyan:#41d9ff; --green:#25d366; --red:#ff4d67; --white:#f7f9ff;
+  --muted:#aebbd5; --card:#0d1833; --line:#33476e;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; min-height:100vh; font-family:Arial, Helvetica, sans-serif;
+  color:var(--white); background:
+  radial-gradient(circle at 50% 0%, #17346b 0, transparent 38%),
+  linear-gradient(145deg,var(--bg1),var(--bg2));
+}
+.header{
+  text-align:center; padding:20px 12px 10px; position:relative; overflow:hidden;
+}
+.brand{
+  font-size:clamp(22px,5vw,38px); font-weight:900; letter-spacing:.5px;
+  color:var(--gold2); text-shadow:0 0 12px #f5c45188;
+  animation:glow 1.8s ease-in-out infinite alternate;
+}
+.teacher{
+  margin-top:5px; font-size:clamp(15px,3.5vw,22px); font-weight:700;
+  color:#ffffff; animation:float 2.4s ease-in-out infinite;
+}
+@keyframes glow{from{text-shadow:0 0 7px #f5c45155;transform:scale(1)}to{text-shadow:0 0 24px #f5c451cc;transform:scale(1.015)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+.wrap{width:min(940px,94vw); margin:10px auto 30px}
+.topbar{
+  display:flex; justify-content:space-between; align-items:center; gap:10px;
+  margin:8px 0 12px; padding:10px 14px; border:1px solid var(--line);
+  background:#07122be8; border-radius:14px; box-shadow:0 8px 28px #0005;
+}
+.progress{color:var(--cyan);font-weight:800}
+.score{color:var(--gold2);font-weight:900}
+.card{
+  background:linear-gradient(180deg,#122247,#09152e);
+  border:1px solid #49618f; border-radius:22px; padding:18px;
+  box-shadow:0 18px 45px #0007; min-height:480px;
+}
+.qno{display:inline-block;color:#07122b;background:var(--gold);font-weight:900;padding:6px 12px;border-radius:999px;margin-bottom:15px}
+.question{
+  font-size:clamp(18px,3.8vw,26px); line-height:1.5; font-weight:800;
+  margin:0 0 20px;
+}
+.matching-box{
+  margin:12px 0; padding:12px 14px; border:1px solid #5b719c; border-radius:12px;
+  background:#07132b; font-size:.8em; line-height:1.75; color:#dbe7ff;
+}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.option{
+  position:relative; display:flex; align-items:flex-start; gap:10px;
+  padding:15px; min-height:68px; border:1px solid #536a92; border-radius:14px;
+  background:linear-gradient(145deg,#14284e,#0b1935); color:#fff;
+  cursor:pointer; transition:.2s; font-size:clamp(15px,3vw,18px); line-height:1.4;
+}
+.option:hover{transform:translateY(-2px);border-color:var(--gold);box-shadow:0 8px 20px #0005}
+.letter{
+  flex:0 0 31px;height:31px;border-radius:50%;display:grid;place-items:center;
+  background:#263e69;color:#fff;font-weight:900;
+}
+.option.correct{background:#0e4c35;border-color:var(--green);box-shadow:0 0 18px #25d36655}
+.option.wrong{background:#5b1d2a;border-color:var(--red)}
+.option.disabled{cursor:default}
+.controls{display:flex;justify-content:flex-end;margin-top:18px}
+button{
+  border:0; border-radius:12px; padding:13px 25px; font-weight:900; font-size:16px;
+  background:linear-gradient(135deg,var(--gold),#e9a92e); color:#111; cursor:pointer;
+  box-shadow:0 8px 18px #0005;
+}
+button:disabled{opacity:.45;cursor:not-allowed}
+.feedback{min-height:30px;margin-top:13px;font-weight:800;text-align:center}
+.feedback.ok{color:#54ef9b} .feedback.bad{color:#ff7285}
+.result{text-align:center;padding:32px 12px}
+.result h1{color:var(--gold2);font-size:clamp(30px,7vw,52px);margin:10px 0}
+.bigscore{font-size:clamp(48px,12vw,82px);font-weight:1000;color:#fff;text-shadow:0 0 24px #41d9ff88}
+.result-line{font-size:20px;margin:8px;color:#dce7ff}
+.hidden{display:none!important}
+@media(max-width:650px){.options{grid-template-columns:1fr}.card{padding:14px;min-height:500px}}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="brand">Student Care Academy</div>
+  <div class="teacher">Teacher:-Tapan Mandal</div>
+</header>
+
+<main class="wrap">
+  <div class="topbar">
+    <div class="progress" id="progress">Question 1 / 50</div>
+    <div class="score" id="score">Score: 0 | 0</div>
+  </div>
+
+  <section class="card" id="quizCard">
+    <div class="qno" id="qno">Q1</div>
+    <div class="question" id="question"></div>
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="controls">
+      <button id="nextBtn" disabled>Next Question →</button>
+    </div>
+  </section>
+
+  <section class="card result hidden" id="resultCard">
+    <div class="brand">Student Care Academy</div>
+    <h1>Quiz Completed!</h1>
+    <div class="bigscore" id="finalScore">0 / 50</div>
+    <div class="result-line" id="percentage"></div>
+    <div class="result-line" id="examCount"></div>
+    <br>
+    <button onclick="restartQuiz()">Take Exam Again</button>
+  </section>
+</main>
+
+<script>
+const questions = [{"n": 1, "q": "Who made the famous statement, \"I think, therefore I am\" (Cogito ergo sum)?", "options": {"A": "Baruch Spinoza", "B": "John Locke", "C": "Rene Descartes", "D": "David Hume"}, "answer": "C"}, {"n": 2, "q": "According to Spinoza, how many substances exist in the universe?", "options": {"A": "Two", "B": "Infinite", "C": "Three", "D": "One"}, "answer": "D"}, {"n": 3, "q": "The concept of 'Constant Conjunction' between cause and effect was introduced by:", "options": {"A": "Immanuel Kant", "B": "David Hume", "C": "John Locke", "D": "Aristotle"}, "answer": "B"}, {"n": 4, "q": "According to Plato, what represents true knowledge?", "options": {"A": "Sense-perception", "B": "Scientific facts", "C": "Knowledge of Ideas or intellectual knowledge", "D": "Empirical observation"}, "answer": "C"}, {"n": 5, "q": "\"Esse est percipi\" (To be is to be perceived) is the central tenet of which philosopher?", "options": {"A": "George Berkeley", "B": "Immanuel Kant", "C": "Rene Descartes", "D": "Karl Marx"}, "answer": "A"}, {"n": 6, "q": "According to Leibniz, what is the 'Supreme Monad'?", "options": {"A": "The human soul", "B": "The universe", "C": "God", "D": "Nature"}, "answer": "C"}, {"n": 7, "q": "Which philosopher is known for reconciling Rationalism and Empiricism?", "options": {"A": "David Hume", "B": "Immanuel Kant", "C": "Georg Wilhelm Friedrich Hegel", "D": "Baruch Spinoza"}, "answer": "B"}, {"n": 8, "q": "Ramanuja's school of Vedanta philosophy is known as:", "options": {"A": "Advaita", "B": "Dvaita", "C": "Shuddhadvaita", "D": "Visistadvaita"}, "answer": "D"}, {"n": 9, "q": "According to Advaita Vedanta, how many powers does Maya possess?", "options": {"A": "One (Avarana)", "B": "Two (Avarana Shakti and Vikshepa Shakti)", "C": "Three (Sattva, Rajas, Tamas)", "D": "Four"}, "answer": "B"}, {"n": 10, "q": "According to Shankaracharya, what is the ultimate reality?", "options": {"A": "Jiva", "B": "Jagat", "C": "Brahman", "D": "Ishvara"}, "answer": "C"}, {"n": 11, "q": "\"Man is by nature a social animal.\" Who said this?", "options": {"A": "Plato", "B": "Socrates", "C": "Aristotle", "D": "Jean-Jacques Rousseau"}, "answer": "C"}, {"n": 12, "q": "The term 'Democracy' is derived from which two Greek words?", "options": {"A": "Demos (people) and Kratos (power/rule)", "B": "Demos (society) and Logos (study)", "C": "Demo (rule) and Cracy (government)", "D": "Demos (people) and Polis (city-state)"}, "answer": "A"}, {"n": 13, "q": "Who was the first to use the term 'Deep Ecology'?", "options": {"A": "Aldo Leopold", "B": "Arne Naess", "C": "Peter Singer", "D": "Rachel Carson"}, "answer": "B"}, {"n": 14, "q": "Who is the author of the influential book 'Animal Liberation'?", "options": {"A": "Peter Singer", "B": "Jeremy Bentham", "C": "Aldo Leopold", "D": "Tom Regan"}, "answer": "A"}, {"n": 15, "q": "The word 'Euthanasia' originates from Greek words meaning:", "options": {"A": "Good (Eu) and Death (Thanatos)", "B": "Painless (Eu) and Sleep (Thanatos)", "C": "Self (Eu) and Destruction (Thanatos)", "D": "Medical (Eu) and Passing (Thanatos)"}, "answer": "A"}, {"n": 16, "q": "Which of the following is a famous book written by David Hume?", "options": {"A": "Critique of Pure Reason", "B": "Leviathan", "C": "A Treatise of Human Nature", "D": "The Republic"}, "answer": "C"}, {"n": 17, "q": "\"The view that no material object exists apart from a knower\" is the central idea of:", "options": {"A": "Representative Realism", "B": "Subjective Idealism", "C": "Transcendental Idealism", "D": "Objective Idealism"}, "answer": "B"}, {"n": 18, "q": "How many innate ideas did Descartes recognize?", "options": {"A": "Two", "B": "Three (God, the soul, and extension)", "C": "Four", "D": "None"}, "answer": "B"}, {"n": 19, "q": "According to John Locke, the human mind at birth is like a:", "options": {"A": "Complex machine", "B": "Blueprint of innate ideas", "C": "Blank slate (Tabula Rasa)", "D": "Pre-programmed entity"}, "answer": "C"}, {"n": 20, "q": "According to Kant, the relation of causation is:", "options": {"A": "A posteriori", "B": "A priori", "C": "Illusory", "D": "Purely empirical"}, "answer": "B"}, {"n": 21, "q": "\"Existence precedes essence\" is the fundamental proposition of which philosophical school?", "options": {"A": "Pragmatism", "B": "Marxism", "C": "Existentialism", "D": "Structuralism"}, "answer": "C"}, {"n": 22, "q": "Spinoza used which doctrine to explain the relationship between God and the world?", "options": {"A": "Polytheism", "B": "Deism", "C": "Pantheism", "D": "Atheism"}, "answer": "C"}, {"n": 23, "q": "Leibniz used which prominent principle in his philosophical system?", "options": {"A": "Pre-established Harmony", "B": "Survival of the Fittest", "C": "Categorical Imperative", "D": "Tabula Rasa"}, "answer": "A"}, {"n": 24, "q": "John Locke’s theory of knowledge is referred to as:", "options": {"A": "Subjective Idealism", "B": "Representative Realism", "C": "Critical Philosophy", "D": "Phenomenalism"}, "answer": "B"}, {"n": 25, "q": "How many sources of valid knowledge (Pramanas) are accepted in Advaita Vedanta?", "options": {"A": "3", "B": "4", "C": "5", "D": "6"}, "answer": "D"}, {"n": 26, "q": "According to Ramanuja, the world is:", "options": {"A": "An illusion created by Maya", "B": "A real transformation of Brahman (Parinamavada)", "C": "Completely distinct and separate from God", "D": "A mental projection of the Jiva"}, "answer": "B"}, {"n": 27, "q": "On which doctrine did Shankaracharya establish Advaita Vedanta?", "options": {"A": "Parinamavada", "B": "Vivartavada", "C": "Satkaryavada", "D": "Asatkaryavada"}, "answer": "B"}, {"n": 28, "q": "What constitutes the 'Prasthanatrayi' in Vedanta?", "options": {"A": "Rigveda, Samaveda, Yajurveda", "B": "Upanishads, Brahma Sutras, and Bhagavad Gita", "C": "Ramayana, Mahabharata, Puranas", "D": "Karma Yoga, Jnana Yoga, Bhakti Yoga"}, "answer": "B"}, {"n": 29, "q": "Who is the author of 'Das Kapital'?", "options": {"A": "Vladimir Lenin", "B": "Friedrich Engels", "C": "Karl Marx", "D": "Adam Smith"}, "answer": "C"}, {"n": 30, "q": "Who is considered the Father of Sociology?", "options": {"A": "Karl Marx", "B": "Max Weber", "C": "Emile Durkheim", "D": "Auguste Comte"}, "answer": "D"}, {"n": 31, "q": "The concept of 'General Will' was introduced by:", "options": {"A": "Thomas Hobbes", "B": "John Locke", "C": "Jean-Jacques Rousseau", "D": "Immanuel Kant"}, "answer": "C"}, {"n": 32, "q": "The 'Land Ethic' was proposed by:", "options": {"A": "Arne Naess", "B": "Aldo Leopold", "C": "Rachel Carson", "D": "Peter Singer"}, "answer": "B"}, {"n": 33, "q": "The term 'Eco-feminism' was first used by:", "options": {"A": "Simone de Beauvoir", "B": "Francoise d'Eaubonne", "C": "Vandana Shiva", "D": "Mary Wollstonecraft"}, "answer": "B"}, {"n": 34, "q": "The basic principle of Jeremy Bentham's Utilitarianism is:", "options": {"A": "Duty for duty's sake", "B": "The greatest happiness of the greatest number", "C": "Survival of the fittest", "D": "Might is right"}, "answer": "B"}, {"n": 35, "q": "According to Radical Feminists, the principal cause of women's subordination is:", "options": {"A": "Capitalism", "B": "Lack of education", "C": "Patriarchy", "D": "Biological differences"}, "answer": "C"}, {"n": 36, "q": "\"Religion is the opium of the people.\" Who made this statement?", "options": {"A": "Friedrich Nietzsche", "B": "Sigmund Freud", "C": "Karl Marx", "D": "Jean-Paul Sartre"}, "answer": "C"}, {"n": 37, "q": "\"Hell is other people\" is a quote by which existentialist?", "options": {"A": "Jean-Paul Sartre", "B": "Albert Camus", "C": "Martin Heidegger", "D": "Friedrich Nietzsche"}, "answer": "A"}, {"n": 38, "q": "\"God or Nature\" (Deus sive Natura) is associated with:", "options": {"A": "Rene Descartes", "B": "Baruch Spinoza", "C": "Gottfried Leibniz", "D": "Thomas Aquinas"}, "answer": "B"}, {"n": 39, "q": "Assertion (A): Descartes is called a dualist.", "options": {"A": "Both A and R are true, and R is the correct explanation of A.", "B": "Both A and R are true, but R is not the correct explanation of A.", "C": "A is true, but R is false.", "D": "A is false, but R is true."}, "answer": "A"}, {"n": 40, "q": "Assertion (A): John Locke rejected innate ideas.", "options": {"A": "Both A and R are true, and R is the correct explanation of A.", "B": "Both A and R are true, but R is not the correct explanation of A.", "C": "A is true, but R is false.", "D": "Both A and R are false."}, "answer": "A"}, {"n": 41, "q": "Assertion (A): Karl Marx dreamed of a classless and stateless society.", "options": {"A": "Both A and R are true, and R is the correct explanation of A.", "B": "Both A and R are true, but R is not the correct explanation of A.", "C": "A is true, but R is false.", "D": "A is false, but R is true."}, "answer": "C"}, {"n": 42, "q": "Match the following Philosophers with their Books:<div class='matching-box'>I. Plato              1. Das Kapital<br>II. Aristotle         2. The Republic<br>III. Karl Marx        3. Politics</div>", "options": {"A": "I-2, II-3, III-1", "B": "I-1, II-2, III-3", "C": "I-3, II-1, III-2", "D": "I-2, II-1, III-3"}, "answer": "A"}, {"n": 43, "q": "Match the Social Groups with their Types:<div class='matching-box'>I. Family             1. Secondary Group<br>II. Trade Union       2. Primary Group</div>", "options": {"A": "I-1, II-2", "B": "I-2, II-1", "C": "Both are Primary Groups", "D": "Both are Secondary Groups"}, "answer": "B"}, {"n": 44, "q": "Match the Euthanasia Types with their conditions:<div class='matching-box'>I. Active Euthanasia      1. Withdrawal of life support<br>II. Passive Euthanasia    2. Administering a lethal drug</div>", "options": {"A": "I-1, II-2", "B": "I-2, II-1", "C": "Both involve lethal drugs", "D": "Both involve withdrawal of support"}, "answer": "B"}, {"n": 45, "q": "What does 'Passive Euthanasia' specifically refer to?", "options": {"A": "Giving a lethal injection to end suffering", "B": "Assisting a patient to commit suicide", "C": "Withdrawing life-supporting treatment to hasten death naturally", "D": "Ending life without the patient's consent"}, "answer": "C"}, {"n": 46, "q": "According to Locke, what type of knowledge is obtained immediately without proof?", "options": {"A": "Sensitive Knowledge", "B": "Intuitive Knowledge", "C": "Demonstrative Knowledge", "D": "A posteriori Knowledge"}, "answer": "B"}, {"n": 47, "q": "\"The state is the actuality of the ethical Idea.\" Who said this?", "options": {"A": "Karl Marx", "B": "G.W.F. Hegel", "C": "John Locke", "D": "Thomas Hobbes"}, "answer": "B"}, {"n": 48, "q": "In Spinoza's philosophy, what are 'Modes'?", "options": {"A": "Infinite attributes of God", "B": "Independent substances", "C": "Modifications of substance or particular states of attributes", "D": "Innate ideas of the mind"}, "answer": "C"}, {"n": 49, "q": "\"Survival of the fittest\" is a phrase coined by:", "options": {"A": "Charles Darwin", "B": "Karl Marx", "C": "Herbert Spencer", "D": "Auguste Comte"}, "answer": "C"}, {"n": 50, "q": "Which philosopher famously declared, \"God is dead\"?", "options": {"A": "Jean-Paul Sartre", "B": "Karl Marx", "C": "Friedrich Nietzsche", "D": "David Hume"}, "answer": "C"}];
+let index = 0, score = 0, answered = false;
+
+function getAttempts() {
+  return Number(localStorage.getItem("philosophy_exam_count") || "0");
+}
+function updateTop() {
+  document.getElementById("progress").textContent = `Question ${index+1} / ${questions.length}`;
+  document.getElementById("score").textContent = `Score: ${score} | ${getAttempts()}`;
+}
+function render() {
+  answered = false;
+  const q = questions[index];
+  document.getElementById("qno").textContent = `Q${q.n}`;
+  document.getElementById("question").innerHTML = q.q;
+  const box = document.getElementById("options");
+  box.innerHTML = "";
+  Object.entries(q.options).forEach(([letter, text]) => {
+    const el = document.createElement("div");
+    el.className = "option";
+    el.dataset.letter = letter;
+    el.innerHTML = `<span class="letter">${letter}</span><span>${escapeHTML(text)}</span>`;
+    el.onclick = () => choose(letter);
+    box.appendChild(el);
+  });
+  document.getElementById("feedback").textContent = "";
+  document.getElementById("feedback").className = "feedback";
+  document.getElementById("nextBtn").disabled = true;
+  document.getElementById("nextBtn").textContent =
+    index === questions.length - 1 ? "See Final Score →" : "Next Question →";
+  updateTop();
+}
+function escapeHTML(s) {
+  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function choose(letter) {
+  if (answered) return;
+  answered = true;
+  const q = questions[index];
+  document.querySelectorAll(".option").forEach(el => {
+    el.classList.add("disabled");
+    if (el.dataset.letter === q.answer) el.classList.add("correct");
+    if (el.dataset.letter === letter && letter !== q.answer) el.classList.add("wrong");
+  });
+  const fb = document.getElementById("feedback");
+  if (letter === q.answer) {
+    score++;
+    fb.textContent = "✓ Correct Answer";
+    fb.classList.add("ok");
+  } else {
+    fb.textContent = `✗ Wrong Answer — Correct: ${q.answer}`;
+    fb.classList.add("bad");
+  }
+  document.getElementById("nextBtn").disabled = false;
+  updateTop();
+}
+document.getElementById("nextBtn").onclick = () => {
+  if (!answered) return;
+  if (index < questions.length - 1) {
+    index++;
+    render();
+  } else {
+    finishQuiz();
+  }
+};
+function finishQuiz() {
+  const attempts = getAttempts() + 1;
+  localStorage.setItem("philosophy_exam_count", attempts);
+  document.getElementById("quizCard").classList.add("hidden");
+  document.getElementById("resultCard").classList.remove("hidden");
+  document.getElementById("finalScore").textContent = `${score} / ${questions.length}`;
+  document.getElementById("percentage").textContent =
+    `Percentage: ${Math.round(score / questions.length * 100)}%`;
+  document.getElementById("examCount").textContent = `Exam Count: ${attempts}`;
+  document.getElementById("score").textContent = `Score: ${score} | ${attempts}`;
+}
+function restartQuiz() {
+  index = 0; score = 0; answered = false;
+  document.getElementById("quizCard").classList.remove("hidden");
+  document.getElementById("resultCard").classList.add("hidden");
+  render();
+}
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Student Care Academy - Class 12 Biology Quiz</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap');
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:'Noto Sans Bengali',sans-serif;
+    background:
+      radial-gradient(circle at top left,#172554 0,#07111f 35%,#020617 100%);
+    color:#fff;
+    min-height:100vh;
+}
+
+.app{
+    width:100%;
+    max-width:900px;
+    margin:auto;
+    padding:14px;
+}
+
+/* HEADER */
+.header{
+    position:relative;
+    overflow:hidden;
+    text-align:center;
+    padding:20px 12px 18px;
+    border-radius:22px;
+    background:linear-gradient(135deg,#0f172a,#172554,#1e1b4b);
+    border:1px solid rgba(255,255,255,.15);
+    box-shadow:0 15px 45px rgba(0,0,0,.35);
+    margin-bottom:15px;
+}
+
+.header:before{
+    content:"";
+    position:absolute;
+    width:180px;
+    height:180px;
+    background:#38bdf8;
+    filter:blur(90px);
+    opacity:.18;
+    top:-90px;
+    left:-50px;
+}
+
+.header:after{
+    content:"";
+    position:absolute;
+    width:180px;
+    height:180px;
+    background:#a855f7;
+    filter:blur(90px);
+    opacity:.18;
+    bottom:-100px;
+    right:-50px;
+}
+
+.brand{
+    position:relative;
+    z-index:2;
+    font-size:25px;
+    font-weight:800;
+    background:linear-gradient(90deg,#67e8f9,#f0abfc,#fde68a,#67e8f9);
+    background-size:300% auto;
+    -webkit-background-clip:text;
+    color:transparent;
+    animation:brandMove 5s linear infinite;
+}
+
+@keyframes brandMove{
+    0%{background-position:0%}
+    100%{background-position:300%}
+}
+
+.teacher{
+    position:relative;
+    z-index:2;
+    margin-top:5px;
+    font-size:15px;
+    font-weight:600;
+    color:#dbeafe;
+}
+
+.className{
+    position:relative;
+    z-index:2;
+    margin-top:9px;
+    font-size:18px;
+    font-weight:700;
+    color:#fef3c7;
+}
+
+.progressArea{
+    margin:12px 2px;
+}
+
+.progressText{
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    color:#cbd5e1;
+    margin-bottom:6px;
+}
+
+.progress{
+    height:8px;
+    border-radius:20px;
+    background:#1e293b;
+    overflow:hidden;
+}
+
+.progressBar{
+    height:100%;
+    width:0%;
+    border-radius:20px;
+    background:linear-gradient(90deg,#22d3ee,#818cf8,#f472b6);
+    transition:.35s;
+}
+
+/* QUIZ CARD */
+.quizCard{
+    background:rgba(15,23,42,.92);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:22px;
+    padding:20px;
+    box-shadow:0 15px 50px rgba(0,0,0,.35);
+}
+
+.sectionBadge{
+    display:inline-block;
+    padding:6px 13px;
+    border-radius:30px;
+    background:linear-gradient(135deg,#312e81,#7c3aed);
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    margin-bottom:12px;
+}
+
+.questionNo{
+    color:#67e8f9;
+    font-size:15px;
+    font-weight:800;
+    margin-bottom:8px;
+}
+
+.question{
+    font-size:19px;
+    line-height:1.75;
+    font-weight:700;
+    color:#f8fafc;
+    margin-bottom:17px;
+}
+
+/* OPTIONS */
+.options{
+    display:grid;
+    gap:11px;
+}
+
+.option{
+    position:relative;
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    padding:13px 14px;
+    border-radius:14px;
+    border:1px solid #334155;
+    background:linear-gradient(135deg,#111827,#172033);
+    cursor:pointer;
+    transition:.2s;
+    font-size:15px;
+    line-height:1.6;
+}
+
+.option:hover{
+    transform:translateY(-2px);
+    border-color:#38bdf8;
+    background:#172554;
+}
+
+.option input{
+    display:none;
+}
+
+.optionLetter{
+    flex:0 0 30px;
+    width:30px;
+    height:30px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:#1e293b;
+    color:#bae6fd;
+    font-weight:800;
+}
+
+.option.selected{
+    border-color:#22d3ee;
+    background:linear-gradient(135deg,#164e63,#172554);
+    box-shadow:0 0 18px rgba(34,211,238,.15);
+}
+
+.option.selected .optionLetter{
+    background:#06b6d4;
+    color:#082f49;
+}
+
+.option.correct{
+    border-color:#22c55e;
+    background:rgba(20,83,45,.65);
+}
+
+.option.correct .optionLetter{
+    background:#22c55e;
+    color:#052e16;
+}
+
+.option.wrong{
+    border-color:#ef4444;
+    background:rgba(127,29,29,.55);
+}
+
+.option.wrong .optionLetter{
+    background:#ef4444;
+    color:#450a0a;
+}
+
+/* MATCHING */
+.matchGrid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin:12px 0 18px;
+}
+
+.matchBox{
+    border:1px solid #475569;
+    border-radius:14px;
+    overflow:hidden;
+    background:#0f172a;
+}
+
+.matchTitle{
+    background:linear-gradient(135deg,#312e81,#4338ca);
+    padding:9px;
+    text-align:center;
+    font-weight:800;
+    color:#e0e7ff;
+}
+
+.matchRow{
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+    padding:9px 11px;
+    border-top:1px solid #334155;
+    font-size:14px;
+}
+
+.matchLeft{
+    color:#bae6fd;
+    font-weight:700;
+}
+
+.matchRight{
+    color:#fde68a;
+    text-align:right;
+}
+
+@media(max-width:600px){
+    .matchGrid{
+        grid-template-columns:1fr 1fr;
+        gap:8px;
+    }
+
+    .matchRow{
+        font-size:12px;
+        padding:8px;
+    }
+}
+
+/* ASSERTION */
+.assertionBox{
+    background:#111827;
+    border:1px solid #475569;
+    border-radius:15px;
+    padding:14px;
+    margin-bottom:15px;
+}
+
+.assertion{
+    padding:9px;
+    border-radius:10px;
+    background:#172554;
+    margin-bottom:8px;
+    line-height:1.65;
+}
+
+.reason{
+    padding:9px;
+    border-radius:10px;
+    background:#3f1d4e;
+    line-height:1.65;
+}
+
+/* BUTTON */
+.btnRow{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    margin-top:20px;
+}
+
+button{
+    border:0;
+    cursor:pointer;
+    font-family:inherit;
+}
+
+.nextBtn{
+    flex:1;
+    padding:13px 18px;
+    border-radius:14px;
+    background:linear-gradient(135deg,#06b6d4,#4f46e5);
+    color:#fff;
+    font-size:16px;
+    font-weight:800;
+    box-shadow:0 8px 25px rgba(79,70,229,.3);
+}
+
+.nextBtn:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+}
+
+.nextBtn:not(:disabled):active{
+    transform:scale(.98);
+}
+
+/* RESULT */
+.result{
+    display:none;
+    text-align:center;
+}
+
+.resultIcon{
+    width:90px;
+    height:90px;
+    margin:8px auto 15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:linear-gradient(135deg,#22c55e,#06b6d4);
+    font-size:43px;
+    box-shadow:0 0 35px rgba(34,197,94,.25);
+}
+
+.resultTitle{
+    font-size:27px;
+    font-weight:800;
+    color:#fef3c7;
+}
+
+.scoreBox{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin:20px 0;
+}
+
+.scoreItem{
+    background:#111827;
+    border:1px solid #334155;
+    border-radius:16px;
+    padding:15px;
+}
+
+.scoreLabel{
+    color:#94a3b8;
+    font-size:13px;
+}
+
+.scoreValue{
+    margin-top:5px;
+    font-size:29px;
+    font-weight:800;
+    color:#67e8f9;
+}
+
+.restart{
+    width:100%;
+    padding:14px;
+    border-radius:15px;
+    background:linear-gradient(135deg,#7c3aed,#db2777);
+    color:#fff;
+    font-weight:800;
+    font-size:16px;
+}
+
+.footer{
+    text-align:center;
+    color:#64748b;
+    font-size:11px;
+    padding:18px 0 5px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="header">
+    <div class="brand">Student Care Academy</div>
+    <div class="teacher">Teacher:- Tapan Mandal</div>
+    <div class="className">Class-12 Semester-3 Biology</div>
+</header>
+
+<div class="progressArea" id="progressArea">
+    <div class="progressText">
+        <span id="sectionText">General MCQs</span>
+        <span><span id="currentNo">1</span> / <span id="totalNo">50</span></span>
+    </div>
+    <div class="progress">
+        <div class="progressBar" id="progressBar"></div>
+    </div>
+</div>
+
+<div class="quizCard">
+
+<div id="quiz"></div>
+
+<div class="result" id="result">
+
+    <div class="resultIcon">✓</div>
+
+    <div class="resultTitle">Exam Completed!</div>
+
+    <div class="scoreBox">
+
+        <div class="scoreItem">
+            <div class="scoreLabel">Total Score</div>
+            <div class="scoreValue" id="finalScore">0</div>
+        </div>
+
+        <div class="scoreItem">
+            <div class="scoreLabel">Attempt Number</div>
+            <div class="scoreValue" id="attemptNo">1</div>
+        </div>
+
+        <div class="scoreItem">
+            <div class="scoreLabel">Correct</div>
+            <div class="scoreValue" id="correctNo">0</div>
+        </div>
+
+        <div class="scoreItem">
+            <div class="scoreLabel">Wrong</div>
+            <div class="scoreValue" id="wrongNo">0</div>
+        </div>
+
+    </div>
+
+    <button class="restart" onclick="restartQuiz()"> আবার পরীক্ষা দিন </button>
+
+</div>
+
+</div>
+
+<div class="footer">
+    Student Care Academy • Class-12 Semester-3 Biology
+</div>
+
+</div>
+
+<script>
+
+/* =========================================================
+   QUESTION BANK
+========================================================= */
+
+const questions = [
+
+/* ================= GENERAL MCQ ================= */
+
+{
+section:"General MCQs",
+q:"পরাগরেণু জীবাশ্ম হিসেবে সুসংরক্ষিত থাকে, যার কারণ এতে উপস্থিত থাকে -",
+o:["সেলুলোজ","লিগনোসেলুলোজ","কাইটিন","স্পোরোপোলেনিন"],
+a:3
+},
+
+{
+section:"General MCQs",
+q:"গর্ভযন্ত্র গঠনের জন্য ডিম্বকরন্ধ্র প্রান্তে কয়টি নিউক্লিয়াসের প্রয়োজন হয়?",
+o:["2","3","4","8"],
+a:1
+},
+
+{
+section:"General MCQs",
+q:"মাইক্রোস্পোরোজেনেসিসের সময় মিয়োসিস বিভাজন ঘটে -",
+o:["পরাগরেণুতে","মাইক্রোস্পোর টেট্রাডে","মাইক্রোস্পোর মাতৃকোশে","এন্ডোথিসিয়ামে"],
+a:2
+},
+
+{
+section:"General MCQs",
+q:"অ্যালবুমিনাস বীজসমূহ তাদের সঞ্চিত খাদ্য মূলত কোথায় সঞ্চয় করে?",
+o:["পেরিস্পার্ম","এন্ডোস্পার্ম","বীজপত্র","হাইপোকোটাইল"],
+a:1
+},
+
+{
+section:"General MCQs",
+q:"যে থলির মধ্যে শুক্রাশয়গুলো উদর গহ্বরের বাইরে ঝুলে থাকে, তা হলো -",
+o:["টিউনিকা অ্যালবুজিনিয়া","ইনগুইনাল ক্যানাল","এপিডিডাইমিস","স্ক্রোটাম"],
+a:3
+},
+
+{
+section:"General MCQs",
+q:"মানুষের গর্ভাবস্থার গড় সময়কাল হলো -",
+o:["180 দিন","200 দিন","280 দিন","300 দিন"],
+a:2
+},
+
+{
+section:"General MCQs",
+q:"শুক্রাণুর অ্যাক্রোজোমাল ক্যাপ-এ কী থাকে?",
+o:["হায়ালুরোনিডেজ ও অ্যাক্রোসিন","হায়ালুরোনিক অ্যাসিড ও অ্যাক্রোসিন","হিঞ্চুরিক অ্যাসিড ও ইউরিক অ্যাসিড","উপরের সবকটি"],
+a:0
+},
+
+{
+section:"General MCQs",
+q:"মানুষের ক্ষেত্রে, প্রথম মিয়োসিস বিভাজনের শেষে, পুরুষ জনন কোশগুলো রূপান্তরিত হয়ে কিসে পরিণত হয়?",
+o:["স্পার্ম্যাটিড","স্পার্মাটোগোনিয়া","প্রাথমিক স্পার্মাটোসাইট","গৌণ স্পার্মাটোসাইট"],
+a:3
+},
+
+{
+section:"General MCQs",
+q:"'নিরোধ' (Nirodh) হলো একটি জনপ্রিয় ব্র্যান্ড, যা নিচের কোন্ পদ্ধতির অন্তর্ভুক্ত?",
+o:["প্রাকৃতিক পদ্ধতি","বন্ধ্যাকরণ পদ্ধতি","প্রতিবন্ধক পদ্ধতি","A এবং C উভয়ই"],
+a:2
+},
+
+{
+section:"General MCQs",
+q:"IUD স্থাপন করা হয় -",
+o:["ডিম্বাশয়ে","যোনিপথে","ফ্যালোপিয়ান নালীতে","জরায়ুতে"],
+a:3
+},
+
+{
+section:"General MCQs",
+q:"মানুষের নিষেক প্রক্রিয়া সম্পন্ন হয় -",
+o:["ডিম্বাশয়ে","অ্যাম্পুলায়","জরায়ুতে","ইনফ্যান্ডিবুলামে"],
+a:1
+},
+
+{
+section:"General MCQs",
+q:"প্লিওট্রপি (Pleiotropy) ঘটে যখন -",
+o:["একাধিক জিন একটি ফিনোটাইপিক বৈশিষ্ট্য নিয়ন্ত্রণ করে।","একটি জিন একাধিক ফিনোটাইপিক বৈশিষ্ট্য নিয়ন্ত্রণ করে।","একটি হেটারোজাইগোটে দুটি অ্যালিল সমানভাবে প্রকাশিত হয়।","একটি জিন অন্য একটি জিনের প্রকাশকে বাধা দেয়।"],
+a:1
+},
+
+{
+section:"General MCQs",
+q:"সিকল সেল অ্যানিমিয়ার আণবিক কারণ কী?",
+o:["বিটা-গ্লোবিন শৃঙ্খলের 6 তম অবস্থানে গ্লুটামিক অ্যাসিড, ভ্যালিন দ্বারা প্রতিস্থাপিত হওয়া।","আলফা-গ্লোবিন শৃঙ্খলের 6 তম অবস্থানে ভ্যালিন, গ্লুটামিক অ্যাসিড দ্বারা প্রতিস্থাপিত হওয়া।","একটি ক্ষারক যুগ্মের বাদ যাওয়ার ফলে বিটা-গ্লোবিন জিনের সজ্জার ফ্রেম শিফট ঘটা।","ফিনাইলঅ্যালানিন হাইড্রোক্সিলেজ উৎসেচকের অনুপস্থিতি।"],
+a:0
+},
+
+{
+section:"General MCQs",
+q:"ডাউন সিনড্রোম (Down's syndrome) একটি বিশিষ্ট ক্রোমোজোমাল ব্যাধি। এই ব্যাধির কারণ হল:",
+o:["X ক্রোমোজোমের মোনোজোমি","21 নং ক্রোমোজোমের ট্রাইজোমি","Y ক্রোমোজোমের একটি অতিরিক্ত কপি","5 নং ক্রোমোজোমের একটি প্রান্তীয় অংশের বিলোপ"],
+a:1
+},
+
+{
+section:"General MCQs",
+q:"একটি সাধারণ স্তন্যপায়ী ডিপ্লয়েড কোশে DNA-র আনুমানিক দৈর্ঘ্য কত?",
+o:["1.36 millimeters","2.2 meters","3.4 nanometers","4.6 million base pairs"],
+a:1
+},
+
+{
+section:"General MCQs",
+q:"DNA-র সেমি-কনজারভেটিভ রেপ্লিকেশন প্রমাণ করার জন্য Meselson এবং Stahl নাইট্রোজেনের কোন্ ভারী আইসোটোপটি ব্যবহার করেছিলেন?",
+o:["14N","15N","32P","35S"],
+a:1
+},
+
+{
+section:"General MCQs",
+q:"DNA রেপ্লিকেশনের সময় ডিঅক্সিনিউক্লিওটাইডগুলির পলিমারাইজেশনকে অনুঘটন করার জন্য দায়ী প্রধান উৎসেচকটি হলো:",
+o:["DNA লাইগেজ","DNA-নির্ভর RNA পলিমারেজ","DNA-নির্ভর DNA পলিমারেজ","হেলিকেজ"],
+a:2
+},
+
+{
+section:"General MCQs",
+q:"S.L. Miller-এর পরীক্ষায় (1953), আদিম পৃথিবীর বায়ুমণ্ডলকে অনুকরণ করার জন্য বদ্ধ ফ্লাস্কে কোন নির্দিষ্ট গ্যাস এবং পরিস্থিতি তৈরি করা হয়েছিল?",
+o:["CH4, H2, NH3 এবং জলীয় বাষ্প 800°C তাপমাত্রায়","CH4, O2, NH3 এবং জলীয় বাষ্প 800°C তাপমাত্রায়","CO2, H2, NH3 এবং জলীয় বাষ্প 400°C তাপমাত্রায়","CH4, H2, N2 এবং জলীয় বাষ্প 400°C তাপমাত্রায়"],
+a:0
+},
+
+{
+section:"General MCQs",
+q:"যদি ব্যাকটেরিয়ার একটি জনসংখ্যা পেনিসিলিনের সংস্পর্শে এসে বেশিরভাগই মারা যায়, কিন্তু কয়েকটি বেঁচে থাকে এবং বংশবৃদ্ধি করে। নিচের কোনটি এই ঘটনাটিকে সবচেয়ে ভালোভাবে বর্ণনা করে?",
+o:["ব্যাকটেরিয়া বেঁচে থাকার জন্য পেনিসিলিনের প্রতিক্রিয়া হিসাবে মিউটেট করেছে।","পেনিসিলিন ব্যাকটেরিয়াতে একটি নির্দেশিত বিবর্তন প্ররোচিত করেছে।","আগে থেকেই বিদ্যমান সুবিধাজনক মিউটেশনের কারণে কিছু ব্যাকটেরিয়া বেঁচে থাকতে পেরেছিল এবং প্রকৃতির দ্বারা নির্বাচিত হয়েছিল।","ব্যাকটেরিয়া তাদের কোশপ্রাচীরকে আরও তীব্রভাবে ব্যবহার করে প্রতিরোধ ক্ষমতা অর্জন করেছিল।"],
+a:2
+},
+
+{
+section:"General MCQs",
+q:"ভূতাত্বিক সময় স্কেলে কোন্ সময়কালকে \"Age of Reptiles\" বলা হয়?",
+o:["Paleozoic","Mesozoic","Cenozoic","Precambrian"],
+a:1
+},
+
+/* ================= ASSERTION REASON ================= */
+
+{
+section:"Assertion-Reason",
+type:"ar",
+q:"ক্লেইস্টোগ্যামাস ফুলে সর্বদা স্ব-পরাগমিলন হয় এবং বাহকের অনুপস্থিতিতেও নিশ্চিত বীজ উৎপাদন করে।",
+r:"এই ধরনের ফুল সব সময় বন্ধ থাকে এবং পুংদণ্ড ও গর্ভমুণ্ড একে অপরের কাছাকাছি থাকে।",
+o:["A এবং R উভয়ই সত্য এবং R হলো A-এর সঠিক ব্যাখ্যা।","A এবং R উভয়ই সত্য কিন্তু R, A-এর সঠিক ব্যাখ্যা নয়।","A সত্য কিন্তু R মিথ্যা।","A মিথ্যা কিন্তু R সত্য।"],
+a:0
+},
+
+{
+section:"Assertion-Reason",
+type:"ar",
+q:"গেইটোনোগ্যামি জিনগতভাবে অটোগ্যামির অনুরূপ।",
+r:"গেইটোনোগ্যামিতে পরাগরেণু একই উদ্ভিদ থেকে আসে।",
+o:["A এবং R উভয়ই সত্য এবং R হলো A-এর সঠিক ব্যাখ্যা।","A এবং R উভয়ই সত্য কিন্তু R, A-এর সঠিক ব্যাখ্যা নয়।","A সত্য কিন্তু R মিথ্যা।","A মিথ্যা কিন্তু R সত্য।"],
+a:0
+},
+
+{
+section:"Assertion-Reason",
+type:"ar",
+q:"জরায়ুর এন্ডোমেট্রিয়ামের রক্ষণাবেক্ষণের জন্য প্রোজেস্টেরন অপরিহার্য।",
+r:"নিষিক্ত ডিম্বাণুর প্রতিস্থাপনের জন্য জরায়ুর অন্তঃপ্রাচীর অপরিহার্য।",
+o:["A এবং R উভয়ই সত্য এবং R হলো A-এর সঠিক ব্যাখ্যা।","A এবং R উভয়ই সত্য কিন্তু R, A-এর সঠিক ব্যাখ্যা নয়।","A সত্য কিন্তু R মিথ্যা।","A মিথ্যা কিন্তু R সত্য।"],
+a:1
+},
+
+{
+section:"Assertion-Reason",
+type:"ar",
+q:"অ্যামনিওসেন্টেসিস (Amniocentesis) এর প্রায়শই অপব্যবহার করা হয়।",
+r:"এটি মূলত ভ্রূণের জিনগত ত্রুটি নির্ণয়ের উদ্দেশ্যে তৈরি, কিন্তু বর্তমানে এটি ভ্রূণের লিঙ্গ নির্ধারণের কাজে ব্যবহৃত হচ্ছে, যার ফলে কন্যা-ভ্রূণ হত্যার হার বৃদ্ধি পাচ্ছে।",
+o:["A এবং R উভয়ই সত্য এবং R হলো A-এর সঠিক ব্যাখ্যা।","A এবং R উভয়ই সত্য কিন্তু R, A-এর সঠিক ব্যাখ্যা নয়।","A সত্য কিন্তু R মিথ্যা।","A মিথ্যা কিন্তু R সত্য।"],
+a:0
+},
+
+{
+section:"Assertion-Reason",
+type:"ar",
+q:"মেন্ডেলিয়ান ব্যাধিগুলি মূলত একটি জিনের পরিবর্তন বা মিউটেশনের দ্বারা নির্ধারিত হয়।",
+r:"পেডিগ্রি বিশ্লেষণের মাধ্যমে একটি পরিবারে উপস্থিত এই ব্যাধিগুলিকে চিহ্নিত করা যেতে পারে।",
+o:["A এবং R উভয়ই সত্য এবং R হলো A-এর সঠিক ব্যাখ্যা।","A এবং R উভয়ই সত্য কিন্তু R, A-এর সঠিক ব্যাখ্যা নয়।","A সত্য কিন্তু R মিথ্যা।","A মিথ্যা কিন্তু R সত্য।"],
+a:1
+},
+
+{
+section:"Assertion-Reason",
+type:"ar",
+q:"মহিলাদের তুলনায় পুরুষদের মধ্যে বর্ণান্ধতা (Colour blindness) বেশি দেখা যায়।",
+r:"বর্ণান্ধতার জিনটি Y ক্রোমোজোমে অবস্থিত।",
+o:["A এবং R উভয়ই সত্য এবং R হলো A-এর সঠিক ব্যাখ্যা।","A এবং R উভয়ই সত্য কিন্তু R, A-এর সঠিক ব্যাখ্যা নয়।","A সত্য কিন্তু R মিথ্যা।","A মিথ্যা কিন্তু R সত্য।"],
+a:3
+},
+
+{
+section:"Assertion-Reason",
+type:"ar",
+q:"মানুষের ক্ষেত্রে, শিশুর লিঙ্গ পুরুষ দ্বারা নির্ধারিত হয়।",
+r:"পুরুষেরা হেটারোগ্যামেটি প্রদর্শন করে এবং দুই ধরণের শুক্রাণু তৈরি করে, যার অর্ধেক X ক্রোমোজোম এবং অর্ধেক Y ক্রোমোজোম ধারণ করে।",
+o:["A এবং R উভয়ই সত্য এবং R হলো A-এর সঠিক ব্যাখ্যা।","A এবং R উভয়ই সত্য কিন্তু R, A-এর সঠিক ব্যাখ্যা নয়।","A সত্য কিন্তু R মিথ্যা।","A মিথ্যা কিন্তু R সত্য।"],
+a:0
+},
+
+{
+section:"Assertion-Reason",
+type:"ar",
+q:"DNA ডাবল হেলিক্সের দুটি শৃঙ্খলের অ্যান্টি-প্যারালাল পোলারিটি থাকে।",
+r:"ফসফোডাইএস্টার লিংকেজের ওরিয়েন্টেশনের কারণে একটি শৃঙ্খলের 5'->3' পোলারিটি এবং অন্যটির 3'->5' পোলারিটি থাকে।",
+o:["A এবং R উভয়ই সত্য এবং R হলো A-এর সঠিক ব্যাখ্যা।","A এবং R উভয়ই সত্য কিন্তু R, A-এর সঠিক ব্যাখ্যা নয়।","A সত্য কিন্তু R মিথ্যা।","A মিথ্যা কিন্তু R সত্য।"],
+a:0
+},
+
+{
+section:"Assertion-Reason",
+type:"ar",
+q:"শিল্পায়নের আগে ইংল্যান্ডে, গাছে গাঢ় ডানাযুক্ত মথের চেয়ে সাদা ডানাযুক্ত মথ বেশি ছিল।",
+r:"সাদা ডানাযুক্ত মথগুলো গাছের গুঁড়িতে থাকা হালকা রঙের লাইকেনের সাথে ভালোভাবে মিশে যেত, যার ফলে শিকারীদের হাত থেকে রক্ষা পেত।",
+o:["A এবং R উভয়ই সত্য এবং R হলো A-এর সঠিক ব্যাখ্যা।","A এবং R উভয়ই সত্য কিন্তু R, A-এর সঠিক ব্যাখ্যা নয়।","A সত্য কিন্তু R মিথ্যা।","A মিথ্যা কিন্তু R সত্য।"],
+a:0
+},
+
+{
+section:"Assertion-Reason",
+type:"ar",
+q:"একটি তিমির ফ্লিপার এবং মানুষের অগ্রপদ সমসংস্থ অঙ্গ।",
+r:"ভিন্ন ভিন্ন কাজ করা সত্ত্বেও তারা একই মৌলিক হাড়ের গঠন (humerus, radius, ulna, carpals, metacarpals) প্রদর্শন করে।",
+o:["A এবং R উভয়ই সত্য এবং R হলো A-এর সঠিক ব্যাখ্যা।","A এবং R উভয়ই সত্য কিন্তু R, A-এর সঠিক ব্যাখ্যা নয়।","A সত্য কিন্তু R মিথ্যা।","A মিথ্যা কিন্তু R সত্য।"],
+a:0
+},
+
+/* ================= MULTIPLE STATEMENTS ================= */
+
+{
+section:"Multiple Statements",
+q:"বিবৃতি I: প্রতিটি মাইক্রোস্পোরাঞ্জিয়ামের অভ্যন্তরে কয়েক হাজার মাইক্রোস্পোর গঠিত হয়, যা পরাগধানীর বিদীর্ণকরণের মাধ্যমে মুক্ত হয়।<br><br>বিবৃতি II: প্রতিটি মাইক্রোস্পোর টেট্রাড হলো একটি সম্ভাব্য পরাগরেণু।",
+o:["বিবৃতি I এবং বিবৃতি II উভয়ই ভুল।","বিবৃতি I সঠিক, কিন্তু বিবৃতি II ভুল।","বিবৃতি I ভুল, কিন্তু বিবৃতি II সঠিক।","বিবৃতি I এবং বিবৃতি II উভয়ই সঠিক।"],
+a:3
+},
+
+{
+section:"Multiple Statements",
+q:"বিবৃতি I: 'রিদম পদ্ধতি'তে (Rhythm method) কোনো মাসিক চক্র থাকে না।<br><br>বিবৃতি II: 'ফেমিডম' (Femidoms) হলো নারীদের দেওয়া হরমোন ইনজেকশন।",
+o:["বিবৃতি I এবং II উভয়ই সঠিক।","বিবৃতি I সঠিক, কিন্তু বিবৃতি II ভুল।","বিবৃতি I ভুল, কিন্তু বিবৃতি II সঠিক।","বিবৃতি I এবং II উভয়ই ভুল।"],
+a:3
+},
+
+{
+section:"Multiple Statements",
+q:"বিবৃতি I: DNA-এর একটি ক্ষারক যুগ্মের পরিবর্তনের কারণে মিউটেশন ঘটতে পারে।<br><br>বিবৃতি II: DNA-এর ক্ষারক যুগ্মের বিয়োজন এবং সংযোজনের ফলে ফ্রেম-শিফট মিউটেশন ঘটে।",
+o:["বিবৃতি I এবং বিবৃতি II উভয়ই সঠিক।","বিবৃতি I এবং বিবৃতি II উভয়ই ভুল।","বিবৃতি I সঠিক, কিন্তু বিবৃতি II ভুল।","বিবৃতি I ভুল, কিন্তু বিবৃতি II সঠিক।"],
+a:0
+},
+
+{
+section:"Multiple Statements",
+q:"বিবৃতি I: ইউক্রোমাটিন শিথিলভাবে পেঁচিয়ে থাকে এবং হালকা রঙ ধারণ করে।<br><br>বিবৃতি II: হেটারোক্রোমাটিন হলো ট্রান্সক্রিপশনগতভাবে সক্রিয় ক্রোমাটিন।",
+o:["বিবৃতি I এবং বিবৃতি II উভয়ই সঠিক।","বিবৃতি I এবং বিবৃতি II উভয়ই ভুল।","বিবৃতি I সঠিক, কিন্তু বিবৃতি II ভুল।","বিবৃতি I ভুল, কিন্তু বিবৃতি II সঠিক।"],
+a:2
+},
+
+{
+section:"Multiple Statements",
+q:"বিবৃতি I: ধারণা করা হয় যে প্রায় 4.5 বিলিয়ন বছর আগে পৃথিবীর সৃষ্টি হয়েছিল।<br><br>বিবৃতি II: আদিম পৃথিবীতে ঘন, অক্সিজেন সমৃদ্ধ বায়ুমণ্ডল ছিল।",
+o:["বিবৃতি I এবং বিবৃতি II উভয়ই সঠিক।","বিবৃতি I এবং বিবৃতি II উভয়ই ভুল।","বিবৃতি I সঠিক, কিন্তু বিবৃতি II ভুল।","বিবৃতি I ভুল, কিন্তু বিবৃতি II সঠিক।"],
+a:2
+},
+
+/* ================= MATCHING ================= */
+
+{
+section:"Matching Type",
+type:"matching",
+q:"পরাগমিলনের মাধ্যম মেলাও:",
+match:[
+["a. বায়ু","1. অ্যানিমোফিলি"],
+["b. জল","2. হাইড্রোফিলি"],
+["c. পতঙ্গ","3. এন্টোমোফিলি"],
+["d. বাদুড়","4. কাইরোপ্টেরোফিলি"]
+],
+o:["a-1, b-3, c-2, d-4","a-1, b-2, c-3, d-4","a-4, b-2, c-3, d-1","a-2, b-3, c-4, d-1"],
+a:1
+},
+
+{
+section:"Matching Type",
+type:"matching",
+q:"স্ত্রী জননতন্ত্রের অংশ ও কাজ মেলাও:",
+match:[
+["a. ডিম্বাশয়","1. নিষেক"],
+["b. ডিম্বনালী","2. ডিম্বস্ফুটন"],
+["c. জরায়ু","3. গর্ভাবস্থা"],
+["d. জরায়ুমুখ","4. সন্তান প্রসব"]
+],
+o:["a-2, b-1, c-3, d-4","a-1, b-2, c-3, d-4","a-4, b-3, c-2, d-1","a-2, b-4, c-3, d-1"],
+a:0
+},
+
+{
+section:"Matching Type",
+type:"matching",
+q:"যৌনবাহিত রোগ ও জীবাণু মেলাও:",
+match:[
+["a. গনোরিয়া","1. HIV"],
+["b. সিফিলিস","2. Neisseria sp."],
+["c. যৌনাঙ্গের আঁচিল","3. Treponema sp."],
+["d. AIDS","4. Human Papilloma virus"]
+],
+o:["a-2, b-3, c-4, d-1","a-3, b-4, c-1, d-2","a-4, b-2, c-3, d-1","a-1, b-3, c-2, d-4"],
+a:0
+},
+
+{
+section:"Matching Type",
+type:"matching",
+q:"বংশগতির সূত্র ও বৈশিষ্ট্য মেলাও:",
+match:[
+["P. প্রকটতার সূত্র","1. অ্যালিলগুলির মিশ্রণ ঘটে না এবং F2 জনুতে উভয়ই পুনরুদ্ধার হয়"],
+["Q. পৃথকীকরণ সূত্র","2. দ্বিসংকর জননে এক জোড়া বৈশিষ্ট্যের পৃথকভবন অন্যটির থেকে স্বাধীনভাবে ঘটে"],
+["R. স্বাধীনবিন্যাস সূত্র","3. বৈশিষ্ট্যগুলি ফ্যাক্টর নামক বিচ্ছিন্ন একক দ্বারা নিয়ন্ত্রিত হয়"]
+],
+o:["P-3, Q-1, R-2","P-1, Q-2, R-3","P-2, Q-3, R-1","P-3, Q-2, R-1"],
+a:0
+},
+
+{
+section:"Matching Type",
+type:"matching",
+q:"ক্রোমোজোমাল সজ্জা মেলাও:",
+match:[
+["P. স্বাভাবিক মহিলা","1. 44 + XY"],
+["Q. ক্লাইনফেল্টার সিনড্রোম","2. 44 + XX"],
+["R. টার্নারস সিনড্রোম","3. 44 + XXY"],
+["S. স্বাভাবিক পুরুষ","4. 44 + XO"]
+],
+o:["P-2, Q-3, R-4, S-1","P-2, Q-4, R-3, S-1","P-1, Q-3, R-4, S-2","P-3, Q-2, R-1, S-4"],
+a:0
+},
+
+{
+section:"Matching Type",
+type:"matching",
+q:"DNA এর গঠন মেলাও:",
+match:[
+["P. DNA হেলিক্সের পিচ","1. 0.34 nm"],
+["Q. DNA এর ক্ষারকযুগ্মের মধ্যে দূরত্ব","2. 10"],
+["R. প্রত্যেক প্যাঁচে ক্ষারকযুগ্মের সংখ্যা","3. 3.4 nm"]
+],
+o:["P-3, Q-1, R-2","P-1, Q-2, R-3","P-3, Q-2, R-1","P-2, Q-1, R-3"],
+a:0
+},
+
+{
+section:"Matching Type",
+type:"matching",
+q:"RNA পলিমারেজ ও কাজ মেলাও:",
+match:[
+["P. RNA পলিমারেজ I","1. mRNA (hnRNA)"],
+["Q. RNA পলিমারেজ II","2. tRNA, 5S rRNA, snRNAs"],
+["R. RNA পলিমারেজ III","3. rRNAs (28S, 18S, 5.8S)"]
+],
+o:["P-3, Q-1, R-2","P-1, Q-2, R-3","P-2, Q-3, R-1","P-3, Q-2, R-1"],
+a:0
+},
+
+{
+section:"Matching Type",
+type:"matching",
+q:"lac operon-এর গাঠনিক জিন মেলাও:",
+match:[
+["P. z জিন","1. পারমিয়েজ"],
+["Q. y জিন","2. ট্রান্স-অ্যাসিটাইলেজ"],
+["R. a জিন","3. বিটা-গ্যালাকটোসাইডেজ"]
+],
+o:["P-3, Q-1, R-2","P-1, Q-2, R-3","P-3, Q-2, R-1","P-2, Q-3, R-1"],
+a:0
+},
+
+{
+section:"Matching Type",
+type:"matching",
+q:"বিবর্তনবিদ ও অবদান মেলাও:",
+match:[
+["P. Oparin এবং Haldane","1. রাসায়নিক বিবর্তন"],
+["Q. S.L. Miller","2. রাসায়নিক বিবর্তনের পরীক্ষামূলক প্রমাণ"],
+["R. Charles Darwin","3. প্রাকৃতিক নির্বাচন"],
+["S. Alfred Wallace","4. Malay Archipelago পর্যবেক্ষণ"]
+],
+o:["P-1, Q-2, R-3, S-4","P-2, Q-1, R-3, S-4","P-4, Q-2, R-3, S-1","P-2, Q-3, R-1, S-4"],
+a:0
+},
+
+{
+section:"Matching Type",
+type:"matching",
+q:"বিবর্তনের প্রমাণ (অঙ্গ) মেলাও:",
+match:[
+["P. মেরুদণ্ডী প্রাণীদের হৃদপিণ্ড","1. অপসারী বিবর্তন"],
+["Q. প্রজাপতি এবং পাখির ডানা","2. অভিসারী বিবর্তন"],
+["R. তিমি এবং বাদুড়ের অগ্রপদ","3. অপসারী বিবর্তন"]
+],
+o:["P-1, Q-2, R-3","P-2, Q-1, R-3","P-1, Q-3, R-2","P-3, Q-2, R-1"],
+a:0
+},
+
+/* ================= SEQUENCE ================= */
+
+{
+section:"Sequence / Order",
+q:"স্পার্মাটোজেনেসিস প্রক্রিয়ার সঠিক ক্রম কোনটি?",
+o:["স্পার্মাটোগোনিয়া → স্পার্মাটিড → গৌণ স্পার্মাটোসাইট → প্রাথমিক স্পার্মাটোসাইট → শুক্রাণু","স্পার্মাটোগোনিয়া → স্পার্মাটিড → প্রাথমিক স্পার্মাটোসাইট → গৌণ স্পার্মাটোসাইট → শুক্রাণু","প্রাথমিক স্পার্মাটোসাইট → গৌণ স্পার্মাটোসাইট → স্পার্মাটিড → স্পার্মাটোগোনিয়া → শুক্রাণু","স্পার্মাটোগোনিয়া → প্রাথমিক স্পার্মাটোসাইট → গৌণ স্পার্মাটোসাইট → স্পার্মাটিড → শুক্রাণু"],
+a:3
+},
+
+{
+section:"Sequence / Order",
+q:"নিষিক্তকরণের সময় সংঘটিত কিছু গুরুত্বপূর্ণ ঘটনা নিচে দেওয়া হলো। ঘটনাগুলোকে সঠিক ক্রম অনুসারে সাজাও: (i) কর্টিক্যাল বিক্রিয়া, (ii) শুক্রাণুর প্রবেশ, (iii) ক্যারিওগ্যামি, (iv) অ্যাক্রোজোম বিক্রিয়া",
+o:["(iv) → (i) → (ii) → (iii)","(i) → (ii) → (iii) → (iv)","(iv) → (ii) → (i) → (iii)","(ii) → (i) → (iii) → (iv)"],
+a:2
+},
+
+{
+section:"Sequence / Order",
+q:"প্রোকারিওটিক ট্রান্সক্রিপশন-এর ধাপগুলির সঠিক ক্রমটি চিহ্নিত করো:<br><br>I. RNA ট্রান্সক্রিপ্টের দীর্ঘীকরণ (Elongation)।<br>II. সিগমা ফ্যাক্টর সহ RNA পলিমারেজের প্রোমোটারের সাথে বন্ধন।<br>III. রো ফ্যাক্টর দ্বারা মধ্যস্থতাকৃত ট্রান্সক্রিপশনের সমাপ্তি।<br>IV. ট্রান্সক্রিপশনের সূচনা এবং সিগমা ফ্যাক্টরের মুক্তি।",
+o:["II → IV → I → III","II → I → IV → III","IV → II → I → III","II → IV → III → I"],
+a:0
+},
+
+{
+section:"Sequence / Order",
+q:"ট্রান্সলেশনের ইনিশিয়েশন এবং ইলংগেশন পর্যায়গুলির সময় ঘটা ঘটনাগুলির সঠিক ক্রমটি চিহ্নিত করো:<br><br>I. বড় রাইবোজোমাল সাবইউনিটের বন্ধন।<br>II. ছোট রাইবোজোমাল সাবইউনিটের সাথে mRNA-র বন্ধন।<br>III. অ্যামাইনো অ্যাসিডগুলির মধ্যে একটি পেপটাইড বন্ডের গঠন।<br>IV. সূচনা কোডনের সাথে ইনিশিয়েটর tRNA-র বেস পেয়ারিং।",
+o:["II → IV → I → III","II → I → IV → III","IV → II → I → III","II → IV → III → I"],
+a:0
+},
+
+{
+section:"Sequence / Order",
+q:"পৃথিবীর ইতিহাসে ভূতাত্ত্বিক যুগগুলোর সঠিক ক্রমটি চিহ্নিত করো, প্রাচীনতম থেকে সাম্প্রতিকতম পর্যন্ত:<br><br>I. Mesozoic<br>II. Paleozoic<br>III. Cenozoic<br>IV. Precambrian",
+o:["IV → I → II → III","IV → II → I → III","II → IV → I → III","II → I → III → IV"],
+a:1
+}
+
+];
+
+/* =========================================================
+   QUIZ ENGINE
+========================================================= */
+
+let current=0;
+let score=0;
+let answered=false;
+
+const quiz=document.getElementById("quiz");
+const result=document.getElementById("result");
+const progressArea=document.getElementById("progressArea");
+const currentNo=document.getElementById("currentNo");
+const totalNo=document.getElementById("totalNo");
+const progressBar=document.getElementById("progressBar");
+const sectionText=document.getElementById("sectionText");
+
+totalNo.textContent=questions.length;
+
+function renderQuestion(){
+
+    answered=false;
+
+    const item=questions[current];
+
+    currentNo.textContent=current+1;
+    sectionText.textContent=item.section;
+
+    progressBar.style.width=((current)/questions.length*100)+"%";
+
+    let html=`
+        <div class="sectionBadge">${item.section}</div>
+
+        <div class="questionNo">
+            Question ${current+1}
+        </div>
+    `;
+
+    if(item.type==="matching"){
+
+        html+=`
+        <div class="question">${item.q}</div>
+
+        <div class="matchGrid">
+            <div class="matchBox">
+                <div class="matchTitle">Statements</div>
+        `;
+
+        item.match.forEach(x=>{
+            html+=`
+                <div class="matchRow">
+                    <span class="matchLeft">${x[0]}</span>
+                </div>
+            `;
+        });
+
+        html+=`
+            </div>
+
+            <div class="matchBox">
+                <div class="matchTitle">Matching</div>
+        `;
+
+        item.match.forEach(x=>{
+            html+=`
+                <div class="matchRow">
+                    <span class="matchRight">${x[1]}</span>
+                </div>
+            `;
+        });
+
+        html+=`
+            </div>
+        </div>
+        `;
+
+    }else if(item.type==="ar"){
+
+        html+=`
+        <div class="assertionBox">
+
+            <div class="assertion">
+                <b>বিবৃতি (A):</b><br>
+                ${item.q}
+            </div>
+
+            <div class="reason">
+                <b>কারণ (R):</b><br>
+                ${item.r}
+            </div>
+
+        </div>
+        `;
+
+    }else{
+
+        html+=`
+        <div class="question">${item.q}</div>
+        `;
+
+    }
+
+    html+=`<div class="options">`;
+
+    item.o.forEach((option,index)=>{
+
+        const letter=String.fromCharCode(65+index);
+
+        html+=`
+        <label class="option" data-index="${index}">
+
+            <input type="radio" name="answer" value="${index}">
+
+            <span class="optionLetter">${letter}</span>
+
+            <span>${option}</span>
+
+        </label>
+        `;
+
+    });
+
+    html+=`</div>`;
+
+    html+=`
+        <div class="btnRow">
+            <button class="nextBtn" id="nextBtn" disabled>
+                ${current===questions.length-1 ? "Finish Exam" : "Next Question"}
+            </button>
+        </div>
+    `;
+
+    quiz.innerHTML=html;
+
+    document.querySelectorAll(".option").forEach(option=>{
+
+        option.addEventListener("click",function(){
+
+            if(answered)return;
+
+            document.querySelectorAll(".option")
+                .forEach(x=>x.classList.remove("selected"));
+
+            this.classList.add("selected");
+
+            const input=this.querySelector("input");
+            input.checked=true;
+
+            document.getElementById("nextBtn").disabled=false;
+
+        });
+
+    });
+
+    document.getElementById("nextBtn").addEventListener("click",checkAnswer);
+}
+
+function checkAnswer(){
+
+    if(answered)return;
+
+    const selected=document.querySelector('input[name="answer"]:checked');
+
+    if(!selected)return;
+
+    answered=true;
+
+    const selectedIndex=parseInt(selected.value);
+    const correctIndex=questions[current].a;
+
+    const options=document.querySelectorAll(".option");
+
+    if(selectedIndex===correctIndex){
+        score++;
+        options[selectedIndex].classList.add("correct");
+    }else{
+
+        options[selectedIndex].classList.add("wrong");
+        options[correctIndex].classList.add("correct");
+
+    }
+
+    const btn=document.getElementById("nextBtn");
+
+    btn.disabled=false;
+
+    btn.textContent=current===questions.length-1
+        ?"Show Result"
+        :"Next Question";
+
+    btn.onclick=()=>{
+
+        if(current===questions.length-1){
+
+            showResult();
+
+        }else{
+
+            current++;
+            renderQuestion();
+
+        }
+
+    };
+
+}
+
+function showResult(){
+
+    progressBar.style.width="100%";
+
+    quiz.style.display="none";
+    progressArea.style.display="none";
+    result.style.display="block";
+
+    const attemptKey="studentCareBiologyAttempts";
+
+    let attempts=parseInt(localStorage.getItem(attemptKey)||"0");
+
+    attempts++;
+
+    localStorage.setItem(attemptKey,attempts);
+
+    document.getElementById("finalScore").textContent=
+        score+" / "+questions.length;
+
+    document.getElementById("correctNo").textContent=score;
+
+    document.getElementById("wrongNo").textContent=
+        questions.length-score;
+
+    document.getElementById("attemptNo").textContent=attempts;
+
+}
+
+function restartQuiz(){
+
+    current=0;
+    score=0;
+    answered=false;
+
+    result.style.display="none";
+    quiz.style.display="block";
+    progressArea.style.display="block";
+
+    renderQuestion();
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+/* START */
+renderQuestion();
+
+</script>
+
+</body>
+</html>

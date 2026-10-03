@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Class 12 Semester 3 Philosophy — Online Mock Test</title>
+<style>
+:root{--bg:#07111f;--card:#0f1d31;--card2:#142641;--gold:#f5c451;--text:#f5f7fb;--muted:#a9b8cf;--green:#1ec98b;--red:#ff5b6e;--line:#29405f;}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at top,#17365d 0,#07111f 46%,#040912 100%);font-family:"Noto Sans Bengali","Nirmala UI",system-ui,sans-serif;color:var(--text);min-height:100vh}
+.wrap{max-width:850px;margin:auto;padding:16px}
+.header{position:sticky;top:0;z-index:5;background:rgba(7,17,31,.92);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin-bottom:14px;box-shadow:0 10px 35px #0006}
+.brand{font-size:clamp(20px,5vw,30px);font-weight:900;text-align:center;color:#fff;animation:glow 1.8s infinite alternate}
+.teacher{text-align:center;color:var(--gold);font-weight:800;margin-top:4px}
+@keyframes glow{from{text-shadow:0 0 4px #fff2,0 0 8px #2d8cff2}to{text-shadow:0 0 8px #fff8,0 0 22px #2d8cff}}
+.info{display:flex;gap:8px;justify-content:space-between;align-items:center;margin-top:10px;flex-wrap:wrap}
+.badge{border:1px solid var(--line);background:#0b1728;padding:7px 11px;border-radius:999px;font-size:13px;color:var(--muted)}
+.badge b{color:#fff}
+.progress{height:8px;background:#081321;border-radius:99px;overflow:hidden;margin-top:12px}
+.bar{height:100%;width:0;background:linear-gradient(90deg,#f5c451,#6be7ff,#57e89b);transition:.35s}
+.card{background:linear-gradient(145deg,rgba(20,38,65,.98),rgba(9,20,36,.98));border:1px solid var(--line);border-radius:22px;padding:20px;box-shadow:0 18px 55px #0005}
+.qno{color:var(--gold);font-weight:900;font-size:14px;margin-bottom:8px}
+.question{font-size:clamp(19px,4vw,27px);line-height:1.65;font-weight:800;margin-bottom:18px}
+.option{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;background:#10213a;border:1px solid #2b4567;color:#fff;border-radius:14px;padding:13px 14px;margin:10px 0;cursor:pointer;font-size:16px;line-height:1.55;transition:.2s}
+.option:hover{transform:translateY(-1px);border-color:#6b8db8}
+.option .letter{min-width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#1d3555;color:var(--gold);font-weight:900}
+.option.selected{border-color:#f5c451;background:#2a2a19}
+.option.correct{border-color:var(--green);background:#0d3a2d}
+.option.wrong{border-color:var(--red);background:#421d27}
+.option.disabled{cursor:default}
+.explain{display:none;margin-top:12px;padding:12px;border-radius:12px;background:#091626;border:1px dashed #38587f;color:var(--muted);line-height:1.55}
+.actions{display:flex;justify-content:flex-end;margin-top:18px}
+button{border:0;border-radius:13px;padding:12px 20px;font-weight:900;font-size:16px;cursor:pointer}
+#nextBtn{background:linear-gradient(135deg,#f5c451,#ffdc78);color:#101010;display:none}
+#nextBtn:disabled{opacity:.5;cursor:not-allowed}
+.result{display:none;text-align:center;padding:28px 18px}
+.score{font-size:clamp(48px,14vw,84px);font-weight:1000;color:var(--gold);line-height:1}
+.result h2{font-size:28px;margin:8px 0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.stat{background:#0a1728;border:1px solid var(--line);border-radius:15px;padding:14px}
+.stat b{display:block;font-size:24px;color:#fff}
+.stat span{font-size:12px;color:var(--muted)}
+.restart{background:#1e75ff;color:white;margin:5px}
+@media(max-width:600px){.wrap{padding:9px}.card{padding:15px;border-radius:17px}.stats{grid-template-columns:1fr 1fr 1fr}.stat{padding:10px 5px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="header">
+  <div class="brand">Student Care Academy</div>
+  <div class="teacher">Teacher:- Tapan Mandal</div>
+  <div class="info">
+    <div class="badge">Class 12 • Semester 3 • Philosophy</div>
+    <div class="badge">Question <b id="counter">1 / 50</b></div>
+    <div class="badge">Score <b id="liveScore">0</b> • Exam <b id="attemptTop">1</b></div>
+  </div>
+  <div class="progress"><div class="bar" id="bar"></div></div>
+</header>
+
+<main class="card" id="quizCard">
+  <div class="qno" id="qno"></div>
+  <div class="question" id="question"></div>
+  <div id="options"></div>
+  <div class="explain" id="explain"></div>
+  <div class="actions"><button id="nextBtn">পরের প্রশ্ন →</button></div>
+</main>
+
+<section class="card result" id="result">
+  <div>পরীক্ষা সম্পূর্ণ</div>
+  <div class="score" id="finalScore">0/50</div>
+  <h2 id="message">অভিনন্দন!</h2>
+  <div class="stats">
+    <div class="stat"><b id="rightCount">0</b><span>সঠিক</span></div>
+    <div class="stat"><b id="wrongCount">0</b><span>ভুল</span></div>
+    <div class="stat"><b id="attemptCount">1</b><span>Exam Attempt</span></div>
+  </div>
+  <button class="restart" onclick="restart()">আবার পরীক্ষা দিন</button>
+</section>
+</div>
+
+<script>
+const QUESTIONS = [{"q": "‘ঈশ্বর দ্রব্য প্রকৃতি এক ও অভিন্ন’—এ কথা কে বলেছেন?", "o": ["লাইবনিজ", "বার্কলে", "ডেকার্ট", "স্পিনোজা"], "a": [3]}, {"q": "‘জন্মের সময় আমাদের মন থাকে অলিখিত সাদা কাগজের মতো’—এটি কার মত?", "o": ["কান্ট", "হেগেল", "বার্কলে", "লক"], "a": [3]}, {"q": "সততঃ সংযোগ তত্ত্বের প্রবক্তা কে?", "o": ["ডেকার্ট", "হিউম", "লক", "কান্ট"], "a": [1]}, {"q": "‘দ্রব্য হলো আধ্যাত্মিক’—এ কথা কে বলেছেন?", "o": ["লক", "হিউম", "ডেকার্ট", "বার্কলে"], "a": [3]}, {"q": "অদ্বৈত বেদান্ত মতে জগতকে কোন অর্থে মিথ্যা বলা হয়েছে?", "o": ["ব্যবহারিক অর্থে", "প্রাতিভাসিক অর্থে", "পারমার্থিক অর্থে", "মায়াত্মক অর্থে"], "a": [0]}, {"q": "‘নির্জন মন হলো আত্মহনন ক্রিয়ার আধার’—এটি কে বলেছেন?", "o": ["এমিল দুরখেইম", "আর্ণে নেস", "ফ্রয়েড", "কার্ল-মেমিনজার"], "a": [3]}, {"q": "‘Ecology’ শব্দটি সর্বপ্রথম কে ব্যবহার করেন?", "o": ["আর্ণে নেস", "আর্নস্ট হেকেল", "পিটার সিঙ্গার", "এন্ড্রো লিওপোন্ড"], "a": [1]}, {"q": "Practical Ethics গ্রন্থের রচয়িতা কে?", "o": ["পিটার সিঙ্গার", "হোমস রলস্টোন", "জন পাসমোর", "পল টেলর"], "a": [0]}, {"q": "সমাজের উদ্দেশ্য, আদর্শ ও মূল্য নিয়ে আলোচনা করে বলে সমাজ দর্শনকে কী বলা হয়?", "o": ["বস্তুনিষ্ঠ", "আদর্শনিষ্ঠ", "তথ্যনিষ্ঠ", "জ্ঞাননিষ্ঠ"], "a": [1]}, {"q": "‘সম্প্রদায় হয় বেড়ে চলে এবং সামনের দিকে এগিয়ে চলে অথবা তা পিছিয়ে পড়ে’—এ কথা কোন দার্শনিক বলেছেন?", "o": ["ম্যাকাইভার", "নিউমেয়ার", "পেজ", "গিন্সবার্গ"], "a": [1]}, {"q": "‘Concept of Mind’ গ্রন্থটির লেখক হলেন—", "o": ["জন হসপার্স", "গিলবার্ট রাইল", "হেগেল", "হাক্সলে"], "a": [1]}, {"q": "‘শূন্য থেকে কোনকিছুর উৎপত্তি হয় না’—এ কথা কে বলেছেন?", "o": ["নিউটন", "হেগেল", "ইউয়িং", "কান্ট"], "a": [0]}, {"q": "দেকার্তের দেহ ও মনের সম্পর্ক বিষয়ক মতবাদ কী নামে পরিচিত?", "o": ["সমান্তরালবাদ", "ক্রিয়া-প্রতিক্রিয়াবাদ", "অদ্বৈতবাদ", "তাদাত্ম্যবাদ"], "a": [1]}, {"q": "‘প্রসক্তি’ কথাটির অর্থ কী?", "o": ["সাদৃশ্যের সম্বন্ধ", "বৈশাদৃশ্যের সম্বন্ধ", "যৌক্তিক অনিবার্যতার সম্বন্ধ", "নিয়ত সম্বন্ধ"], "a": [2]}, {"q": "দেহ ও মনের সম্পর্ক বোঝানোর জন্য কোন উপমা দেকার্ত ব্যবহার করেছেন?", "o": ["জাহাজ ও জাহাজের পাইলট", "যন্ত্র ও যন্ত্রী", "চালক ও চালিত", "সবকটি ঠিক"], "a": [3]}, {"q": "পূর্ব স্থাপিত শৃঙ্খলাবাদ কে স্বীকার করেছেন?", "o": ["ডেকার্ট", "স্পিনোজা", "লাইবনিজ", "হিউম"], "a": [2]}, {"q": "ভারতীয় দণ্ডবিধির কত নম্বর ধারা অনুযায়ী আত্মহত্যাকে দণ্ডনীয় অপরাধ রূপে গণ্য করা হয়েছিল?", "o": ["209", "242", "309", "323"], "a": [2]}, {"q": "পৃথিবীর সবচেয়ে প্রাচীনতম সংগঠনটির নাম কী?", "o": ["রাষ্ট্র", "সম্প্রদায়", "সমিতি", "সমাজ"], "a": [3]}, {"q": "‘ঈশ্বর হলেন সর্বশ্রেষ্ঠ মনাড’—এ কথা কে বলেছেন?", "o": ["ডেকার্ট", "স্পিনোজা", "লাইবনিজ", "লক"], "a": [2]}, {"q": "মন ও দেহের পারস্পরিক ক্রিয়া ও প্রতিক্রিয়া হয় কোন গ্রন্থির মাধ্যমে?", "o": ["পিটুইটারি", "পিনিয়াল", "থাইরয়েড", "অ্যাড্রিনাল"], "a": [1]}, {"q": "‘জড় দ্রব্যের অস্তিত্ব নেই’—এ কথা কে বলেছেন?", "o": ["বার্কলে", "ডেকার্ট", "কান্ট", "স্পিনোজা"], "a": [0]}, {"q": "‘তত্ত্বমসি’ মহাবাক্যটির অর্থ কী?", "o": ["জীব ও জগৎ অভিন্ন", "জীব ও জগৎ ভিন্ন", "জীব ও ব্রহ্ম অভিন্ন", "জীব ও ব্রহ্ম ভিন্ন"], "a": [2]}, {"q": "বিশ্ব পরিবেশ দিবস পালিত হয়—", "o": ["22শে এপ্রিল", "5ই সেপ্টেম্বর", "22শে মে", "5ই জুন"], "a": [3]}, {"q": "সমাজবিদ্যার দৃষ্টিকোণ থেকে, সংকীর্ণ অর্থে কাকে প্রতিষ্ঠান বলা হয়?", "o": ["পরিবার", "বিদ্যালয়", "রাষ্ট্র", "বিবাহ"], "a": [3]}, {"q": "‘The Republic’ গ্রন্থের রচয়িতা কে?", "o": ["প্লেটো", "অ্যারিস্টটল", "ম্যাকিয়াভেলি", "লক"], "a": [0]}, {"q": "অদ্বৈত বেদান্ত মতে সত্তা কয় প্রকার?", "o": ["চার প্রকার", "তিন প্রকার", "দুই প্রকার", "এক প্রকার"], "a": [1]}, {"q": "‘Respect for Nature’ গ্রন্থটির লেখক কে?", "o": ["পিটার সিঙ্গার", "পল টেলর", "হোমস রলস্টোন", "আলবার্ট শোয়েৎজার"], "a": [1]}, {"q": "‘Philosophical Ethics: An Introduction to Moral Philosophy’ গ্রন্থটির লেখক—", "o": ["টি. এল. বীচম্", "পিটার সিঙ্গার", "জন স্টুয়ার্ট মিল", "ইমান্যুয়েল কান্ট"], "a": [0]}, {"q": "বিবৃতি (A): হিউমের মতে ‘গুণগুচ্ছই দ্রব্য’। কারণ (R): হিউমের মতে গুণ অতিরিক্ত কোনো দ্রব্যের প্রত্যক্ষ আমাদের হয় না।", "o": ["A এবং R উভয়ই সত্য এবং R, A-এর সঠিক ব্যাখ্যা", "A এবং R উভয়ই সত্য এবং R, A-এর সঠিক ব্যাখ্যা নয়", "A সত্য কিন্তু R মিথ্যা", "A মিথ্যা কিন্তু R সত্য"], "a": [0]}, {"q": "বিবৃতি (A): মায়া ব্রহ্মের এক অনির্বচনীয় শক্তি। কারণ (R): মায়াকে সৎ বা অসৎ বলা যায় না।", "o": ["A এবং R উভয়ই সত্য এবং R, A-এর সঠিক ব্যাখ্যা", "A এবং R উভয়ই সত্য কিন্তু R, A-এর সঠিক ব্যাখ্যা নয়", "A সত্য কিন্তু R মিথ্যা", "A মিথ্যা কিন্তু R সত্য"], "a": [0]}, {"q": "বিবৃতি (A): স্পিনোজা হলেন একজন অদ্বৈতবাদী দার্শনিক। কারণ (R): স্পিনোজার মতে ঈশ্বরই একমাত্র দ্রব্য।", "o": ["A এবং R উভয়ই সত্য এবং R, A-এর সঠিক ব্যাখ্যা", "A এবং R উভয়ই সত্য কিন্তু R, A-এর সঠিক ব্যাখ্যা নয়", "A সত্য কিন্তু R মিথ্যা", "A মিথ্যা কিন্তু R সত্য"], "a": [0]}, {"q": "বিবৃতি (A): সম্প্রদায় একটি স্থায়ী সামাজিক গোষ্ঠী। কারণ (R): সম্প্রদায় একটি নির্দিষ্ট উদ্দেশ্যে গঠিত হয় এবং উদ্দেশ্য অর্জনের পরে তার অস্তিত্ব থাকে না।", "o": ["A এবং R উভয়ই সঠিক এবং R, A-এর সঠিক ব্যাখ্যা", "A এবং R উভয়ই সঠিক এবং R, A-এর সঠিক ব্যাখ্যা নয়", "A সঠিক, R ভুল", "A ভুল, R সঠিক"], "a": [2]}, {"q": "বিবৃতি (A): সমান্তরালবাদ অনুযায়ী দেহ ও মনের মধ্যে কার্যকারণ সম্পর্ক নেই। কারণ (R): সমান্তরালবাদ অনুযায়ী দেহ ও মন সমান্তরালভাবে চালিত হয়।", "o": ["A এবং R উভয়ই সত্য এবং R, A-এর সঠিক ব্যাখ্যা", "A এবং R উভয়ই সত্য কিন্তু R, A-এর সঠিক ব্যাখ্যা নয়", "A সত্য, কিন্তু R মিথ্যা", "A মিথ্যা, কিন্তু R সত্য"], "a": [0]}, {"q": "বিবৃতি (A): পরিবেশ নীতিবিদ্যা মানুষকে নৈতিক দায়িত্ব স্মরণ করিয়ে দেয়। কারণ (R): পরিবেশ নীতিবিদ্যা মানব জীবনের অন্যতম দিক।", "o": ["A সত্য এবং R সত্য এবং R হল A-এর সঠিক ব্যাখ্যা", "A এবং R সত্য, তবে R হল A-এর সঠিক ব্যাখ্যা নয়", "A সত্য এবং R সত্য নয়", "A মিথ্যা এবং R সত্য"], "a": [1]}, {"q": "নিম্নলিখিত বাক্যগুলির সত্য (T) অথবা মিথ্যা (F) যাচাই করো: i) বার্কলের মতে, জড় দ্রব্যের মননিরপেক্ষ অস্তিত্ব নেই। ii) লাইবনিজের মতে, দ্রব্য তিনটি। iii) ডেকার্ট একজন বহুত্ববাদী দার্শনিক। iv) লক মুখ্য গুণ ও গৌণ গুণের পার্থক্য অস্বীকার করেছেন।", "o": ["(i)-T, (ii)-F, (iii)-F, (iv)-F", "(i)-F, (ii)-T, (iii)-T, (iv)-T", "(i)-F, (ii)-F, (iii)-F, (iv)-F", "(i)-T, (ii)-T, (iii)-T, (iv)-T"], "a": [0]}, {"q": "নিম্নলিখিত বাক্যগুলির সত্য (T) অথবা মিথ্যা (F) যাচাই করো: i) পরিবেশের সঙ্গে মানুষের নৈতিক সম্পর্ক আছে। ii) পরিবেশ নীতিবিদ্যার দৃষ্টিকোণ থেকে অরণ্য ধ্বংস করা অনৈতিক কাজ। iii) মানুষ নিজের স্বার্থে প্রকৃতিকে যথেচ্ছভাবে ব্যবহার করতে পারে। iv) পরিবেশ দূষণ রোধে মানুষের কোনো নৈতিক দায়িত্ব নেই।", "o": ["(i)-T, (ii)-T, (iii)-F, (iv)-F", "(i)-T, (ii)-F, (iii)-F, (iv)-F", "(i)-T, (ii)-T, (iii)-T, (iv)-F", "(i)-F, (ii)-F, (iii)-F, (iv)-T"], "a": [0]}, {"q": "নিম্নলিখিত বাক্যগুলির সত্য (T) অথবা মিথ্যা (F) যাচাই করো: i) রাষ্ট্র একটি সামাজিক প্রতিষ্ঠান। ii) মানুষের যে কোনো সম্পর্কই সামাজিক সম্পর্ক। iii) আইন মানুষের আচরণ নিয়ন্ত্রণ করে। iv) সার্বভৌম শক্তির প্রধান কাজ হল আইনকে কার্যকর করা।", "o": ["(i)-T, (ii)-F, (iii)-T, (iv)-T", "(i)-F, (ii)-T, (iii)-F, (iv)-F", "(i)-F, (ii)-F, (iii)-T, (iv)-F", "(i)-T, (ii)-T, (iii)-F, (iv)-T"], "a": [0]}, {"q": "সঠিক বাক্যগুলি নির্বাচন করো: i) স্পিনোজার মতে দ্রব্য = ঈশ্বর = প্রকৃতি। ii) দেকার্তের মতে ঈশ্বরই সব আবার সব কিছুই ঈশ্বর। iii) দ্বৈতবাদী মতের বিরুদ্ধে দেকার্ত সমালোচনা করেছেন। iv) মনাডগুলি অসংখ্য ছিদ্রযুক্ত।", "o": ["i-সত্য কিন্তু ii, iii, iv - মিথ্যা", "i-iii- সত্য, ii, iv - মিথ্যা", "i, ii, iv - সত্য, iii - মিথ্যা", "i, ii, iii-সত্য, iv - মিথ্যা"], "a": [0]}, {"q": "নিম্নলিখিত বাক্যগুলির সত্য (T) অথবা মিথ্যা (F) যাচাই করো: i) অ্যারিস্টটলের মতে আত্মহনন রাষ্ট্রবিরোধী কাজ। ii) কোমা হল রোগীর সচেতন অবস্থা। iii) হিপোক্রেটিসের শপথ বাক্য পাঠ করেন রাষ্ট্রনীতিবিদগণ। iv) জেরেমি বেন্থাম মনে করেন মানুষের জীবনের বিনাশ ঘটানো অনৈতিক কাজ।", "o": ["(i)-T, (ii)-F, (iii)-F, (iv)-T", "(i)-F, (ii)-T, (iii)-T, (iv)-F", "(i)-T, (ii)-F, (iii)-T, (iv)-F", "(i)-F, (ii)-T, (iii)-F, (iv)-T"], "a": [0]}, {"q": "স্তম্ভ-I: i. আলবার্ট শোয়েৎজার, ii. এন্ড্রো লিওপোল্ড, iii. আর্ণে নেস, iv. অ্যারিস্টটল। স্তম্ভ-II: a. ভূমিকেন্দ্রিক নীতিবিদ্যা, b. জীবকেন্দ্রিকতাবাদ, c. মানবকেন্দ্রিকতাবাদ, d. গভীর বাস্তুবিদ্যা", "o": ["i-b, ii-d, iii-a, iv-c", "i-b, ii-a, iii-d, iv-c", "i-a, ii-c, iii-d, iv-b", "i-d, ii-b, iii-b, iv-a"], "a": [1]}, {"q": "স্তম্ভ-I: i. স্পিনোজা, ii. বার্কলে, iii. ডেকার্ত, iv. লাইবনিজ। স্তম্ভ-II: a. দ্বৈতবাদী, b. বহুত্ববাদী, c. জড়দ্রব্যের অস্তিত্ব অস্বীকার, d. দ্রব্য=ঈশ্বর=প্রকৃতি", "o": ["i-d, ii-c, iii-a, iv-b", "i-b, ii-d, iii-c, iv-a", "i-c, ii-a, iii-d, iv-b", "i-b, ii-c, iii-d, iv-a"], "a": [0]}, {"q": "স্তম্ভ-I: i. সম্প্রদায়, ii. সংঘ, iii. রাষ্ট্র, iv. আইন। স্তম্ভ-II: a. সার্বভৌমের আদেশ, b. সার্বভৌমিকতা প্রয়োগের ক্ষেত্র, c. কৃত্রিম সামাজিক গোষ্ঠী, d. স্বাভাবিক সামাজিক জনগোষ্ঠী", "o": ["i-d, ii-c, iii-b, iv-a", "i-c, ii-b, iii-d, iv-a", "i-b, ii-a, iii-d, iv-c", "i-b, ii-d, iii-a, iv-c"], "a": [0]}, {"q": "স্তম্ভ-I: i. কার্তেজীয় কলঙ্ক, ii. প্রকারগত বিভ্রান্তি, iii. দ্বিপার্শ্ববাদ, iv. পিনিয়েল গ্রন্থি। স্তম্ভ-II: a. গিলবার্ট রাইল, b. বার্নার্ড উইলিয়াম, c. রেনে দেকার্ত, d. জন হসপার্স", "o": ["i-b, ii-a, iii-d, iv-c", "i-a, ii-b, iii-c, iv-d", "i-d, ii-b, iii-a, iv-c", "i-c, ii-d, iii-b, iv-a"], "a": [0]}, {"q": "স্তম্ভ-I: i. মুদ্রণ ও ধারণা, ii. দ্রব্য=ঈশ্বর=প্রকৃতি, iii. দ্রব্য হল অজ্ঞাত ও অজ্ঞেয়, iv. মনাড বা চিৎ পরমাণু। স্তম্ভ-II: a. স্পিনোজা, b. লাইবনিজ, c. হিউম, d. লক", "o": ["i-c, ii-a, iii-d, iv-b", "i-b, ii-d, iii-a, iv-c", "i-d, ii-b, iii-a, iv-c", "i-c, ii-d, iii-a, iv-b"], "a": [0]}, {"q": "স্তম্ভ-I: i. ‘শূন্য থেকে কোনকিছুর উৎপত্তি হয় না’, ii. কারণ হলো শক্তি যা সক্রিয়ভাবে কার্য উৎপন্ন করে, iii. কারণ ও কার্যের মধ্যে একটি আবশ্যিক সম্পর্ক রয়েছে, iv. কার্যকারণের মধ্যে কোন যৌক্তিক অনিবার্যতা নেই। স্তম্ভ-II: a. হিউম, b. নিউটন, c. লক, d. বুদ্ধিবাদ", "o": ["i-b, ii-c, iii-d, iv-a", "i-c, ii-d, iii-b, iv-a", "i-b, ii-a, iii-d, iv-c", "i-c, ii-a, iii-d, iv-b"], "a": [0]}, {"q": "সমাজ গঠনের সঠিক ক্রমটি হল— i) নির্দিষ্ট উদ্দেশ্য ii) ব্যক্তি iii) সমাজ iv) সঙ্ঘবদ্ধতা", "o": ["(i) → (ii) → (iv) → (iii)", "(ii) → (i) → (iv) → (iii)", "(iii) → (iv) → (ii) → (i)", "(iv) → (iii) → (ii) → (i)"], "a": [1]}, {"q": "পরিবেশগত নীতিকে প্রয়োগ করতে হলে নিচের যে ক্রমটি অনুসরণ করা ঠিক সেটি হল—", "o": ["সতর্কতা নীতি → দূষক নীতি → প্রতিরোধের নীতি → টেকসই নীতি", "প্রতিরোধের নীতি → দূষক নীতি → সতর্কতামূলক নীতি → টেকসই নীতি", "টেকসই নীতি → প্রতিরোধের নীতি → দূষক নীতি → সতর্কতা নীতি", "দূষক নীতি → টেকসই নীতি → প্রতিরোধের নীতি → সতর্কতা নীতি"], "a": [1]}, {"q": "শঙ্করের অদ্বৈত বেদান্ত অনুসারে জীবের মুক্তির সঠিক ক্রমটি হবে—", "o": ["জীবের বন্ধন → শ্রবণ → মনন → নিদিধ্যাসন → আত্মোপলব্ধি → জীবের মুক্তি", "জীবের বন্ধন → জীবের মুক্তি → আত্মোপলব্ধি → মনন → শ্রবণ → নিদিধ্যাসন", "জীবের বন্ধন → নিদিধ্যাসন → আত্মোপলব্ধি → মনন → শ্রবণ → জীবের মুক্তি", "জীবের বন্ধন → শ্রবণ → মনন → নিদিধ্যাসন → আত্মোপলব্ধি → জীবের মুক্তি"], "a": [0, 3]}, {"q": "আইনের উৎপত্তি ক্রম—", "o": ["আন্তর্জাতিক আইন → রাষ্ট্রীয় আইন → ধর্মীয় আইন → প্রথাগত আইন", "প্রথাগত আইন → ধর্মীয় আইন → রাষ্ট্রীয় আইন → আন্তর্জাতিক আইন", "রাষ্ট্রীয় আইন → ধর্মীয় আইন → আন্তর্জাতিক আইন → প্রথাগত আইন", "আন্তর্জাতিক আইন → রাষ্ট্রীয় আইন → ধর্মীয় আইন → প্রথাগত আইন"], "a": [1]}, {"q": "সংঘ হইতে রাষ্ট্র গঠনের ক্রম—", "o": ["সংঘ → সম্প্রদায় → রাষ্ট্র → সমাজ", "সমাজ → সম্প্রদায় → সংঘ → রাষ্ট্র", "সম্প্রদায় → সংঘ → রাষ্ট্র → সমাজ", "সংঘ → সম্প্রদায় → রাষ্ট্র → সমাজ"], "a": [1]}];
+const letters = ["A","B","C","D"];
+let index=0, score=0, answered=false;
+const key="studentCarePhilosophyAttempts";
+let attempts=Number(localStorage.getItem(key)||0);
+attempts++;
+localStorage.setItem(key,String(attempts));
+document.getElementById("attemptTop").textContent=attempts;
+
+function render(){
+  answered=false;
+  const item=QUESTIONS[index];
+  document.getElementById("counter").textContent=(index+1)+" / "+QUESTIONS.length;
+  document.getElementById("qno").textContent="প্রশ্ন "+(index+1);
+  document.getElementById("question").textContent=item.q;
+  document.getElementById("liveScore").textContent=score;
+  document.getElementById("bar").style.width=((index)/QUESTIONS.length*100)+"%";
+  const box=document.getElementById("options"); box.innerHTML="";
+  item.o.forEach((opt,i)=>{
+    const b=document.createElement("button");
+    b.className="option";
+    b.innerHTML='<span class="letter">'+letters[i]+'</span><span>'+opt+'</span>';
+    b.onclick=()=>choose(i,b);
+    box.appendChild(b);
+  });
+  document.getElementById("explain").style.display="none";
+  const next=document.getElementById("nextBtn");
+  next.style.display="none";
+  next.textContent=index===QUESTIONS.length-1?"ফলাফল দেখুন →":"পরের প্রশ্ন →";
+}
+
+function choose(choice, clicked){
+  if(answered) return;
+  answered=true;
+  const item=QUESTIONS[index];
+  const correct=item.a.includes(choice);
+  if(correct) score++;
+  document.getElementById("liveScore").textContent=score;
+  [...document.querySelectorAll(".option")].forEach((b,i)=>{
+    b.classList.add("disabled");
+    if(item.a.includes(i)) b.classList.add("correct");
+    if(i===choice && !item.a.includes(i)) b.classList.add("wrong");
+  });
+  const exp=document.getElementById("explain");
+  exp.innerHTML=correct ? "✓ সঠিক উত্তর" : "✗ সঠিক উত্তর: <b>"+item.a.map(i=>letters[i]).join(" / ")+"</b>";
+  exp.style.display="block";
+  document.getElementById("nextBtn").style.display="inline-block";
+}
+
+document.getElementById("nextBtn").onclick=()=>{
+  if(!answered) return;
+  index++;
+  if(index<QUESTIONS.length) render();
+  else finish();
+};
+
+function finish(){
+  document.getElementById("quizCard").style.display="none";
+  document.getElementById("result").style.display="block";
+  document.getElementById("bar").style.width="100%";
+  document.getElementById("counter").textContent=QUESTIONS.length+" / "+QUESTIONS.length;
+  document.getElementById("finalScore").textContent=score+" / "+QUESTIONS.length;
+  document.getElementById("rightCount").textContent=score;
+  document.getElementById("wrongCount").textContent=QUESTIONS.length-score;
+  document.getElementById("attemptCount").textContent=attempts;
+  const pct=score/QUESTIONS.length*100;
+  document.getElementById("message").textContent=pct>=80?"দারুণ! প্রস্তুতি খুব ভালো।":pct>=50?"ভালো হয়েছে—আরও একবার রিভিশন করুন।":"আরও একটু অনুশীলন করুন। আবার পরীক্ষা দিন।";
+}
+
+function restart(){
+  index=0; score=0;
+  document.getElementById("quizCard").style.display="block";
+  document.getElementById("result").style.display="none";
+  attempts++;
+  localStorage.setItem(key,String(attempts));
+  document.getElementById("attemptTop").textContent=attempts;
+  render();
+}
+render();
+</script>
+</body>
+</html>

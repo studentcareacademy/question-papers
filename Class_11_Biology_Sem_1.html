@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>Student Care Academy - Quiz</title>
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap');
+
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+font-family:'Noto Sans Bengali',sans-serif;
+background:
+radial-gradient(circle at top left,#172554,#07111f 45%,#020617);
+color:#fff;
+min-height:100vh;
+}
+
+.app{
+width:100%;
+max-width:900px;
+margin:auto;
+padding:14px;
+}
+
+/* HEADER */
+
+.header{
+position:relative;
+overflow:hidden;
+text-align:center;
+padding:20px 12px;
+border-radius:22px;
+background:
+linear-gradient(135deg,#0f172a,#172554,#1e1b4b);
+border:1px solid rgba(255,255,255,.15);
+box-shadow:0 15px 45px rgba(0,0,0,.35);
+margin-bottom:15px;
+}
+
+.brand{
+font-size:25px;
+font-weight:800;
+
+background:
+linear-gradient(
+90deg,
+#67e8f9,
+#f0abfc,
+#fde68a,
+#67e8f9
+);
+
+background-size:300% auto;
+
+-webkit-background-clip:text;
+
+color:transparent;
+
+animation:brandAnimation 5s linear infinite;
+}
+
+@keyframes brandAnimation{
+
+0%{
+background-position:0% center;
+}
+
+100%{
+background-position:300% center;
+}
+
+}
+
+.teacher{
+color:#dbeafe;
+font-size:14px;
+font-weight:600;
+margin-top:5px;
+}
+
+.classTitle{
+color:#fde68a;
+font-size:17px;
+font-weight:800;
+margin-top:7px;
+}
+
+.progressArea{
+margin:10px 2px;
+}
+
+.progressText{
+display:flex;
+justify-content:space-between;
+font-size:13px;
+color:#cbd5e1;
+margin-bottom:6px;
+}
+
+.progress{
+height:8px;
+background:#1e293b;
+border-radius:20px;
+overflow:hidden;
+}
+
+.progressBar{
+height:100%;
+width:0%;
+background:
+linear-gradient(
+90deg,
+#22d3ee,
+#818cf8,
+#f472b6
+);
+transition:.3s;
+}
+
+/* CARD */
+
+.card{
+background:rgba(15,23,42,.94);
+border:1px solid rgba(255,255,255,.12);
+border-radius:22px;
+padding:20px;
+box-shadow:0 15px 50px rgba(0,0,0,.35);
+}
+
+.section{
+display:inline-block;
+padding:6px 13px;
+border-radius:30px;
+background:
+linear-gradient(
+135deg,
+#312e81,
+#7c3aed
+);
+font-size:12px;
+font-weight:800;
+margin-bottom:12px;
+}
+
+.questionNo{
+color:#67e8f9;
+font-size:14px;
+font-weight:800;
+margin-bottom:8px;
+}
+
+.question{
+font-size:19px;
+font-weight:700;
+line-height:1.75;
+margin-bottom:17px;
+}
+
+.options{
+display:grid;
+gap:11px;
+}
+
+.option{
+display:flex;
+align-items:flex-start;
+gap:10px;
+padding:13px;
+border-radius:14px;
+border:1px solid #334155;
+background:
+linear-gradient(
+135deg,
+#111827,
+#172033
+);
+cursor:pointer;
+font-size:15px;
+line-height:1.6;
+transition:.2s;
+}
+
+.option:hover{
+border-color:#38bdf8;
+transform:translateY(-1px);
+}
+
+.option input{
+display:none;
+}
+
+.letter{
+width:30px;
+height:30px;
+min-width:30px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:50%;
+background:#1e293b;
+color:#bae6fd;
+font-weight:800;
+}
+
+.option.selected{
+border-color:#22d3ee;
+background:#164e63;
+}
+
+.option.selected .letter{
+background:#06b6d4;
+color:#082f49;
+}
+
+.option.correct{
+border-color:#22c55e;
+background:#14532d;
+}
+
+.option.wrong{
+border-color:#ef4444;
+background:#7f1d1d;
+}
+
+.next{
+width:100%;
+margin-top:20px;
+padding:14px;
+border:0;
+border-radius:14px;
+background:
+linear-gradient(
+135deg,
+#06b6d4,
+#4f46e5
+);
+color:white;
+font-family:inherit;
+font-size:16px;
+font-weight:800;
+cursor:pointer;
+}
+
+.next:disabled{
+opacity:.45;
+cursor:not-allowed;
+}
+
+/* RESULT */
+
+.result{
+display:none;
+text-align:center;
+}
+
+.resultIcon{
+width:90px;
+height:90px;
+margin:5px auto 15px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:42px;
+background:
+linear-gradient(
+135deg,
+#22c55e,
+#06b6d4
+);
+}
+
+.resultTitle{
+font-size:27px;
+font-weight:800;
+color:#fef3c7;
+}
+
+.scoreGrid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin:20px 0;
+}
+
+.score{
+background:#111827;
+border:1px solid #334155;
+border-radius:16px;
+padding:15px;
+}
+
+.score small{
+color:#94a3b8;
+}
+
+.score strong{
+display:block;
+font-size:27px;
+color:#67e8f9;
+margin-top:4px;
+}
+
+.restart{
+width:100%;
+padding:14px;
+border:0;
+border-radius:14px;
+background:
+linear-gradient(
+135deg,
+#7c3aed,
+#db2777
+);
+color:white;
+font-family:inherit;
+font-weight:800;
+font-size:16px;
+cursor:pointer;
+}
+
+/* MATCHING */
+
+.matchGrid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin-bottom:16px;
+}
+
+.matchBox{
+border:1px solid #475569;
+border-radius:14px;
+overflow:hidden;
+background:#0f172a;
+}
+
+.matchTitle{
+text-align:center;
+padding:8px;
+background:#312e81;
+font-weight:800;
+}
+
+.matchRow{
+padding:9px;
+border-top:1px solid #334155;
+font-size:13px;
+}
+
+.footer{
+text-align:center;
+padding:18px 0 5px;
+color:#64748b;
+font-size:11px;
+}
+
+@media(max-width:600px){
+
+.brand{
+font-size:21px;
+}
+
+.question{
+font-size:17px;
+}
+
+.option{
+font-size:14px;
+}
+
+.matchGrid{
+grid-template-columns:1fr 1fr;
+}
+
+.matchRow{
+font-size:12px;
+padding:8px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="header">
+
+<div class="brand">
+Student Care Academy; Teacher:-Tapan Mandal
+</div>
+
+<div class="teacher">
+Class-11 Semester-1 Biology
+</div>
+
+<div class="classTitle">
+ Online Mock Test
+</div>
+
+</header>
+
+<div class="progressArea"
+id="progressArea">
+
+<div class="progressText">
+
+<span id="sectionName">
+General MCQs
+</span>
+
+<span>
+<span id="current">1</span>
+/
+<span id="total">
+60
+</span>
+</span>
+
+</div>
+
+<div class="progress">
+
+<div class="progressBar"
+id="progressBar">
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div id="quiz"></div>
+
+<div class="result"
+id="result">
+
+<div class="resultIcon">
+✓
+</div>
+
+<div class="resultTitle">
+Exam Completed!
+</div>
+
+<div class="scoreGrid">
+
+<div class="score">
+
+<small>
+Total Score
+</small>
+
+<strong id="finalScore">
+0
+</strong>
+
+</div>
+
+<div class="score">
+
+<small>
+Exam Attempt
+</small>
+
+<strong id="attempt">
+1
+</strong>
+
+</div>
+
+<div class="score">
+
+<small>
+Correct
+</small>
+
+<strong id="correct">
+0
+</strong>
+
+</div>
+
+<div class="score">
+
+<small>
+Wrong
+</small>
+
+<strong id="wrong">
+0
+</strong>
+
+</div>
+
+</div>
+
+<button class="restart"
+onclick="restartQuiz()">
+
+আবার পরীক্ষা দিন
+
+</button>
+
+</div>
+
+</div>
+
+<div class="footer">
+
+Student Care Academy • Teacher:-Tapan Mandal
+
+</div>
+
+</div>
+
+<script>
+
+const questions=[
+
+{
+    section:"General MCQs",
+    q:"দ্বিপদ নামকরণের প্রবক্তা কে?",
+    o:["চার্লস ডারউইন","ক্যারোলাস লিনিয়াস","এরিস্টটল","আর্নস্ট মেয়ার"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"ট্যাক্সোনমির ক্ষুদ্রতম এবং মৌলিক একক কোনটি?",
+    o:["পর্ব","গোত্র","প্রজাতি","বর্গ"],
+    a:2
+},
+
+{
+    section:"General MCQs",
+    q:"পাঁচ রাজ্য শ্রেণিবিন্যাসের প্রবর্তক কে?",
+    o:["আর এইচ হুইটেকার","কার্ল ওজ","কোপল্যান্ড","হেকেল"],
+    a:0
+},
+
+{
+    section:"General MCQs",
+    q:"পেপটিডোগ্লাইকান কোন জীবের কোশপ্রাচীরের প্রধান উপাদান?",
+    o:["ছত্রাক","ব্যাকটেরিয়া","শৈবাল","ব্রায়োফাইটা"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"ভাইরাস গঠিত হয় কী নিয়ে?",
+    o:["শুধু প্রোটিন","শুধু নিউক্লিক অ্যাসিড","প্রোটিন ও নিউক্লিক অ্যাসিড","লিপিড ও কার্বোহাইড্রেট"],
+    a:2
+},
+
+{
+    section:"General MCQs",
+    q:"সংবহন কলাযুক্ত কিন্তু বীজহীন উদ্ভিদ গোষ্ঠী কোনটি?",
+    o:["ব্রায়োফাইটা","টেরিডোফাইটা","ব্যক্তবীজী","শৈবাল"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"উদ্ভিদজগতের উভচর কাকে বলা হয়?",
+    o:["টেরিডোফাইটা","শৈবাল","ব্রায়োফাইটা","ব্যক্তবীজী"],
+    a:2
+},
+
+{
+    section:"General MCQs",
+    q:"নালিকাতন্ত্র বা ওয়াটার ভাস্কুলার সিস্টেম কোন পর্বের বৈশিষ্ট্য?",
+    o:["পরিফেরা","একাইনোডার্মাটা","অ্যানেলিডা","মোলাস্কা"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"নিডোব্লাস্ট কোশ কোন পর্বের প্রাণীদের মধ্যে পাওয়া যায়?",
+    o:["পরিফেরা","নিডারিয়া","প্লাটিহেলমিনথিস","নেমাটোডা"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"মেটামেরিজম বা প্রকৃত খণ্ডীভবন কোন পর্বে দেখা যায়?",
+    o:["অ্যানেলিডা","আর্থ্রোপোডা","পরিফেরা","একাইনোডার্মাটা"],
+    a:0
+},
+
+{
+    section:"General MCQs",
+    q:"নিউম্যাটোফোর বা শ্বাসমূল দেখা যায় কোন উদ্ভিদে?",
+    o:["পাইনাস","সুন্দরী","মটর","বট"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"মুক্ত সংবহনতন্ত্র কোন প্রাণীতে উপস্থিত?",
+    o:["কেঁচো","আরশোলা","মানুষ","ব্যাঙ"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"কোশপর্দার সবচেয়ে গ্রহণযোগ্য মডেল কোনটি?",
+    o:["স্যান্ডউইচ মডেল","ইউনিট মেমব্রেন","ফ্লুইড মোজাইক মডেল","ল্যামেলার মডেল"],
+    a:2
+},
+
+{
+    section:"General MCQs",
+    q:"ফ্লুইড মোজাইক মডেলের প্রবক্তা কারা?",
+    o:["রবার্ট হুক ও ব্রাউন","সিঙ্গার ও নিকলসন","ওয়াটসন ও ক্রিক","স্লেডেন ও সোয়ান"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"কোশের শক্তিঘর বলা হয় কোন অঙ্গাণুকে?",
+    o:["গলগি বস্তু","মাইটোকনড্রিয়া","লাইসোজোম","প্লাস্টিড"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"প্রোটিন তৈরির কারখানা হিসেবে পরিচিত কোনটি?",
+    o:["সেন্ট্রোজোম","রাইবোজোম","পেরক্সিজোম","ভ্যাকুওল"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"ক্রসিং ওভার মিওসিসের কোন উপদশায় ঘটে?",
+    o:["লেপ্টোটিন","জাইগোটিন","প্যাকাইটিন","ডিপ্লোটিন"],
+    a:2
+},
+
+{
+    section:"General MCQs",
+    q:"কায়াজমা গঠিত হয় কোন দশায়?",
+    o:["ডায়াকাইনেসিস","ডিপ্লোটিন","প্যাকাইটিন","অ্যানাফেজ"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"ডিএনএ অণুর প্রতিলিপিকরণ কোশচক্রের কোন দশায় ঘটে?",
+    o:["G1 দশা","S দশা","G2 দশা","M দশা"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"উৎসেচক মূলত কোন ধরনের জৈব যৌগ? ## খুব গুরুত্বপূর্ণ প্রশ্ন উত্তর",
+    o:["লিপিড","প্রোটিন","শর্করা","ভিটামিন"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"সিস্টেমা ন্যাচুরি গ্রন্থের লেখক কে?",
+    o:["জন রে","থিওফ্রাস্টাস","লিনিয়াস","ল্যামার্ক"],
+    a:2
+},
+
+{
+    section:"General MCQs",
+    q:"আইসিবিএন-এর পুরো নাম কী?",
+    o:["International Code of Botanical Nomenclature","Indian Code of Botanical Nomenclature","International Council of Botanical Nomenclature","International Center of Biological Name"],
+    a:0
+},
+
+{
+    section:"General MCQs",
+    q:"প্রাক-কেন্দ্রীয় কোশে রাইবোজোমের প্রকৃতি কেমন?",
+    o:["80S","70S","60S","50S"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"লাইকেন কার যৌথ সমন্বয়?",
+    o:["শৈবাল ও প্রোটোজোয়া","শৈবাল ও ছত্রাক","ছত্রাক ও ব্যাকটেরিয়া","ছত্রাক ও ভাইরাস"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"কাইটিন কোশপ্রাচীরে উপস্থিত থাকে কার?",
+    o:["শৈবাল","ছত্রাক","ব্যাকটেরিয়া","ব্রায়োফাইটা"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"ব্যক্তবীজী উদ্ভিদে শস্যের প্রকৃতি কেমন?",
+    o:["হ্যাপ্লয়েড","ডিপ্লয়েড","ট্রিপ্লয়েড","টেট্রাপ্লয়েড"],
+    a:0
+},
+
+{
+    section:"General MCQs",
+    q:"মেসোগ্লিয়া দেখা যায় কোন পর্বে?",
+    o:["পরিফেরা","নিডারিয়া","প্লাটিহেলমিনথিস","অ্যানেলিডা"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"শিখাকোশ বা ফ্লেম সেল কার রেচন অঙ্গ?",
+    o:["ফিতাকৃমি","কেঁচো","চিংড়ি","তারা মাছ"],
+    a:0
+},
+
+{
+    section:"General MCQs",
+    q:"জল সংবহন তন্ত্র কার বৈশিষ্ট্য?",
+    o:["পরিফেরা","মোলাস্কা","একাইনোডার্মাটা","আর্থ্রোপোডা"],
+    a:0
+},
+
+{
+    section:"General MCQs",
+    q:"বুক ফুসফুস বা বুক লাং দেখা যায় কোন প্রাণীতে?",
+    o:["চিংড়ি","মাকড়সা","শামুক","মাছি"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"জালিকাকার শিরাবিন্যাস দেখা যায় কোন পাতায়?",
+    o:["কলা পাতা","আম পাতা","বাঁশ পাতা","ঘাস"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"রেসিমোজ পুষ্পবিন্যাসের প্রধান অক্ষের বৃদ্ধি কেমন?",
+    o:["নির্দিষ্ট","অনিয়মিত","অনির্দিষ্ট","ধীরগতি"],
+    a:2
+},
+
+{
+    section:"General MCQs",
+    q:"ক্যাসপেরিয়ান পট্টি উদ্ভিদের কোন অংশে থাকে?",
+    o:["বহিস্ত্বকে","পরিচক্রে","অন্তঃস্ত্বকে","মজ্জায়"],
+    a:2
+},
+
+{
+    section:"General MCQs",
+    q:"বাস্ট তন্তু আসলে কী ধরনের কলা?",
+    o:["প্যারেনকাইমা","কোলেনকাইমা","স্ক্লেরেনকাইমা","এরেনকাইমা"],
+    a:2
+},
+
+{
+    section:"General MCQs",
+    q:"তরুণাস্থির ধাত্রে উপস্থিত প্রোটিন কোনটি?",
+    o:["ওসিন","কন্ড্রিন","কোলাজেন","মায়োসিন"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"আত্মঘাতী থলি বলা হয় কোন অঙ্গাণুকে?",
+    o:["রাইবোজোম","লাইসোজোম","পেরক্সিজোম","গলগি বডি"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"থাইলাকয়েড পর্দা কোথায় দেখা যায়?",
+    o:["মাইটোকনড্রিয়া","ক্লোরোপ্লাস্ট","গলগি বডি","নিউক্লিয়াস"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"আরএনএ-তে থাইমিনের পরিবর্তে কোনটি থাকে?",
+    o:["গুয়ানিন","সাইটোসিন","ইউরাসিল","অ্যাডেনিন"],
+    a:2
+},
+
+{
+    section:"General MCQs",
+    q:"পেপটাইড বন্ধনী কোথায় পাওয়া যায়?",
+    o:["লিপিড","কার্বোহাইড্রেট","প্রোটিন","নিউক্লিক অ্যাসিড"],
+    a:2
+},
+
+{
+    section:"General MCQs",
+    q:"সিন্যাপসিস প্রক্রিয়াটি কোন উপদশায় ঘটে? ## গুরুত্বপূর্ণ প্রশ্ন উত্তর",
+    o:["লেপ্টোটিন","জাইগোটিন","প্যাকাইটিন","মেটাফেজ"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"হার্বেরিয়াম কী সংরক্ষণের স্থান?",
+    o:["জীবন্ত উদ্ভিদ","সংরক্ষিত মৃত উদ্ভিদ নমুনা","বন্যপ্রাণী","জীবাশ্ম"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"সায়ানোব্যাকটেরিয়া মূলত কী নামে পরিচিত?",
+    o:["লাল শৈবাল","নীল-সবুজ শৈবাল","বাদামি শৈবাল","সোনালি শৈবাল"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"নগ্ন জিনোমযুক্ত অকোষীয় সংক্রামক কণা কোনটি?",
+    o:["ভিরিয়ন","ভিরয়েড","প্রিয়ন","ক্যাপসিড"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"রেড টাইড সৃষ্টির জন্য দায়ী জীব কোনটি?",
+    o:["ডায়াটম","ডাইনোফ্ল্যাজেলেট","ইউগ্লিনা","অ্যামিবা"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"আগার-আগার কোন লাল শৈবাল থেকে তৈরি হয়?",
+    o:["জেলিয়াম ও গ্র্যাসিলেবিয়া","সারগাসাম","স্পাইরোগাইরা","ক্ল্যামাইডোমোনাস"],
+    a:0
+},
+
+{
+    section:"General MCQs",
+    q:"জীবন্ত জীবাশ্মের উদাহরণ কোনটি?",
+    o:["পাইনাস","গিংকো বাইলোবা","আম","ফার্ন"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"র‍্যা ডুলা নামক মুখোপাঙ্গ কোন পর্বে থাকে?",
+    o:["অ্যানেলিডা","আর্থ্রোপোডা","মোলাস্কা","প্লাটিহেলমিনথিস"],
+    a:2
+},
+
+{
+    section:"General MCQs",
+    q:"নটোকর্ড আজীবন লেজে সীমাবদ্ধ থাকে কার?",
+    o:["সেফালোকর্ডাটা","ইউরোকর্ডাটা","ভার্টিব্রাটা","হেমিকর্ডাটা"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"বায়ুগহ্বর বা নিউম্যাটিক অস্থি কার বৈশিষ্ট্য?",
+    o:["সরীসৃপ","পক্ষী","স্তন্যপায়ী","উভচর"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"মূলরোম উদ্ভিদের কোন অংশ থেকে তৈরি হয়?",
+    o:["কর্টেক্স","এপিডার্মিস","এন্ডোডার্মিস","পেরিসাইকেল"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"সমদ্বিপার্শ্বীয় নালিকা বান্ডিল কোথায় পাওয়া যায়?",
+    o:["লাউ-কুমড়োর কাণ্ডে","সূর্যমুখীর কাণ্ডে","ভুট্টার কাণ্ডে","চন্দ্রমল্লিকার কাণ্ডে"],
+    a:0
+},
+
+{
+    section:"General MCQs",
+    q:"হৃৎপেশির কোশগুলির সংযোগস্থলে কী থাকে?",
+    o:["ইন্টারক্যালেটেড ডিস্ক","টাইট জাংশন","ডেসমেজোম","সাইন্যাপ্স"],
+    a:0
+},
+
+{
+    section:"General MCQs",
+    q:"ম্যালপিজিয়ান নালিকা কার রেচন অঙ্গ?",
+    o:["কেঁচো","আরশোলা","শামুক","চিংড়ি"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"সেন্ট্রিওলের অভ্যন্তরীণ বিন্যাস কেমন?",
+    o:["9+2","9+0","8+2","9+3"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"পলিজোম গঠিত হয় কী নিয়ে?",
+    o:["একাধিক রাইবোজোম ও একটি mRNA","একাধিক DNA ও প্রোটিন","রাইবোজোম ও গলগি বডি","mRNA ও tRNA"],
+    a:0
+},
+
+{
+    section:"General MCQs",
+    q:"সবচেয়ে সরলতম অ্যামিনো অ্যাসিড কোনটি?",
+    o:["অ্যালানিন","গ্লাইসিন","ভ্যালিন","লিউসিন"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"ডিএনএ-র পিউরিন ক্ষারক দুটি কী কী?",
+    o:["অ্যাডেনিন ও থাইমিন","অ্যাডেনিন ও গুয়ানিন","সাইটোসিন ও থাইমিন","ইউরাসিল ও গুয়ানিন"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"মেটাফেজ প্লেটে ক্রোমোজোমগুলির বিন্যাসকে কী বলে?",
+    o:["কংগ্রেসন","ইন্টারকাইনেসিস","ডিসজাংশন","টেলোফেজ"],
+    a:0
+},
+
+{
+    section:"General MCQs",
+    q:"বেমতন্তু গঠনে সাহায্যকারী প্রোটিন কোনটি?",
+    o:["মায়োসিন","টিউবুলিন","অ্যাক্টিন","কেরাটিন"],
+    a:1
+},
+
+{
+    section:"General MCQs",
+    q:"কোশ বিভাজনে ক্রোমোজোমের সংখ্যা অর্ধেক হয় কোন বিভাজনে?",
+    o:["মাইটোসিস","অ্যামাইটোসিস","মিওসিস-I","মিওসিস-II"],
+    a:2
+}
+
+];
+
+let current=0;
+let score=0;
+let locked=false;
+
+const quiz=
+document.getElementById("quiz");
+
+const result=
+document.getElementById("result");
+
+const progressBar=
+document.getElementById("progressBar");
+
+const currentEl=
+document.getElementById("current");
+
+const totalEl=
+document.getElementById("total");
+
+const sectionName=
+document.getElementById("sectionName");
+
+totalEl.textContent=
+questions.length;
+
+
+function render(){
+
+locked=false;
+
+let q=questions[current];
+
+currentEl.textContent=
+current+1;
+
+sectionName.textContent=
+q.section;
+
+progressBar.style.width=
+((current)/questions.length*100)+"%";
+
+let html="";
+
+html+=`
+<div class="section">
+${q.section}
+</div>
+
+<div class="questionNo">
+Question ${current+1}
+</div>
+
+<div class="question">
+${q.q}
+</div>
+
+<div class="options">
+`;
+
+q.o.forEach((option,i)=>{
+
+let letter=
+String.fromCharCode(65+i);
+
+html+=`
+<label class="option"
+data-index="${i}">
+
+<input
+type="radio"
+name="answer"
+value="${i}">
+
+<span class="letter">
+${letter}
+</span>
+
+<span>
+${option}
+</span>
+
+</label>
+`;
+
+});
+
+html+=`
+</div>
+
+<button
+class="next"
+id="next"
+disabled>
+
+${current===questions.length-1
+?"Finish Exam"
+:"Next Question"}
+
+</button>
+`;
+
+quiz.innerHTML=html;
+
+
+document
+.querySelectorAll(".option")
+.forEach(option=>{
+
+option.addEventListener(
+"click",
+()=>{
+
+if(locked)return;
+
+document
+.querySelectorAll(".option")
+.forEach(x=>
+x.classList.remove("selected")
+);
+
+option.classList.add("selected");
+
+option.querySelector("input")
+.checked=true;
+
+document.getElementById("next")
+.disabled=false;
+
+});
+
+});
+
+
+document
+.getElementById("next")
+.addEventListener(
+"click",
+check
+);
+
+}
+
+
+function check(){
+
+if(locked)return;
+
+let selected=
+document.querySelector(
+'input[name="answer"]:checked'
+);
+
+if(!selected)return;
+
+locked=true;
+
+let chosen=
+parseInt(selected.value);
+
+let correct=
+questions[current].a;
+
+let options=
+document.querySelectorAll(".option");
+
+if(chosen===correct){
+
+score++;
+
+options[chosen]
+.classList.add("correct");
+
+}else{
+
+options[chosen]
+.classList.add("wrong");
+
+options[correct]
+.classList.add("correct");
+
+}
+
+let button=
+document.getElementById("next");
+
+button.disabled=false;
+
+button.onclick=()=>{
+
+if(current===
+questions.length-1){
+
+showResult();
+
+}else{
+
+current++;
+
+render();
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+};
+
+}
+
+
+function showResult(){
+
+quiz.style.display="none";
+
+document.getElementById(
+"progressArea"
+).style.display="none";
+
+result.style.display="block";
+
+progressBar.style.width="100%";
+
+let key=
+"StudentCareAcademyQuizAttempts";
+
+let attempt=
+parseInt(
+localStorage.getItem(key)||"0"
+);
+
+attempt++;
+
+localStorage.setItem(
+key,
+attempt
+);
+
+document.getElementById(
+"finalScore"
+).textContent=
+score+" / "+questions.length;
+
+document.getElementById(
+"correct"
+).textContent=
+score;
+
+document.getElementById(
+"wrong"
+).textContent=
+questions.length-score;
+
+document.getElementById(
+"attempt"
+).textContent=
+attempt;
+
+}
+
+
+function restartQuiz(){
+
+current=0;
+score=0;
+locked=false;
+
+result.style.display="none";
+
+quiz.style.display="block";
+
+document.getElementById(
+"progressArea"
+).style.display="block";
+
+render();
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+
+render();
+
+</script>
+
+</body>
+
+</html>

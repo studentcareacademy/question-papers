@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>মাধ্যমিক বাংলা Quiz - Student Care Academy</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:"Noto Sans Bengali","Nirmala UI",Arial,sans-serif;
+    background:linear-gradient(135deg,#071952,#0B666A,#35A29F);
+    min-height:100vh;
+    color:#fff;
+}
+.container{
+    width:95%;
+    max-width:850px;
+    margin:auto;
+    padding:18px 0 35px;
+}
+.header{
+    text-align:center;
+    padding:18px 10px;
+    border-radius:20px;
+    background:rgba(0,0,0,.28);
+    box-shadow:0 8px 25px rgba(0,0,0,.25);
+    margin-bottom:18px;
+}
+.academy{
+    font-size:30px;
+    font-weight:900;
+    animation:glow 1.5s infinite alternate;
+}
+.teacher{
+    font-size:20px;
+    font-weight:bold;
+    margin-top:5px;
+    color:#ffe66d;
+    animation:slide 2s infinite alternate;
+}
+@keyframes glow{
+    from{transform:scale(1);text-shadow:0 0 5px #fff}
+    to{transform:scale(1.04);text-shadow:0 0 20px #00ffff,0 0 35px #fff}
+}
+@keyframes slide{
+    from{letter-spacing:0}
+    to{letter-spacing:2px}
+}
+.subject{
+    text-align:center;
+    background:#fff;
+    color:#111;
+    padding:12px;
+    border-radius:15px;
+    font-size:22px;
+    font-weight:900;
+    margin-bottom:15px;
+}
+.progress{
+    text-align:center;
+    font-size:18px;
+    font-weight:bold;
+    margin-bottom:12px;
+}
+.card{
+    background:#fff;
+    color:#111;
+    border-radius:22px;
+    padding:25px 20px;
+    box-shadow:0 12px 30px rgba(0,0,0,.3);
+}
+.question{
+    font-size:23px;
+    font-weight:900;
+    line-height:1.6;
+    margin-bottom:20px;
+}
+.option{
+    width:100%;
+    border:none;
+    padding:15px;
+    margin:8px 0;
+    border-radius:13px;
+    background:#eef2f7;
+    color:#111;
+    font-size:19px;
+    font-weight:bold;
+    text-align:left;
+    cursor:pointer;
+    transition:.25s;
+}
+.option:hover{
+    background:#d8e5ff;
+    transform:translateX(4px);
+}
+.option.correct{
+    background:#22c55e!important;
+    color:#fff;
+}
+.option.wrong{
+    background:#ef4444!important;
+    color:#fff;
+}
+.option:disabled{
+    cursor:not-allowed;
+}
+.answer{
+    margin-top:15px;
+    padding:13px;
+    border-radius:12px;
+    background:#e8fff0;
+    color:#087f23;
+    font-size:18px;
+    font-weight:bold;
+    display:none;
+}
+.next{
+    width:100%;
+    margin-top:18px;
+    padding:15px;
+    border:0;
+    border-radius:14px;
+    background:#ffb703;
+    color:#111;
+    font-size:20px;
+    font-weight:900;
+    cursor:pointer;
+    display:none;
+}
+.next:hover{background:#ffd166}
+.result{
+    display:none;
+    text-align:center;
+    background:#fff;
+    color:#111;
+    border-radius:25px;
+    padding:35px 20px;
+    box-shadow:0 12px 30px rgba(0,0,0,.35);
+}
+.result h1{
+    color:#0b7a3b;
+    font-size:32px;
+}
+.score{
+    font-size:55px;
+    font-weight:900;
+    color:#e63946;
+    margin:10px;
+}
+.attempt{
+    font-size:21px;
+    font-weight:bold;
+    margin:12px;
+}
+.restart{
+    padding:14px 30px;
+    border:0;
+    border-radius:14px;
+    background:#1769aa;
+    color:#fff;
+    font-size:19px;
+    font-weight:bold;
+    cursor:pointer;
+}
+.footer{
+    text-align:center;
+    margin-top:20px;
+    font-size:14px;
+    opacity:.85;
+}
+@media(max-width:600px){
+    .academy{font-size:24px}
+    .teacher{font-size:17px}
+    .subject{font-size:19px}
+    .question{font-size:20px}
+    .option{font-size:17px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+    <div class="academy">★ Student Care Academy ★</div>
+    <div class="teacher">Teacher:- Tapan Mandal</div>
+</div>
+
+<div class="subject">
+    মাধ্যমিক বাংলা — অসুখী একজন এবং বহুরূপী
+</div>
+
+<div id="quizArea">
+
+    <div class="progress" id="progress"></div>
+
+    <div class="card">
+        <div class="question" id="question"></div>
+        <div id="options"></div>
+
+        <div class="answer" id="answer"></div>
+
+        <button class="next" id="nextBtn" onclick="nextQuestion()">
+            পরবর্তী প্রশ্ন ➜
+        </button>
+    </div>
+
+</div>
+
+<div class="result" id="result">
+    <h1>🎉 পরীক্ষা সম্পূর্ণ 🎉</h1>
+    <div>তোমার মোট স্কোর</div>
+    <div class="score" id="finalScore">0 / 30</div>
+    <div class="attempt" id="attemptText"></div>
+    <p id="message"></p>
+    <button class="restart" onclick="restartQuiz()">
+        আবার পরীক্ষা দিন
+    </button>
+</div>
+
+<div class="footer">
+    Student Care Academy © মাধ্যমিক বাংলা
+</div>
+
+</div>
+
+<script>
+
+const questions = [
+
+{
+q:"'অসুখী একজন' কবিতাটির মূল রচয়িতা কে?",
+o:["পাবলো নেরুদা","গ্যাব্রিয়েল গার্সিয়া মার্কেজ","অক্টাভিও পাজ","ফেদেরিকো গার্সিয়া লোরকা"],
+a:0
+},
+{
+q:"'অসুখী একজন' কবিতাটি বাংলায় কে তরজমা করেছেন?",
+o:["শঙ্খ ঘোষ","নবারুণ ভট্টাচার্য","শক্তি চট্টোপাধ্যায়","মানবেন্দ্র বন্দ্যোপাধ্যায়"],
+a:1
+},
+{
+q:"'তারপর যুদ্ধ এল'— যুদ্ধ কেমনভাবে এসেছিল?",
+o:["প্রবল ঘূর্ণিঝড়ের মতো","কালবৈশাখীর মতো","রক্তের এক আগ্নেয়পাহাড়ের মতো","নিঃশব্দে"],
+a:2
+},
+{
+q:"কারা আর স্বপ্ন দেখতে পারল না?",
+o:["সাধারণ মানুষ","দেবতারা","শিশুরা","সৈনিকরা"],
+a:1
+},
+{
+q:"শান্ত হলুদ দেবতারা কত বছর ধরে ধ্যানে ডুবে ছিল?",
+o:["একশো বছর","হাজার বছর","যুগ যুগ ধরে","অনন্তকাল"],
+a:1
+},
+{
+q:"'বৃষ্টিতে ধুয়ে দিল আমার...'— কী ধুয়ে দিল?",
+o:["রক্তের দাগ","স্মৃতির পাতা","পায়ের দাগ","কালিমা"],
+a:2
+},
+{
+q:"বছরগুলো কার মতো মেয়েটির মাথার ওপর নেমে এল?",
+o:["পাহাড়ের মতো","পাথরের মতো","মেঘের মতো","অভিশাপের মতো"],
+a:1
+},
+{
+q:"'যেখানে ছিল শহর / সেখানে বিছিয়ে রইল...'— কী বিছিয়ে রইল?",
+o:["গোলাপি গাছ","মৃতদেহ","প্রাচীন পাথর","কাঠকয়লা"],
+a:3
+},
+{
+q:"'চূর্ণ হয়ে গেল প্রাচীন...'— কী চূর্ণ হয়ে গেল?",
+o:["গির্জা","প্রাসাদ","চিমনি","দেবতাদের মন্দির"],
+a:2
+},
+{
+q:"'সেই মেয়েটি আমার অপেক্ষায়।'— মেয়েটি কীসের প্রতীক?",
+o:["স্বার্থপরতার","শাশ্বত ভালোবাসার ও অপেক্ষার","যুদ্ধের বিভীষিকার","দেশপ্রেমের"],
+a:1
+},
+{
+q:"'অসুখী একজন' কবিতায় রক্তের দাগ কেমন ছিল?",
+o:["লাল","কালচে","কালো","নীলচে"],
+a:2
+},
+{
+q:"কবিতায় উল্লিখিত গাছটির রং কেমন ছিল?",
+o:["সবুজ","হলুদ","গোলাপি","লাল"],
+a:2
+},
+{
+q:"গোলাপি গাছটির পাতাগুলো কেমন ছিল?",
+o:["হাতের মুঠোর মতো","ছড়ানো করতলের মতো","আঙুলের মতো","বর্শার ফলার মতো"],
+a:1
+},
+{
+q:"'আমি তাকে ছেড়ে দিলাম'— কথক কোথায় ছেড়ে দিলেন?",
+o:["স্টেশনে","দরজায়","বারান্দায়","নির্জন রাস্তায়"],
+a:1
+},
+{
+q:"'অসুখী একজন' কবিতাটি নবারুণ ভট্টাচার্যের কোন কাব্যগ্রন্থের অন্তর্গত?",
+o:["বিদেশি ফুলে রক্তের ছিটে","রাতের সার্কাস","হালালঝান্ডা ও অন্যান্য","খেলনা নগরের রাজা"],
+a:0
+},
+{
+q:"হরিদার উনানের হাঁড়িতে অনেক সময় কী ফোটে?",
+o:["ভাত","ডাল","শুধু জল","তরকারি"],
+a:2
+},
+{
+q:"চকের বাসস্ট্যান্ডের কাছে হরিদা কী ছদ্মবেশে দাঁড়িয়েছিলেন?",
+o:["পাগল","বাউল","পুলিশ","কাপালিক"],
+a:0
+},
+{
+q:"বাসের ড্রাইভার কাশীনাথ পাগলরূপী হরিদাকে কী বলেছিল?",
+o:["বাসে উঠে পড়ো","খুব হয়েছে, এবার সরে পড়ো","সাবধানে রাস্তা পার হও","কত টাকা চাই তোমার?"],
+a:1
+},
+{
+q:"পুলিশ সেজে হরিদা কোথায় দাঁড়িয়েছিলেন?",
+o:["বাসস্ট্যান্ডে","জগদীশবাবুর বাড়িতে","দয়ালবাবুর লিচুবাগানে","বাজারের মোড়ে"],
+a:2
+},
+{
+q:"স্কুলের মাস্টারমশাই পুলিশরূপী হরিদাকে কত টাকা ঘুষ দিয়েছিলেন?",
+o:["চার আনা","আট আনা","বারো আনা","এক টাকা"],
+a:1
+},
+{
+q:"জগদীশবাবুর বাড়িতে আগত সন্ন্যাসী সারা বছরে কী খেতেন?",
+o:["একটি আমলকী","একটি হরীতকী","সামান্য ফলমূল","এক গ্লাস দুধ"],
+a:1
+},
+{
+q:"সন্ন্যাসী জগদীশবাবুর বাড়িতে কতদিন ছিলেন?",
+o:["পাঁচদিন","দশদিন","সাতদিন","একমাস"],
+a:2
+},
+{
+q:"জগদীশবাবু কাঠের খড়মে কী লাগিয়েছিলেন?",
+o:["রূপোর পাত","তামার তার","পিতলের নকশা","সোনার বোল"],
+a:3
+},
+{
+q:"জগদীশবাবু সন্ন্যাসীর ঝোলায় কত টাকা ফেলে দিয়েছিলেন?",
+o:["একশো টাকা","পঞ্চাশ টাকা","একশো এক টাকা","একশো আট টাকা"],
+a:0
+},
+{
+q:"'অদৃষ্ট কখনো হরিদার এই ভুল ক্ষমা করবে না।'— হরিদার ভুলটি কী ছিল?",
+o:["জগদীশবাবুকে ঠকানো","টাকা না নেওয়া","বন্ধুদের মিথ্যা বলা","সন্ন্যাসীর ছদ্মবেশ ধরা"],
+a:1
+},
+{
+q:"বিরাগীর বেশে হরিদার পরনে কী ছিল?",
+o:["গেরুয়া বসন","শুধু একটি গামছা","ছোট বহরের সাদা থান","সিল্কের পাঞ্জাবি"],
+a:2
+},
+{
+q:"বিরাগীর মতে, পরম সুখ কী?",
+o:["সব সুখের বন্ধন থেকে মুক্ত হওয়া","প্রচুর অর্থলাভ","তীর্থভ্রমণ","ঈশ্বরের দর্শন পাওয়া"],
+a:0
+},
+{
+q:"'আপনি কি ভগবানের চেয়েও বড়ো?'— কথাটি কে বলেছেন?",
+o:["জগদীশবাবু","ভবতোষ","গল্পকথক","বিরাগীবেশী হরিদা"],
+a:3
+},
+{
+q:"ভবতোষ পাগলরূপী হরিদাকে ধমক দিয়ে কী ছুঁড়ে দিয়েছিল?",
+o:["একটা পয়সা","আধুলি","সিকি","টাকা"],
+a:0
+},
+{
+q:"'আমরা তো খাঁটি মানুষ নই, আমরা...'— শূন্যস্থান পূরণ করো।",
+o:["গরিব","বহুরূপী","ভবঘুরে","সন্ন্যাসী"],
+a:1
+}
+
+];
+
+let current = 0;
+let score = 0;
+let answered = false;
+
+let attempts = parseInt(localStorage.getItem("studentCareQuizAttempts") || "0");
+
+function loadQuestion(){
+
+    answered = false;
+
+    const q = questions[current];
+
+    document.getElementById("progress").innerText =
+        "প্রশ্ন " + (current + 1) + " / " + questions.length;
+
+    document.getElementById("question").innerText =
+        (current + 1) + ". " + q.q;
+
+    const options = document.getElementById("options");
+    options.innerHTML = "";
+
+    q.o.forEach((option,index)=>{
+
+        const btn = document.createElement("button");
+
+        btn.className = "option";
+
+        btn.innerText =
+            String.fromCharCode(65 + index) + ". " + option;
+
+        btn.onclick = function(){
+            checkAnswer(index,btn);
+        };
+
+        options.appendChild(btn);
+    });
+
+    document.getElementById("answer").style.display="none";
+    document.getElementById("nextBtn").style.display="none";
+}
+
+function checkAnswer(selected, clicked){
+
+    if(answered) return;
+
+    answered = true;
+
+    const q = questions[current];
+
+    const buttons = document.querySelectorAll(".option");
+
+    buttons.forEach(btn => btn.disabled = true);
+
+    if(selected === q.a){
+
+        score++;
+
+        clicked.classList.add("correct");
+
+        document.getElementById("answer").innerHTML =
+            "✅ সঠিক উত্তর: " + q.o[q.a];
+
+    }else{
+
+        clicked.classList.add("wrong");
+
+        buttons[q.a].classList.add("correct");
+
+        document.getElementById("answer").innerHTML =
+            "❌ ভুল উত্তর! সঠিক উত্তর: " + q.o[q.a];
+    }
+
+    document.getElementById("answer").style.display="block";
+
+    document.getElementById("nextBtn").style.display="block";
+
+    if(current === questions.length - 1){
+        document.getElementById("nextBtn").innerText =
+            "ফলাফল দেখুন 🏆";
+    }
+}
+
+function nextQuestion(){
+
+    if(current < questions.length - 1){
+
+        current++;
+
+        loadQuestion();
+
+        window.scrollTo({
+            top:0,
+            behavior:"smooth"
+        });
+
+    }else{
+
+        showResult();
+    }
+}
+
+function showResult(){
+
+    attempts++;
+
+    localStorage.setItem(
+        "studentCareQuizAttempts",
+        attempts
+    );
+
+    document.getElementById("quizArea").style.display="none";
+    document.getElementById("result").style.display="block";
+
+    document.getElementById("finalScore").innerText =
+        score + " / " + questions.length;
+
+    document.getElementById("attemptText").innerText =
+        "Exam Attempt: " + attempts;
+
+    let message = "";
+
+    const percentage = (score / questions.length) * 100;
+
+    if(percentage >= 90){
+        message = "🏆 অসাধারণ! তোমার প্রস্তুতি খুব ভালো।";
+    }else if(percentage >= 75){
+        message = "🌟 খুব ভালো! আর একটু অনুশীলন করলে আরও ভালো হবে।";
+    }else if(percentage >= 50){
+        message = "👍 ভালো! গুরুত্বপূর্ণ প্রশ্নগুলো আরও একবার পড়ো।";
+    }else{
+        message = "📚 আরও অনুশীলন করো। আবার পরীক্ষা দাও।";
+    }
+
+    document.getElementById("message").innerText = message;
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+function restartQuiz(){
+
+    current = 0;
+    score = 0;
+
+    document.getElementById("quizArea").style.display="block";
+    document.getElementById("result").style.display="none";
+
+    loadQuestion();
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>

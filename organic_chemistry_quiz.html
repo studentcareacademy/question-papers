@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Care Academy | Organic Chemistry Quiz</title>
+<style>
+  :root{--navy:#101b4d;--blue:#2457d6;--gold:#f5b82e;--green:#168653;--red:#d93649;--ink:#17213b;--muted:#64708a;--paper:#f3f6ff}
+  *{box-sizing:border-box}
+  body{margin:0;background:linear-gradient(145deg,#101b4d,#263f9d 55%,#6739a7);font-family:"Noto Sans Bengali","Nirmala UI",system-ui,sans-serif;color:var(--ink);min-height:100vh;padding:16px}
+  .app{max-width:760px;margin:0 auto}
+  .brand{color:#fff;text-align:center;padding:18px 10px 20px;line-height:1.45}
+  .brand h1{margin:0;font-size:clamp(23px,5vw,35px);font-weight:900;letter-spacing:.2px;animation:glow 2s ease-in-out infinite alternate}
+  .brand p{margin:5px 0 0;font-size:clamp(15px,3.5vw,20px);font-weight:700}
+  @keyframes glow{from{text-shadow:0 0 5px #fff,0 0 10px #6cbaff}to{text-shadow:0 0 10px #fff,0 0 22px #f5b82e,0 0 32px #ff8c42}}
+  .card{background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 18px 50px #07123866}
+  .topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:15px 18px;background:#f8faff;border-bottom:1px solid #e5eaff;flex-wrap:wrap}
+  .pill{border-radius:999px;padding:8px 12px;font-weight:800;font-size:14px;background:#e9efff;color:#1c3f9e}
+  .progress{height:7px;background:#e6eaf5}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#f5b82e,#ff8a35);transition:width .3s}
+  .content{padding:clamp(18px,4vw,30px)}
+  .topic{color:#7650bd;font-size:13px;font-weight:900;letter-spacing:.4px;margin-bottom:12px}
+  .qtext{font-size:clamp(19px,4vw,24px);font-weight:850;line-height:1.65;margin:0 0 20px}
+  .options{display:grid;gap:11px}
+  .option{display:flex;align-items:flex-start;gap:12px;width:100%;text-align:left;border:2px solid #e0e6f5;border-radius:14px;background:#fff;padding:13px 15px;font:inherit;font-size:16px;line-height:1.5;color:#17213b;cursor:pointer;transition:.18s}
+  .option:hover:not(:disabled){border-color:#6689ee;background:#f5f7ff;transform:translateY(-1px)}
+  .letter{flex:0 0 31px;height:31px;border-radius:50%;display:grid;place-items:center;background:#edf1fb;color:#2748a0;font-weight:900}
+  .option.correct{border-color:var(--green);background:#eaf9f0}.option.correct .letter{background:var(--green);color:#fff}
+  .option.wrong{border-color:var(--red);background:#fff0f1}.option.wrong .letter{background:var(--red);color:#fff}
+  .feedback{margin-top:16px;padding:13px 15px;border-radius:12px;font-weight:750;line-height:1.55;display:none}
+  .feedback.show{display:block}.feedback.good{background:#eaf9f0;color:#11653d}.feedback.bad{background:#fff0f1;color:#a51e30}
+  .actions{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:22px}
+  .hint{font-size:13px;color:var(--muted)}
+  .btn{border:0;border-radius:12px;padding:13px 21px;font:inherit;font-weight:900;cursor:pointer;background:var(--blue);color:#fff;box-shadow:0 5px 0 #173a9d}
+  .btn:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}.btn.secondary{background:#e8edff;color:#2444a2;box-shadow:none}
+  .result{display:none;text-align:center;padding:30px 20px 34px}.result.show{display:block}
+  .trophy{font-size:58px}.result h2{font-size:30px;margin:8px 0}.scoreline{font-size:clamp(25px,6vw,38px);font-weight:950;color:#1e48bd;margin:16px 0 8px}
+  .result p{color:var(--muted);font-size:16px}.result-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:22px}
+  .review{display:none;text-align:left;margin-top:24px;border-top:1px solid #e5eaff;padding-top:20px}.review.show{display:block}
+  .review-item{padding:12px 0;border-bottom:1px solid #edf0f8;line-height:1.55}.review-item strong{display:block;margin-bottom:4px}.review-item .ans{color:#168653;font-weight:750}
+  .foot{text-align:center;color:#dce5ff;font-size:12px;padding:14px}
+  @media(max-width:480px){body{padding:9px}.brand{padding:12px 4px 16px}.topbar{padding:12px}.content{padding:17px}.option{padding:11px 12px}.actions{align-items:stretch}.btn{padding:12px 16px}.hint{align-self:center}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="brand">
+    <h1>Student Care Academy</h1>
+    <p>Teacher:- Tapan Mandal</p>
+  </header>
+  <main class="card">
+    <div class="topbar" id="topbar">
+      <span class="pill" id="questionCount">প্রশ্ন 1 / 30</span>
+      <span class="pill" id="scorePill">Score: 0</span>
+    </div>
+    <div class="progress"><span id="progressBar"></span></div>
+    <section class="content" id="quizPanel">
+      <div class="topic">মাধ্যমিক ভৌতবিজ্ঞান • জৈব রসায়ন • MCQ QUIZ</div>
+      <h2 class="qtext" id="questionText"></h2>
+      <div class="options" id="options"></div>
+      <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+      <div class="actions">
+        <span class="hint" id="hint">সঠিক উত্তর বেছে নিন</span>
+        <button class="btn" id="nextBtn" disabled>পরের প্রশ্ন →</button>
+      </div>
+    </section>
+    <section class="result" id="resultPanel">
+      <div class="trophy" id="trophy">🏆</div>
+      <h2>পরীক্ষা সম্পূর্ণ!</h2>
+      <div class="scoreline" id="finalScore"></div>
+      <p id="resultMessage"></p>
+      <div class="result-actions">
+        <button class="btn" id="reviewBtn">উত্তর দেখুন</button>
+        <button class="btn secondary" id="retryBtn">আবার পরীক্ষা দিন</button>
+      </div>
+      <div class="review" id="reviewPanel"></div>
+    </section>
+  </main>
+  <div class="foot">Practice • Learn • Improve</div>
+</div>
+<script>
+const questions = [
+{q:"পরীক্ষাগারে অজৈব যৌগ থেকে প্রথম সংশ্লেষিত জৈব যৌগটি হলো— [মাধ্যমিক 2019]",o:["মিথেন","ইউরিয়া","অ্যাসিটিক অ্যাসিড","ইথিলিন"],a:1},
+{q:"মিথেন অণুতে H–C–H বন্ধন কোণের মান কত? [মাধ্যমিক 2017]",o:["180°","120°","109°28′","90°"],a:2},
+{q:"প্রদত্ত কোন গ্যাসটি মার্স গ্যাস নামে পরিচিত? [মাধ্যমিক 2020]",o:["ইথেন","মিথেন","ইথিলিন","প্রোপেন"],a:1},
+{q:"রান্নার গ্যাস বা LPG-এর প্রধান উপাদান কোনটি? [মাধ্যমিক 2018, 2023]",o:["মিথেন","ইথেন","বিউটেন","ইথিলিন"],a:2},
+{q:"সরলতম অ্যালকিনের রাসায়নিক সংকেত কোনটি? [মাধ্যমিক 2022]",o:["C₂H₂","C₂H₄","CH₄","C₂H₆"],a:1},
+{q:"অ্যাসিটিলিন অণুতে দুটি কার্বন পরমাণুর মধ্যে উপস্থিত বন্ধনের প্রকৃতি হলো— [মাধ্যমিক 2024]",o:["সমযোজী একবন্ধন","সমযোজী দ্বিবন্ধন","সমযোজী ত্রিবন্ধন","তড়িৎযোজী বন্ধন"],a:2},
+{q:"ইথাইল অ্যালকোহলের কার্যকরী মূলকঘটিত সমাবয়ব যৌগটি হলো— [মাধ্যমিক 2019, 2024]",o:["ডাইমিথাইল ইথার","মিথাইল অ্যালকোহল","অ্যাসিটোন","অ্যাসিটালডিহাইড"],a:0},
+{q:"টেফলন (Teflon) পলিমারের মনোমার কোনটি? [মাধ্যমিক 2018, 2025]",o:["ভিনাইল ক্লোরাইড","টেট্রাফ্লুরোইথিলিন","ইথিলিন","স্টাইরিন"],a:1},
+{q:"প্রদত্ত কোন হাইড্রোকার্বনের সঙ্গে বিক্রিয়ায় ব্রোমিন জলের লালচে-বাদামি বর্ণ বর্ণহীন হয়? [মাধ্যমিক 2020, 2023]",o:["CH₄","C₂H₆","C₂H₄","C₃H₈"],a:2},
+{q:"ভিনেগারে উপস্থিত প্রধান জৈব অ্যাসিড কোনটি? [মাধ্যমিক 2017, 2022]",o:["ফরমিক অ্যাসিড","অ্যাসিটিক অ্যাসিড","ল্যাকটিক অ্যাসিড","সাইট্রিক অ্যাসিড"],a:1},
+{q:"কার্বন পরমাণুর নিজেদের মধ্যে সমযোজী বন্ধনে যুক্ত হয়ে দীর্ঘ শৃঙ্খল গঠনের বিশেষ ক্ষমতাকে কী বলে? [মাধ্যমিক 2023]",o:["পলিমারাইজেশন","সমাবয়বতা","ক্যাটিনেশন","সমগণীয়তা"],a:2},
+{q:"প্রদত্ত কোনটি প্রাকৃতিক জৈব-বিশ্লেষ্য পলিমারের উদাহরণ? [মাধ্যমিক 2024]",o:["পলিথিন","পলিভিনাইল ক্লোরাইড","সেলুলোজ","টেফলন"],a:2},
+{q:"সাধারণ উষ্ণতায় ধাতব সোডিয়ামের সঙ্গে বিক্রিয়া করে হাইড্রোজেন গ্যাস উৎপন্ন করে— [বিশেষ গুরুত্বপূর্ণ]",o:["C₂H₆","C₂H₅OH","CH₃OCH₃","CH₄"],a:1},
+{q:"অ্যালকাইন শ্রেণীর সাধারণ আণবিক সংকেত হলো— [বিশেষ গুরুত্বপূর্ণ]",o:["CₙH₂ₙ₊₂","CₙH₂ₙ","CₙH₂ₙ₋₂","CₙH₂ₙ₋₁"],a:2},
+{q:"প্রোপান-2-অল যৌগে কোন কার্যকরী মূলকটি উপস্থিত থাকে? [বিশেষ গুরুত্বপূর্ণ]",o:["–CHO","–OH",">C=O","–COOH"],a:1},
+{q:"পরিবেশবান্ধব জ্বালানি CNG-এর মূল উপাদানটি হলো— [বিশেষ গুরুত্বপূর্ণ]",o:["মিথেন","ইথেন","প্রোপেন","অ্যাসিটিলিন"],a:0},
+{q:"কাঁচা ফল কৃত্রিমভাবে পাকাতে কোন গ্যাসটি ব্যবহৃত হয়? [বিশেষ গুরুত্বপূর্ণ]",o:["মিথেন","ইথিলিন","ইথেন","প্রোপেন"],a:1},
+{q:"PVC-এর মনোমারটির নাম কী? [বিশেষ গুরুত্বপূর্ণ]",o:["ইথিলিন","প্রোপিলিন","ভিনাইল ক্লোরাইড","টেট্রাফ্লুরোইথিলিন"],a:2},
+{q:"সোডিয়াম অ্যাসিটেটের সঙ্গে সোডালাইম মিশিয়ে উত্তপ্ত করলে কোন গ্যাস উৎপন্ন হয়? [বিশেষ গুরুত্বপূর্ণ]",o:["মিথেন","ইথেন","ইথিলিন","অ্যাসিটিলিন"],a:0},
+{q:"রেক্টিফায়েড স্পিরিটে ইথাইল অ্যালকোহলের শতকরা পরিমাণ প্রায় কত? [বিশেষ গুরুত্বপূর্ণ]",o:["90%","95.6%","100%","40%"],a:1},
+{q:"কার্বাইড বাতিতে উজ্জ্বল আলো তৈরিতে কোন গ্যাসটি জ্বালানি হিসেবে ব্যবহৃত হয়? [বিশেষ গুরুত্বপূর্ণ]",o:["মিথেন","ইথিলিন","অ্যাসিটিলিন","বিউটেন"],a:2},
+{q:"অ্যাসিটোন যৌগের নিয়মনিষ্ঠ IUPAC নামটি হলো— [বিশেষ গুরুত্বপূর্ণ]",o:["প্রোপানন","বিউটানন","প্রোপান্যাল","ইথানল"],a:0},
+{q:"অ্যালকেন সমগণীয় শ্রেণীর প্রথম সদস্য মিথেন হলে, এর তৃতীয় সদস্য কোনটি? [সম্ভাব্য]",o:["ইথেন","প্রোপেন","বিউটেন","পেন্টেন"],a:1},
+{q:"জৈব কার্বক্সিলিক অ্যাসিডসমূহে উপস্থিত কার্যকরী মূলকের গঠন সংকেত হলো— [সম্ভাব্য]",o:["–OH","–CHO","–COOH",">C=O"],a:2},
+{q:"একটি ইথিলিন (C₂H₄) অণুতে মোট সমযোজী বন্ধনের সংখ্যা কত? [সম্ভাব্য]",o:["4","5","6","7"],a:2},
+{q:"বাণিজ্যিক মেথিলেটেড স্পিরিট বা ডিনেচার্ড স্পিরিটকে বিষাক্ত করতে এতে প্রধানত কী মেশানো হয়? [সম্ভাব্য]",o:["পেট্রোল","মিথানল","গ্লিসারিন","ফরমালডিহাইড"],a:1},
+{q:"অতিরিক্ত গাঢ় সালফিউরিক অ্যাসিডের উপস্থিতিতে ইথানলকে 170°C উষ্ণতায় উত্তপ্ত করলে কী উৎপন্ন হয়? [সম্ভাব্য]",o:["মিথেন","ইথিলিন","অ্যাসিটিলিন","ডাইমিথাইল ইথার"],a:1},
+{q:"অ্যাসিটিলিন (ইথাইন) অণুতে H–C–C বন্ধন কোণের মান কত? [সম্ভাব্য]",o:["109°28′","120°","180°","90°"],a:2},
+{q:"নন-স্টিক রান্নার বাসনে তাপসহনশীল প্রলেপ দিতে কোন পলিমার ব্যবহার করা হয়? [সম্ভাব্য]",o:["পলিথিন","টেফলন","PVC","নাইলন"],a:1},
+{q:"ফরম্যালডিহাইড যৌগের IUPAC নাম কোনটি? [সম্ভাব্য]",o:["মিথান্যাল","ইথান্যাল","মিথানল","মিথানয়িক অ্যাসিড"],a:0}
+];
+const letters=["A","B","C","D"];
+let index=0,score=0,answered=false,attempt=1,results=[];
+const $=id=>document.getElementById(id);
+function render(){
+ answered=false;
+ const item=questions[index];
+ $("questionCount").textContent=`প্রশ্ন ${index+1} / ${questions.length}`;
+ $("scorePill").textContent=`Score: ${score}`;
+ $("progressBar").style.width=`${index/questions.length*100}%`;
+ $("questionText").textContent=`${index+1}. ${item.q}`;
+ $("options").innerHTML="";
+ item.o.forEach((opt,i)=>{
+  const b=document.createElement("button");b.className="option";
+  b.innerHTML=`<span class="letter">${letters[i]}</span><span>${opt}</span>`;
+  b.addEventListener("click",()=>choose(i));$("options").appendChild(b);
+ });
+ $("feedback").className="feedback";$("feedback").textContent="";
+ $("nextBtn").disabled=true;
+ $("nextBtn").textContent=index===questions.length-1?"ফলাফল দেখুন →":"পরের প্রশ্ন →";
+ $("hint").textContent="সঠিক উত্তর বেছে নিন";
+}
+function choose(choice){
+ if(answered)return;answered=true;
+ const item=questions[index],correct=choice===item.a;
+ if(correct)score++;
+ results[index]={choice,correct};
+ [...$("options").children].forEach((b,i)=>{
+  b.disabled=true;
+  if(i===item.a)b.classList.add("correct");
+  if(i===choice&&!correct)b.classList.add("wrong");
+ });
+ const f=$("feedback");f.className="feedback show "+(correct?"good":"bad");
+ f.textContent=correct?`সঠিক উত্তর! ${letters[item.a]}. ${item.o[item.a]}`:`ভুল উত্তর। সঠিক উত্তর: ${letters[item.a]}. ${item.o[item.a]}`;
+ $("scorePill").textContent=`Score: ${score}`;
+ $("nextBtn").disabled=false;$("hint").textContent=correct?"দারুণ! এগিয়ে চলুন।":"উত্তরটি মনে রাখুন।";
+}
+function finish(){
+ $("quizPanel").style.display="none";$("topbar").style.display="none";$("progressBar").style.width="100%";
+ $("resultPanel").classList.add("show");
+ $("finalScore").textContent=`${score} / ${questions.length}  |  ${attempt}`;
+ const pct=score/questions.length*100;
+ $("trophy").textContent=pct>=80?"🏆":pct>=50?"🎯":"📘";
+ $("resultMessage").textContent=pct>=80?"অসাধারণ! আপনার প্রস্তুতি খুব ভালো।":pct>=50?"ভালো চেষ্টা! ভুল উত্তরগুলো আবার অনুশীলন করুন।":"আরও একবার অনুশীলন করুন—আপনি পারবেন!";
+ $("reviewPanel").innerHTML=questions.map((q,i)=>`<div class="review-item"><strong>${i+1}. ${q.q}</strong><div class="ans">সঠিক উত্তর: ${letters[q.a]}. ${q.o[q.a]}</div><div>${results[i]?.correct?"আপনার উত্তর: সঠিক":"আপনার উত্তর: "+(results[i]?letters[results[i].choice]+". "+q.o[results[i].choice]:"দেওয়া হয়নি")}</div></div>`).join("");
+}
+$("nextBtn").addEventListener("click",()=>{if(!answered)return;if(index<questions.length-1){index++;render()}else finish()});
+$("reviewBtn").addEventListener("click",()=>{$("reviewPanel").classList.toggle("show");$("reviewBtn").textContent=$("reviewPanel").classList.contains("show")?"উত্তর লুকান":"উত্তর দেখুন"});
+$("retryBtn").addEventListener("click",()=>{attempt++;index=0;score=0;results=[];$("resultPanel").classList.remove("show");$("quizPanel").style.display="";$("topbar").style.display="";$("reviewPanel").classList.remove("show");$("reviewBtn").textContent="উত্তর দেখুন";render()});
+render();
+</script>
+</body>
+</html>

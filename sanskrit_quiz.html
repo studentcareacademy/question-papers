@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Care Academy | Sanskrit Quiz</title>
+<style>
+  :root{--gold:#f5c451;--navy:#07152f;--blue:#102d5b;--white:#fff;--green:#20b879;--red:#e64b5d}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;font-family:"Noto Sans Bengali","Nirmala UI",Arial,sans-serif;color:#fff;background:radial-gradient(circle at top,#173d76 0,#07152f 52%,#030914 100%);padding:16px}
+  .app{max-width:760px;margin:0 auto}
+  .brand{position:relative;text-align:center;padding:20px 12px 16px;border:1px solid rgba(245,196,81,.6);border-radius:18px;background:linear-gradient(135deg,rgba(255,255,255,.1),rgba(255,255,255,.025));box-shadow:0 0 24px rgba(245,196,81,.12);overflow:hidden}
+  .brand:before,.brand:after{content:"✦";position:absolute;color:var(--gold);font-size:24px;animation:twinkle 1.8s infinite alternate}
+  .brand:before{left:18px;top:15px}.brand:after{right:18px;bottom:13px}
+  .academy{font-size:clamp(22px,5vw,34px);font-weight:900;letter-spacing:.4px;color:#ffe18a;text-shadow:0 0 8px #f5c451,0 0 18px rgba(245,196,81,.55);animation:glow 2s ease-in-out infinite alternate}
+  .teacher{margin-top:7px;font-size:clamp(15px,3.8vw,20px);font-weight:800;color:#fff;animation:float 3s ease-in-out infinite}
+  .subtitle{margin-top:10px;color:#cfe1ff;font-size:14px}
+  @keyframes glow{from{text-shadow:0 0 5px #f5c451}to{text-shadow:0 0 10px #f5c451,0 0 24px #ffb700}}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+  @keyframes twinkle{from{opacity:.35;transform:scale(.8) rotate(0)}to{opacity:1;transform:scale(1.2) rotate(20deg)}}
+  .status{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:16px 0 12px;flex-wrap:wrap}
+  .pill{background:#102a50;border:1px solid rgba(255,255,255,.16);padding:9px 13px;border-radius:999px;font-weight:800;font-size:14px}
+  .score-pill{color:#ffe18a;border-color:rgba(245,196,81,.55)}
+  .progress{height:7px;background:#203454;border-radius:99px;overflow:hidden;margin-bottom:17px}
+  .progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffca4b,#fff0a3);transition:width .35s}
+  .panel{background:linear-gradient(160deg,rgba(20,48,88,.98),rgba(7,21,47,.98));border:1px solid rgba(245,196,81,.35);border-radius:20px;padding:clamp(17px,4vw,28px);box-shadow:0 15px 35px rgba(0,0,0,.28)}
+  .question-label{color:#ffe18a;font-size:14px;font-weight:900;margin-bottom:12px}
+  .question{font-size:clamp(18px,4.5vw,24px);font-weight:800;line-height:1.65;margin:0 0 20px}
+  .options{display:grid;grid-template-columns:1fr;gap:11px}
+  .option{width:100%;text-align:left;color:#fff;font:inherit;font-size:clamp(15px,3.7vw,18px);line-height:1.5;padding:13px 15px;border:1px solid rgba(255,255,255,.2);border-radius:13px;background:rgba(255,255,255,.055);cursor:pointer;transition:transform .15s,border .15s,background .15s}
+  .option:hover:not(:disabled){transform:translateY(-1px);border-color:var(--gold);background:rgba(245,196,81,.1)}
+  .option .letter{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;margin-right:9px;border-radius:50%;background:#183d70;color:#ffe18a;font-weight:900;vertical-align:middle}
+  .option.correct{background:rgba(32,184,121,.18);border-color:var(--green)}
+  .option.wrong{background:rgba(230,75,93,.17);border-color:var(--red)}
+  .option:disabled{cursor:default}
+  .feedback{min-height:28px;margin-top:15px;font-weight:800;line-height:1.6}
+  .feedback.good{color:#71f0b9}.feedback.bad{color:#ff9aa5}
+  .controls{display:flex;justify-content:flex-end;margin-top:14px}
+  .next,.restart{border:0;border-radius:999px;background:linear-gradient(135deg,#ffe18a,#f5b92f);color:#18233b;font-weight:900;font-size:16px;padding:12px 24px;cursor:pointer;box-shadow:0 5px 16px rgba(245,196,81,.2)}
+  .next:disabled{opacity:.4;cursor:not-allowed}
+  .result{text-align:center;padding:12px 0}
+  .result .trophy{font-size:54px}
+  .result h2{font-size:clamp(24px,6vw,34px);color:#ffe18a;margin:10px 0}
+  .final-score{font-size:clamp(30px,8vw,46px);font-weight:900;margin:14px 0;color:#fff}
+  .result p{font-size:17px;line-height:1.7;color:#d9e6fb}
+  .result .restart{margin-top:10px}
+  .hidden{display:none}
+  .foot{text-align:center;color:#8fa8ce;font-size:12px;margin:17px 0 6px}
+  @media(min-width:600px){.options{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="brand">
+    <div class="academy">Student Care Academy</div>
+    <div class="teacher">Teacher:- Tapan Mandal</div>
+    <div class="subtitle">Class 12 · Semester 3 · Sanskrit · WBCHSE 2027</div>
+  </header>
+  <div class="status">
+    <div class="pill" id="progressText">Question 1 / 30</div>
+    <div class="pill score-pill">Score: <span id="score">0</span> <span style="opacity:.55">|</span> <span id="attempt">1</span></div>
+  </div>
+  <div class="progress"><span id="progressBar"></span></div>
+  <main class="panel" id="quizPanel">
+    <div class="question-label" id="category">অধ্যায়ভিত্তিক কুইজ</div>
+    <h1 class="question" id="question"></h1>
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback" aria-live="polite"></div>
+    <div class="controls"><button class="next" id="nextBtn" disabled>পরের প্রশ্ন →</button></div>
+  </main>
+  <main class="panel hidden" id="resultPanel">
+    <div class="result">
+      <div class="trophy">🏆</div>
+      <h2>পরীক্ষা সম্পূর্ণ!</h2>
+      <div class="final-score" id="finalScore">0 / 30</div>
+      <p id="resultMessage"></p>
+      <p>আপনার উত্তর: <strong id="answeredCount">30</strong> / 30</p>
+      <button class="restart" id="restartBtn">আবার পরীক্ষা দিন ↻</button>
+    </div>
+  </main>
+  <div class="foot">Student Care Academy · Sanskrit Practice Quiz</div>
+</div>
+<script>
+const questions = [
+ {c:"গদ্যাংশ · দশকুমারচরিতম্",q:"রাজহংসের পদযুগল কিসের দ্বারা আবদ্ধ ছিল?",o:["রজ্জুর দ্বারা","পদ্মমৃণালের দ্বারা","স্বর্ণশৃঙ্খলের দ্বারা","রৌপ্যশৃঙ্খলের দ্বারা"],a:2},
+ {c:"গদ্যাংশ · দশকুমারচরিতম্",q:"রাজবাহন কোন্ রাজ্যের রাজপুত্র ছিলেন?",o:["কৌশল","অযোধ্যা","মালব","মগধ"],a:3},
+ {c:"গদ্যাংশ · দশকুমারচরিতম্",q:"বালচন্দ্রিকার স্বামী কে ছিলেন?",o:["রাজবাহন","পুষ্পোদ্ভব","শুক্লোদ্ভব","দারাশুকো"],a:1},
+ {c:"পদ্যাংশ · কর্মযোগ",q:"কারা শ্রেষ্ঠ ব্যক্তিদের অনুসরণ করে?",o:["দেবতারা","অসুরেরা","সাধারণ মানুষেরা","রাক্ষসেরা"],a:2},
+ {c:"পদ্যাংশ · কর্মযোগ",q:"মন ও বুদ্ধির মধ্যে কে শ্রেষ্ঠ?",o:["বুদ্ধি","মন","মন ও বুদ্ধি উভয়ই","কোনোটিই নয়"],a:0},
+ {c:"পদ্যাংশ · কর্মযোগ",q:"কর্মেন্দ্রিয় কয়টি?",o:["দুইটি","চারটি","তিনটি","পাঁচটি"],a:3},
+ {c:"দৃশ্যকাব্য · অভিজ্ঞানশকুন্তলম্",q:"শকুন্তলার পালক পিতা কে ছিলেন?",o:["মারীচ","দুর্বাসা","উগ্রশ্রবা","কণ্ব"],a:3},
+ {c:"দৃশ্যকাব্য · অভিজ্ঞানশকুন্তলম্",q:"দুষ্যন্ত ও শকুন্তলার বিবাহ কোন্ মতে হয়েছিল?",o:["প্রাজাপত্য","রাক্ষস","গান্ধর্ব","ব্রাহ্ম"],a:2},
+ {c:"দৃশ্যকাব্য · অভিজ্ঞানশকুন্তলম্",q:"শকুন্তলোপাখ্যান কোন্ গ্রন্থে বর্ণিত হয়েছে?",o:["মেঘদূতে","রামায়ণে","পুরাণে","মহাভারতে"],a:3},
+ {c:"ব্যাকরণ · কারক",q:"'স্বতন্ত্রঃ কর্তা' সূত্রটি কোন্ কারকের?",o:["করণ","কর্তৃ","কর্ম","সম্প্রদান"],a:1},
+ {c:"ব্যাকরণ · কারক",q:"'অপবর্গে' কোন্ বিভক্তি হয়?",o:["দ্বিতীয়া","চতুর্থী","তৃতীয়া","প্রথমা"],a:2},
+ {c:"ব্যাকরণ · সমাস",q:"'সুমদ্রম্' পদটির ব্যাসবাক্য কী?",o:["মদ্রাণাং সমৃদ্ধিঃ","মদ্রাণাং পশ্চাৎ","মদ্রাণাম্ অভাবঃ","মদ্রস্য যোগ্যম্"],a:0},
+ {c:"সাহিত্যের ইতিহাস",q:"সংস্কৃত সাহিত্যে সর্ববৃহৎ পুরাণের নাম কী?",o:["লিঙ্গপুরাণ","পদ্মপুরাণ","কূর্মপুরাণ","স্কন্দপুরাণ"],a:3},
+ {c:"সাহিত্যের ইতিহাস",q:"দশমিক সংখ্যা পদ্ধতির পূর্ণ ব্যবহার যাঁর হাত ধরে আসে, তিনি হলেন—",o:["বরাহমিহির","আর্যভট্ট","ললাটদেব","ব্রহ্মগুপ্ত"],a:1},
+ {c:"সাহিত্যের ইতিহাস",q:"কুমারসম্ভব-এর রচয়িতা কে?",o:["ভাস","দণ্ডী","কালিদাস","শূদ্রক"],a:2},
+ {c:"দৃশ্যকাব্য · অভিজ্ঞানশকুন্তলম্",q:"“কো নামোষ্ণোদকেন নবমালিকাং সিঞ্চতি?”—কথাটি কে বলেছিলেন?",o:["প্রিয়ংবদা","শকুন্তলা","অনসূয়া","কণ্ব"],a:0},
+ {c:"ব্যাকরণ · প্রত্যয়",q:"'ভার্গব' শব্দটির ব্যুৎপত্তি কী?",o:["ভৃগু + অণ্","ভৃগু + অব্","ভার্গ + অব্","ভার্গ + অল্"],a:0},
+ {c:"ব্যাকরণ · সমাস",q:"'রাজপুত্ত্রঃ' (রাজ্ঞঃ পুত্ত্রঃ) কোন্ সমাসের উদাহরণ?",o:["অব্যয়ীভাব","গতি তৎপুরুষ","ষষ্ঠী তৎপুরুষ","তৃতীয়া তৎপুরুষ"],a:2},
+ {c:"ব্যাকরণ · সমাস",q:"পাণিনির মতে সমাস কত প্রকার?",o:["তিন","চার","পাঁচ","ছয়"],a:2},
+ {c:"ব্যাকরণ · সমাস",q:"অভাব অর্থে অব্যয়ীভাব সমাস নিষ্পন্ন পদটি হলো—",o:["অতিবাধম্","অনুগ্রহম্","অনুরূপম্","নির্জনম্"],a:3},
+ {c:"সাহিত্যের ইতিহাস",q:"ভাসের ছদ্মনাম কী?",o:["অগ্নিমিত্র","জ্বলনমিত্র","বহ্নিমিত্র","অরিমিত্র"],a:1},
+ {c:"সাহিত্যের ইতিহাস",q:"ধনাত্মক ও ঋণাত্মক রাশির আলোচনা কার গ্রন্থে পাওয়া যায়?",o:["সুশ্রুতের","বরাহমিহিরের","ব্রহ্মগুপ্তের","পরাশরের"],a:2},
+ {c:"সাহিত্যের ইতিহাস",q:"ব্রহ্মগুপ্ত রচিত একটি গ্রন্থ হলো—",o:["ব্রহ্মস্ফুটসিদ্ধান্ত","ব্রহ্মতন্ত্র","ব্রহ্মসিদ্ধান্ত","ব্রহ্মসংহিতা"],a:0},
+ {c:"সাহিত্যের ইতিহাস",q:"কবি ভবভূতির রচিত প্রথম নাটক কোন্টি?",o:["উত্তররামচরিত","মালতীমাধব","মহাবীরচরিত","পুষ্পবাণবিলাস"],a:2},
+ {c:"গদ্যাংশ · দশকুমারচরিতম্",q:"রাজবাহনকে কে 'ব্রাহ্মণাধম' বলেছিলেন?",o:["চণ্ডবর্মা","মানসার","দারুবর্মা","পুষ্পোদ্ভব"],a:1},
+ {c:"শব্দার্থ",q:"'বিন্দতি' শব্দের অর্থ কী?",o:["চুরি করা","উপভোগ করা","কেটে দেওয়া","লাভ করা"],a:3},
+ {c:"ব্যাকরণ · কারক",q:"'রামঃ বনং গচ্ছতি'—'বনং' শব্দটির কারক-বিভক্তি নির্ণয় করো।",o:["করণে তৃতীয়া","কর্মে দ্বিতীয়া","কর্তায় প্রথমা","অপাদানে পঞ্চমী"],a:1},
+ {c:"ব্যাকরণ · প্রত্যয়",q:"'কারক' পদের ব্যুৎপত্তি হলো—",o:["কৃ + ণ্বুল্","কৃ + তৃচ্","কৃ + ণক্","কৃ + ঘঞ্"],a:0},
+ {c:"ব্যাকরণ · সমাস",q:"চতুর্থী তৎপুরুষ সমাস নিষ্পন্ন পদটি হলো—",o:["চৌরভয়ম্","যূপদারুঃ","রামানুজঃ","ভীষ্মজননী"],a:1},
+ {c:"শব্দার্থ",q:"'বামন' শব্দের অর্থ কী?",o:["বোকা","ক্ষুদ্রাকৃতি","স্বাস্থ্যবান","রোগগ্রস্ত"],a:1}
+];
+const letters=["A","B","C","D"];
+let current=0,score=0,locked=false,attempt=1,answered=0;
+const $=id=>document.getElementById(id);
+function render(){
+ locked=false;
+ const item=questions[current];
+ $("progressText").textContent=`Question ${current+1} / ${questions.length}`;
+ $("score").textContent=score;
+ $("attempt").textContent=attempt;
+ $("progressBar").style.width=`${current/questions.length*100}%`;
+ $("category").textContent=item.c;
+ $("question").textContent=`${current+1}. ${item.q}`;
+ $("options").innerHTML="";
+ $("feedback").textContent="";
+ $("feedback").className="feedback";
+ $("nextBtn").disabled=true;
+ $("nextBtn").textContent=current===questions.length-1?"ফলাফল দেখুন →":"পরের প্রশ্ন →";
+ item.o.forEach((option,i)=>{
+   const button=document.createElement("button");
+   button.className="option";
+   button.innerHTML=`<span class="letter">${letters[i]}</span>${option}`;
+   button.addEventListener("click",()=>choose(i));
+   $("options").appendChild(button);
+ });
+}
+function choose(index){
+ if(locked)return;
+ locked=true;answered++;
+ const item=questions[current],buttons=[...$("options").querySelectorAll("button")];
+ buttons.forEach((b,i)=>{b.disabled=true;if(i===item.a)b.classList.add("correct");if(i===index&&i!==item.a)b.classList.add("wrong")});
+ if(index===item.a){score++;$("feedback").textContent="✓ সঠিক উত্তর!";$("feedback").className="feedback good";}
+ else{$("feedback").textContent=`✗ ভুল উত্তর। সঠিক উত্তর: ${letters[item.a]}. ${item.o[item.a]}`;$("feedback").className="feedback bad";}
+ $("score").textContent=score;
+ $("nextBtn").disabled=false;
+}
+$("nextBtn").addEventListener("click",()=>{
+ if(!locked)return;
+ if(current<questions.length-1){current++;render();}
+ else showResult();
+});
+function showResult(){
+ $("quizPanel").classList.add("hidden");$("resultPanel").classList.remove("hidden");
+ $("progressBar").style.width="100%";
+ $("progressText").textContent=`Question ${questions.length} / ${questions.length}`;
+ $("finalScore").textContent=`${score} / ${questions.length}`;
+ $("answeredCount").textContent=answered;
+ const pct=score/questions.length*100;
+ $("resultMessage").textContent=pct>=80?"দারুণ! আপনার প্রস্তুতি খুব ভালো। এভাবেই অনুশীলন চালিয়ে যান।":pct>=50?"ভালো চেষ্টা! ভুল হওয়া প্রশ্নগুলো আবার দেখে অনুশীলন করুন।":"আরও অনুশীলন করুন। সঠিক উত্তরগুলো ভালোভাবে দেখে আবার পরীক্ষা দিন।";
+ $("score").textContent=score;
+}
+$("restartBtn").addEventListener("click",()=>{
+ attempt++;current=0;score=0;answered=0;
+ $("resultPanel").classList.add("hidden");$("quizPanel").classList.remove("hidden");render();
+});
+render();
+</script>
+</body>
+</html> $("progressText").textContent=`Question ${questions.length} / ${questions.length}`;
+ $("finalScore").textContent=`${score} / ${questions.length}`;
+ $("answeredCount").textContent=answered;
+ const pct=score/questions.length*100;
+ $("resultMessage").textContent=pct>=80?"দারুণ! আপনার প্রস্তুতি খুব ভালো। এভাবেই অনুশীলন চালিয়ে যান।":pct>=50?"ভালো চেষ্টা! ভুল হওয়া প্রশ্নগুলো আবার দেখে অনুশীলন করুন।":"আরও অনুশীলন করুন। সঠিক উত্তরগুলো ভালোভাবে দেখে আবার পরীক্ষা দিন।";
+ $("score").textContent=score;
+}
+$("restartBtn").addEventListener("click",()=>{
+ attempt++;current=0;score=

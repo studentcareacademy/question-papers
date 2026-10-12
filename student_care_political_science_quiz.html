@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Class 12 Semester 3 Political Science Quiz | Student Care Academy</title>
+<style>
+:root{--navy:#101b4d;--blue:#243b9b;--gold:#f7c948;--green:#16834a;--red:#c0392b;--paper:#f4f6ff}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at top,#293c91 0,#10163b 55%,#080d25 100%);font-family:"Noto Sans Bengali","Nirmala UI",Arial,sans-serif;color:#fff;min-height:100vh;padding:16px}
+.wrap{max-width:850px;margin:0 auto}
+.brand{padding:22px 12px 16px;text-align:center;border:1px solid rgba(255,255,255,.25);border-radius:18px;background:linear-gradient(120deg,rgba(255,255,255,.08),rgba(255,255,255,.02));box-shadow:0 0 28px #5268ff35;overflow:hidden}
+.brand h1{margin:0;font-size:clamp(22px,5vw,36px);letter-spacing:.3px;color:#ffe17a;text-shadow:0 0 12px #ffbf35;animation:glow 2s ease-in-out infinite alternate}
+.brand p{margin:9px 0 0;font-weight:700;font-size:clamp(14px,3vw,19px);animation:fadein 2.4s ease-in-out infinite alternate}
+@keyframes glow{from{text-shadow:0 0 5px #ffca4b;transform:scale(1)}to{text-shadow:0 0 18px #fff0a0,0 0 28px #ffba2f;transform:scale(1.015)}}
+@keyframes fadein{from{opacity:.72}to{opacity:1}}
+.subject{text-align:center;margin:18px 0 10px;color:#dce5ff;font-weight:700}
+.scorebar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:12px 0;background:#ffffff12;border:1px solid #ffffff2c;border-radius:12px;padding:12px 16px;font-weight:700}
+.score{color:#ffe17a;font-size:19px}.examno{color:#c8d4ff;font-size:19px}
+.progress{height:8px;background:#ffffff25;border-radius:20px;overflow:hidden;margin-bottom:16px}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#f7c948,#fff2a4);transition:width .3s}
+.card{background:#f8f9ff;color:#111936;border-radius:20px;padding:clamp(18px,4vw,30px);box-shadow:0 14px 38px #0005}
+.qmeta{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:16px;color:#5b6590;font-size:14px;font-weight:700}
+.qtext{font-size:clamp(18px,3.6vw,23px);line-height:1.65;font-weight:800;margin:0 0 20px}
+.options{display:grid;grid-template-columns:1fr;gap:11px}
+.option{width:100%;text-align:left;border:2px solid #d9def2;background:#fff;border-radius:12px;padding:13px 15px;font-size:16px;line-height:1.5;color:#172047;cursor:pointer;transition:.18s;font-family:inherit}
+.option:hover:not(:disabled){border-color:#5368d9;background:#f0f3ff;transform:translateY(-1px)}
+.option:disabled{cursor:default}.option.correct{background:#e0f7e9;border-color:#16834a;color:#075d30;font-weight:700}.option.wrong{background:#ffebeb;border-color:#c0392b;color:#8f1c14}
+.feedback{display:none;margin-top:16px;padding:13px 15px;border-radius:12px;line-height:1.6;font-weight:700}
+.feedback.show{display:block}.feedback.good{background:#dcf7e6;color:#075d30}.feedback.bad{background:#ffebeb;color:#8f1c14}
+.explain{font-weight:500;margin-top:5px}
+.actions{display:flex;justify-content:flex-end;margin-top:18px}
+button.primary{border:0;border-radius:12px;background:linear-gradient(100deg,#f6c844,#ffe99b);color:#151b43;padding:13px 23px;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 5px 15px #d7a82455}
+button.primary:disabled{opacity:.45;cursor:not-allowed}
+.result{text-align:center;display:none;padding:28px 12px}.result.show{display:block}.result h2{color:#ffe17a;font-size:clamp(25px,5vw,36px)}.result .big{font-size:clamp(38px,9vw,64px);font-weight:900;color:#fff}.result p{font-size:18px;line-height:1.7;color:#e0e7ff}
+.result-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:22px}
+.note{text-align:center;color:#c4ccef;font-size:12px;margin:16px 0 4px}
+@media(min-width:650px){.options{grid-template-columns:1fr 1fr}.option{min-height:70px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="brand">
+<h1>Student Care Academy</h1>
+<p>Teacher:- Tapan Mandal</p>
+</header>
+<div class="subject">Class 12 · Semester 3 · Political Science Quiz</div>
+<div class="scorebar"><div>Score: <span class="score" id="score">0</span> / 50</div><div class="examno"><span id="attempt">1</span></div></div>
+<div class="progress"><span id="progress"></span></div>
+<main class="card" id="quizCard">
+<div class="qmeta"><span id="qcount">প্রশ্ন 1 / 50</span><span id="qtype">MCQ</span></div>
+<h2 class="qtext" id="question"></h2>
+<div class="options" id="options"></div>
+<div class="feedback" id="feedback" aria-live="polite"></div>
+<div class="actions"><button class="primary" id="nextBtn" disabled>পরের প্রশ্ন →</button></div>
+</main>
+<section class="card result" id="result">
+<h2>পরীক্ষা সম্পূর্ণ!</h2>
+<div class="big"><span id="finalScore">0</span> / 50</div>
+<p id="resultText"></p>
+<div class="result-actions"><button class="primary" id="reviewBtn">ভুল উত্তরগুলি দেখুন</button><button class="primary" id="restartBtn">আবার পরীক্ষা দিন ↻</button></div>
+</section>
+<div class="note">সময় গণনা নেই · প্রতিটি সঠিক উত্তরে ১ নম্বর</div>
+</div>
+<script>
+const questions = [
+{type:"MCQ",q:"ঠান্ডা যুদ্ধের অবসান ঘটে কোন সালে?",o:["1988 সালে","1989 সালে","1991 সালে","1992 সালে"],a:2},
+{type:"MCQ",q:"নীচের কোন বিপর্যয়ের কারণে ঠান্ডা যুদ্ধের চূড়ান্ত অবসান ঘটে?",o:["ন্যাটো (NATO) গঠন","ইউরোপীয় ইউনিয়ন গঠন","ওয়ারশ চুক্তির সম্প্রসারণ","সোভিয়েত ইউনিয়নের পতন"],a:3},
+{type:"Assertion–Reason",q:"বিবৃতি (A): বার্লিন প্রাচীরের পতনের মধ্য দিয়ে ঠান্ডা যুদ্ধের উত্তেজনার অবসান শুরু হয়।\nকারণ (R): এই প্রাচীর পূর্ব ও পশ্চিম জার্মানিকে পৃথক করেছিল এবং ১৯৮৯ সালে এর পতন জার্মানির পুনঃএকীকরণ সম্ভব করে তোলে।",o:["A এবং R উভয়ই সত্য এবং R হলো A-র সঠিক ব্যাখ্যা।","A এবং R উভয়ই সত্য, কিন্তু R, A-র সঠিক ব্যাখ্যা নয়।","A সত্য, কিন্তু R মিথ্যা।","A মিথ্যা কিন্তু R সত্য।"],a:0},
+{type:"Concept-based",q:"দ্বিমেরুকেন্দ্রিকতা (Bipolarity) বলতে আন্তর্জাতিক রাজনীতিতে কী বোঝায়?",o:["বৃহৎ দুই শক্তির বিশ্বরাজনীতিতে কর্তৃত্ব প্রতিষ্ঠা","দুটি প্রতিবেশী দেশের মধ্যে বাণিজ্য চুক্তি","দুটি রাষ্ট্রের মধ্যে প্রত্যক্ষ সামরিক যুদ্ধ","বিশ্বের সমস্ত রাষ্ট্রের দুটি ব্লকে বিভক্ত হওয়া বাধ্যতামূলক"],a:0},
+{type:"Matching",q:"বামস্তম্ভের সঙ্গে ডানস্তম্ভ মেলাও:\na. গ্লাসনস্ত  b. বিশ্বব্যাঙ্ক  c. নির্জোট আন্দোলন\ni. উন্নয়নশীল রাষ্ট্রগুলির অর্থনৈতিক সহায়তা দান  ii. দুই বৃহৎ শক্তির কোনো পক্ষে যোগদান না করে নিরপেক্ষ অবস্থান  iii. সোভিয়েত ইউনিয়নে সংস্কার নীতি",o:["a-iii, b-i, c-ii","a-i, b-ii, c-iii","a-ii, b-iii, c-i","a-iii, b-ii, c-i"],a:0},
+{type:"MCQ",q:"SEATO-এর সম্পূর্ণ নাম কী?",o:["South East African Treaty Organization","South East Asian Treaty Organization","South East Atlantic Treaty Organization","South East Asian Terrorist Organization"],a:1},
+{type:"True/False",q:"ওয়ারশ চুক্তি (Warsaw Pact) মার্কিন যুক্তরাষ্ট্রের উদ্যোগে সম্পাদিত হয়েছিল।",o:["সত্য","মিথ্যা"],a:1,ex:"এটি সোভিয়েত ইউনিয়নের উদ্যোগে সম্পাদিত হয়।"},
+{type:"MCQ",q:"জোট নিরপেক্ষ আন্দোলনের (NAM) মূল প্রবক্তা কে ছিলেন?",o:["রুজভেল্ট","ডোনাল্ড ট্রাম্প","জওহরলাল নেহেরু","উইনস্টন চার্চিল"],a:2},
+{type:"MCQ",q:"NAM-এর পুরো নাম কী?",o:["Non Alliance Movement","Non Aligned Movement","New Achievement of Movement","Not Aligned of Movement"],a:1},
+{type:"MCQ",q:"জাতিপুঞ্জের সর্বশেষ যোগদানকারী সদস্য রাষ্ট্র কোনটি?",o:["বাংলাদেশ","দক্ষিণ সুদান","ইজরায়েল","নেপাল"],a:1},
+{type:"MCQ",q:"বিশ্বের সর্ববৃহৎ ‘নাগরিক সভা’ বা ‘বিতর্কসভা’ হিসেবে পরিচিত জাতিপুঞ্জের কোন সংস্থা?",o:["সাধারণ সভা","নিরাপত্তা পরিষদ","অর্থনৈতিক ও সামাজিক পরিষদ","অছি পরিষদ"],a:0},
+{type:"MCQ",q:"জাতিপুঞ্জের নিরাপত্তা পরিষদে অস্থায়ী সদস্যদের কার্যকালের মেয়াদ কত বছর?",o:["2 বছর","4 বছর","5 বছর","6 বছর"],a:0},
+{type:"MCQ",q:"ECOSOC-এর পুরো নাম কী?",o:["Economic and Sociology Council","Economic and Social Council","East and Social Council","Environmental and Social Council"],a:1},
+{type:"MCQ",q:"জাতিপুঞ্জের প্রশাসনিক প্রধান কে?",o:["সাধারণ সভার সভাপতি","আন্তর্জাতিক বিচারালয়ের প্রধান বিচারপতি","নিরাপত্তা পরিষদের সভাপতি","মহাসচিব (Secretary-General)"],a:3},
+{type:"Correct/Incorrect Pair",q:"জাতিপুঞ্জের সংস্থাগুলির পূর্ণরূপের ক্ষেত্রে কোন জোড়টি সঠিক নয়?",o:["UNICEF - United Nations International Children's Emergency Fund","UNESCO - United Nations Educational, Scientific and Cultural Organization","WHO - World Health Organization","ECOSOC - Economic and Science Council"],a:3,ex:"সঠিক পূর্ণরূপ: Economic and Social Council।"},
+{type:"True/False",q:"জাতিপুঞ্জের মহাসচিবের কার্যকাল 5 বছর।",o:["সত্য","মিথ্যা"],a:0},
+{type:"Concept-based",q:"নিরাপত্তা পরিষদের স্থায়ী সদস্যগণ ভেটো (Veto) ক্ষমতা ভোগ করে, এর মূল অর্থ কী?",o:["যে কোনো সদস্যকে বহিষ্কার করার ক্ষমতা","যে কোনো প্রস্তাব বা সিদ্ধান্তকে খারিজ করার কর্তৃত্ব","সাধারণ সভার সিদ্ধান্তকে অমান্য করার অধিকার","আন্তর্জাতিক বিচারালয়ের রায় বাতিল করার ক্ষমতা"],a:1},
+{type:"MCQ",q:"আন্তর্জাতিক বিচারালয় কতজন বিচারপতি নিয়ে গঠিত হয়?",o:["10 জন","12 জন","15 জন","18 জন"],a:2},
+{type:"MCQ",q:"রাষ্ট্রসংঘের (UN) সনদের চূড়ান্ত রূপদান হয় কোন্ সম্মেলনে?",o:["ডাম্বারটন ওকস সম্মেলন","সানফ্রানসিসকো সম্মেলন","মস্কো সম্মেলন","তেহেরান সম্মেলন"],a:1},
+{type:"Multiple Statements",q:"অ-প্রথাগত নিরাপত্তা (Non-traditional Security) সম্পর্কে কোন বিবৃতিগুলি সঠিক?\ni. এর মধ্যে মানব নিরাপত্তা, সন্ত্রাসবাদ, অভিবাসন, দারিদ্র্য প্রভৃতি বিষয় অন্তর্ভুক্ত।\nii. এটি কেবল সামরিক শক্তি দ্বারাই মোকাবিলা করা সম্ভব।\niii. এটি রাষ্ট্রের অভ্যন্তরীণ ও বাহ্যিক উভয় নিরাপত্তাকেই বিঘ্নিত করতে পারে।",o:["i এবং ii সঠিক","i এবং iii সঠিক","শুধুমাত্র i সঠিক","সবগুলি সঠিক"],a:1,ex:"এটি কেবল সামরিক শক্তি দিয়ে মোকাবিলা করা সম্ভব নয়; অর্থনৈতিক ও কূটনৈতিক প্রয়াসও প্রয়োজন।"},
+{type:"True/False",q:"মহামারী মানব নিরাপত্তার ওপর মারাত্মক প্রভাব ফেলে এবং এটি একটি অ-প্রথাগত নিরাপত্তা ভীতি হিসেবে পরিগণিত হয়।",o:["সত্য","মিথ্যা"],a:0},
+{type:"Chronological Order",q:"মানবাধিকার ও নিরাপত্তা বিষয়ক কনভেনশনগুলিকে কালানুক্রমিকভাবে সাজাও:\na. শিশুদের অধিকার সংক্রান্ত কনভেনশন  b. আন্তর্জাতিক মানবাধিকার ঘোষণাপত্র  c. রাষ্ট্রসংঘের মিলেনিয়াম ঘোষণাপত্র  d. উদ্বাস্তুদের মর্যাদা সংক্রান্ত কনভেনশন",o:["b, d, a, c","a, c, b, d","d, b, c, a","b, a, d, c"],a:0},
+{type:"MCQ",q:"অভিবাসনে (Migration) সাধারণত মানুষ কোন ধরনের দেশে চলে যায়?",o:["অনুন্নত দেশে","অস্থিতিশীল দেশে","উন্নত দেশে","দরিদ্র দেশে"],a:2},
+{type:"Matching",q:"জলবায়ু সম্মেলন (COP) ও স্থান মেলাও:\na. COP-2  b. COP-5  c. COP-7  d. COP-11\ni. জেনেভা  ii. বন  iii. মারাকেশ  iv. মন্ট্রিল",o:["a-ii, b-i, c-iv, d-iii","a-i, b-ii, c-iii, d-iv","a-iv, b-iii, c-ii, d-i","a-iii, b-iv, c-i, d-ii"],a:1},
+{type:"MCQ",q:"ভারতের কোন রাজ্যে সংবিধানের 370 নং ধারা প্রযোজ্য ছিল (যা বর্তমানে অবলুপ্ত)?",o:["মণিপুর","আসাম","জম্মু ও কাশ্মীর","অন্ধ্রপ্রদেশ"],a:2},
+{type:"MCQ",q:"দ্বি-জাতি তত্ত্বের (Two-Nation Theory) অন্যতম প্রধান প্রবক্তা কে ছিলেন?",o:["জওহরলাল নেহেরু","মহম্মদ আলি জিন্না","মৌলানা আবুল কালাম আজাদ","ডঃ বি.আর. আম্বেদকর"],a:1},
+{type:"MCQ",q:"ভারতের কোন রাজ্যটি ভারতে যোগ দেওয়ার শর্ত হিসাবে অভ্যন্তরীণ স্বায়ত্তশাসনের অধিকার দাবি করেছিল?",o:["হায়দ্রাবাদ","মণিপুর","জম্মু ও কাশ্মীর","আসাম"],a:2},
+{type:"Assertion–Reason",q:"বিবৃতি (A): 1947 সালের বিভাজনের ফলে ভারতে বিপুল উদ্বাস্তু সমস্যা সৃষ্টি হয়।\nকারণ (R): ধর্মভিত্তিক দেশভাগের ফলে লক্ষ লক্ষ মানুষ নিজেদের ভিটেমাটি ছাড়তে বাধ্য হয়েছিল।",o:["A এবং R উভয়ই সত্য এবং R হলো A-র সঠিক ব্যাখ্যা।","A এবং R উভয়ই সত্য, কিন্তু R, A-র সঠিক ব্যাখ্যা নয়।","A সত্য, কিন্তু R মিথ্যা।","A মিথ্যা কিন্তু R সত্য।"],a:0},
+{type:"Concept-based",q:"রাজনৈতিক দলগুলির প্রধান রাজনৈতিক লক্ষ্য কী?",o:["শুধুমাত্র নির্দিষ্ট সম্প্রদায়ের শিক্ষার প্রসার ঘটানো","সরকার গঠন করা বা ক্ষমতা দখল করা","সাংস্কৃতিক ঐতিহ্যের সংরক্ষণ করা","বিচারবিভাগের কাজে হস্তক্ষেপ করা"],a:1},
+{type:"True/False",q:"ভারতের নির্বাচন কমিশন শুধুমাত্র প্রধান ও জাতীয় রাজনৈতিক দলগুলিকে নিবন্ধন করে, আঞ্চলিক দলগুলিকে নয়।",o:["সত্য","মিথ্যা"],a:1,ex:"নির্বাচন কমিশন জাতীয় ও রাজ্য/আঞ্চলিক দলকে নিয়ম অনুযায়ী স্বীকৃতি দিতে পারে।"},
+{type:"MCQ",q:"একটি আঞ্চলিক রাজনৈতিক দল হিসেবে স্বীকৃতি পেতে হলে দলটিকে সাধারণত রাজ্য নির্বাচনে কমপক্ষে কত শতাংশ ভোট পেতে হয়?",o:["2%","4%","6%","8%"],a:2},
+{type:"Assertion–Reason",q:"বিবৃতি (A): জাতীয় দলগুলি নির্বাচনের সময় তাদের জন্য সংরক্ষিত নির্দিষ্ট প্রতীক (Symbol) ব্যবহার করে।\nকারণ (R): এই প্রতীক ব্যবহার করে সাধারণ ভোটাররা প্রার্থীদের সহজে শনাক্ত করতে পারে।",o:["A এবং R উভয়ই সত্য এবং R হলো A-র সঠিক ব্যাখ্যা।","A এবং R উভয়ই সত্য, কিন্তু R, A-র সঠিক ব্যাখ্যা নয়।","A সত্য, কিন্তু R মিথ্যা।","A মিথ্যা কিন্তু R সত্য।"],a:0},
+{type:"MCQ",q:"ভারতে রাজনৈতিক স্থায়িত্ব আনে মূলত কে?",o:["সুসংগঠিত রাজনৈতিক দল ব্যবস্থা","শক্তিশালী সামরিক বাহিনী","বিচারবিভাগ","আঞ্চলিক বিচ্ছিন্নতাবাদী গোষ্ঠী"],a:0},
+{type:"Concept-based",q:"সাধারণ মানুষ ও সরকারের মধ্যে প্রধান সংযোগরক্ষাকারী হিসেবে কাজ করে কে?",o:["অর্থনৈতিক প্রতিষ্ঠান","রাজনৈতিক দল বা প্রতিষ্ঠান","সাংস্কৃতিক প্রতিষ্ঠান","শিক্ষা প্রতিষ্ঠান"],a:1},
+{type:"MCQ",q:"1971 সালে কোন রাষ্ট্রের স্বাধীনতা সংগ্রামে ভারত সামরিক সহায়তা করেছিল?",o:["শ্রীলঙ্কা","বাংলাদেশ","নেপাল","ভুটান"],a:1},
+{type:"MCQ",q:"‘কোয়াড’ (Quad)-এর কৌশলগত জোটের মূল ফোকাস অঞ্চল কোনটি?",o:["ইন্দো-প্রশান্ত মহাসাগরীয় অঞ্চল (Indo-Pacific)","ইন্দো-চিন সীমান্ত","ইন্দো-রাশিয়া সম্পর্ক","আরব সাগর অঞ্চল"],a:0},
+{type:"Matching",q:"প্রকল্প/নীতি ও সংশ্লিষ্ট বিষয় মেলাও:\na. কুদানকুলাম প্রকল্প  b. ব্রাহ্মস ক্ষেপণাস্ত্র  c. প্রথম ব্যবহার নয় নীতি (No First Use)\ni. ভারতের পরমাণু নীতি  ii. রাশিয়ার সহযোগিতায় গঠিত  iii. ভারত-রাশিয়ার যৌথ উদ্যোগে ক্রুজ মিসাইল",o:["a-ii, b-iii, c-i","a-i, b-ii, c-iii","a-iii, b-i, c-ii","a-ii, b-i, c-iii"],a:0},
+{type:"Assertion–Reason",q:"বিবৃতি (A): পোখরান-2 হলো ভারতের দ্বিতীয় পারমাণবিক পরীক্ষা।\nকারণ (R): এটি 1998 সালে অনুষ্ঠিত হয়েছিল।",o:["A এবং R উভয়ই সত্য এবং R হলো A-র সঠিক ব্যাখ্যা।","A এবং R উভয়ই সত্য, কিন্তু R, A-র সঠিক ব্যাখ্যা নয়।","A সত্য, কিন্তু R মিথ্যা।","A মিথ্যা কিন্তু R সত্য।"],a:1,ex:"দুটি তথ্যই সঠিক, তবে 1998 সালটি পোখরান-2-কে ‘দ্বিতীয় পরীক্ষা’ বলার সরাসরি ব্যাখ্যা নয়।"},
+{type:"MCQ",q:"2007 সালে ভারত কোন প্রতিবেশী দেশের সাথে একটি গুরুত্বপূর্ণ পুনর্নবীকরণ চুক্তি স্বাক্ষর করে?",o:["নেপাল","বাংলাদেশ","ভুটান","শ্রীলঙ্কা"],a:2},
+{type:"MCQ",q:"2017 সালের ‘ডোকলাম’ সংকটে ভারত চিনের বিরুদ্ধে কোন দেশকে সমর্থন জানিয়েছিল?",o:["নেপাল","ভুটান","মায়ানমার","বাংলাদেশ"],a:1},
+{type:"Chronological Order",q:"ভারতের বৈদেশিক নীতি সম্পর্কিত ঘটনাগুলি কালানুক্রমিক সাজাও:\na. পোখরান-1 (প্রথম পারমাণবিক পরীক্ষা)  b. কার্গিল যুদ্ধ  c. আগ্রা শীর্ষ সম্মেলন",o:["a, b, c","b, a, c","c, b, a","a, c, b"],a:0,ex:"পোখরান-১ ১৯৭৪, কার্গিল যুদ্ধ ১৯৯৯, আগ্রা শীর্ষ সম্মেলন ২০০১।"},
+{type:"MCQ",q:"ভারত নীচের কোন চুক্তিটিতে স্বাক্ষর করেনি, কারণ ভারত এটিকে বৈষম্যমূলক মনে করে?",o:["PTBT (Partial Test Ban Treaty)","CTBT (Comprehensive Nuclear-Test-Ban Treaty)","ইন্দাস জল চুক্তি","গঙ্গা জলবণ্টন চুক্তি"],a:1},
+{type:"MCQ",q:"2008 সালে ‘123 চুক্তি’ (ঐতিহাসিক অসামরিক পারমাণবিক চুক্তি) ভারত এবং কোন দেশের মধ্যে স্বাক্ষরিত হয়েছিল?",o:["রাশিয়া","আমেরিকা (মার্কিন যুক্তরাষ্ট্র)","ব্রিটেন","ফ্রান্স"],a:1},
+{type:"Multiple Statements",q:"ভারতের বিদেশনীতির মূল লক্ষ্যগুলি হলো-\ni. অর্থনৈতিক উন্নয়ন  ii. আঞ্চলিক সহযোগিতা বৃদ্ধি  iii. আন্তর্জাতিক শান্তি প্রতিষ্ঠা  iv. পারমাণবিক অস্ত্র বিস্তার করে অন্য দেশ দখল",o:["i, ii, iii সঠিক এবং iv ভুল","i, ii, iv সঠিক এবং iii ভুল","শুধুমাত্র i ও iii সঠিক","সবগুলি সঠিক"],a:0},
+{type:"True/False",q:"রাশিয়া রাষ্ট্রসংঘের নিরাপত্তা পরিষদে ভারতের স্থায়ী আসন অর্জনের বিরোধিতা করে।",o:["সত্য","মিথ্যা"],a:1,ex:"রাশিয়া নিরাপত্তা পরিষদে ভারতের স্থায়ী আসনের দাবিকে সমর্থন করেছে।"},
+{type:"MCQ",q:"‘স্বচ্ছ ভারত অভিযান’ প্রকল্পটি কোন সালে শুরু হয়?",o:["2011 সালে","2014 সালে","2019 সালে","2020 সালে"],a:1},
+{type:"Concept-based",q:"ভারতের মত দেশগুলির জন্য NPT চুক্তি গ্রহণ করা সম্ভব নয় কেন?",o:["কারণ এটি ভারতের অর্থনৈতিক প্রবৃদ্ধিকে আটকে দেবে।","কারণ এটি আন্তর্জাতিক পারমাণবিক নিরস্ত্রীকরণকে উৎসাহিত করে না, বরং শক্তিশালী দেশগুলিকে আধিপত্য বজায় রাখতে সহায়তা করে।","কারণ এটি পারমাণবিক শক্তি শান্তিপূর্ণ কাজে ব্যবহার করতে দেয় না।","কারণ এটি পরিবেশ দূষণ বৃদ্ধি করে।"],a:1},
+{type:"Odd One Out",q:"ভারতের পারমাণবিক কর্মসূচির সাথে সম্পর্কিত নয় কোনটি?",o:["পোখরান-1","পোখরান-2","স্মাইলিং বুদ্ধা","অপারেশন ব্লাস্টার"],a:3,ex:"বাকি তিনটি ভারতের পারমাণবিক পরীক্ষার সঙ্গে সম্পর্কিত।"},
+{type:"MCQ",q:"ভারতে রাজনৈতিক দলগুলির মধ্যে শৃঙ্খলা বজায় রাখা কেন অত্যন্ত জরুরি?",o:["দলের আর্থিক সংস্থানের জন্য","দলের মধ্যে ঐক্য ও রাজনৈতিক স্থায়িত্ব বজায় রাখার জন্য","সংস্কৃতি সংরক্ষণ করার জন্য","নির্বাচন কমিশনকে খুশি করার জন্য"],a:1},
+{type:"Assertion–Reason",q:"বিবৃতি (A): রাজনৈতিক দলগুলি নির্বাচনের মাধ্যমে ক্ষমতায় আসে।\nকারণ (R): রাজনৈতিক দলের প্রধান লক্ষ্য হলো জনমত গঠন করে দেশের শাসনব্যবস্থা পরিচালনা বা সরকার গঠন করা।",o:["A এবং R উভয়ই সত্য এবং R হলো A-র সঠিক ব্যাখ্যা।","A এবং R উভয়ই সত্য, কিন্তু R, A-র সঠিক ব্যাখ্যা নয়।","A সত্য, কিন্তু R মিথ্যা।","A মিথ্যা কিন্তু R সত্য।"],a:0}
+];
+let index=0, score=0, locked=false, wrong=[];
+let attemptCount=Number(localStorage.getItem("sca_pol_s3_attempts")||0)+1;
+localStorage.setItem("sca_pol_s3_attempts",String(attemptCount));
+document.getElementById("attempt").textContent=attemptCount;
+const $=id=>document.getElementById(id);
+function render(){
+ locked=false;
+ const q=questions[index];
+ $("qcount").textContent=`প্রশ্ন ${index+1} / ${questions.length}`;
+ $("qtype").textContent=q.type;
+ $("question").textContent=q.q;
+ $("options").innerHTML="";
+ $("feedback").className="feedback";$("feedback").innerHTML="";
+ $("nextBtn").disabled=true;
+ $("nextBtn").textContent=index===questions.length-1?"ফলাফল দেখুন":"পরের প্রশ্ন →";
+ $("progress").style.width=(index/questions.length*100)+"%";
+ q.o.forEach((opt,i)=>{
+  const b=document.createElement("button");b.className="option";b.textContent=String.fromCharCode(65+i)+". "+opt;
+  b.addEventListener("click",()=>choose(i));$("options").appendChild(b);
+ });
+}
+function choose(choice){
+ if(locked)return;locked=true;
+ const q=questions[index], buttons=[...document.querySelectorAll(".option")];
+ buttons.forEach((b,i)=>{b.disabled=true;if(i===q.a)b.classList.add("correct");if(i===choice&&choice!==q.a)b.classList.add("wrong")});
+ const fb=$("feedback");
+ if(choice===q.a){score++;$("score").textContent=score;fb.className="feedback show good";fb.innerHTML="✓ সঠিক উত্তর!"+(q.ex?`<div class="explain">${q.ex}</div>`:"");}
+ else{wrong.push({n:index+1,q:q.q,selected:q.o[choice],answer:q.o[q.a]});fb.className="feedback show bad";fb.innerHTML=`✗ ভুল উত্তর।<div class="explain">সঠিক উত্তর: ${String.fromCharCode(65+q.a)}. ${q.o[q.a]}${q.ex?`<br>${q.ex}`:""}</div>`;}
+ $("nextBtn").disabled=false;
+}
+$("nextBtn").addEventListener("click",()=>{
+ if(!locked)return;
+ if(index<questions.length-1){index++;render();}
+ else showResult();
+});
+function showResult(){
+ $("progress").style.width="100%";$("quizCard").style.display="none";$("result").classList.add("show");
+ $("finalScore").textContent=score;
+ const pct=Math.round(score/questions.length*100);
+ let msg=pct>=90?"অসাধারণ! আপনার প্রস্তুতি খুব ভালো।":pct>=70?"খুব ভালো! আরও একবার অনুশীলন করুন।":pct>=50?"ভালো চেষ্টা। ভুল উত্তরগুলি আবার দেখে নিন।":"আরও অনুশীলন করুন—আবার চেষ্টা করলে উন্নতি হবে।";
+ $("resultText").textContent=`আপনার প্রাপ্ত নম্বর ${score} / ${questions.length} (${pct}%)। ${msg}`;
+ $("reviewBtn").style.display=wrong.length?"inline-block":"none";
+}
+$("restartBtn").addEventListener("click",()=>{index=0;score=0;wrong=[];$("score").textContent="0";$("result").classList.remove("show");$("quizCard").style.display="block";attemptCount++;localStorage.setItem("sca_pol_s3_attempts",String(attemptCount));$("attempt").textContent=attemptCount;render();window.scrollTo({top:0,behavior:"smooth"});});
+$("reviewBtn").addEventListener("click",()=>{
+ const content=wrong.length?wrong.map(x=>`প্রশ্ন ${x.n}: ${x.q}\nআপনার উত্তর: ${x.selected}\nসঠিক উত্তর: ${x.answer}`).join("\n\n"):"কোনো ভুল উত্তর নেই।";
+ const w=window.open("","_blank");if(!w){alert(content);return;}w.document.write(`<meta charset="utf-8"><title>ভুল উত্তরের তালিকা</title><body style="font-family:Arial,'Noto Sans Bengali',sans-serif;white-space:pre-wrap;line-height:1.8;padding:24px;color:#172047"><h2>ভুল উত্তরের তালিকা</h2>${content.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}</body>`);w.document.close();
+});
+render();
+</script>
+</body>
+</html>

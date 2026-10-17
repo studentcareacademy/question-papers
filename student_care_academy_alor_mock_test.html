@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>মাধ্যমিক ভৌত বিজ্ঞান Mock-Test | আলো</title>
+<style>
+  :root{--navy:#071b49;--blue:#123c8c;--gold:#ffcf4a;--green:#159447;--red:#d83b46;--paper:#f4f7ff}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Noto Sans Bengali","Hind Siliguri",Arial,sans-serif;background:radial-gradient(circle at top,#1b4a9b 0,#071b49 55%,#030b22 100%);color:#fff;min-height:100vh;display:flex;justify-content:center;padding:18px}
+  .app{width:min(850px,100%);margin:auto}
+  .brand{border:2px solid var(--gold);border-radius:18px;padding:17px 12px;text-align:center;background:linear-gradient(120deg,#071b49,#174b9b,#071b49);box-shadow:0 0 22px #ffcf4a55;margin-bottom:18px;overflow:hidden}
+  .brand h1{font-size:clamp(22px,5vw,36px);margin:0 0 7px;color:#fff;text-shadow:0 0 12px #ffcf4a;animation:glow 2s ease-in-out infinite alternate}
+  .brand p{margin:0;color:#ffe28a;font-size:clamp(14px,3.5vw,19px);font-weight:700;animation:float 3s ease-in-out infinite}
+  @keyframes glow{from{text-shadow:0 0 5px #ffcf4a,0 0 10px #ffcf4a}to{text-shadow:0 0 14px #ffcf4a,0 0 25px #ff9d00}}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+  .topic{text-align:center;font-weight:800;font-size:clamp(19px,4vw,27px);margin:12px 0 5px;color:#ffe28a}
+  .sub{text-align:center;color:#dce8ff;margin:0 0 18px}
+  .panel{background:linear-gradient(145deg,#0d2a67,#07153b);border:1px solid #6689d7;border-radius:22px;padding:clamp(16px,4vw,28px);box-shadow:0 12px 35px #0005}
+  .topline{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:18px}
+  .pill{background:#ffffff12;border:1px solid #8ba9e7;border-radius:999px;padding:8px 13px;font-weight:700;font-size:14px}
+  .progress{height:9px;background:#ffffff20;border-radius:99px;overflow:hidden;flex:1;min-width:100px}
+  .bar{height:100%;width:0;background:linear-gradient(90deg,#ffb800,#fff09b);transition:width .35s}
+  .question{font-size:clamp(19px,4vw,25px);line-height:1.7;text-align:center;padding:18px 10px;margin:0 0 18px;border:1px solid #ffcf4a;border-radius:15px;background:#020d2b66}
+  .options{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .option{display:flex;gap:10px;align-items:flex-start;text-align:left;border:1px solid #7896d5;background:linear-gradient(110deg,#102f70,#0a1b49);color:#fff;border-radius:13px;padding:14px 13px;font-size:clamp(15px,3.3vw,18px);line-height:1.5;cursor:pointer;transition:.2s;min-height:60px}
+  .option:hover:not(:disabled){border-color:var(--gold);transform:translateY(-2px);box-shadow:0 5px 14px #0003}
+  .letter{flex:0 0 31px;width:31px;height:31px;border-radius:50%;display:grid;place-items:center;background:#ffcf4a;color:#071b49;font-weight:900}
+  .option.correct{background:linear-gradient(100deg,#0b7137,#159447);border-color:#9bffc1}
+  .option.wrong{background:linear-gradient(100deg,#8b1c2b,#c93645);border-color:#ffb0b6}
+  .option:disabled{cursor:default}
+  .feedback{display:none;margin-top:16px;padding:13px 15px;border-radius:12px;line-height:1.6;font-weight:700}
+  .feedback.show{display:block}
+  .feedback.good{background:#0d6337;border:1px solid #73e8a5}
+  .feedback.bad{background:#78232d;border:1px solid #ff9da5}
+  .actions{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:18px}
+  button.action{border:0;border-radius:12px;padding:13px 22px;font-size:16px;font-weight:800;cursor:pointer}
+  .next{background:linear-gradient(100deg,#ffbd27,#ffe48a);color:#071b49;margin-left:auto}
+  .next:disabled{opacity:.4;cursor:not-allowed}
+  .restart{background:#fff;color:#102c69}
+  .result{display:none;text-align:center;padding:15px 5px}
+  .result.show{display:block}
+  .trophy{font-size:56px;margin:5px}
+  .result h2{color:#ffe28a;font-size:clamp(25px,5vw,34px);margin:5px 0 12px}
+  .scoreline{font-size:clamp(20px,4vw,28px);font-weight:900;margin:15px 0;color:#fff}
+  .scoreline span{color:#ffdb65}
+  .result p{line-height:1.8;color:#e4ecff}
+  .review{margin-top:18px;text-align:left}
+  .review h3{color:#ffdf78}
+  .review-item{padding:12px;border:1px solid #6689d7;border-radius:10px;margin:9px 0;background:#ffffff09;line-height:1.65}
+  .review-item strong{color:#ffe28a}
+  .footer{text-align:center;color:#b8c9f2;font-size:12px;margin:16px 0 0}
+  @media(max-width:560px){.options{grid-template-columns:1fr}.option{min-height:54px}.topline{justify-content:center}.progress{order:3;flex-basis:100%}.pill{font-size:13px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="brand">
+    <h1>Student Care Academy</h1>
+    <p>Teacher:- Tapan Mandal</p>
+  </header>
+  <div class="topic">মাধ্যমিক ভৌত বিজ্ঞান Mock-Test</div>
+  <p class="sub">অধ্যায়: আলো</p>
+
+  <main class="panel">
+    <section id="quiz">
+      <div class="topline">
+        <div class="pill" id="questionCount">Question 1 / 20</div>
+        <div class="progress" aria-label="পরীক্ষার অগ্রগতি"><div class="bar" id="progressBar"></div></div>
+        <div class="pill">Score: <span id="liveScore">0</span></div>
+      </div>
+      <h2 class="question" id="questionText"></h2>
+      <div class="options" id="options"></div>
+      <div class="feedback" id="feedback" aria-live="polite"></div>
+      <div class="actions">
+        <button class="action next" id="nextBtn" disabled>পরবর্তী প্রশ্ন →</button>
+      </div>
+    </section>
+
+    <section class="result" id="result">
+      <div class="trophy">🏆</div>
+      <h2>পরীক্ষা সম্পূর্ণ!</h2>
+      <div class="scoreline">Total Score: <span id="finalScore">0 / 20</span> <span style="font-size:.8em;color:#fff">| <span id="attemptCount">1</span></span></div>
+      <p id="resultMessage"></p>
+      <button class="action restart" id="restartBtn">আবার পরীক্ষা দিন ↻</button>
+      <div class="review" id="review"></div>
+    </section>
+  </main>
+  <div class="footer">Student Care Academy • আলো অধ্যায়ের অনুশীলনী</div>
+</div>
+<script>
+const questions = [
+ {q:"অবতল দর্পণের বক্রতা কেন্দ্রে রাখা বস্তুর প্রতিবিম্বের বিবর্ধন কত হবে?",o:["0.5","1","1.5","2"],a:1,why:"বক্রতা কেন্দ্রে বস্তু রাখলে প্রতিবিম্বের আকার বস্তুর সমান হয়; বিবর্ধনের মান 1।"},
+ {q:"গোলীয় দর্পণের ফোকাস দৈর্ঘ্য (f) এবং বক্রতা ব্যাসার্ধ (r)-এর মধ্যে সম্পর্ক কোনটি?",o:["f = 2r","r = 2f","f = r","r = f/2"],a:1,why:"গোলীয় দর্পণের ক্ষেত্রে r = 2f, অর্থাৎ f = r/2।"},
+ {q:"কোনো উত্তল দর্পণের ফোকাস দৈর্ঘ্য 15 cm হলে তার বক্রতা ব্যাসার্ধ কত?",o:["7.5 cm","15 cm","30 cm","45 cm"],a:2,why:"r = 2f = 2 × 15 = 30 cm।"},
+ {q:"দন্ত চিকিৎসকেরা কোন ধরনের দর্পণ ব্যবহার করেন?",o:["উত্তল দর্পণ","অবতল দর্পণ","সমতল দর্পণ","অধিবৃত্তীয় দর্পণ"],a:1,why:"অবতল দর্পণ কাছের বস্তুর সোজা ও বিবর্ধিত প্রতিবিম্ব দিতে পারে।"},
+ {q:"মোটরগাড়ির ভিউ ফাইন্ডার/রিয়ার-ভিউ মিরর হিসেবে কোন দর্পণ ব্যবহৃত হয়?",o:["সমতল দর্পণ","অবতল দর্পণ","উত্তল দর্পণ","কোনোটিই নয়"],a:2,why:"উত্তল দর্পণে বিস্তৃত ক্ষেত্র দেখা যায় এবং প্রতিবিম্ব সোজা ও খর্বিত হয়।"},
+ {q:"আলোকরশ্মি লঘু মাধ্যম থেকে ঘন মাধ্যমে প্রবেশ করলে কী হয়?",o:["অভিলম্বের দিকে সরে আসে","অভিলম্ব থেকে দূরে সরে যায়","সোজাপথে নির্গত হয়","প্রতিফলিত হয়"],a:0,why:"আপতন কোণ শূন্য না হলে লঘু মাধ্যম থেকে ঘন মাধ্যমে গেলে রশ্মি অভিলম্বের দিকে বেঁকে যায়।"},
+ {q:"শূন্য মাধ্যমে আলোর বেগ কত?",o:["3 × 10⁸ cm/s","3 × 10⁸ m/s","3 × 10¹⁰ m/s","3 × 10⁵ m/s"],a:1,why:"শূন্য মাধ্যমে আলোর বেগ প্রায় 3 × 10⁸ m/s।"},
+ {q:"প্রিজমের মধ্য দিয়ে সাদা আলো পাঠালে কোন বর্ণের আলোর চ্যুতি সবচেয়ে বেশি হয়?",o:["লাল","হলুদ","সবুজ","বেগুনি"],a:3,why:"বেগুনি আলোর তরঙ্গদৈর্ঘ্য কম এবং প্রিজমে তার চ্যুতি সবচেয়ে বেশি।"},
+ {q:"প্রিজমের মধ্য দিয়ে সাদা আলো পাঠালে কোন বর্ণের আলোর বেগ সবচেয়ে বেশি হয়?",o:["লাল","হলুদ","নীল","বেগুনি"],a:0,why:"সাধারণ কাচে লাল আলোর প্রতিসরাঙ্ক তুলনামূলক কম, তাই তার বেগ সবচেয়ে বেশি।"},
+ {q:"একটি সমতল কাচের স্ল্যাবের ফোকাস দৈর্ঘ্য কত?",o:["0","অসীম","100 cm","25 cm"],a:1,why:"সমতল কাচের স্ল্যাবের পৃষ্ঠের বক্রতা নেই; তাই এর ফোকাস দৈর্ঘ্য অসীম ধরা হয়।"},
+ {q:"জলের সাপেক্ষে কাচের প্রতিসরাঙ্ক 9/8 এবং বায়ুর সাপেক্ষে কাচের প্রতিসরাঙ্ক 3/2 হলে বায়ুর সাপেক্ষে জলের প্রতিসরাঙ্ক কত?",o:["3/4","4/3","2/3","1/2"],a:1,why:"n(কাচ/বায়ু) ÷ n(কাচ/জল) = (3/2) ÷ (9/8) = 4/3।"},
+ {q:"উত্তল লেন্সের ফোকাস ও আলোককেন্দ্রের মাঝে কোনো বস্তু রাখলে প্রতিবিম্বের প্রকৃতি কেমন হবে?",o:["সদ্ ও অবশীর্ষ","অসদ্ ও সমশীর্ষ","সদ্ ও সমশীর্ষ","অসদ্ ও অবশীর্ষ"],a:1,why:"ফোকাসের ভেতরে বস্তু রাখলে উত্তল লেন্সে অসদ্, সমশীর্ষ ও বিবর্ধিত প্রতিবিম্ব তৈরি হয়।"},
+ {q:"ক্যামেরায় কোন ধরনের লেন্স ব্যবহার করা হয়?",o:["অবতল","উত্তল","সমতল","বেলনাকার"],a:1,why:"ক্যামেরার উত্তল লেন্স আলোকসংবেদী পর্দা/সেন্সরে বাস্তব প্রতিবিম্ব গঠন করে।"},
+ {q:"কোনো লেন্সের রৈখিক বিবর্ধন m ও বস্তুর দূরত্ব u জানা থাকলে প্রতিবিম্বের দূরত্ব v নির্ণয়ের সূত্র কোনটি? (m = v/u ধরে)",o:["v = m/u","v = u/m","v = m × u","v = m + u"],a:2,why:"m = v/u হলে, v = m × u। প্রচলিত কার্টেসীয় চিহ্ন-নিয়মে বিবর্ধনের সংজ্ঞা m = v/u।"},
+ {q:"দীর্ঘদৃষ্টি বা হাইপারমেট্রোপিয়া ত্রুটি দূর করতে কোন লেন্স ব্যবহৃত হয়?",o:["উত্তল লেন্স","অবতল লেন্স","বাইফোকাল লেন্স","সিলিন্ড্রিক্যাল লেন্স"],a:0,why:"দীর্ঘদৃষ্টি সংশোধনে উপযুক্ত ক্ষমতার উত্তল লেন্স ব্যবহার করা হয়।"},
+ {q:"সুস্থ চোখের স্পষ্ট দর্শনের ন্যূনতম দূরত্ব কত?",o:["10 cm","25 cm","50 cm","অসীম"],a:1,why:"স্বাভাবিক প্রাপ্তবয়স্ক চোখের স্পষ্ট দর্শনের ন্যূনতম দূরত্ব প্রায় 25 cm।"},
+ {q:"দৃশ্যমান আলোর তরঙ্গদৈর্ঘ্যের পাল্লা প্রায় কত?",o:["100 nm – 400 nm","400 nm – 800 nm","800 nm – 1000 nm","1000 nm – 2000 nm"],a:1,why:"দৃশ্যমান আলোর আনুমানিক তরঙ্গদৈর্ঘ্য 400–800 nm ধরা হয়।"},
+ {q:"শূন্য মাধ্যমে কোন তড়িৎচুম্বকীয় তরঙ্গের বেগ সবচেয়ে বেশি?",o:["এক্স-রশ্মি","অতিবেগুনি রশ্মি","মাইক্রোওয়েভ","সব তরঙ্গের বেগ সমান"],a:3,why:"শূন্য মাধ্যমে সব তড়িৎচুম্বকীয় তরঙ্গ একই বেগে, প্রায় 3 × 10⁸ m/s, চলে।"},
+ {q:"কোন তড়িৎচুম্বকীয় তরঙ্গের তরঙ্গদৈর্ঘ্য সবচেয়ে কম?",o:["গামা রশ্মি","এক্স-রশ্মি","অতিবেগুনি রশ্মি","অবলোহিত রশ্মি"],a:0,why:"তড়িৎচুম্বকীয় বর্ণালিতে গামা রশ্মির তরঙ্গদৈর্ঘ্য সবচেয়ে কম।"},
+ {q:"বিপদ সংকেত হিসেবে লাল আলো ব্যবহার করা হয় কেন?",o:["বেগ কম","বিক্ষেপণ সবচেয়ে কম","বিক্ষেপণ সবচেয়ে বেশি","প্রতিসরাঙ্ক বেশি"],a:1,why:"লাল আলোর তরঙ্গদৈর্ঘ্য বেশি হওয়ায় বায়ুমণ্ডলে এর বিক্ষেপণ তুলনামূলক কম; তাই দূর থেকেও দেখা যায়।"}
+];
+const letters=["A","B","C","D"];
+let current=0,score=0,attempt=1,answered=false,chosen=[];
+const $=id=>document.getElementById(id);
+function renderQuestion(){
+ answered=false;
+ const item=questions[current];
+ $("questionCount").textContent=`Question ${current+1} / ${questions.length}`;
+ $("progressBar").style.width=`${current/questions.length*100}%`;
+ $("liveScore").textContent=score;
+ $("questionText").textContent=item.q;
+ $("options").innerHTML="";
+ $("feedback").className="feedback";
+ $("feedback").textContent="";
+ $("nextBtn").disabled=true;
+ item.o.forEach((option,i)=>{
+   const btn=document.createElement("button");
+   btn.className="option";
+   btn.innerHTML=`<span class="letter">${letters[i]}</span><span>${option}</span>`;
+   btn.addEventListener("click",()=>selectAnswer(i));
+   $("options").appendChild(btn);
+ });
+}
+function selectAnswer(index){
+ if(answered)return;
+ answered=true;
+ const item=questions[current],buttons=[...$("options").querySelectorAll("button")];
+ const correct=index===item.a;
+ chosen[current]=index;
+ if(correct)score++;
+ buttons.forEach((b,i)=>{b.disabled=true;if(i===item.a)b.classList.add("correct");if(i===index&&!correct)b.classList.add("wrong")});
+ const fb=$("feedback");
+ fb.className=`feedback show ${correct?"good":"bad"}`;
+ fb.textContent=(correct?"সঠিক উত্তর! +1 নম্বর। ":"ভুল উত্তর। সঠিক উত্তর: "+letters[item.a]+". "+item.o[item.a]+". ")+item.why;
+ $("liveScore").textContent=score;
+ $("nextBtn").disabled=false;
+ $("nextBtn").textContent=current===questions.length-1?"ফলাফল দেখুন →":"পরবর্তী প্রশ্ন →";
+}
+function showResult(){
+ $("quiz").style.display="none";
+ $("result").classList.add("show");
+ $("progressBar").style.width="100%";
+ $("finalScore").textContent=`${score} / ${questions.length}`;
+ $("attemptCount").textContent=attempt;
+ const pct=score/questions.length*100;
+ $("resultMessage").textContent=pct>=80?"দারুণ! আলো অধ্যায়ে আপনার প্রস্তুতি খুব ভালো।":pct>=50?"ভালো চেষ্টা! ভুল হওয়া প্রশ্নগুলো আবার অনুশীলন করুন।":"আরও অনুশীলন করুন—প্রতিটি ভুল থেকে শিখুন।";
+ $("review").innerHTML="<h3>উত্তর পর্যালোচনা</h3>"+questions.map((q,i)=>`<div class="review-item"><strong>${i+1}. ${q.q}</strong><br>আপনার উত্তর: ${chosen[i]===undefined?"উত্তর দেননি":letters[chosen[i]]+". "+q.o[chosen[i]]}<br>সঠিক উত্তর: <strong>${letters[q.a]}. ${q.o[q.a]}</strong></div>`).join("");
+}
+$("nextBtn").addEventListener("click",()=>{if(!answered)return;if(current<questions.length-1){current++;renderQuestion()}else showResult()});
+$("restartBtn").addEventListener("click",()=>{attempt++;current=0;score=0;chosen=[];$("quiz").style.display="block";$("result").classList.remove("show");renderQuestion()});
+renderQuestion();
+</script>
+</body>
+</html>
